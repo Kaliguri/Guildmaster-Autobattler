@@ -14,6 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.StatsConfig
   _armorConstantK: 100
   _resourceRegenPerSecond: 5
+  _attackRangeBands:
+  - 1
+  - 2
+  - 5
+  - 8
+  - 12
+  - 25
   _defaults:
   - Stat: 7
     Value: 120

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -13,7 +13,7 @@ namespace Guildmaster.Balance.Editor
     /// что усредняет возможное преимущество левой/правой позиции. Выдаёт сводку (Wins/WinRate/Strength) и
     /// матрицу матчапов. Оговорка: бой RNG-free → исходы детерминированы (1/0), win-rate дискретный.
     /// <para>Три формата — один и тот же прогон с разным числом союзных манекенов вокруг испытуемого:
-    /// 1v1 (кит в вакууме), 3v3 и 5v5. Командные форматы существуют потому, что дуэль не умеет мерить
+    /// 1v1 (кит в вакууме), 3v3 и 4v4. Командные форматы существуют потому, что дуэль не умеет мерить
     /// китов, чья работа — не убивать: хилер, баффер и держатель фронта в вакууме всегда выглядят мусором.</para>
     /// </summary>
     public static class DuelMatrixBench
@@ -99,6 +99,15 @@ namespace Guildmaster.Balance.Editor
             var timeouts = new int[n];
             var allSeconds = new List<double>();
 
+            // Время ВСЕХ боёв кита, включая упёршиеся в потолок. Знаменатель для «в секунду»: работа
+            // копилась и в тех боях тоже, и делить её на время одних лишь разрешившихся — завышать.
+            var secondsAll = new double[n];
+
+            // Края разброса с именами пар: «медиана 40 с» не отвечает, между кем бой идёт вчетверо
+            // дольше остальных, а вопрос «кто затягивает» задаётся первым.
+            double shortestSec = double.MaxValue, longestSec = -1.0;
+            string shortestPair = "—", longestPair = "—";
+
             // Сколько боёв доехало до овертайма. Порог читаем из того же снапшота тюнинга, что и бой —
             // иначе отчёт мерил бы одно, а симуляция жила по другому.
             var overtimeHits = new int[n];
@@ -115,12 +124,25 @@ namespace Guildmaster.Balance.Editor
 
                     // Время боя копим по обоим участникам: «сколько длится бой С ЭТИМ китом» — свойство
                     // пары, и кит отвечает за него независимо от того, победил он или проиграл.
+                    secondsAll[i] += seconds; secondsAll[j] += seconds;
+
                     if (timedOut) { timeouts[i]++; timeouts[j]++; }
                     else
                     {
                         secondsSum[i] += seconds; secondsCount[i]++;
                         secondsSum[j] += seconds; secondsCount[j]++;
                         allSeconds.Add(seconds);
+
+                        if (seconds < shortestSec)
+                        {
+                            shortestSec = seconds;
+                            shortestPair = relics[i].name + " против " + relics[j].name;
+                        }
+                        if (seconds > longestSec)
+                        {
+                            longestSec = seconds;
+                            longestPair = relics[i].name + " против " + relics[j].name;
+                        }
                     }
 
                     // Овертайм — предохранитель, и он обязан оставаться редким. Если доля боёв,
@@ -167,13 +189,13 @@ namespace Guildmaster.Balance.Editor
 
             var sumHeaders = new List<string>
             {
-                "Rank", "Relic", "Wins", "Losses", "Draws", "WinRate", "TeamHpOnWin%", "HeroSurvival%",
+                "Rank", "Relic", "Wins", "Losses", "Draws", "WinRate%", "TeamHpOnWin%", "HeroSurvival%",
                 "AvgFightSec", "Timeout%", "Overtime%",
                 "AvgDmgDealt", "AvgDmgTaken", "React%", "BTStrength",
                 "HealTaken", "Mitigated", "Evaded",
                 "ControlSec", "ControlCount", "ControlTakenSec",
                 "Debuffs", "DebuffSec", "Dots",
-                "HealDone", "Buffs", "BuffSec", "Cleanses",
+                "HealDone", "ShieldHeld", "SupportHPS", "Buffs", "BuffSec", "Cleanses",
             };
             var sumTable = new List<IReadOnlyList<object>>();
             int rank = 1;
@@ -195,25 +217,28 @@ namespace Guildmaster.Balance.Editor
 
                 sumTable.Add(new object[]
                 {
-                    rank++, relics[i].name, wCount[i], lCount[i], dCount[i], winRate, avgHp, surv,
+                    rank++, relics[i].name, wCount[i], lCount[i], dCount[i], 100.0 * winRate, avgHp, surv,
                     avgSec, timeoutPct, fights[i] > 0 ? 100.0 * overtimeHits[i] / fights[i] : 0.0,
                     Avg(a.DamageDealt), Avg(a.DamageTaken), reactShare, strength[i],
                     Avg(a.HealingReceived), Avg(a.DamageMitigated), Avg(a.HitsEvaded),
                     Avg(a.ControlSecondsDealt), Avg(a.ControlAppliedCount), Avg(a.ControlSecondsTaken),
                     Avg(a.DebuffsApplied), Avg(a.DebuffSecondsDealt), Avg(a.DotsApplied),
-                    Avg(a.HealingDone), Avg(a.BuffsGranted), Avg(a.BuffSecondsGranted), Avg(a.CleansesDone),
+                    Avg(a.HealingDone), Avg(a.ShieldGranted),
+                    secondsAll[i] > 0.0 ? (a.HealingDone + a.ShieldGranted) / secondsAll[i] : 0.0,
+                    Avg(a.BuffsGranted), Avg(a.BuffSecondsGranted), Avg(a.CleansesDone),
                 });
             }
 
             string sumNotes =
                 $"**Формат: {format.Title}.** {format.Blurb} " +
                 $"**TTK формата:** медиана боя **{MedianSec(0.5):0.0} с** " +
-                $"(четверть боёв короче {MedianSec(0.25):0.0} с, четверть длиннее {MedianSec(0.75):0.0} с, " +
-                $"самый долгий разрешившийся {MedianSec(1.0):0.0} с); " +
+                $"(четверть боёв короче {MedianSec(0.25):0.0} с, четверть длиннее {MedianSec(0.75):0.0} с); " +
+                $"**самый быстрый бой {shortestSec:0.0} с** — {shortestPair}; " +
+                $"**самый долгий разрешившийся {longestSec:0.0} с** — {longestPair}; " +
                 $"не разрешилось за потолок **{totalTimeouts} из {totalFights}** боёв " +
                 $"({(totalFights > 0 ? 100.0 * totalTimeouts / totalFights : 0):0}%). " +
                 $"Round-robin (потолок {CapSeconds:0} с/бой, каждая пара — обе стороны). " +
-                "WinRate учитывает ничьи как 0.5. **TeamHpOnWin%** — средний остаток HP команды в ВЫИГРАННЫХ боях: " +
+                "**WinRate%** — в процентах, как и все доли в отчётах: доля 0.04 и «4%» читаются по-разному, и смешивать два формата в одной таблице нельзя. Ничья считается за половину победы. **TeamHpOnWin%** — средний остаток HP команды в ВЫИГРАННЫХ боях: " +
                 "запас победы (80% = размазал не заметив, 10% = вытянул на последних каплях). " +
                 "**HeroSurvival%** — как часто сам испытуемый доживал до конца, независимо от исхода. " +
                 "**AvgFightSec** — средняя длительность боёв с этим китом, ТОЛЬКО по разрешившимся: потолок в " +
@@ -232,7 +257,10 @@ namespace Guildmaster.Balance.Editor
                 "**Контроль:** ControlSec/ControlCount — секунды и число наложенных контролей, " +
                 "ControlTakenSec — сколько контроля съел сам. " +
                 "**Проклятия:** Debuffs/DebuffSec — наложенные дебаффы и их секунды, Dots — отдельно яд и горение. " +
-                "**Утилита:** HealDone (вылечено), Buffs/BuffSec (бафы союзникам), Cleanses (снято чужих дебаффов со своих). " +
+                "**Поддержка:** HealDone (вылечено), **ShieldHeld** (сколько урона приняли на себя ЕГО щиты — " +
+                "по факту поглощения, невыданный впустую щит не в счёт), **SupportHPS** — сумма обоих на секунду боя: " +
+                "тот самый «сколько нахилял» для китов, которые не лечат вовсе. " +
+                "Buffs/BuffSec (бафы союзникам), Cleanses (снято чужих дебаффов со своих). " +
                 "Нули у всей корзины значат, что кит этим не занимается, — это факт о ките, а не пробел в замере. " +
                 "Бой RNG-free → исходы детерминированы; рейтинг ближе к топологическому порядку. " +
                 (format.Lineup.Length > 1
@@ -311,6 +339,7 @@ namespace Guildmaster.Balance.Editor
             total.DotsApplied += one.DotsApplied;
 
             total.HealingDone += one.HealingDone;
+            total.ShieldGranted += one.ShieldGranted;
             total.BuffsGranted += one.BuffsGranted;
             total.BuffSecondsGranted += one.BuffSecondsGranted;
             total.CleansesDone += one.CleansesDone;
@@ -354,7 +383,7 @@ namespace Guildmaster.Balance.Editor
             for (int i = 0; i < report.Units.Count; i++)
             {
                 UnitMetric m = report.Units[i];
-                if (m.Team != team) continue;
+                if (m.Team != team || m.IsSummon) continue;   // тело — расходник, в запас стороны не входит
                 hpLeft += m.HpLeft;
                 maxHp += m.MaxHp;
                 if (m.Id == heroId) hero = m;

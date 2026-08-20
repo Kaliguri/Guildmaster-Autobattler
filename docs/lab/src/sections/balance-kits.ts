@@ -9,7 +9,7 @@ import type { SectionDef } from "../types.js";
 import {
   balance, BUCKETS, cardOf, deviation, displayName, fmt, fmtValue, flagsFor, isControlRow, isNum,
   issuesFor, meta,
-  modeTitle, modesOf, normsOf, rich, ROLE_NAMES, runA, runB, setting, statusOf, TARGET_NAMES,
+  modeTitle, modesOf, noDataMessage, normsOf, rich, ROLE_NAMES, runA, runB, setting, statusOf, TARGET_NAMES,
   UNIT_COLUMNS, unitsOf, valueOf, type Ability, type Flag
 } from "./balance-data.js";
 import { balanceControls } from "./balance-ui.js";
@@ -136,7 +136,7 @@ function render(host: HTMLElement): void {
 
   void balance.settled.then(() => {
     if (balance.data.runs.length === 0) {
-      status.textContent = `Отчёты недоступны: ${balance.error ?? "нет данных"}. Нужен ./scripts/lab-serve.ps1 -Watch`;
+      status.textContent = noDataMessage("Отчёты");
       return;
     }
     // Ссылка вида #/balance-kits?kit=Assassin приходит из таблицы прогонов.

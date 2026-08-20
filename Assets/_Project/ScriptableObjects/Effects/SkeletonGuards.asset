@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.skeleton_guards
   _polarity: 0
-  _tags: 1
+  _tags: 0
   _baseDuration: -1
   _stacking: 0
   _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 0
   _unremovable: 1
-  _stacksPerApplication: 1
   _cleansePrice:
   - Flat: 0
     Pct: 0
@@ -40,5 +40,5 @@ MonoBehaviour:
       type: {class: SummonOnBattleStartComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _summon: {fileID: 11400000, guid: 0a1b2c3d4e5f60718293a4b5c6d7e8f9, type: 2}
-        _count: 2
+        _count: 1
         _diesWithSummoner: 0

@@ -302,8 +302,9 @@ namespace Guildmaster.Tests.EditMode.Combat
         private static (RuntimeUnit chaser, RuntimeUnit target, List<RuntimeUnit> units) Scene(
             float chaserX, AttackType attackType = AttackType.Melee, float range = Range)
         {
-            RelicData relic = TestRelic.Make(attackType: attackType)
-                .With("_windupShare", WindupShare)
+            // Доля замаха живёт на АРХЕТИПЕ с 06.08.2026: «время замаха должно быть у всех одинаковым»,
+            // поэтому своего поля у юнита нет, и тест обязан задавать её там же, где прод.
+            RelicData relic = TestRelic.Make(attackType: attackType, visual: TestVisual.WithShare(WindupShare))
                 .With("_chargeAttackWindupMult", ChargeMult);
 
             var chaser = MakeUnit(new Vector2(chaserX, 0f), team: 0, relic: relic, range: range, moveSpeed: MoveSpeed);

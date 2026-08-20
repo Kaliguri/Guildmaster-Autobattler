@@ -121,6 +121,132 @@ namespace Guildmaster.AnimationLab.Editor
             if (x < 0 || y < 0 || x >= _width || y >= _height) return;
             _tex.SetPixel(x, y, color);
         }
+
+        /// <summary>
+        /// Caption next to a world point, in a built-in 5x7 face.
+        ///
+        /// A gizmo without captions is a scatter of coloured dots that has to be decoded against a legend
+        /// printed somewhere else — and decoding is exactly the step where "the red one is the elbow, I
+        /// think" creeps in. Latin only: the ids being labelled (<c>elbow.R</c>, <c>grip.R</c>) are latin
+        /// too, and a Cyrillic face would double the table for captions nobody writes by hand.
+        /// </summary>
+        public void Text(Vector3 world, string text, Color color, int scale = 2, int offsetX = 10, int offsetY = 0)
+        {
+            var p = ToPixels(world);
+            TextPixels((int)p.x + offsetX, (int)p.y + offsetY, text, color, scale);
+        }
+
+        /// <summary>
+        /// Caption on a dark plate. Bare text lands on whatever the art happens to be underneath — over a
+        /// line-art sleeve or a white placeholder it simply disappears, and a caption that has to be
+        /// guessed at is worse than none.
+        /// </summary>
+        public void Label(Vector3 world, string text, Color color, int scale = 2, int offsetX = 10, int offsetY = 0)
+        {
+            if (string.IsNullOrEmpty(text)) return;
+            var p = ToPixels(world);
+            int x = (int)p.x + offsetX, y = (int)p.y + offsetY;
+            FillRectPixels(x - 3, y - 3, MeasureText(text, scale) + 5, TextHeight(scale) + 6,
+                           new Color(0.05f, 0.05f, 0.07f, 0.70f));
+            TextPixels(x, y, text, color, scale);
+        }
+
+        public void FillRectPixels(int x, int y, int width, int height, Color color)
+        {
+            for (int px = x; px < x + width; px++)
+                for (int py = y; py < y + height; py++)
+                    Blend(px, py, color);
+        }
+
+        public void TextPixels(int x, int y, string text, Color color, int scale = 2)
+        {
+            if (string.IsNullOrEmpty(text)) return;
+            scale = Mathf.Max(1, scale);
+            int cursor = x;
+            foreach (char raw in text.ToUpperInvariant())
+            {
+                DrawGlyph(cursor, y, raw, color, scale);
+                cursor += (GlyphWidth + 1) * scale;
+            }
+        }
+
+        /// <summary>Pixel width a caption will occupy — callers need it to keep text inside the frame.</summary>
+        public static int MeasureText(string text, int scale) =>
+            string.IsNullOrEmpty(text) ? 0 : text.Length * (GlyphWidth + 1) * Mathf.Max(1, scale);
+
+        public static int TextHeight(int scale) => GlyphHeight * Mathf.Max(1, scale);
+
+        void DrawGlyph(int x, int y, char c, Color color, int scale)
+        {
+            if (!Font.TryGetValue(c, out string rows)) return;
+            for (int row = 0; row < GlyphHeight; row++)
+                for (int col = 0; col < GlyphWidth; col++)
+                {
+                    if (rows[row * GlyphWidth + col] != '#') continue;
+                    // Row 0 is the TOP of the glyph, but the texture counts y upward.
+                    int px = x + col * scale;
+                    int py = y + (GlyphHeight - 1 - row) * scale;
+                    for (int dx = 0; dx < scale; dx++)
+                        for (int dy = 0; dy < scale; dy++)
+                            Plot(px + dx, py + dy, color);
+                }
+        }
+
+        const int GlyphWidth = 5;
+        const int GlyphHeight = 7;
+
+        /// <summary>
+        /// Glyph rows, top to bottom, five columns each. Written as seven separate literals on purpose:
+        /// the first version of this table was typed as one string per letter and three glyphs came out
+        /// the wrong length, which draws as silent garbage rather than as an error.
+        /// </summary>
+        static readonly System.Collections.Generic.Dictionary<char, string> Font =
+            new System.Collections.Generic.Dictionary<char, string>
+        {
+            [' '] = "....." + "....." + "....." + "....." + "....." + "....." + ".....",
+            ['A'] = ".###." + "#...#" + "#...#" + "#####" + "#...#" + "#...#" + "#...#",
+            ['B'] = "####." + "#...#" + "#...#" + "####." + "#...#" + "#...#" + "####.",
+            ['C'] = ".###." + "#...#" + "#...." + "#...." + "#...." + "#...#" + ".###.",
+            ['D'] = "####." + "#...#" + "#...#" + "#...#" + "#...#" + "#...#" + "####.",
+            ['E'] = "#####" + "#...." + "#...." + "####." + "#...." + "#...." + "#####",
+            ['F'] = "#####" + "#...." + "#...." + "####." + "#...." + "#...." + "#....",
+            ['G'] = ".###." + "#...#" + "#...." + "#.###" + "#...#" + "#...#" + ".###.",
+            ['H'] = "#...#" + "#...#" + "#...#" + "#####" + "#...#" + "#...#" + "#...#",
+            ['I'] = "#####" + "..#.." + "..#.." + "..#.." + "..#.." + "..#.." + "#####",
+            ['J'] = "..###" + "...#." + "...#." + "...#." + "...#." + "#..#." + ".##..",
+            ['K'] = "#...#" + "#..#." + "#.#.." + "##..." + "#.#.." + "#..#." + "#...#",
+            ['L'] = "#...." + "#...." + "#...." + "#...." + "#...." + "#...." + "#####",
+            ['M'] = "#...#" + "##.##" + "#.#.#" + "#...#" + "#...#" + "#...#" + "#...#",
+            ['N'] = "#...#" + "##..#" + "#.#.#" + "#..##" + "#...#" + "#...#" + "#...#",
+            ['O'] = ".###." + "#...#" + "#...#" + "#...#" + "#...#" + "#...#" + ".###.",
+            ['P'] = "####." + "#...#" + "#...#" + "####." + "#...." + "#...." + "#....",
+            ['Q'] = ".###." + "#...#" + "#...#" + "#...#" + "#.#.#" + "#..#." + ".##.#",
+            ['R'] = "####." + "#...#" + "#...#" + "####." + "#.#.." + "#..#." + "#...#",
+            ['S'] = ".####" + "#...." + "#...." + ".###." + "....#" + "....#" + "####.",
+            ['T'] = "#####" + "..#.." + "..#.." + "..#.." + "..#.." + "..#.." + "..#..",
+            ['U'] = "#...#" + "#...#" + "#...#" + "#...#" + "#...#" + "#...#" + ".###.",
+            ['V'] = "#...#" + "#...#" + "#...#" + "#...#" + "#...#" + ".#.#." + "..#..",
+            ['W'] = "#...#" + "#...#" + "#...#" + "#...#" + "#.#.#" + "##.##" + "#...#",
+            ['X'] = "#...#" + "#...#" + ".#.#." + "..#.." + ".#.#." + "#...#" + "#...#",
+            ['Y'] = "#...#" + "#...#" + ".#.#." + "..#.." + "..#.." + "..#.." + "..#..",
+            ['Z'] = "#####" + "....#" + "...#." + "..#.." + ".#..." + "#...." + "#####",
+            ['0'] = ".###." + "#...#" + "#..##" + "#.#.#" + "##..#" + "#...#" + ".###.",
+            ['1'] = "..#.." + ".##.." + "..#.." + "..#.." + "..#.." + "..#.." + ".###.",
+            ['2'] = ".###." + "#...#" + "....#" + "...#." + "..#.." + ".#..." + "#####",
+            ['3'] = "####." + "....#" + "....#" + ".###." + "....#" + "....#" + "####.",
+            ['4'] = "...#." + "..##." + ".#.#." + "#..#." + "#####" + "...#." + "...#.",
+            ['5'] = "#####" + "#...." + "####." + "....#" + "....#" + "#...#" + ".###.",
+            ['6'] = ".###." + "#...#" + "#...." + "####." + "#...#" + "#...#" + ".###.",
+            ['7'] = "#####" + "....#" + "...#." + "..#.." + ".#..." + ".#..." + ".#...",
+            ['8'] = ".###." + "#...#" + "#...#" + ".###." + "#...#" + "#...#" + ".###.",
+            ['9'] = ".###." + "#...#" + "#...#" + ".####" + "....#" + "#...#" + ".###.",
+            ['.'] = "....." + "....." + "....." + "....." + "....." + ".##.." + ".##..",
+            ['-'] = "....." + "....." + "....." + "#####" + "....." + "....." + ".....",
+            [':'] = "....." + ".##.." + ".##.." + "....." + ".##.." + ".##.." + ".....",
+            ['('] = "...#." + "..#.." + ".#..." + ".#..." + ".#..." + "..#.." + "...#.",
+            [')'] = ".#..." + "..#.." + "...#." + "...#." + "...#." + "..#.." + ".#...",
+            ['/'] = "....#" + "....#" + "...#." + "..#.." + ".#..." + "#...." + "#....",
+        };
     }
 }
 #endif

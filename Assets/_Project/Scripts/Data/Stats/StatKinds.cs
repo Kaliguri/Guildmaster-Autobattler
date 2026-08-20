@@ -35,9 +35,11 @@ namespace Guildmaster.Data.Stats
                 case StatType.Size:
                     return ValueKind.Multiplier;
 
-                // Величина в секунду.
+                // Величина в секунду. Оба «...RegenFlat» — слагаемые к скорости, а не разовая порция:
+                // RegenSystem складывает их со скоростью в секунду и умножает на dt.
                 case StatType.AttackSpeed:
                 case StatType.HpRegenFlat:
+                case StatType.ResourceRegenFlat:
                 case StatType.ProjectileSpeed:
                 case StatType.MoveSpeed:
                     return ValueKind.PerSecond;

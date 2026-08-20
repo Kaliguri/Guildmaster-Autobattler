@@ -19,9 +19,13 @@ namespace Guildmaster.Tests.EditMode.Presentation
     /// </summary>
     public class BoneRigLayoutTests
     {
-        const string RigPrefab = "Assets/_Project/Prefabs/Bones/BoneUnit_Standart.prefab";
+        // Storybook, а не базовый Standart (Max, 05.08.2026): both invariants are about the rig that
+        // actually fights, and a variant is free to break either of them on its own — a sprite dropped
+        // straight onto a bone, a clip path that no longer resolves. Checking the base would pass while
+        // the figure in the game is broken.
+        const string RigPrefab = "Assets/_Project/Prefabs/Bones/BoneUnit_Storybook.prefab";
         const string ClipFolder = "Assets/_Project/Prefabs/Bones";
-        const string RigProfileAsset = "Assets/_Project/Prefabs/Bones/BoneUnit_Standart_RigProfile.asset";
+        const string RigProfileAsset = "Assets/_Project/Prefabs/Bones/BoneUnit_Storybook_RigProfile.asset";
 
         static GameObject LoadRig()
         {
@@ -31,12 +35,12 @@ namespace Guildmaster.Tests.EditMode.Presentation
         }
 
         /// <summary>
-        /// Artwork belongs two levels below the bone: bone -> container -> sprite. On the bone it would
-        /// take the bone's scale and the joints under it; on the container itself it would be the one
-        /// privileged sprite among the several a part is allowed to carry.
+        /// Artwork lives on its own node under the bone, named "Bone_Art". Straight on the bone it would
+        /// take the bone's scale and drag every joint below it; and a bone is allowed several drawings
+        /// (face and hair, blade and guard and hilt), so no single renderer may sit on the bone itself.
         /// </summary>
         [Test]
-        public void EverySpriteRendererLivesInsideAVisualPartContainer()
+        public void EverySpriteRendererLivesOnAnArtNodeUnderItsBone()
         {
             var rig = LoadRig();
             var offenders = new List<string>();
@@ -44,21 +48,20 @@ namespace Guildmaster.Tests.EditMode.Presentation
             foreach (var renderer in rig.GetComponentsInChildren<SpriteRenderer>(includeInactive: true))
             {
                 var node = renderer.transform;
-                if (RigVisualParts.IsContainer(node.parent) && !RigVisualParts.IsContainer(node)) continue;
+                if (RigNaming.IsArt(node) && node.parent != null && RigNaming.IsBone(node.parent)) continue;
                 offenders.Add(AnimationUtility.CalculateTransformPath(node, rig.transform));
             }
 
             Assert.That(offenders, Is.Empty,
-                "Sprite renderers belong on nodes INSIDE a 'Visual Part (Bone)' container — not on the bone, " +
-                "not on the container. Run Alebardium/Animation/Split Rig Visual Parts. Offenders:\n  " +
+                "Sprite renderers belong on '<Bone>_Art' nodes hanging off a bone — never on the bone " +
+                "itself, never on another art node. Offenders:\n  " +
                 string.Join("\n  ", offenders));
         }
 
         /// <summary>
-        /// The profile describes BONES, so nothing it lists may live inside a visual container. Sprite
-        /// nodes are named freely by whoever draws them, and a sprite called "Head" was picked up as a
-        /// second 'head' joint the first time the containers landed — silently, with both entries valid
-        /// on their face.
+        /// The profile describes BONES, so nothing it lists may be an art node. A sprite called "Head"
+        /// was once picked up as a second 'head' joint — silently, with both entries valid on their face;
+        /// the "_Art" suffix is what keeps drawings out of the skeleton now.
         /// </summary>
         [Test]
         public void ProfileDescribesBonesOnlyAndHasNoDuplicateIds()
@@ -68,18 +71,18 @@ namespace Guildmaster.Tests.EditMode.Presentation
 
             var seen = new HashSet<string>();
             var duplicates = new List<string>();
-            var insideContainers = new List<string>();
+            var artwork = new List<string>();
 
             foreach (var joint in profile.Joints)
             {
                 if (!seen.Add(joint.Id)) duplicates.Add(joint.Id);
-                if (joint.Path != null && joint.Path.Contains("Visual Part (")) insideContainers.Add($"{joint.Id}: {joint.Path}");
+                if (joint.Path != null && joint.Path.Contains(RigNaming.ArtSuffix)) artwork.Add($"{joint.Id}: {joint.Path}");
             }
 
             Assert.That(duplicates, Is.Empty, "Duplicate joint ids in the profile: " + string.Join(", ", duplicates));
-            Assert.That(insideContainers, Is.Empty,
-                "These profile joints point inside a visual container, i.e. at artwork rather than a bone:\n  " +
-                string.Join("\n  ", insideContainers));
+            Assert.That(artwork, Is.Empty,
+                "These profile joints point at an art node rather than a bone:\n  " +
+                string.Join("\n  ", artwork));
         }
 
         /// <summary>

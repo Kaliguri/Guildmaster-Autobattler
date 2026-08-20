@@ -28,8 +28,9 @@ namespace Guildmaster.Combat
         // Удары, дозревшие на этом тике: цифры сняты, но ещё никому не прилетело (см. Tick).
         private readonly List<ResolvedHit> _hits = new List<ResolvedHit>();
 
-        /// <summary>Буфер нормированных позиций контактов: заполняется на входе в замах и тут же читается.</summary>
-        private readonly List<float> _hitPositions = new List<float>(4);
+        // Куда встанут блинкующие: считается от снимка мира ДО того, как хоть одно тело сдвинется.
+        private readonly List<(RuntimeUnit Unit, Vector2 Destination)> _blinkDestinations =
+            new List<(RuntimeUnit, Vector2)>();
 
         /// <summary>Удар, у которого замах истёк: кто, по кому и с какими цифрами бьёт.</summary>
         private readonly struct ResolvedHit
@@ -233,13 +234,30 @@ namespace Guildmaster.Combat
 
             // --- Проход 2a: блинки. Телепорт двигает тело, а из тел считается геометрия ударов, поэтому
             // все перемещения происходят ДО того, как хоть один удар начнёт мерить дистанции и линии.
+            //
+            // Точки назначения считаются ВСЕ и от снимка мира, и лишь потом записываются — тем же
+            // приёмом, что CombatSimulation.ApplyPendingTeleports. Пока запись шла прямо в обходе,
+            // второй блинк целился за спину тела, которое только что уехало: двое убийц из стелса
+            // бьют друг друга в один тик, и первый по списку получал преимущество хода. У отражённых
+            // сторон порядок обхода ОДИН И ТОТ ЖЕ, а не зеркальный, поэтому зеркало разъезжалось
+            // ровно на половину радиуса атаки (BAL-014, тот же класс: чтение и запись в одном обходе).
             bool moved = false;
+            _blinkDestinations.Clear();
             for (int i = 0; i < _hits.Count; i++)
             {
                 ResolvedHit hit = _hits[i];
                 if (!hit.Blink || hit.Unit.IsDead || hit.Target.IsDead) continue;
 
-                CombatPositioning.TeleportBehind(hit.Unit, hit.Target);
+                _blinkDestinations.Add((hit.Unit, CombatPositioning.BehindPosition(hit.Unit, hit.Target)));
+            }
+
+            for (int i = 0; i < _blinkDestinations.Count; i++)
+            {
+                (RuntimeUnit unit, Vector2 destination) = _blinkDestinations[i];
+
+                // Снап без интерполяции: вид не должен «ехать» через экран за один тик.
+                unit.Position = destination;
+                unit.PreviousPosition = destination;
                 moved = true;
             }
 
@@ -266,13 +284,9 @@ namespace Guildmaster.Combat
             // добавлять к этому ожидание значило бы наказать дважды за одно прерывание.
             unit.AttackCooldownTicks = HasChannel(unit) ? 0 : intervalTicks;
 
-            UnitVisual visual = unit.Unit != null ? unit.Unit.Visual : null;
-            int frameCount = visual != null ? visual.AttackFrameCount : 0;
-            int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
-
             // Контакты этого свинга: один у обычного кита, несколько у многоударного. Считаются здесь и
             // не пересчитываются — занесённый удар живёт по тем цифрам, с которыми начался.
-            AttackTiming.ContactTicks(unit, unit.SwingContacts, _hitPositions);
+            AttackTiming.ContactTicks(unit, unit.SwingContacts);
             unit.SwingHitIndex = 0;
 
             unit.WindupTicks = unit.WindupRemaining = windupTicks;
@@ -296,7 +310,8 @@ namespace Guildmaster.Combat
             if (unit.NextWindupMult > 0f)
                 tailAnchor += AttackTiming.WindupTicksFor(unit, ignoreRecast: true) - windupTicks;
 
-            int followThrough = AttackTiming.FollowThroughTicks(hitFrame, frameCount, intervalTicks, tailAnchor,
+            float windupShare = unit.Unit != null ? unit.Unit.WindupShare : 0f;
+            int followThrough = AttackTiming.FollowThroughTicks(windupShare, intervalTicks, tailAnchor,
                 maxAnimTicks);
             // У канальной формы хвост свой — сворачивание потока, — и берётся из профиля канала: тот же
             // кит в ближней форме бьёт короткими выпадами, и общий хвост кита навязал бы им чужую цену.

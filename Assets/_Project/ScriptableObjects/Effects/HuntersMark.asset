@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.hunters_mark
   _polarity: 1
-  _tags: 258
+  _tags: 256
   _baseDuration: 5
   _stacking: 2
   _maxStacks: 1

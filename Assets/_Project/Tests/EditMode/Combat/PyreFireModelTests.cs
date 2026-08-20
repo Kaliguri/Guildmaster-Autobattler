@@ -1,4 +1,4 @@
-﻿using Guildmaster.Combat;
+using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Random;
@@ -170,7 +170,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static EffectData EmberEffect() => TestEffect.Make(
             baseDuration: -1f, polarity: EffectPolarity.Debuff,
-            tags: EffectTag.Debuff | EffectTag.Ember,
+            tags: EffectTag.Ember,
             stacking: StackRule.Stack, maxStacks: 999,
             components: new EmberComponent()
                 .With("_fireDamagePerStack", 0.01f)
@@ -193,7 +193,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         /// <summary>Пустой эффект с тегом «Поджог» — маркер «цель горит» для теста расщепления.</summary>
         private static EffectData BurningMarker() => TestEffect.Make(
             baseDuration: -1f, polarity: EffectPolarity.Debuff,
-            tags: EffectTag.Debuff | EffectTag.DoT | EffectTag.Burn);
+            tags: EffectTag.DoT | EffectTag.Burn);
 
         private static CombatSimulation BuildSim() =>
             new CombatSimulation(

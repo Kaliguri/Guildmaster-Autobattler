@@ -25,6 +25,44 @@ namespace Guildmaster.Data.Definitions
     }
 
     /// <summary>
+    /// Кому принадлежит вторая сторона арены. Сторон всегда две; вопрос только в том, чья вторая.
+    /// </summary>
+    /// <remarks>
+    /// <b>Заведено вместо буля «только своих» 07.08.2026</b> — тот отвечал сразу на два вопроса, и на
+    /// втором врал. Из «чужую сторону не трогать» выводилось ещё и число сторон, по которым сеанс
+    /// раскладывает участников (<c>ActivitySideAssignment</c>); когда кампания получила этот флаг,
+    /// гость уехал на сторону врага и стал двигать монстров вместо своего отряда (наход. Макса на
+    /// живом прогоне).
+    /// <para>Здесь фактов два, и они разные: <b>кто владеет</b> второй стороной и <b>что из этого
+    /// следует</b>. Раскладывать участников по сторонам нужно ровно тогда, когда вторая сторона
+    /// принадлежит игроку; распоряжаться стороной можно, когда она своя или ничья. Оба следствия
+    /// считаются здесь же и в одном месте — выводить их заново на стороне потребителя и значит
+    /// заводить второго владельца.</para>
+    /// </remarks>
+    public enum OpposingSide : byte
+    {
+        /// <summary>
+        /// Энкаунтер: врагов приносит узел. Игрокам они не принадлежат ни в каком смысле, и все
+        /// участники сидят на одной стороне — они союзники.
+        /// </summary>
+        Encounter = 0,
+
+        /// <summary>
+        /// Другой игрок: стороны делятся между участниками сеанса. Пока — по порядку входа; когда у
+        /// PvP появится лобби с выбором команды (заявка Макса 07.08.2026), источник сменится, а
+        /// смысл — нет.
+        /// </summary>
+        Player = 1,
+
+        /// <summary>
+        /// Ничья: хозяина у второй стороны нет вовсе. Отсюда и свобода Ристалища — там противник
+        /// такие же киты игрока, и собирает их он сам. Это не поблажка площадке, а следствие того,
+        /// что забирать сторону не у кого.
+        /// </summary>
+        Unclaimed = 2,
+    }
+
+    /// <summary>
     /// С чем открыто мероприятие: вид плюс ограничения площадки. Живёт в скоупе Занятия и читается
     /// всеми, кто внутри — включая бой.
     /// </summary>
@@ -35,8 +73,8 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Состав противника скрыт до начала боя (PvP: подглядывать в чужой строй нельзя).</summary>
         public readonly bool HideOpponent;
 
-        /// <summary>Расставлять можно только своих (PvP: чужой строй — не наше дело).</summary>
-        public readonly bool OwnUnitsOnly;
+        /// <summary>Чья вторая сторона арены — из неё же следуют и раскладка, и права.</summary>
+        public readonly OpposingSide Opposition;
 
         /// <summary>
         /// С каким составом открыта площадка; <c>null</c> — составом из ассета. Едет ПАРАМЕТРОМ входа, а
@@ -52,31 +90,62 @@ namespace Guildmaster.Data.Definitions
         /// </remarks>
         public readonly ProvingGroundsSetupRequest? Roster;
 
-        public ActivitySetup(ActivityKind kind, bool hideOpponent = false, bool ownUnitsOnly = false,
+        /// <remarks>
+        /// <b>Владелец второй стороны спрашивается всегда,</b> умолчания у него нет намеренно: ровно
+        /// умолчанием кампания и провалилась мимо своего права 05.08.2026. Заводя новое мероприятие,
+        /// про сторону придётся ответить — иначе не скомпилируется.
+        /// </remarks>
+        public ActivitySetup(ActivityKind kind, OpposingSide opposition, bool hideOpponent = false,
             ProvingGroundsSetupRequest? roster = null)
         {
             Kind         = kind;
             HideOpponent = hideOpponent;
-            OwnUnitsOnly = ownUnitsOnly;
+            Opposition   = opposition;
             Roster       = roster;
         }
 
         /// <summary>Площадка с заказанным составом: дев-срез, а позже — сборка боя игроком.</summary>
         public static ActivitySetup GroundsWith(ProvingGroundsSetupRequest roster) =>
-            new(ActivityKind.ProvingGrounds, roster: roster);
+            new(ActivityKind.ProvingGrounds, OpposingSide.Unclaimed, roster: roster);
 
         /// <summary>Идёт ли мероприятие вообще.</summary>
         public bool IsOpen => Kind != ActivityKind.None;
 
-        /// <summary>Забег по акту.</summary>
-        public static ActivitySetup Campaign => new(ActivityKind.Campaign);
+        /// <summary>
+        /// Делит ли это мероприятие участников по разным сторонам. Только там, где вторая сторона
+        /// принадлежит игроку: в кампании и на площадке все играют заодно.
+        /// </summary>
+        public bool SidesAreDealt => Opposition == OpposingSide.Player;
 
-        /// <summary>Открытая площадка: оба состава видны, расставлять можно кого угодно.</summary>
-        public static ActivitySetup ProvingGrounds => new(ActivityKind.ProvingGrounds);
+        /// <summary>
+        /// Может ли участник, играющий за <paramref name="mySide"/>, распоряжаться стороной
+        /// <paramref name="side"/>: брать её бойцов, двигать их, менять им снаряжение.
+        /// </summary>
+        /// <remarks>
+        /// <b>Единственный владелец правила.</b> Спрашивают его двое — руки игрока
+        /// (<c>DeploymentInteraction</c>, кого вообще можно взять) и владелец состава
+        /// (<c>DeploymentController</c>, чьё намерение исполнять). Пока правило стояло в обоих
+        /// местах своей копией, разойтись им было достаточно одной правки: у гостя это выглядело бы
+        /// как «беру, тащу, отпускаю — и боец возвращается».
+        /// </remarks>
+        public bool MayCommandSide(int side, int mySide) =>
+            side == mySide || Opposition == OpposingSide.Unclaimed;
 
-        /// <summary>Матч: та же площадка, но чужой строй скрыт и неприкосновенен.</summary>
+        /// <summary>
+        /// Забег по акту: вторую сторону держит энкаунтер. Игроки — союзники на одной стороне, и
+        /// расставляют они только свой отряд.
+        /// </summary>
+        public static ActivitySetup Campaign => new(ActivityKind.Campaign, OpposingSide.Encounter);
+
+        /// <summary>
+        /// Открытая площадка: вторая сторона ничья, поэтому оба состава видны и собирает их сам игрок.
+        /// </summary>
+        public static ActivitySetup ProvingGrounds =>
+            new(ActivityKind.ProvingGrounds, OpposingSide.Unclaimed);
+
+        /// <summary>Матч: та же площадка, но вторую сторону держит другой игрок — и она скрыта.</summary>
         public static ActivitySetup Pvp =>
-            new(ActivityKind.ProvingGrounds, hideOpponent: true, ownUnitsOnly: true);
+            new(ActivityKind.ProvingGrounds, OpposingSide.Player, hideOpponent: true);
     }
 
     /// <summary>

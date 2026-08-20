@@ -42,9 +42,11 @@ $kinds = @(
     @{ Kind = 'archive'; Match = 'docs/wiki/tech/00-meta/tech-changelog.md'; Owner = 'tech-scribe'; What = 'АРХИВ, не пополняется' }
     @{ Kind = 'registry'; Match = 'docs/wiki/tech/00-meta/tech-debt.md'; Owner = 'tech-scribe'; What = 'отложенный техдолг, пункт закрывается' }
     @{ Kind = 'registry'; Match = 'docs/balance-issues.md'; Owner = 'balance'; What = 'проблемы баланса, закрываются с вердиктом' }
+    @{ Kind = 'registry'; Match = 'docs/player-capability-registry.md'; Owner = 'автор фичи'; What = 'что игрок может, знает и видит; кооп — колонка' }
     @{ Kind = 'run-log'; Match = 'docs/ost-run-log.md'; Owner = 'music'; What = 'прогоны Suno: seed, дельта, вердикт дословно' }
     @{ Kind = 'inbox-max'; Match = 'docs/wiki/gdd/00-meta/open.md'; Owner = '— (Макс)'; What = 'ЛИЧНЫЙ инбокс Макса, агент НЕ пишет' }
     @{ Kind = 'inbox-archive'; Match = 'docs/wiki/gdd/00-meta/inbox/*.md'; Owner = 'gdd-scribe'; What = 'разбор инбокса слово в слово + куда уехало' }
+    @{ Kind = 'qa-max'; Match = 'docs/wiki/gdd/00-meta/qa-notes.md'; Owner = '— (Макс)'; What = 'черновые QA-наблюдения, агент НЕ пишет и НЕ чистит' }
     @{ Kind = 'forks'; Match = 'docs/wiki/gdd/00-meta/open-forks.md'; Owner = 'gdd-scribe'; What = 'развилки и числа без вердикта' }
     @{ Kind = 'forks-closed'; Match = 'docs/wiki/gdd/00-meta/closed-forks.md'; Owner = 'gdd-scribe'; What = 'закрытые развилки: почему выбрали так' }
     @{ Kind = 'drift'; Match = '*implementation-status.md'; Owner = 'gdd-scribe'; What = 'чем код расходится с замыслом' }
@@ -141,7 +143,7 @@ foreach ($f in $all) {
 
 if (-not $Check) {
     $order = 'tech-journal', 'gdd-adr', 'registry', 'run-log', 'forks', 'drift', 'ideas',
-    'inbox-max', 'inbox-archive', 'backlog', 'worklog', 'archive'
+    'inbox-max', 'qa-max', 'inbox-archive', 'backlog', 'worklog', 'archive'
 
     foreach ($kind in $order) {
         $group = @($rows | Where-Object Kind -eq $kind)

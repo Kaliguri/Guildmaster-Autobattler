@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="devlog-root" class="gm-console gm-console--log">
+    <ui:VisualElement name="devlog-root" class="gm-console">
         <ui:VisualElement class="gm-console__header">
             <ui:Label text="Лог движка" class="gm-console__title" picking-mode="Ignore" />
             <ui:VisualElement class="gm-console__spacer" picking-mode="Ignore" />
@@ -10,8 +10,14 @@
                        vertical-scroller-visibility="Auto" horizontal-scroller-visibility="Hidden" />
 
         <ui:VisualElement class="gm-console__footer">
+            <!-- Полка каналов диагностики: кнопки строятся кодом по самому перечислению, иначе список
+                 здесь и список в DiagChannel разъехались бы на первом же новом канале.
+                 Подпись стоит РЯДОМ, а не внутри полки: полку код очищает целиком при постройке. -->
+            <ui:Label text="писать логи:" class="gm-console__footer-caption" picking-mode="Ignore" />
+            <ui:VisualElement name="devlog-channels" class="gm-console__footer-buttons" />
             <ui:VisualElement class="gm-console__footer-buttons">
                 <ui:Button name="devlog-save" text="сохранить в файл" class="gm-console__tool" />
+                <ui:Button name="devlog-folder" text="папка логов" class="gm-console__tool" />
                 <ui:Button name="devlog-clear" text="очистить" class="gm-console__tool" />
             </ui:VisualElement>
             <ui:Label name="devlog-status" text="" class="gm-console__footer-text" picking-mode="Ignore" />

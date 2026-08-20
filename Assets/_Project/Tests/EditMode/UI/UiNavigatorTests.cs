@@ -520,5 +520,58 @@ namespace Guildmaster.Tests.EditMode.UI
 
             Assert.AreEqual(0, nav.ActiveCancelHooks);
         }
+
+        // --- Запрос задника: причина, не зависящая от типа экрана ---
+
+        private sealed class BackdropScreen : UiScreen
+        {
+            public override ScreenKind Kind { get; }
+            public override bool RequiresBackdrop => true;
+            public BackdropScreen(ScreenKind kind) => Kind = kind;
+            public override void Build(UiScreenContext ctx) => Root = new VisualElement();
+        }
+
+        /// <summary>
+        /// Запрос задника принадлежит ЭКРАНУ, а не его типу. Инвариант живёт между тремя файлами
+        /// (UiScreen — признак, UiNavigator — сбор, UiRootBootstrap — правило), и комментарий его не
+        /// удержит: до 05.08.2026 признак назначал call-site, и одни и те же настройки открывались из
+        /// меню со столом, а из паузы — без него.
+        /// </summary>
+        [Test]
+        public void BackdropRequest_IsSeen_ForModalScreenToo()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+
+            nav.Push(new BackdropScreen(ScreenKind.Modal), run.Token);
+
+            Assert.IsFalse(nav.HasVisiblePage, "Modal страницей не считается — иначе тест ничего не проверяет.");
+            Assert.IsTrue(nav.HasVisibleBackdropRequest, "Modal, просящий задник, обязан быть услышан.");
+        }
+
+        /// <summary>Экран, спрятанный страницей сверху, задника не просит: важно, что видно СЕЙЧАС.</summary>
+        [Test]
+        public void BackdropRequest_Ignores_HiddenScreen()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+
+            nav.Push(new BackdropScreen(ScreenKind.Page), run.Token);
+            nav.Push(new TestScreen(ScreenKind.Page), run.Token);
+
+            Assert.IsFalse(nav.HasVisibleBackdropRequest);
+        }
+
+        /// <summary>Экран без признака задник не просит — иначе стол вылезал бы под всем подряд.</summary>
+        [Test]
+        public void BackdropRequest_IsFalse_ForOrdinaryScreens()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+
+            nav.Push(new TestScreen(ScreenKind.Page), run.Token);
+
+            Assert.IsFalse(nav.HasVisibleBackdropRequest);
+        }
     }
 }

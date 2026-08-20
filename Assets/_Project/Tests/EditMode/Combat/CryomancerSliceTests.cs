@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects.Components;
@@ -337,7 +337,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var stun = new ControlComponent().With("_preventAct", true);
             return TestEffect.Make(
                 baseDuration: 2f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Control | EffectTag.Debuff, components: stun);
+                tags: EffectTag.Control, components: stun);
         }
 
 
@@ -349,7 +349,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             return TestEffect.Make(
                 baseDuration: 4f,
                 polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Frozen | EffectTag.Debuff,
+                tags: EffectTag.Frozen,
                 stacking: StackRule.Refresh,
                 components: slow);
         }
@@ -364,7 +364,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData stunEffect = TestEffect.Make(
                 baseDuration: 2f,
                 polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Control | EffectTag.Debuff,
+                tags: EffectTag.Control,
                 components: stun);
 
             return TestAbility.Make(

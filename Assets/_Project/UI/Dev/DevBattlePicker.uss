@@ -112,11 +112,6 @@
     background-color: var(--gm-color-hover-surface);
 }
 
-.gm-dev-row--active {
-    background-color: var(--gm-color-hover-surface);
-    border-left-color: var(--gm-color-accent);
-}
-
 .gm-dev-row__label {
     flex-grow: 1;
     flex-shrink: 1;

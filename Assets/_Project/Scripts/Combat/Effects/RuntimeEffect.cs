@@ -127,7 +127,14 @@ namespace Guildmaster.Combat.Effects
         /// после. Мечники детонировали 18 и 13 стаков: 354 против 244,8 урона при одинаковом составе
         /// эффектов.</para>
         /// </summary>
-        public int StacksAtTickStart { get; private set; } = 1;
+        /// <remarks>
+        /// Стартует НУЛЁМ, и это не «ноль стаков», а «снимка ещё нет»: ровно так его читает
+        /// <see cref="VisibleStacks"/>. Пока здесь стояла единица, эффект, рождённый сразу с несколькими
+        /// стаками (<c>StacksPerApplication</c> больше одного), влиял как один — до первой же границы
+        /// тика, а стат-модификатор так и оставался немасштабированным: его <c>OnApply</c> зовётся один
+        /// раз и второго вызова не будет.
+        /// </remarks>
+        public int StacksAtTickStart { get; private set; }
 
         /// <summary>
         /// Стаки, которыми эффект ВЛИЯЕТ на исход прямо сейчас: снимок начала тика, а у эффекта, который
@@ -265,6 +272,20 @@ namespace Guildmaster.Combat.Effects
         public void AddHeldShield(float amount)
         {
             if (amount > 0f) HeldShield += amount;
+        }
+
+        /// <summary>
+        /// Списать израсходованную уроном часть: щит поглотил <paramref name="amount"/>, и удерживаемое
+        /// на столько же уменьшилось.
+        /// </summary>
+        /// <remarks>
+        /// Без этого счёта <see cref="HeldShield"/> помнил ВЫДАННОЕ, а не оставшееся, и истечение одного
+        /// щита съедало пул соседнего: два щита по 600, поглощено 600 — при снятии первого из общего пула
+        /// вычиталось 600, и второй исчезал целиком. Кламп в ноль прятал это от глаз.
+        /// </remarks>
+        public void SpendHeldShield(float amount)
+        {
+            if (amount > 0f) HeldShield = HeldShield > amount ? HeldShield - amount : 0f;
         }
 
         /// <summary>

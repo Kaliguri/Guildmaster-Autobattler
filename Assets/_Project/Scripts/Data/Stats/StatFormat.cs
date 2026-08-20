@@ -82,7 +82,7 @@ namespace Guildmaster.Data.Stats
         /// строки. Записан escape-последовательностью намеренно — невидимый символ в исходнике
         /// даёт строки, которые выглядят одинаково и при этом не равны (на чём тесты уже спотыкались).
         /// </summary>
-        public const string Nbsp = " ";
+        public const string Nbsp = "\u00A0";
 
         /// <summary>Итоговое значение с единицей измерения: «47», «25 %», «1.2/с», «×1.15».</summary>
         public static string Value(StatValue value, UnitLabels units)

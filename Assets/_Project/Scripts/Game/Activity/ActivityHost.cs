@@ -78,7 +78,7 @@ namespace Guildmaster.Game.Activity
         /// </summary>
         public IBattleClock Clock => Resolve<IBattleClock>();
 
-        /// <summary>Гейт готовности и источник намерений — из них собирается контекст обхода акта.</summary>
+        /// <summary>Общее решение и источник намерений — из них собирается контекст обхода акта.</summary>
         public Flow.IReadyGate ReadyGate => Resolve<Flow.IReadyGate>();
 
         public Flow.IPlayerIntentSource Intents => Resolve<Flow.IPlayerIntentSource>();

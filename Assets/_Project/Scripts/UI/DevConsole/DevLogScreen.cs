@@ -48,6 +48,11 @@ namespace Guildmaster.UI.DevConsole
             var save = Root.Q<Button>("devlog-save");
             if (save != null) save.clicked += SaveToFile;
 
+            var folder = Root.Q<Button>("devlog-folder");
+            if (folder != null) folder.clicked += OpenLogFolder;
+
+            BuildChannelToggles(Root.Q<VisualElement>("devlog-channels"));
+
             Root.RegisterCallback<AttachToPanelEvent>(_ =>
             {
                 if (!_scrollPending) return;
@@ -55,13 +60,28 @@ namespace Guildmaster.UI.DevConsole
                 _list?.schedule.Execute(ScrollToEnd);
             });
 
-            Rebuild();
+        }
 
+        /// <inheritdoc />
+        /// <remarks>
+        /// Подписка живёт ровно столько, сколько экран показан, и потому стоит здесь, симметрично
+        /// <see cref="OnExit"/>. В <c>Build</c> её держать нельзя: навигатор строит экран один раз за
+        /// сессию (пока <c>Root == null</c>), а показывают его многократно — после первого закрытия
+        /// список логов застывал бы на строках первого показа.
+        /// </remarks>
+        public override void OnEnter()
+        {
             if (_log != null)
             {
                 _log.Appended += OnAppended;
                 _log.Cleared  += Rebuild;
             }
+
+            // Каналы могли переключить командой, пока экран был закрыт: подсветку берём из состояния,
+            // а не из памяти кнопок.
+            RefreshChannelToggles();
+
+            Rebuild(); // заодно догоняем строки, набежавшие, пока экран был закрыт
         }
 
         /// <inheritdoc />
@@ -99,6 +119,101 @@ namespace Guildmaster.UI.DevConsole
             }
         }
 
+        /// <summary>
+        /// Полка каналов диагностики: включить их можно и командой, но в кооп-прогоне это надо делать
+        /// НА ДВУХ машинах и каждый раз, а команду ещё и вспомнить.
+        /// </summary>
+        /// <remarks>
+        /// Кнопки строятся по самому перечислению, а не перечисляются в разметке: список в UXML
+        /// разъехался бы с <see cref="Core.Diagnostics.DiagChannel"/> на первом же новом канале, и
+        /// разъехался бы молча — тумблера просто не было бы, а канал считался бы «неработающим».
+        /// <para><b>«Всё» — не украшение:</b> ровно его и просят, когда прогон уже идёт, а причина
+        /// неизвестна. Отдельная кнопка избавляет от пяти нажатий в тот момент, когда некогда.</para>
+        /// </remarks>
+        private void BuildChannelToggles(VisualElement shelf)
+        {
+            if (shelf == null) return;
+
+            shelf.Clear();
+            _channelButtons.Clear();
+
+            AddChannelToggle(shelf, "всё", Core.Diagnostics.DiagChannel.Net);
+            foreach (Core.Diagnostics.DiagChannel channel in SingleChannels)
+                AddChannelToggle(shelf, ChannelLabel(channel), channel);
+
+            RefreshChannelToggles();
+        }
+
+        private static readonly Core.Diagnostics.DiagChannel[] SingleChannels =
+        {
+            Core.Diagnostics.DiagChannel.Session,
+            Core.Diagnostics.DiagChannel.Tape,
+            Core.Diagnostics.DiagChannel.Follow,
+            Core.Diagnostics.DiagChannel.Commands,
+            Core.Diagnostics.DiagChannel.Ready,
+        };
+
+        private static string ChannelLabel(Core.Diagnostics.DiagChannel channel)
+        {
+            switch (channel)
+            {
+                case Core.Diagnostics.DiagChannel.Session:  return "сеанс";
+                case Core.Diagnostics.DiagChannel.Tape:     return "лента";
+                case Core.Diagnostics.DiagChannel.Follow:   return "где мы";
+                case Core.Diagnostics.DiagChannel.Commands: return "команды";
+                case Core.Diagnostics.DiagChannel.Ready:    return "готовность";
+                default:                                    return channel.ToString().ToLowerInvariant();
+            }
+        }
+
+        private readonly System.Collections.Generic.List<(Button Button, Core.Diagnostics.DiagChannel Channel)>
+            _channelButtons = new System.Collections.Generic.List<(Button, Core.Diagnostics.DiagChannel)>();
+
+        private void AddChannelToggle(VisualElement shelf, string label, Core.Diagnostics.DiagChannel channel)
+        {
+            var button = new Button { text = label };
+            button.AddToClassList("gm-console__tool");
+            button.clicked += () =>
+            {
+                Core.Diagnostics.Diag.Set(channel, !Core.Diagnostics.Diag.IsOn(channel));
+                RefreshChannelToggles();
+                UpdateStatus(); // строка состояния держит тот же ответ, что и подсветка
+                _log?.Append(DevLogKind.Reply, $"диагностика: {Core.Diagnostics.Diag.Enabled}");
+            };
+
+            shelf.Add(button);
+            _channelButtons.Add((button, channel));
+        }
+
+        /// <summary>Подсветить включённые. Читаем состояние, а не помним своё: командой его тоже меняют.</summary>
+        private void RefreshChannelToggles()
+        {
+            for (int i = 0; i < _channelButtons.Count; i++)
+            {
+                (Button button, Core.Diagnostics.DiagChannel channel) = _channelButtons[i];
+                button.EnableInClassList("gm-console__tool--active", Core.Diagnostics.Diag.IsOn(channel));
+            }
+        }
+
+        /// <summary>
+        /// Открыть папку архива прогонов. Ровно то, чего не хватало на живом разборе: путь печатался
+        /// в лог, а дальше его надо было переписывать в проводник руками.
+        /// </summary>
+        private void OpenLogFolder()
+        {
+            try
+            {
+                string folder = Core.Diagnostics.SessionLogArchive.Folder;
+                System.IO.Directory.CreateDirectory(folder);
+                UnityEngine.Application.OpenURL("file:///" + folder.Replace('\\', '/'));
+                _log?.Append(DevLogKind.Reply, $"папка логов: {folder}");
+            }
+            catch (System.Exception e)
+            {
+                _log?.Append(DevLogKind.Error, $"не открылась: {e.GetType().Name}: {e.Message}");
+            }
+        }
+
         private void OnAppended(DevLogLine line)
         {
             AddLine(line);
@@ -133,7 +248,15 @@ namespace Guildmaster.UI.DevConsole
             if (_status == null) return;
 
             int count = _log?.Count ?? 0;
-            _status.text = $"{count} из {DevConsoleLog.Capacity} строк\n" +
+
+            // Состояние диагностики видно ЗДЕСЬ, а не только по подсветке кнопок: подсветку легко
+            // проглядеть, а вопрос «а логи-то пишутся?» возникает раньше, чем взгляд доходит до полки.
+            // Набор переживает перезапуск (DiagChannelStore), поэтому «включено со вчера» — рабочий случай.
+            string diag = Core.Diagnostics.Diag.Enabled == Core.Diagnostics.DiagChannel.None
+                ? "логи не пишутся — включи кнопкой слева"
+                : $"пишутся: {Core.Diagnostics.Diag.Enabled}";
+
+            _status.text = $"{count} из {DevConsoleLog.Capacity} строк · {diag}\n" +
                            "хвост копится, пока лог открыт · старые строки вытесняются\n" +
                            "F1 команды · F3 бои · F2 закрывает";
         }

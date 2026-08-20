@@ -19,6 +19,13 @@ namespace Guildmaster.Balance.Editor
         public readonly RuntimeUnitFactory Factory;
         public readonly StatsConfig Config;
 
+        /// <summary>
+        /// Система умений — держим ссылку, потому что события каста живут на ней, а не на симе. Без
+        /// них разбор боя не отвечает на вопрос «он не скастовал или скастовал впустую»: у умения,
+        /// которое ничего не задело, событий нет вовсе, и молчание ленты читается как «не кастовал».
+        /// </summary>
+        public readonly AbilitySystem Abilities;
+
         private const float DefaultArmorK = 100f;
         private const float SpatialCellSize = 3f;
 
@@ -29,13 +36,14 @@ namespace Guildmaster.Balance.Editor
             Effects = new EffectSystem();
 
             float armorK = config != null ? config.ArmorConstantK : DefaultArmorK;
+            Abilities = new AbilitySystem();
 
             Sim = new CombatSimulation(
                 rng,
                 armorK,
                 new SpatialHash(SpatialCellSize),
                 new BrainSystem(),
-                new AbilitySystem(),
+                Abilities,
                 new MovementSystem(),
                 new AutoAttackSystem(),
                 new ProjectileSystem(),
@@ -46,6 +54,11 @@ namespace Guildmaster.Balance.Editor
             // Фабрика делит EffectSystem и контекст с симом (пассивки/HP-init зовут OnApply в этом же боевом контексте).
             // Классовый профиль грузим здесь, чтобы бенчи считали базу так же, как бой («таблица не врёт»).
             Factory = new RuntimeUnitFactory(config, BalanceAssets.LoadClassBalanceConfig(), Effects, Sim);
+
+            // Без этой строки призывать в бою НЕЧЕМ: сим отдаёт рождение тел наружу, и до 2026-08-03
+            // стенд фабрику не подавал — призыватели дрались в бенчах в одиночку, а таблица показывала
+            // это как их честную силу. Игровой путь биндит фабрику в EncounterLoader.
+            Sim.BindSummonFactory(Factory);
         }
 
         /// <summary>Собрать реального юнита из контент-SO через боевую фабрику (те же шаги, что в бою).</summary>

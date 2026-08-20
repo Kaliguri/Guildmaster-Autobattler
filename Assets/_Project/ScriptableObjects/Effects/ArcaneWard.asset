@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.arcane_ward
   _polarity: 0
-  _tags: 65
+  _tags: 64
   _baseDuration: 6
   _stacking: 1
   _maxStacks: 50

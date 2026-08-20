@@ -51,14 +51,12 @@ namespace Guildmaster.Combat.Effects.Components
             RuntimeUnit self = ctx.Target;
             if (_summon == null || self == null || self.IsDead) return;
 
-            // Раскладка веером за спиной — та же формула, что у призыва способности: чистая от состояния
-            // мира, поэтому одинаковая у отражённых сторон.
+            // Раскладка веером за спиной — та же, что у призыва способности, и живёт она в одном месте:
+            // две копии формулы разъехались бы на первой правке, а зеркальность заметил бы только сторож.
             float step = Mathf.Max(0.6f, self.Stats.Get(StatType.Size));
             for (int i = 0; i < _count; i++)
             {
-                int lane = (i / 2) + 1;
-                float side = (i % 2 == 0) ? -1f : 1f;
-                var offset = new Vector2(side * step * lane, -step * 0.5f);
+                Vector2 offset = SummonLayout.Offset(i, step, self);
 
                 RuntimeUnit body = ctx.Combat.Summon(_summon, self.Team, self.Position + offset, self);
                 if (body == null) return;   // призывать нечем (фабрика не подана) — это не боевая ошибка

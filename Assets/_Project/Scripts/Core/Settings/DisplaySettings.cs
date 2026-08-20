@@ -43,5 +43,18 @@ namespace Guildmaster.Core.Settings
         public uint? RefreshNumerator;
 
         public uint? RefreshDenominator;
+
+        /// <summary>
+        /// Синхронизация кадров с развёрткой. «Не задано» читается как <b>включена</b> — см.
+        /// <see cref="FramePacing"/>, там же причина, почему это не default(bool).
+        /// </summary>
+        public bool? VSync;
+
+        /// <summary>
+        /// Потолок кадров в секунду, <see cref="FramePacing.Unlimited"/> — без потолка. Смысл имеет
+        /// только при выключенной <see cref="VSync"/>: движок игнорирует потолок, пока синхронизация
+        /// включена.
+        /// </summary>
+        public int? FrameRateCap;
     }
 }

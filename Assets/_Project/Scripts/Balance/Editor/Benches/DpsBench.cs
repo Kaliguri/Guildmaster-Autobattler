@@ -25,7 +25,7 @@ namespace Guildmaster.Balance.Editor
 
             var headers = new List<string>
             {
-                "Relic", "DPS_solo", "DPS_aoe", "AoE_ratio",
+                "Relic", "DPS_solo", "DPS_summons", "DPS_with_summons", "DPS_aoe", "AoE_ratio",
                 "AutoPhys%", "AutoMagic%", "Ability%", "DoT%", "React%", "Vuln%", "SelfDmg%",
                 "aoe_AutoPhys%", "aoe_AutoMagic%", "aoe_Ability%", "aoe_DoT%", "aoe_React%",
             };
@@ -36,6 +36,11 @@ namespace Guildmaster.Balance.Editor
                 BattleReport soloReport = RunDps(config, relic, aoe: false, cap);
                 UnitMetric a = soloReport.Find(0);
                 double solo = a != null && soloReport.Seconds > 0 ? a.DamageDealt / soloReport.Seconds : 0.0;
+
+                // Урон армии — своей колонкой рядом с личным: у призывателя личный DPS отвечает на
+                // вопрос «чем он машет», а на вопрос «сколько он стоит» отвечает только сумма.
+                SummonRollup soloArmy = soloReport.Summons(0);
+                double summonDps = soloReport.Seconds > 0 ? soloArmy.DamageDealt / soloReport.Seconds : 0.0;
 
                 BattleReport aoeReport = RunDps(config, relic, aoe: true, cap);
                 UnitMetric aa = aoeReport.Find(0);
@@ -54,7 +59,7 @@ namespace Guildmaster.Balance.Editor
 
                 table.Add(new object[]
                 {
-                    relic.name, solo, aoe, ratio,
+                    relic.name, solo, summonDps, solo + summonDps, aoe, ratio,
                     Share(a?.DamageAutoPhysical ?? 0.0),
                     Share(a?.DamageAutoMagical ?? 0.0),
                     Share(a?.DamageAbility ?? 0.0),
@@ -73,6 +78,10 @@ namespace Guildmaster.Balance.Editor
             string notes =
                 $"**DPS-бенч**: урон/сек до убийства эталонной цели HP={DummyHp:0} (или до потолка {CapSeconds:0} с). " +
                 $"DPS_solo — одна цель; DPS_aoe — кластер {ClusterSize} целей (для AoE-китов выше, ratio>1). " +
+                "**DPS_summons** — урон призванных тел, **DPS_with_summons** — сумма: с классовой нормой " +
+                "сравнивается именно она, личный DPS призывателя отвечает лишь на вопрос «чем он машет сам». " +
+                "Проценты разбивки считаются от ЛИЧНОГО урона — тела бьют своим китом, и мешать их доли с " +
+                "долями хозяина значило бы складывать разные разбивки в одну. " +
                 "Первые пять «%» — разбивка нанесённого урона (solo-прогон), в сумме 100: авто-атака физикой, " +
                 "авто-атака магией (расщеплённый кит бьёт одной атакой в две школы), способность, DoT, ответка. " +
                 "**Vuln%** стоит особняком и в сумму НЕ входит: это доля общего урона, добавленная уязвимостями цели " +

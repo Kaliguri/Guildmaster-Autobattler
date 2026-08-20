@@ -21,7 +21,7 @@ namespace Guildmaster.Net.Session
     /// SteamNetworkingSockets в проекте не заведён (`FacepunchTransportBootstrap` только инициализирует
     /// Steam, вопреки своему докстрингу). До этого момента подписчик получает id лобби и решает сам.</para>
     /// </remarks>
-    public sealed class SteamLobbyService : IDisposable
+    public sealed class SteamLobbyService : ICoopLobby, IDisposable
     {
         /// <summary>Сколько мест в лобби. Кооп у нас до четырёх (дизайн).</summary>
         public const int MaxMembers = 4;
@@ -33,6 +33,7 @@ namespace Guildmaster.Net.Session
             SteamMatchmaking.OnLobbyCreated       += HandleLobbyCreated;
             SteamMatchmaking.OnLobbyEntered       += HandleLobbyEntered;
             SteamFriends.OnGameLobbyJoinRequested += HandleJoinRequested;
+            SteamMatchmaking.OnLobbyInvite         += HandleInvited;
         }
 
         /// <summary>Steam на связи: клиент запущен и инициализирован.</summary>
@@ -43,6 +44,9 @@ namespace Guildmaster.Net.Session
 
         /// <summary>Нас позвали в чужое лобби — id лобби и хозяин. Ведёт в сессию.</summary>
         public event Action<ulong, ulong> JoinRequested;
+
+        /// <inheritdoc />
+        public event Action<string, ulong, ulong> Invited;
 
         /// <summary>
         /// Лобби появилось или исчезло, то есть <see cref="HasLobby"/> сменилось.
@@ -57,9 +61,20 @@ namespace Guildmaster.Net.Session
         public event Action LobbyChanged;
 
         /// <summary>
-        /// Создать лобби под текущую сессию. Возвращает false, если Steam не запущен — это внешний
-        /// отказ, и он должен быть виден игроку, а не заглажен.
+        /// Создать лобби под текущую сессию. Возвращается сразу: лобби придёт от Steam кадры спустя и
+        /// объявит о себе через <see cref="LobbyChanged"/>.
         /// </summary>
+        /// <remarks>
+        /// Не создалось — предупреждение в лог и никакого события; это внешний отказ, и он должен быть
+        /// виден, а не заглажен. Вызывающему возвращать нечего: к моменту возврата ответа Steam ещё нет.
+        /// </remarks>
+        /// <remarks>
+        /// Метод <c>async void</c>, и это вынужденно: его зовут как обычное действие из UI, а сборка
+        /// <c>Guildmaster.Net</c> на UniTask не ссылается, так что <c>UniTaskVoid</c> здесь недоступен.
+        /// Цена такого метода — необработанное исключение уходит в никуда мимо всякого лога; поэтому
+        /// ожидание под <c>try</c>. Отказ прилетает из сетевого вызова Steam, то есть ровно оттуда, где
+        /// он ожидаем, и увидеть его надо в консоли, а не по молчанию кнопки приглашения.
+        /// </remarks>
         public async void CreateLobby()
         {
             if (!IsSteamReady)
@@ -68,16 +83,23 @@ namespace Guildmaster.Net.Session
                 return;
             }
 
-            Lobby? created = await SteamMatchmaking.CreateLobbyAsync(MaxMembers);
-            if (!created.HasValue)
+            try
             {
-                Debug.LogWarning("[SteamLobbyService] Steam не создал лобби");
-                return;
-            }
+                Lobby? created = await SteamMatchmaking.CreateLobbyAsync(MaxMembers);
+                if (!created.HasValue)
+                {
+                    Debug.LogWarning("[SteamLobbyService] Steam не создал лобби");
+                    return;
+                }
 
-            created.Value.SetFriendsOnly(); // список комнат нам не нужен: вход только по приглашению
-            created.Value.SetJoinable(true);
-            SetLobby(created);
+                created.Value.SetFriendsOnly(); // список комнат нам не нужен: вход только по приглашению
+                created.Value.SetJoinable(true);
+                SetLobby(created);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[SteamLobbyService] Steam не отдал лобби: {e}");
+            }
         }
 
         /// <summary>Открыть оверлей приглашений на текущее лобби.</summary>
@@ -114,6 +136,7 @@ namespace Guildmaster.Net.Session
             SteamMatchmaking.OnLobbyCreated       -= HandleLobbyCreated;
             SteamMatchmaking.OnLobbyEntered       -= HandleLobbyEntered;
             SteamFriends.OnGameLobbyJoinRequested -= HandleJoinRequested;
+            SteamMatchmaking.OnLobbyInvite         -= HandleInvited;
         }
 
         private void HandleLobbyCreated(Result result, Lobby lobby)
@@ -138,5 +161,16 @@ namespace Guildmaster.Net.Session
 
         private void HandleJoinRequested(Lobby lobby, SteamId host) =>
             JoinRequested?.Invoke(lobby.Id, host.Value);
+
+        /// <summary>
+        /// Друг зовёт нас в свою игру, и мы в этот момент играем.
+        /// </summary>
+        /// <remarks>
+        /// <b>Адрес берём у пригласившего, а не у лобби.</b> <c>Lobby.Owner</c> читается из данных
+        /// комнаты, а до входа в неё этих данных у нас нет — вернулся бы ноль. Пригласить же может
+        /// только тот, кто в комнате сидит, и для соединения по релею нам нужен именно его SteamId.
+        /// </remarks>
+        private void HandleInvited(Friend from, Lobby lobby) =>
+            Invited?.Invoke(from.Name, from.Id.Value, lobby.Id);
     }
 }

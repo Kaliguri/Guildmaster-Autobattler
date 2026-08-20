@@ -116,6 +116,55 @@ export function fetchActMaps(): Feed<ActMapDump> {
   return actMapsFeed;
 }
 
+/* ---------- геометрия удара ---------- */
+
+/** Архетип формы: числа заданы в долях роста юнита H, а не в мировых единицах. */
+export interface HitFormArchetype {
+  lengthH: number;
+  arcH: [number, number];
+  halfThicknessH: [number, number];
+  roughness: number;
+  starRadiusH: number;
+}
+
+export interface HitGeometryDump {
+  source: { prefab: string; clip: string; snapped: string };
+  /** Якоря вида и габариты нарисованного тела — мировые единицы от корня юнита. */
+  unit: {
+    feetPoint: number; headPoint: number; hitPoint: number; shotPoint: [number, number];
+    bodyMinY: number; bodyMaxY: number; bodyMinX: number; bodyMaxX: number;
+    bodyRadiusPerSize: number;
+  };
+  /** Путь кончика клинка, снятый сэмплированием настоящего клипа в окне StrikeStart…StrikeEnd. */
+  swing: {
+    clipLength: number; strikeStart: number; strikeEnd: number; hitTime: number; bladeLength: number;
+    arc: Array<[number, number]>;
+    tipAtStrikeStart: [number, number]; shoulderAtStrikeStart: [number, number];
+    tipAtHit: [number, number]; shoulderAtHit: [number, number];
+  };
+  combat: { attackRangeBands: number[]; baseHp: number; baseDps: number };
+  form: {
+    unitHeight: number; life: number; sizeMin: number; sizeMax: number; heavyHitFrac: number;
+    growShare: number; tailLag: number; coreWidth: number;
+    archetypes: Record<"slash" | "pierce" | "blunt" | "bolt", HitFormArchetype>;
+  };
+}
+
+let hitGeometryFeed: Feed<HitGeometryDump> | null = null;
+
+/**
+ * Снимок боевой геометрии с ЖИВЫХ ассетов: якоря и габариты боевого вида, путь клинка из клипа
+ * атаки, ступени дальности, числа архетипов формы.
+ *
+ * Как и карты акта, это снимок, а не чтение на лету: половина чисел живёт в префабе и в клипе, а
+ * достать их без запущенного редактора нечем. Поэтому на странице стоит дата — правку префаба без
+ * нового снимка иначе не отличить от правды.
+ */
+export function fetchHitGeometry(): Feed<HitGeometryDump> {
+  hitGeometryFeed ??= feed("data/hit-geometry.json");
+  return hitGeometryFeed;
+}
+
 /** Общая заглушка на канвасе, пока данных нет или их не будет. */
 export function drawFeedState(
   ctx: CanvasRenderingContext2D, w: number, h: number, feed: Feed<unknown>, what: string

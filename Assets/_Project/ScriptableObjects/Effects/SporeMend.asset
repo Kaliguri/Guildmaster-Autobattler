@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.spore_mend
   _polarity: 0
-  _tags: 17
+  _tags: 16
   _baseDuration: 3
   _stacking: 1
-  _maxStacks: 10
+  _maxStacks: 4
+  _stacksPerApplication: 1
   _cleanseTier: 0
   _unremovable: 0
   _cleansePrice:
@@ -29,6 +30,7 @@ MonoBehaviour:
     Pct: 0
   _components:
   - rid: 5615027293180133485
+  _telegraphSeconds: 0
   _icon: {fileID: 0}
   _infoTags: []
   references:
@@ -39,5 +41,6 @@ MonoBehaviour:
       data:
         _interval: 1
         _healPerSecond:
-          Base: 60
+          Base: 120
           Scalings: []
+        _stackFalloffPct: 0.3

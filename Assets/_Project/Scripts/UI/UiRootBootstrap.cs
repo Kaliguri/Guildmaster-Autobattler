@@ -63,15 +63,22 @@ namespace Guildmaster.UI
         [Tooltip("UXML главного меню (Создать игру / Присоединиться / Настройки / Выход).")]
         [SerializeField] private VisualTreeAsset _mainMenuScreen;
 
-        [Tooltip("UXML экрана «Создать игру»: режим, гильдия, галочка лобби. Поверх главного меню.")]
+        [Tooltip("UXML экрана «Создать игру»: три режима и галочка лобби. Поверх главного меню.")]
         [SerializeField] private VisualTreeAsset _newGameScreen;
+
+        [Tooltip("UXML экрана выбора дома: слоты гильдий. Следующий шаг после режима «Кампания».")]
+        [SerializeField] private VisualTreeAsset _guildSelectScreen;
+
+        [Tooltip("UXML Двора гильдии: дом, из которого уходят в забег. Пока заглушка с одной кнопкой.")]
+        [SerializeField] private VisualTreeAsset _hubScreen;
+
+        [Tooltip("UXML экрана профиля: слоты, ник, цвет, курсор. Открывается из меню и обязательно на " +
+                 "чистой установке — без профиля забегу некуда писаться.")]
+        [SerializeField] private VisualTreeAsset _profileScreen;
 
 
         [Tooltip("UXML boot title card (Happy Guildmasters) до главного меню.")]
         [SerializeField] private VisualTreeAsset _titleCardScreen;
-
-        [Tooltip("Печать/seal для boot title card (PixelLab AppIcon).")]
-        [SerializeField] private Sprite _titleCardSeal;
 
         [Tooltip("UXML dev-консоли (Трек К): полка сверху, открывается на ~ в редакторе и dev-сборке.")]
         [SerializeField] private VisualTreeAsset _devConsoleScreen;
@@ -108,6 +115,10 @@ namespace Guildmaster.UI
         private ISubscriber<OpenRewardRequest> _openRewardSub;
         private ISubscriber<OpenTextEventRequest> _openEventSub;
         private ISubscriber<OpenContinueRequest> _openContinueSub;
+        // «Переведи меня в режим» — то же, что нажать таб. Кнопки передышки шлют именно это, чтобы у
+        // них и у табов был ОДИН обработчик (иначе у гостя «К строю» не делала бы ничего).
+        private ISubscriber<Core.Flow.GoToModeRequest> _goToModeSub;
+        private IDisposable _goToModeSubscription;
         private ISubscriber<OpenShopRequest> _openShopSub;
         private ISubscriber<OpenChestRequest> _openChestSub;
         private ISubscriber<OpenCampRequest> _openCampSub;
@@ -115,6 +126,12 @@ namespace Guildmaster.UI
         private IDisposable _openFarewellSubscription;
         private ISubscriber<OpenOutcomeRequest> _openOutcomeSub;
         private ISubscriber<OpenMainMenuRequest> _openMainMenuSub;
+        private ISubscriber<OpenProfileRequest>  _openProfileSub;
+        private ISubscriber<OpenHubRequest>      _openHubSub;
+        private ISubscriber<Core.Flow.NoticeRequest> _noticeSub;
+        private IDisposable _noticeSubscription;
+        private ISubscriber<Core.Flow.BusyRequest> _busySub;
+        private IDisposable _busySubscription;
         private ISubscriber<OpenTitleCardRequest> _openTitleCardSub;
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
@@ -125,6 +142,8 @@ namespace Guildmaster.UI
         private IDisposable _openCampSubscription;
         private IDisposable _openOutcomeSubscription;
         private IDisposable _openMainMenuSubscription;
+        private IDisposable _openProfileSubscription;
+        private IDisposable _openHubSubscription;
         private ISubscriber<Core.Flow.OpenProvingGroundsRequest> _openProvingGroundsSub;
         private IDisposable _openProvingGroundsSubscription;
         private IDisposable _openTitleCardSubscription;
@@ -139,8 +158,11 @@ namespace Guildmaster.UI
         private VisualElement _layerScreens;      // [2] Page/Sheet навигатора (под топбаром)
         private VisualElement _layerTopbar;       // [3] RunModeBar (над обычными экранами)
         private VisualElement _layerModal;        // [4] Modal навигатора (над топбаром, scrim накрывает его)
+        private VisualElement _layerCursors;      // [5] курсоры других игроков (кооп) — под тултипами
         private VisualElement _layerTooltip;      // [6] окно тултипа (Трек Т) — над топбаром и модалками
         private Tooltips.TooltipSystem _tooltips; // Трек Т: показыватель тултипов, привязан к слою в Start
+        private Presence.CursorLayerView _cursors; // кооп: чужие курсоры, привязаны к своему слою в Start
+        private Presence.ParticipantsPanelView _participants; // кооп: список участников слева под топбаром
         private Tooltips.KeywordStyle _keywordStyle; // Трек Т: цвет терминов, читается с USS-доноров
         private UiSoundSystem _uiSound;           // звук интерфейса: один слушатель на корне панели
         private bool _lastProvingGrounds;    // ребро вида панели: забег ↔ площадка
@@ -154,7 +176,7 @@ namespace Guildmaster.UI
         private IDisposable _mapSpaceSubscription;
         // Счёт согласившихся на «Начать». Приходит сообщением, а не подпиской на сам гейт: гейт живёт в
         // сеансе и умирает вместе с ним, а топбар переживает несколько сеансов подряд.
-        private ISubscriber<Core.Net.ReadyGateChangedEvent> _readySub;
+        private ISubscriber<Core.Net.SharedDecisionChangedEvent> _readySub;
         private IDisposable _readySubscription;
         private IPublisher<SetWorldMapRequest> _worldMapPub; // фаза D: радио-табы → показать/скрыть карту в мире
         private ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> _mainMenuVisSub; // за меню виден мировой стол
@@ -162,6 +184,7 @@ namespace Guildmaster.UI
         private bool _mainMenuOpen;
         private IPublisher<Core.Flow.ScreenBackdropChangedEvent> _screenBackdropPub; // QA #50: единый задник экранов
         private bool _backdropShown; // последнее сказанное презентации — публикуем только по ребру
+        private bool _backdropOverBattle; // и второе поле того же сообщения: ребро считается по паре
         private ISubscriber<Core.Flow.ScreenFadeChangedEvent> _screenFadeSub; // QA #47: шторка перехода поверх всего
         private IDisposable _screenFadeSubscription;
         private VisualElement _screenFade;
@@ -183,13 +206,18 @@ namespace Guildmaster.UI
             ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
             ISubscriber<OpenTextEventRequest> openEventSub,
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
+            ISubscriber<Core.Flow.GoToModeRequest> goToModeSub,
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
             ISubscriber<OpenMainMenuRequest> openMainMenuSub,
+            ISubscriber<OpenProfileRequest> openProfileSub,
+            ISubscriber<OpenHubRequest> openHubSub,
+            ISubscriber<Core.Flow.NoticeRequest> noticeSub,
+            ISubscriber<Core.Flow.BusyRequest> busySub,
             ISubscriber<Core.Flow.OpenProvingGroundsRequest> openProvingGroundsSub,
             IPublisher<RelicDragEvent> relicDragPub,
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
             ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub, IPublisher<SetWorldMapRequest> worldMapPub,
-            ISubscriber<Core.Net.ReadyGateChangedEvent> readySub,
+            ISubscriber<Core.Net.SharedDecisionChangedEvent> readySub,
             ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> mainMenuVisSub,
             IPublisher<Core.Flow.ScreenBackdropChangedEvent> screenBackdropPub,
             ISubscriber<Core.Flow.ScreenFadeChangedEvent> screenFadeSub,
@@ -198,9 +226,13 @@ namespace Guildmaster.UI
             ISubscriber<OpenTitleCardRequest> openTitleCardSub,
             Tooltips.TooltipSystem tooltips,
             Tooltips.KeywordStyle keywordStyle,
-            UiSoundSystem uiSound)
+            UiSoundSystem uiSound,
+            Presence.CursorLayerView cursors,
+            Presence.ParticipantsPanelView participants)
         {
             _uiSound = uiSound;
+            _cursors = cursors;
+            _participants = participants;
             _tooltips = tooltips;
             _keywordStyle = keywordStyle;
             _screenBackdropPub = screenBackdropPub;
@@ -226,10 +258,15 @@ namespace Guildmaster.UI
             _openRewardSub = openRewardSub;
             _openEventSub = openEventSub;
             _openContinueSub = openContinueSub;
+            _goToModeSub = goToModeSub;
             _openShopSub = openShopSub;
             _openChestSub = openChestSub;
             _openOutcomeSub = openOutcomeSub;
             _openMainMenuSub = openMainMenuSub;
+            _openProfileSub  = openProfileSub;
+            _openHubSub      = openHubSub;
+            _noticeSub       = noticeSub;
+            _busySub         = busySub;
             _openProvingGroundsSub = openProvingGroundsSub;
         }
 
@@ -252,16 +289,21 @@ namespace Guildmaster.UI
             // Трек Т: система тултипов слушает всплывающие запросы на КОРНЕ панели, а окно держит в своём
             // слое — поэтому привязка идёт сразу после слоёв и до построения экранов.
             _tooltips?.Attach(_doc.rootVisualElement, _layerTooltip);
+            // Кооп-курсоры: слой свой, тикает их сам сервис — здесь только выдаём ему место для рисования.
+            _cursors?.Attach(_layerCursors);
+            // Список участников живёт в слое топбара: он такой же постоянный элемент забега и обязан
+            // лежать над экранами, а не под ними.
+            _participants?.Attach(_layerTopbar);
             // Доноры цвета терминов: невидимые элементы с классами .gm-kw--* в слое подсказок. Так
             // палитра остаётся в USS, а rich text получает готовый hex (rich text переменные не читает).
             _keywordStyle?.Attach(_layerTooltip);
             // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
             // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
             _uiSound?.Attach(_doc.rootVisualElement);
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen, _devLogScreen, _newGameScreen);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _devConsoleScreen, _devLogScreen, _newGameScreen, _profileScreen, _guildSelectScreen, _hubScreen);
             _input.MenuToggleRequested += OnMenuToggle;
 
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
+#if UNITY_EDITOR || DEVELOPMENT_BUILD || GM_DEVTOOLS
             // Тогл dev-консоли живёт только в редакторе и dev-сборке: в релизе клавиша ~ не должна
             // открывать ничего. Гейт стоит здесь, на ПОДПИСКЕ, а не на регистрации реестра — команды
             // регистрируют модули, и в релизной сборке им всё равно нужен адресат.
@@ -276,6 +318,17 @@ namespace Guildmaster.UI
             _openEventSubscription = _openEventSub?.Subscribe(req => _router.OpenTextEvent(req));
             // Единая кнопка «Продолжить» — запрос из петли акта (ContinuePresenter).
             _openContinueSubscription = _openContinueSub?.Subscribe(req => _router.ShowContinue(req));
+            // Смена режима запросом — ровно те же методы, что и у табов. Второго пути к режиму быть не
+            // должно: он разошёлся бы с первым в порядке «убрать карту, закрыть инвентарь, войти в бой».
+            _goToModeSubscription = _goToModeSub?.Subscribe(req =>
+            {
+                switch (req.Mode)
+                {
+                    case Core.Flow.RunMode.Map:       GoToMap();       break;
+                    case Core.Flow.RunMode.Battle:    GoToBattle();    break;
+                    case Core.Flow.RunMode.Inventory: GoToInventory(); break;
+                }
+            });
             // Магазин — запрос из узла магазина (ShopFlow).
             _openShopSubscription = _openShopSub?.Subscribe(req => _router.OpenShop(req));
             // Сундук — запрос из узла сундука (ChestFlow).
@@ -287,6 +340,14 @@ namespace Guildmaster.UI
             _openOutcomeSubscription = _openOutcomeSub?.Subscribe(req => _router.ShowOutcome(req));
             // Главное меню — запрос из GameFlow (верхний цикл).
             _openMainMenuSubscription = _openMainMenuSub?.Subscribe(req => _router.OpenMainMenu(req));
+            // Профиль: и обязательный показ до меню, и кнопка из меню идут одним запросом.
+            _openProfileSubscription = _openProfileSub?.Subscribe(req => _router.OpenProfile(req));
+            // Двор гильдии — запрос из GameFlow между выбором дома и актом.
+            _openHubSubscription = _openHubSub?.Subscribe(req => _router.OpenHub(req));
+            // Сообщение игроку и экран ожидания — общий шов на всю игру: и ошибки связи, и
+            // предупреждения по ходу боя идут одной дорогой, а не заводят себе по экрану.
+            _noticeSubscription = _noticeSub?.Subscribe(req => _router.ShowNotice(in req));
+            _busySubscription   = _busySub?.Subscribe(req => _router.ShowBusy(in req));
 
             // Запрос Ристалища закрывает главное меню тем же путём, что кнопка: резолв экрана через
             // навигатор гасит и панель, и стол под ней. Если меню не показано — здесь no-op, решение
@@ -322,7 +383,14 @@ namespace Guildmaster.UI
                 else          _router.HideMapSpace();
             });
             // Скольких ещё ждёт «Начать». В соло счёт не рисуется — топбар решает это сам.
-            _readySubscription = _readySub?.Subscribe(e => _topBar?.SetReadyCount(e.Ready, e.Required, e.LocallyReady));
+            // По шине ходят объявления РАЗНЫХ гейтов (старт боя, возврат к расстановке, снятие
+            // привязки с пустым ключом), поэтому сверяем ключ: без этого конец боя на площадке
+            // переписывал подпись кнопки «Начать» счётом чужого согласия.
+            _readySubscription = _readySub?.Subscribe(e =>
+            {
+                if (e.Key != Core.Net.DecisionKeys.BattleStart) return;
+                _topBar?.SetReadyCount(e.Voted, e.Required, e.HasLocalChoice);
+            });
 
             // Шторка перехода (QA #47): плотность считает тот, кто ведёт переход (карта акта), UI её рисует.
             _screenFadeSubscription = _screenFadeSub?.Subscribe(e => ApplyScreenFade(e.Progress, e.Center, e.Seed));
@@ -348,7 +416,7 @@ namespace Guildmaster.UI
             _layerScreens      = AddLayer(root, "layer-screens");
             _layerTopbar       = AddLayer(root, "layer-topbar");
             _layerModal        = AddLayer(root, "layer-modal");
-            AddLayer(root, "layer-cursors");  // задел II.14 (live-курсоры)
+            _layerCursors = AddLayer(root, "layer-cursors"); // кооп: курсоры других игроков (03.08.2026)
             _layerTooltip = AddLayer(root, "layer-tooltip"); // Трек Т: окно тултипа над топбаром и модалками
             AddLayer(root, "layer-system");   // задел II.13/Трек К (тосты/фид/dev-консоль)
 
@@ -396,7 +464,12 @@ namespace Guildmaster.UI
                 onBattle: GoToBattle,
                 onInventory: GoToInventory,
                 onMenu: () => _router.ToggleSystemMenu(),
-                onStart: () => _clock?.RequestStart());
+                onStart: () =>
+                {
+                    Core.Diagnostics.Diag.Log(Core.Diagnostics.DiagChannel.Ready,
+                        $"кнопка «Начать»: нажата (часы {(_clock == null ? "ОТСУТСТВУЮТ" : "есть")})");
+                    _clock?.RequestStart();
+                });
 
             _topBar.Root.style.display = DisplayStyle.None; // скрыта, пока нет активного забега
             _layerTopbar.Add(_topBar.Root);
@@ -520,12 +593,19 @@ namespace Guildmaster.UI
             //
             // Фазу тут больше не спрашиваем: правду про «что сейчас на экране» знает стек, а не бой. Экран
             // пройденного ивента живёт и в Interlude (QA #49) — по фазе фон под ним мигал бы на арену.
-            bool needBackdrop = (_mainMenuOpen || _router.HasVisiblePage)
+            //
+            // Вторая, независимая причина показать стол — ЗАПРОС САМОГО ЭКРАНА (UiScreen.RequiresBackdrop).
+            // Его просят настройки: панели у них нет, кадр занят целиком, и смотреть под них незачем. Запрос
+            // сильнее живого боя за спиной — иначе экран, открытый из паузы посреди арены, остался бы строками
+            // громкости поверх мельтешащего боя (наход. Макса 05.08.2026).
+            bool requested = _router.HasScreenRequiringBackdrop;
+            bool needBackdrop = (_mainMenuOpen || _router.HasVisiblePage || requested)
                                 && !_router.IsInventoryOpen && !_router.IsMapSpaceOpen;
-            if (needBackdrop != _backdropShown)
+            if (needBackdrop != _backdropShown || (needBackdrop && requested != _backdropOverBattle))
             {
                 _backdropShown = needBackdrop;
-                _screenBackdropPub?.Publish(new Core.Flow.ScreenBackdropChangedEvent(needBackdrop));
+                _backdropOverBattle = requested;
+                _screenBackdropPub?.Publish(new Core.Flow.ScreenBackdropChangedEvent(needBackdrop, requested));
             }
 
             // QA #11/#21/#35: подсветка активного таба из единого источника — верхний НЕ-Modal экран навигатора
@@ -725,7 +805,7 @@ namespace Guildmaster.UI
         private void OnDestroy()
         {
             if (_input != null) _input.MenuToggleRequested -= OnMenuToggle;
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
+#if UNITY_EDITOR || DEVELOPMENT_BUILD || GM_DEVTOOLS
             if (_input != null) _input.DevConsoleToggleRequested -= OnDevConsoleToggle;
             if (_input != null) _input.DevLogToggleRequested -= OnDevLogToggle;
 #endif
@@ -741,11 +821,16 @@ namespace Guildmaster.UI
             _openRewardSubscription?.Dispose();
             _openEventSubscription?.Dispose();
             _openContinueSubscription?.Dispose();
+            _goToModeSubscription?.Dispose();
             _openShopSubscription?.Dispose();
             _openChestSubscription?.Dispose();
             _openCampSubscription?.Dispose();
             _openOutcomeSubscription?.Dispose();
             _openMainMenuSubscription?.Dispose();
+            _openProfileSubscription?.Dispose();
+            _openHubSubscription?.Dispose();
+            _noticeSubscription?.Dispose();
+            _busySubscription?.Dispose();
             _openProvingGroundsSubscription?.Dispose();
             _openTitleCardSubscription?.Dispose();
 
@@ -759,7 +844,7 @@ namespace Guildmaster.UI
         // Семантика ESC (план II.4, КОНСТИТУЦИЯ): показан тултип → ESC гасит ЕГО и меню не трогает.
         // QA #32: сам ESC-вызов меню работает ТОЛЬКО в активном забеге (в главном меню/вне забега — no-op).
         // Внутри забега ToggleSystemMenu сам решает открыть/шаг-назад.
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
+#if UNITY_EDITOR || DEVELOPMENT_BUILD || GM_DEVTOOLS
         // Консоль открывается ИЗ ЛЮБОГО состояния, включая главное меню и отсутствие забега: её зовут
         // как раз тогда, когда игра куда-то не дошла. Никаких проверок RunState здесь быть не должно.
         private void OnDevConsoleToggle() => _router.ToggleDevConsole();

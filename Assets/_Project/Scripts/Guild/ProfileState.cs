@@ -31,6 +31,28 @@ namespace Guildmaster.Guild
         /// <summary>Гильдия, в которой играли в прошлый раз — чтобы «Продолжить» не спрашивал лишнего.</summary>
         public string LastGuildId = string.Empty;
 
+        /// <summary>
+        /// Ник для игры, если игрок захотел свой. Пусто и <see cref="UseSteamName"/> — берём имя из Steam.
+        /// </summary>
+        /// <remarks>
+        /// <b>Идентичность живёт в профиле, а настройки клиента — нет</b> (уточнение к ТЗ сейвов,
+        /// 03.08.2026). Громкость и разрешение принадлежат машине и не должны прыгать при смене профиля;
+        /// ник, цвет и курсор — наоборот, это и есть «кем я играю», и профиль ровно за это отвечает.
+        /// </remarks>
+        public string DisplayName = string.Empty;
+
+        /// <summary>Брать ник из Steam (иначе играет <see cref="DisplayName"/>).</summary>
+        public bool UseSteamName = true;
+
+        /// <summary>
+        /// Мейн-цвет игрока — место в наборе цветов палитры. Им идут курсор, подпись имени и метки:
+        /// в коопе это опознание «чьё это» без чтения текста.
+        /// </summary>
+        public int ColorIndex;
+
+        /// <summary>Выбранный скин курсора (<c>cursor.*</c>). Пусто — умолчание набора.</summary>
+        public string CursorSkinId = string.Empty;
+
         /// <summary>Открытые прегены: доступны любому дому этого профиля (реш. 2026-07-27/14-15).</summary>
         public List<string> UnlockedPregenIds = new();
 

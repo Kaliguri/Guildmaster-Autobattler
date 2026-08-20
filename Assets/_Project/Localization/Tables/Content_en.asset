@@ -279,15 +279,6 @@ MonoBehaviour:
     m_Localized: Fungal Mend
     m_Metadata:
       m_Items: []
-  - m_Id: 6661801758679040
-    m_Localized: Dev Defender
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6661801850953728
-    m_Localized: 'Dev fighter on the Defender kit: watching skeletal animation in
-      a live fight.'
-    m_Metadata:
-      m_Items: []
   - m_Id: 6663474874933248
     m_Localized: Tumble
     m_Metadata:
@@ -440,27 +431,11 @@ MonoBehaviour:
     m_Localized: "\u2014"
     m_Metadata:
       m_Items: []
-  - m_Id: 6901444643119131
-    m_Localized: "\u2014"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6901444643119132
-    m_Localized: "\u2014"
-    m_Metadata:
-      m_Items: []
   - m_Id: 6901444643119133
     m_Localized: "\u2014"
     m_Metadata:
       m_Items: []
   - m_Id: 6901444643119134
-    m_Localized: "\u2014"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6901444643119135
-    m_Localized: "\u2014"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6901444643119136
     m_Localized: "\u2014"
     m_Metadata:
       m_Items: []
@@ -592,11 +567,7 @@ MonoBehaviour:
     m_Localized: "\u2014"
     m_Metadata:
       m_Items: []
-  - m_Id: 7000417282285568
-    m_Localized: "\u2014"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7000417320034304
+  - m_Id: 8611003594170370
     m_Localized: "\u2014"
     m_Metadata:
       m_Items: []
@@ -616,11 +587,11 @@ MonoBehaviour:
     m_Localized: "\u2014"
     m_Metadata:
       m_Items: []
-  - m_Id: 7000417324228612
+  - m_Id: 8611003594170368
     m_Localized: "\u2014"
     m_Metadata:
       m_Items: []
-  - m_Id: 7000417324228613
+  - m_Id: 8611003594170369
     m_Localized: "\u2014"
     m_Metadata:
       m_Items: []
@@ -820,6 +791,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8364296469995520
     m_Localized: Absolute Antiheal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8611003560615936
+    m_Localized: "\u2014"
     m_Metadata:
       m_Items: []
   references:

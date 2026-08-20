@@ -74,7 +74,10 @@ namespace Guildmaster.Tests.EditMode.ContentHub
 
                 var eff = StatMath.BuildEffective(relic, config);
 
+                // Эталон собирается ТЕМ ЖЕ каскадом, что и бой: базовые слои первыми, персона поверх.
+                // Ступень дальности — базовый слой, а не модификатор, и в стат-блоке её быть не может.
                 var expected = new Stats(config);
+                RangeBaseline.Apply(expected, relic, config);
                 expected.AddModifiersFrom(relic, mods);
 
                 foreach (StatType st in Enum.GetValues(typeof(StatType)))
@@ -99,7 +102,15 @@ namespace Guildmaster.Tests.EditMode.ContentHub
             {
                 var eff = StatMath.BuildEffective(relic, config);
                 foreach (StatType st in Enum.GetValues(typeof(StatType)))
+                {
+                    // Дальность в дефолтах конфига не живёт намеренно: её владелец — ступень юнита
+                    // (RangeBaseline), а «пусто» означало бы бойца, который не достаёт ни до кого.
+                    if (st == StatType.AttackRange) continue;
                     Assert.AreEqual(config.GetDefault(st), eff.Get(st), 1e-4f, $"stat={st}");
+                }
+
+                Assert.AreEqual(config.RangeOf(relic.RangeBand) * (1f + relic.RangeAdjustPct),
+                    eff.Get(StatType.AttackRange), 1e-4f, "дальность приходит ступенью, а не дефолтом конфига");
             }
             finally
             {

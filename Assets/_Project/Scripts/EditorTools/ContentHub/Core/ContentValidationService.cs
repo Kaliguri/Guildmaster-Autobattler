@@ -87,7 +87,7 @@ namespace Guildmaster.ContentHub.Editor
         }
 
         /// <summary>
-        /// Юнит обязан иметь тело: <c>UnitVisual</c> и <c>ViewPrefab</c>. Пусто здесь — не «пока не
+        /// Юнит обязан иметь тело: <c>AnimationArchetypeData</c> и <c>ViewPrefab</c>. Пусто здесь — не «пока не
         /// нарисовали», а поломка на арене, и найтись она должна при авторинге, а не логом в бою.
         /// </summary>
         /// <remarks>
@@ -104,13 +104,15 @@ namespace Guildmaster.ContentHub.Editor
             var issues = new List<string>();
             if (unit == null) return issues;
 
-            if (unit.Visual == null)
-                issues.Add("нет UnitVisual — UnitView не найдёт клип атаки, удар не привяжется к тику " +
+            if (unit.Archetype == null)
+                issues.Add("нет AnimationArchetypeData — UnitView не найдёт клип атаки, удар не привяжется к тику " +
                            "урона, а замах свалится на телеграф-пол в три тика (удар прилетит почти мгновенно)");
 
-            if (unit.ViewPrefab == null)
-                issues.Add("нет ViewPrefab — на арене юнит возьмёт дефолтный вид презентера и станет " +
-                           "неотличим от любого другого юнита без вида");
+            // Вид приходит ИЗ архетипа (06.08.2026), поэтому пустота здесь означает дырку в архетипе, а
+            // не в самом юните — иначе автор пошёл бы искать поле, которого у юнита больше нет.
+            if (unit.Archetype != null && unit.ViewPrefab == null)
+                issues.Add($"у архетипа '{unit.Archetype.name}' не задан ViewPrefab — на арене юнит возьмёт " +
+                           "дефолтный вид презентера и станет неотличим от любого другого юнита без вида");
 
             return issues;
         }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Arena;
@@ -256,7 +256,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var transfer = new MarkTransferComponent();
             return TestEffect.Make(
                 baseDuration: 5f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Marked | EffectTag.Debuff, stacking: StackRule.Refresh,
+                tags: EffectTag.Marked, stacking: StackRule.Refresh,
                 components: new IEffectComponent[] { dmgUp, transfer });
         }
 

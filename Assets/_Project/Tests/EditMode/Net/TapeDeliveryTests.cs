@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Tape;
@@ -49,6 +49,59 @@ namespace Guildmaster.Tests.EditMode.Net
             }
 
             Assert.AreEqual(source.EventCount, target.EventCount, "События доехали все");
+        }
+
+        /// <summary>
+        /// Гость, подключившийся посреди боя, получает бой С НАЧАЛА — порциями, а не залпом.
+        /// </summary>
+        /// <remarks>
+        /// Инвариант живёт между тремя файлами и потому проверяется тестом: пустую просьбу шлёт
+        /// <c>TapeIntake.RequestWholeBattle</c>, очередь набивает <c>TapeStreamer</c>, качает её
+        /// покадрово <c>BattleTapeBroadcast</c>. Разъедься любой из троих — гость молча остался бы с
+        /// дырой в ленте на всё прошлое боя (решение Макса 04.08.2026).
+        /// <para>Порционность здесь не оптимизация: сотни надёжных сообщений одним кадром уходят в
+        /// очередь Steam ровно в момент подключения — худший момент из возможных.</para>
+        /// </remarks>
+        [Test]
+        public void JoiningMidBattle_GetsTheWholeTape_InPortions()
+        {
+            var net   = new LoopbackNetwork();
+            var host  = net.CreateNode();
+
+            // Бой идёт давно: девять полных чанков уже уехали в пустоту — гостя ещё не было.
+            BattleTape source = HostTape(ticks: 270);
+            var streamer = new TapeStreamer(host, source, ticksPerChunk: 30);
+            streamer.Pump(readyThroughTick: 269);
+            net.PollAll();
+            Assert.AreEqual(9, streamer.SentChunkCount, "девять чанков по тридцать тиков");
+
+            // Гость приходит сейчас и просит бой целиком.
+            var guest  = net.CreateNode();
+            var target = new BattleTape(windowTicks: 512);
+            var intake = new TapeIntake(guest, new TapeChunkReader(target, new FakeContent()));
+
+            intake.RequestWholeBattle();
+            net.PollAll();
+
+            Assert.AreEqual(9, streamer.BackfillRemaining, "вся история встала в очередь, но ещё не ушла");
+            Assert.AreEqual(0, intake.AppliedChunkCount, "залпом не отправлено ничего");
+
+            // Порция за кадр: четыре чанка за вызов — два кадра на девять, третий вхолостую.
+            streamer.PumpBackfill(maxPerCall: 4);
+            net.PollAll();
+            Assert.AreEqual(4, intake.AppliedChunkCount, "первая порция");
+
+            streamer.PumpBackfill(maxPerCall: 4);
+            net.PollAll();
+            streamer.PumpBackfill(maxPerCall: 4);
+            net.PollAll();
+
+            Assert.AreEqual(9, intake.AppliedChunkCount, "бой доехал целиком");
+            Assert.AreEqual(0, streamer.BackfillRemaining);
+            Assert.AreEqual(0, intake.MissingCount, "и дыр в нумерации у гостя нет — он видел всё с нуля");
+
+            for (int tick = 0; tick < 270; tick++)
+                Assert.IsTrue(target.TryGetFrame(tick, out _), $"кадр тика {tick} у гостя есть");
         }
 
         // Хвост короче чанка ждёт Flush: иначе конец боя дробился бы на однотиковые посылки, а с ним и
@@ -268,7 +321,13 @@ namespace Guildmaster.Tests.EditMode.Net
             /// <summary>Сколько ближайших отправок проглотить.</summary>
             public int DropNextSends { get; set; }
 
+            // Подъём сессии, вход и назначенный номер обёртка не трогает: она про ДОСТАВКУ.
+            public bool StartHost()                => _inner.StartHost();
+            public bool Connect(ulong hostAddress) => _inner.Connect(hostAddress);
+            public void SetLocalPeerId(int peerId) => _inner.SetLocalPeerId(peerId);
+
             public bool IsRunning               => _inner.IsRunning;
+            public System.Collections.Generic.IReadOnlyList<int> ConnectedPeers => _inner.ConnectedPeers;
             public int  LocalPeerId             => _inner.LocalPeerId;
             public bool IsHost                  => _inner.IsHost;
             public int  MaxReliableMessageBytes => _inner.MaxReliableMessageBytes;
@@ -326,7 +385,13 @@ namespace Guildmaster.Tests.EditMode.Net
                 _limit = limitBytes;
             }
 
+            // Подъём сессии, вход и назначенный номер обёртка не трогает: она про ДОСТАВКУ.
+            public bool StartHost()                => _inner.StartHost();
+            public bool Connect(ulong hostAddress) => _inner.Connect(hostAddress);
+            public void SetLocalPeerId(int peerId) => _inner.SetLocalPeerId(peerId);
+
             public bool IsRunning               => _inner.IsRunning;
+            public System.Collections.Generic.IReadOnlyList<int> ConnectedPeers => _inner.ConnectedPeers;
             public int  LocalPeerId             => _inner.LocalPeerId;
             public bool IsHost                  => _inner.IsHost;
             public int  MaxReliableMessageBytes => _limit;

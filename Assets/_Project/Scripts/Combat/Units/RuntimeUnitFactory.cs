@@ -57,6 +57,17 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
+        /// Сдвинуть счётчик так, чтобы следующие Id шли ПОСЛЕ <paramref name="lastUsedId"/>. Нужно тем,
+        /// кто раздал Id мимо фабрики (стенд баланса размечает бойцов по индексу списка, часть из них —
+        /// синтетика без фабрики): без сдвига первое призванное в бою тело получит Id живого бойца, и
+        /// всё, что оно сделает, ляжет в чужую строку. Счётчик только растёт — назад не отматывает.
+        /// </summary>
+        public void AdvanceIdsPast(int lastUsedId)
+        {
+            if (lastUsedId >= _nextId) _nextId = lastUsedId + 1;
+        }
+
+        /// <summary>
         /// Создать <see cref="RuntimeUnit"/> из SO-данных. Принимает базовый <see cref="UnitData"/> —
         /// реликвию или врага; сборке всё равно, кто перед ней (вики «13» §3.1).
         /// </summary>
@@ -191,15 +202,29 @@ namespace Guildmaster.Combat
             }
         }
 
-        /// <summary>Собрать рантайм-обёртки активных способностей кита (кулдаун/ресурс).</summary>
-        private static void RegisterAbilities(RuntimeUnit unit, UnitData data)
+        /// <summary>Собрать рантайм-обёртки активных способностей кита (кулдаун/ресурс/дальность каста).</summary>
+        /// <remarks>
+        /// Ступень дальности разрешается в число здесь, потому что дистанции ступеней живут в
+        /// <see cref="StatsConfig"/> — а он есть у сборки и не должен протаскиваться в боевые системы.
+        /// Наследование «как у авто-атаки» остаётся неразвёрнутым (−1): дальность удара у кита может
+        /// меняться по ходу боя, и умение обязано ехать за ней.
+        /// </remarks>
+        private void RegisterAbilities(RuntimeUnit unit, UnitData data)
         {
             AbilityData[] abilities = data?.Abilities;
             if (abilities == null) return;
 
             for (int i = 0; i < abilities.Length; i++)
             {
-                if (abilities[i] != null) unit.Abilities.Add(new AbilityRuntime(abilities[i]));
+                AbilityData ability = abilities[i];
+                if (ability == null) continue;
+
+                unit.Abilities.Add(new AbilityRuntime(ability)
+                {
+                    CastRange = ability.CastRange == CastRangeBand.LikeAutoAttack || _config == null
+                        ? -1f
+                        : _config.RangeOf((AttackRangeBand)(ability.CastRange - 1)),
+                });
             }
         }
     }

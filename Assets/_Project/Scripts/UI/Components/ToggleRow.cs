@@ -39,6 +39,7 @@ namespace Guildmaster.UI.Components
             AddToClassList("gm-toggle-row");
 
             _label = new Label { name = "label" };
+            _label.AddToClassList("gm-text-body");
             _label.AddToClassList("gm-toggle-row__label");
             Add(_label);
 

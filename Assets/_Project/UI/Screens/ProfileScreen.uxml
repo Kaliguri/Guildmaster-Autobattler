@@ -1,0 +1,39 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
+            <gm:PanelFrame name="profile-frame" corner="0" />
+            <ui:Label name="profile-title" text="Профиль" class="gm-text-title gm-panel__title" />
+            <ui:VisualElement class="gm-divider" />
+
+            <ui:ScrollView class="gm-panel__body">
+                <!-- Слоты. Имени профиль не носит — только номер: именуемая сущность у игрока одна,
+                     это дом, он же слот сохранения. Строки строятся кодом: их число берётся из
+                     GameConfig, а не из разметки. -->
+                <ui:Label name="slots-caption" text="Слоты" class="gm-text-caption gm-text--muted" />
+                <ui:VisualElement name="slot-list" class="gm-profile__slots" />
+
+                <ui:VisualElement class="gm-divider" />
+
+                <!-- Идентичность: то, чем игрок виден остальным. Настройки клиента (звук, экран) сюда
+                     НЕ переезжают — они принадлежат машине и не должны прыгать при смене профиля. -->
+                <ui:Label name="identity-caption" text="Как меня видят" class="gm-text-caption gm-text--muted" />
+
+                <gm:ToggleRow name="toggle-steam-name" label-text="Брать имя из Steam" value="true" />
+                <ui:TextField name="field-name" class="gm-profile__name" />
+                <ui:Label name="name-hint" class="gm-text-caption gm-text--muted gm-profile__hint" />
+
+                <ui:Label name="color-caption" text="Цвет" class="gm-text-caption gm-text--muted" />
+                <ui:VisualElement name="color-row" class="gm-profile__colors" />
+
+                <ui:Label name="cursor-caption" text="Курсор" class="gm-text-caption gm-text--muted" />
+                <ui:VisualElement name="cursor-row" class="gm-profile__cursors" />
+            </ui:ScrollView>
+
+            <ui:VisualElement class="gm-divider" />
+            <ui:VisualElement class="gm-profile__actions">
+                <gm:PlateButton name="btn-save" text="Сохранить" class="gm-button gm-button--primary" />
+                <gm:PlateButton name="btn-back" text="Назад" class="gm-button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

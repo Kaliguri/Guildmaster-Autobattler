@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.antiheal_absolute
   _polarity: 1
-  _tags: 2
+  _tags: 0
   _baseDuration: 4
   _stacking: 2
   _maxStacks: 1

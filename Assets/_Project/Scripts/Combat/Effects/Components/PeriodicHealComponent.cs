@@ -22,8 +22,34 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Исцеление В СЕКУНДУ (per-second rate). Скейлится статами источника.")]
         [SerializeField] private ScalableValue _healPerSecond;
 
+        [Tooltip("Насколько каждый СЛЕДУЮЩИЙ стак слабее предыдущего (0.3 = на 30%). 0 = стаки складываются " +
+                 "линейно, как раньше. Убывание нужно там, где первый стак должен быть весомым, а гора " +
+                 "стаков — не превращаться в неубиваемость: «Грибной покров» Друида (вердикт Макса 04.08).")]
+        [Range(0f, 0.9f)]
+        [SerializeField] private float _stackFalloffPct;
+
         public float Interval => _interval;
         public ScalableValue Potency => _healPerSecond;
+
+        /// <summary>
+        /// Во сколько «полных стаков» превращаются <paramref name="stacks"/> с учётом убывания: первый
+        /// идёт целиком, каждый следующий — со скидкой. Считается циклом, а не степенью: стаков единицы,
+        /// а <c>Mathf.Pow</c> в детерминированной симуляции — лишний источник расхождения между платформами.
+        /// </summary>
+        public static float EffectiveStacks(int stacks, float falloff)
+        {
+            if (stacks <= 0) return 0f;
+            if (falloff <= 0f) return stacks;
+
+            float weight = 1f;
+            float total = 0f;
+            for (int i = 0; i < stacks; i++)
+            {
+                total += weight;
+                weight *= 1f - falloff;
+            }
+            return total;
+        }
 
         public void OnApply(in EffectContext ctx) { }
         public void OnExpire(in EffectContext ctx) { }
@@ -32,7 +58,7 @@ namespace Guildmaster.Combat.Effects.Components
         {
             // Share — доля вкладчика (см. PeriodicDamageComponent): хил тоже засчитывается тому,
             // кто держит эффект, а суммарная величина за тик не меняется.
-            float heal = ctx.Potency * ctx.Dt * ctx.Stacks * ctx.Share;
+            float heal = ctx.Potency * ctx.Dt * EffectiveStacks(ctx.Stacks, _stackFalloffPct) * ctx.Share;
             if (heal <= 0f) return;
 
             ctx.Combat.Heal(ctx.Target, heal, ctx.Source);

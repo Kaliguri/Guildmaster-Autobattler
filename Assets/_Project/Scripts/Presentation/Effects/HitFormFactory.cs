@@ -64,8 +64,8 @@ namespace Guildmaster.Presentation.Effects
         /// </summary>
         /// <param name="feel">Feel-конфиг: числа архетипов, жизнь формы, коридор размера.</param>
         /// <param name="kind">Архетип.</param>
-        /// <param name="from">Точка A — откуда пришёл удар.</param>
-        /// <param name="to">Точка B — точка попадания.</param>
+        /// <param name="at">Точка попадания.</param>
+        /// <param name="dir">Единичное направление удара — куда шёл клинок в момент касания.</param>
         /// <param name="hpDamageFrac">Доля максимального HP цели, снятая ударом, — вес удара.</param>
         /// <param name="core">Цвет пересвета ядра.</param>
         /// <param name="rim">Цвет каймы — палитра бьющего.</param>
@@ -78,7 +78,7 @@ namespace Guildmaster.Presentation.Effects
         /// <param name="endsAtHit">Форма кончается в цели: дробящий либо удар, принятый щитом.</param>
         /// <param name="freezeSeconds">Окно hitstop той же пары — столько форма стоит замороженной.</param>
         public static HitFormParams Build(CombatFeelConfig feel, HitFormKind kind,
-            Vector3 from, Vector3 to, float hpDamageFrac, Color core, Color rim,
+            Vector3 at, Vector2 dir, float hpDamageFrac, Color core, Color rim,
             uint seed, bool endsAtHit, float freezeSeconds)
         {
             HitFormArchetypeConfig a = feel.HitFormArchetype(kind);
@@ -90,11 +90,11 @@ namespace Guildmaster.Presentation.Effects
             float r2 = Unit01(seed, 0x85EBCA6Bu);
             float r3 = Unit01(seed, 0xC2B2AE35u);
 
-            // Длина не нормируется только у линии-всполоха: её длина — вся дистанция выстрела, и она сама
-            // по себе сообщение «прилетело оттуда».
-            float length = a.LengthH > 0f
-                ? a.LengthH * h * weight
-                : Mathf.Max(0.01f, Vector3.Distance(from, to)) * (endsAtHit ? 1f : 2f);
+            // ДЛИНУ НЕСЁТ УРОН, И ТОЛЬКО ОН (06.08.2026). Прежде режущий брал минимум по длине хорды
+            // «начало замаха → цель», и она всегда побеждала: замер живого префаба дал 2.48 при росте
+            // юнита 1.6, то есть знак выходил в полтора роста и превращался в простыню поперёк экрана.
+            // Расстояние до цели — свойство расстановки, а не удара, и говорить ему о весе нечего.
+            float length = a.LengthH * h * weight;
 
             float arc = Mathf.Lerp(a.ArcH.x, a.ArcH.y, r1) * h * weight;
             // Знак прогиба тоже из сида: удары подряд выгибаются в разные стороны, и штампа не выходит.
@@ -104,8 +104,16 @@ namespace Guildmaster.Presentation.Effects
             float starRadius    = a.StarRadiusH * h * weight;
             int   starRays      = Mathf.RoundToInt(Mathf.Lerp(a.StarRays.x, a.StarRays.y, r3));
 
-            return new HitFormParams(from, to, kind, endsAtHit,
-                length, halfThickness, arc, a.Roughness, starRadius, starRays,
+            // ОБВОДКА едет с размером удара, а не стоит константой: контур постоянной мировой ширины на
+            // мелком ударе съел бы форму целиком, а на крупном превратился бы в ниточку. Ширина растёт
+            // тем же множителем веса, что длина и толщина, — знак остаётся собой в любом масштабе.
+            float lineWidth = feel.EnableHitFormLine
+                ? feel.HitFormLineWidthH * h * weight
+                : 0f;
+
+            return new HitFormParams(at, dir, kind, endsAtHit,
+                length, halfThickness, lineWidth, feel.HitFormSoftness,
+                arc, a.Roughness, starRadius, starRays,
                 seed & 0xFFFFu, core, rim,
                 feel.HitFormLife, feel.HitFormGrowShare, feel.HitFormTailLag, feel.HitFormCoreWidth,
                 freezeSeconds);

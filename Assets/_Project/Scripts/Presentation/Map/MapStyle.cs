@@ -66,17 +66,13 @@ namespace Guildmaster.Presentation.Map
                  "экрана — потому число здесь и в меню разное при одинаковой крупности ромбов на глаз.")]
         [SerializeField] private float _tableTiling = 10f;
 
-        [Space(4)]
-        [Tooltip("В МЕНЮ: сила лампы. Выше, чем под картой: рядом нет светлого листа, и с карточными " +
-                 "числами кадр читается как чёрный.")]
-        [SerializeField] private float _menuTableLight = 2.2f;
-
-        [Tooltip("В МЕНЮ: подсвет вне пятна — по той же причине выше карточного.")]
-        [SerializeField, Range(0f, 1f)] private float _menuTableAmbient = 0.45f;
-
-        [Tooltip("В МЕНЮ: тайлинг рисунка = повторов на высоту кадра. Подобран так, чтобы ромбы совпали " +
-                 "по крупности с теми, что видны вокруг карты.")]
-        [SerializeField] private float _menuTableTiling = 5f;
+        [Header("Задник экранов меты — своя поверхность, НЕ стол")]
+        [Tooltip("Материал задника за настройками, паузой и главным меню (шейдер Guildmaster/UI/MenuBackdrop). " +
+                 "Пусто — задника не будет, как и у стола.\n\n" +
+                 "Почему отдельно от стола: у меты свой регистр — «тёмное стекло», а стол принадлежит " +
+                 "гроссбуху (мир и забег). До 05.08.2026 за меню лежал тот же стол с тремя своими числами " +
+                 "яркости; числа ушли вместе с ним — новый задник красится рампой прямо в материале.")]
+        [SerializeField] private Material _menuBackdropMaterial;
 
         [Header("Цвета — из палитры проекта")]
         [Tooltip("Снимок токенов дизайн-системы. Все цвета карты берутся ОТСЮДА по имени роли " +
@@ -263,12 +259,8 @@ namespace Guildmaster.Presentation.Map
         public float TableAmbient => _tableAmbient;
         /// <inheritdoc cref="_tableTiling"/>
         public float TableTiling => _tableTiling;
-        /// <inheritdoc cref="_menuTableLight"/>
-        public float MenuTableLight => _menuTableLight;
-        /// <inheritdoc cref="_menuTableAmbient"/>
-        public float MenuTableAmbient => _menuTableAmbient;
-        /// <inheritdoc cref="_menuTableTiling"/>
-        public float MenuTableTiling => _menuTableTiling;
+        /// <inheritdoc cref="_menuBackdropMaterial"/>
+        public Material MenuBackdropMaterial => _menuBackdropMaterial;
 
         // ── Цвета: единственный владелец — палитра (UI/Theme/tokens.*.uss → GuildmasterPalette) ──
 

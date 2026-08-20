@@ -36,17 +36,22 @@ namespace Guildmaster.Game.Flow
         // Активное ожидание выбора: id узлов, в которые сейчас реально можно войти, и куда отдать результат.
         // null = карта в режиме просмотра (горящих узлов нет).
         private HashSet<string> _choosable;
-        private Action<string> _onChosen;
+        // Клик по узлу уезжает командой — той же дорогой, что и любая другая правка забега. Роутер, а
+        // не держатель: карта переживает сеансы, а писать вне сеанса некуда, и это должно отвечать
+        // «некуда», а не падать.
+        private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
 
         public WorldMapController(IWorldMapView view,
                                   IRunStateView runStates,
                                   ISubscriber<SetWorldMapRequest> setSub,
-                                  IPublisher<WorldMapSpaceChangedEvent> spacePub)
+                                  IPublisher<WorldMapSpaceChangedEvent> spacePub,
+                                  Guildmaster.Guild.Commands.IRunCommands commands)
         {
             _view      = view;
             _runStates = runStates;
             _setSub    = setSub;
             _spacePub  = spacePub;
+            _commands  = commands;
         }
 
         public void Start()
@@ -120,11 +125,10 @@ namespace Guildmaster.Game.Flow
         /// false: узел пройден, игрок остаётся в живом мире и открывает карту сам — табом или кнопкой передышки
         /// (реш. Макса 2026-07-26). Узлы горят в обоих случаях: ждём ВЫБОР, а не показ.
         /// </param>
-        public void BeginChoose(IReadOnlyList<MapNode> available, Action<string> onChosen, bool show = true)
+        public void BeginChoose(IReadOnlyList<MapNode> available, bool show = true)
         {
             _choosable = new HashSet<string>();
             foreach (MapNode node in available) _choosable.Add(node.Id);
-            _onChosen = onChosen;
 
             if (!show)
             {
@@ -143,17 +147,33 @@ namespace Guildmaster.Game.Flow
         public void EndChoose()
         {
             _choosable = null;
-            _onChosen  = null;
             if (!_visible) return;
 
             _visible = false;
             HideNow();
         }
 
+        /// <summary>Ждём ли выбор прямо сейчас — по этому признаку узлы и горят.</summary>
+        public bool IsChoosing => _choosable != null;
+
+        /// <summary>
+        /// Клик по узлу — это КОМАНДА «входим сюда», а не вызов того, кто ждёт.
+        /// </summary>
+        /// <remarks>
+        /// <b>Так клик хозяина и клик напарника становятся одним и тем же</b> (решение Макса
+        /// 04.08.2026). Карта никого не будит и ни на кого не ссылается: она отправляет команду, шина
+        /// пишет её в состояние, а петля акта реагирует на запись. Прежде клик резолвил
+        /// <c>UniTaskCompletionSource</c> в петле — то есть «куда мы идём» жило в стеке одной машины, и
+        /// у гостя такого стека нет.
+        /// <para>Проверку достижимости здесь оставляем как местный фильтр («просмотр — клик ничего не
+        /// решает»), но правду о ней держит применитель команды: у напарника карта может отстать на
+        /// снимок, и решать по ЕГО копии нельзя.</para>
+        /// </remarks>
         private void OnNodeClicked(string id)
         {
-            if (_choosable == null || !_choosable.Contains(id)) return; // просмотр — клик ничего не решает
-            _onChosen?.Invoke(id);
+            if (_choosable == null || !_choosable.Contains(id)) return;
+
+            _commands?.ChooseNode(id);
         }
 
         // Перерисовать карту под текущее состояние. false = рисовать нечего.

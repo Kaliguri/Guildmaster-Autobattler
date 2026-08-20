@@ -44,6 +44,37 @@ namespace Guildmaster.Presentation.Body
         /// <summary>Части тела для адресных запросов — реестр по конвенции рига.</summary>
         public IUnitPartLookup Parts => _registry ??= BuildRegistry();
 
+        private PartMask _tintMask;
+        private bool     _tintMaskBuilt;
+
+        /// <summary>
+        /// Какие части принимают тинт юнита: волосы и всё, что держится в руках, — любое оружие и щит.
+        /// </summary>
+        /// <remarks>
+        /// Считается один раз на тело и живёт до пересборки списка: состав частей внутри боя не меняется,
+        /// а <see cref="Apply"/> зовётся каждый кадр на каждого бойца.
+        /// <para>Ролей у частей две, и обе уже есть в реестре: предмет опознаётся хватом
+        /// (<see cref="UnitPart.IsHeld"/>), волосы — именем узла рисунка (<see cref="RigNaming.IsHair"/>),
+        /// потому что своей кости у них нет и быть не должно.</para>
+        /// </remarks>
+        private PartMask TintMask()
+        {
+            if (_tintMaskBuilt) return _tintMask;
+
+            PartMask mask = PartMask.Empty;
+            IReadOnlyList<UnitPart> parts = Parts.Parts;
+            for (int i = 0; i < parts.Count; i++)
+            {
+                UnitPart part = parts[i];
+                bool paints = part.IsHeld || RigNaming.IsHair(part.Renderer != null ? part.Renderer.name : null);
+                if (paints) mask |= PartMask.Single(part.Index);
+            }
+
+            _tintMask      = mask;
+            _tintMaskBuilt = true;
+            return _tintMask;
+        }
+
         private void Awake()
         {
             if (_group == null) _group = GetComponent<SortingGroup>() ?? GetComponentInParent<SortingGroup>(true);
@@ -87,8 +118,41 @@ namespace Guildmaster.Presentation.Body
                 SpriteRenderer part = _parts[i];
                 _partTransforms[i] = part != null ? part.transform : null;
             }
-            _registry = null;   // состав частей сменился — анатомию пересобираем при первом запросе
+            _registry      = null;   // состав частей сменился — анатомию пересобираем при первом запросе
+            _tintMaskBuilt = false;  // вместе с анатомией пересчитывается и «кого красим»
+            CacheAuthoredColors();
         }
+
+        /// <summary>
+        /// Авторские цвета частей — те, что стоят в префабе. Некрашеная часть возвращается ИМЕННО К НИМ,
+        /// а не к белому: белый в <c>SpriteRenderer.color</c> означает «спрайт как есть», а художник
+        /// красит vertex-цветом прямо в риге — лицо телесным, тело холодно-серым, волосы тёмно-красным.
+        /// Подставив белый, мы стирали эту работу и получали белое лицо (найдено Максом 05.08.2026).
+        /// </summary>
+        /// <remarks>
+        /// Снимок берётся вместе с составом частей, то есть ДО первой покраски: вид переиспользуется из
+        /// пула целиком, и снимать цвета в <c>Apply</c> значило бы запомнить уже перекрашенное.
+        /// </remarks>
+        private void CacheAuthoredColors()
+        {
+            _authoredColors = new Color[_parts.Count];
+            for (int i = 0; i < _parts.Count; i++)
+                _authoredColors[i] = _parts[i] != null ? _parts[i].color : Color.white;
+        }
+
+        /// <summary>
+        /// Снимок есть и он по размеру списка. Проверяется в начале <see cref="Apply"/>, потому что
+        /// <c>Awake</c> случается НЕ всегда: стенд рига, валидатор и edit-mode тест поднимают тело
+        /// инстансом префаба, и там первый же <c>Apply</c> шёл бы с пустым снимком — то есть красил
+        /// нетронутые части белым. Ровно это и вылезло белым лицом.
+        /// </summary>
+        private void EnsureAuthoredColors()
+        {
+            if (_authoredColors != null && _authoredColors.Length == _parts.Count) return;
+            CacheAuthoredColors();
+        }
+
+        private Color[] _authoredColors;
 
         /// <summary>
         /// Реестр частей строится ЛЕНИВО, а не в <c>Awake</c>: стенд анимаций и валидатор рига поднимают тело
@@ -115,6 +179,21 @@ namespace Guildmaster.Presentation.Body
 
         public int SortingOrder => _group != null ? _group.sortingOrder : 0;
 
+        /// <summary>
+        /// Носитель группы — единственная дверь внутрь порядка частей. Разрешается лениво: тело умеют
+        /// поднимать и редакторные стенды, где <see cref="Awake"/> проходит, но поле на префабе может быть
+        /// не заполнено вовсе.
+        /// </summary>
+        public Transform SortingRoot
+        {
+            get
+            {
+                if (_group == null)
+                    _group = GetComponent<SortingGroup>() ?? GetComponentInParent<SortingGroup>(true);
+                return _group != null ? _group.transform : null;
+            }
+        }
+
         public bool IsFlippedX => transform.localScale.x < 0f;
 
         public void Prime(Color flashColor)
@@ -138,11 +217,28 @@ namespace Guildmaster.Presentation.Body
 
         public void Apply(in BodyVisualState state)
         {
-            // Тинт и альфа инвиза — каждой части: полупрозрачным должно стать тело, а не грудь.
+            // ТИНТ КРАСИТ НЕ ВСЁ ТЕЛО, А ВОЛОСЫ И ТО, ЧТО В РУКАХ (решение Макса 05.08.2026: «Скорее
+            // только волосы И любое оружие»). Остальное носит цвет, каким его нарисовали: кожа, лицо и
+            // одежда, помноженные на оттенок юнита, уходят в грязь, а сталь клинка и прядь волос
+            // принимают цвет честно — они и написаны под покраску.
+            //
+            // Альфа идёт ВСЕМ: она несёт прозрачность инвиза, и некрашеная часть обязана исчезать
+            // вместе с телом, иначе стелс оставит на арене плавающий торс. Меняется только она —
+            // сам цвет некрашеной части остаётся авторским (см. CacheAuthoredColors).
+            EnsureAuthoredColors();
+            PartMask tinted = TintMask();
             for (int i = 0; i < _parts.Count; i++)
             {
                 SpriteRenderer part = _parts[i];
-                if (part != null) part.color = state.Tint;
+                if (part == null) continue;
+
+                if (tinted.Has(i)) { part.color = state.Tint; continue; }
+
+                Color authored = _authoredColors != null && i < _authoredColors.Length
+                    ? _authoredColors[i]
+                    : Color.white;
+                authored.a = state.Tint.a;
+                part.color = authored;
             }
 
             bool active = state.HasEffect;
@@ -334,12 +430,58 @@ namespace Guildmaster.Presentation.Body
         }
 
         /// <summary>
+        /// Спрайты частей, какими они лежат на префабе. Снимаются ОДИН раз, до первого облачения, и
+        /// живут как точка возврата: вид переиспользуется пулом, и без неё щит, снятый у лучника, не
+        /// вернулся бы Защитнику, занявшему тот же вид следующим боем.
+        /// </summary>
+        private Sprite[] _bareSprites;
+
+        /// <summary>
+        /// Надеть облачение. <c>null</c> — вернуть тело к префабному виду.
+        /// <para>
+        /// <b>Прячем спрайтом, а не выключателем.</b> <see cref="SetVisible"/> гасит и зажигает ВСЕ части
+        /// разом (разлёт осколков, возврат вида в пул), и если бы облачение снимало щит через
+        /// <c>enabled</c>, первый же возврат видимости надел бы его обратно. Поэтому у облачения свой
+        /// канал — <c>sprite</c>, — и два канала не пересекаются.
+        /// </para>
+        /// </summary>
+        public void ApplyOutfit(Data.Definitions.OutfitData outfit)
+        {
+            if (_bareSprites == null || _bareSprites.Length != _parts.Count)
+            {
+                _bareSprites = new Sprite[_parts.Count];
+                for (int i = 0; i < _parts.Count; i++)
+                    _bareSprites[i] = _parts[i] != null ? _parts[i].sprite : null;
+            }
+
+            for (int i = 0; i < _parts.Count; i++)
+            {
+                SpriteRenderer part = _parts[i];
+                if (part == null) continue;
+
+                // Часть, о которой облачение молчит, возвращается к префабной — иначе прошлый жилец
+                // вида оставил бы на ней свой спрайт.
+                if (outfit == null || !outfit.TryResolve(part.name, out Sprite dressed))
+                {
+                    part.sprite = _bareSprites[i];
+                    continue;
+                }
+
+                part.sprite = dressed;   // пусто = часть не рисуется, но остаётся в теле и в сортировке
+            }
+        }
+
+        /// <summary>
         /// Колется КАЖДАЯ часть — общей палитрой и общим таймингом. Тело разлетается по частям, а не одним
         /// прямоугольником торса, и это заодно честнее: у составного юнита «прямоугольник тела» никогда не
         /// совпадал с фигурой.
         /// </summary>
         public void PlayShatter(Design.CombatFeelConfig feel, Gradient palette, System.Action onComplete)
         {
+            // Мера осколка — рост ВСЕГО тела, а не своей части: иначе кисть и клинок рассыпаются на
+            // одинаковое ЧИСЛО кусков, то есть на куски совершенно разного размера.
+            float height = TryGetBounds(out Bounds body) ? body.size.y : 1f;
+
             int pending = 0;
             for (int i = 0; i < _parts.Count; i++)
             {
@@ -361,7 +503,7 @@ namespace Guildmaster.Presentation.Body
                 go.transform.SetParent(part.transform.parent != null ? part.transform.parent : transform,
                     worldPositionStays: false);
                 var shatter = go.AddComponent<DeathShatter>();
-                shatter.Play(part, feel, palette, () =>
+                shatter.Play(part, feel, palette, height, () =>
                 {
                     // Догорел последний осколок последней части — тело отработало целиком.
                     if (--left == 0) onComplete?.Invoke();

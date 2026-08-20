@@ -1,0 +1,131 @@
+/* === Курсоры других игроков (кооп) =========================================
+   Курсор чужого игрока в мировой точке: изображение скина, крашенное в его мейн-цвет, и подпись
+   именем. Позицию ставит CursorLayerView переводом «мир → панель», картинку — он же из данных скина
+   (CursorSkinData). Здесь только вид.
+   Тинт УМНОЖАЕТ: текстура скина белая с чёрной обводкой, поэтому заливка становится цветом игрока, а
+   обводка остаётся чёрной и держит курсор читаемым и на светлой карте, и на тёмной арене. */
+.gm-cursor {
+    position: absolute;
+    /* Остриё скина лежит в левом верхнем углу его холста — значит и коробку смещать не нужно. */
+    align-items: flex-start;
+}
+
+.gm-cursor__point {
+    width: 40px;
+    height: 40px;
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: var(--gm-color-player-1);
+}
+
+.gm-cursor__name {
+    margin-top: var(--gm-space-0);
+    margin-left: var(--gm-space-2);
+    font-size: var(--gm-font-xxs);
+    color: var(--gm-color-player-1);
+    -unity-font-style: bold;
+}
+
+/* Держит вещь — указатель крупнее: «в руке» видно всем, это условие работы перехвата. */
+.gm-cursor--holding > .gm-cursor__point {
+    scale: 1.2 1.2;
+}
+
+/* Место в наборе цветов раздаёт состав сеанса; оттенки живут в токенах, а не здесь. */
+.gm-cursor--p1 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-1); }
+.gm-cursor--p1 > .gm-cursor__name  { color: var(--gm-color-player-1); }
+.gm-cursor--p2 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-2); }
+.gm-cursor--p2 > .gm-cursor__name  { color: var(--gm-color-player-2); }
+.gm-cursor--p3 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-3); }
+.gm-cursor--p3 > .gm-cursor__name  { color: var(--gm-color-player-3); }
+.gm-cursor--p4 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-4); }
+.gm-cursor--p4 > .gm-cursor__name  { color: var(--gm-color-player-4); }
+
+
+
+
+/* === Список участников (кооп) ==============================================
+   Левый край под верхней панелью: своя сторона сверху, противники под разделителем. Появляется от
+   двух участников — список из одного себя не отвечает ни на один вопрос, ради которых заведён.
+   Цвет строки берётся тем же набором, что у курсоров (`.gm-cursor--p*`): игрок опознаётся одним
+   оттенком и на арене, и здесь. */
+.gm-participants {
+    position: absolute;
+    left: var(--gm-space-2);
+    top: var(--gm-space-6);
+    min-width: 180px;
+    padding: var(--gm-space-1);
+}
+
+.gm-participants__group {
+    flex-direction: column;
+}
+
+.gm-participants__caption {
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-0);
+    -unity-font-style: italic;
+}
+
+.gm-participants__row {
+    flex-direction: row;
+    align-items: center;
+    padding-top: var(--gm-space-0);
+    padding-bottom: var(--gm-space-0);
+}
+
+.gm-participants__row--self .gm-participants__name {
+    -unity-font-style: bold;
+}
+
+.gm-participants__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    margin-right: var(--gm-space-1);
+    flex-shrink: 0;
+    border-width: 1px;
+    border-color: var(--gm-color-swatch-outline);
+}
+
+.gm-participants__name {
+}
+
+.gm-participants__you {
+    margin-left: var(--gm-space-0);
+}
+
+/* --- Кружки голосов: кто за какой вариант ---
+   Один приём на все совместные решения (решение Макса 07.08.2026): кружок мейн-цвета игрока под
+   карточкой награды, под узлом карты, под чем угодно следующим. Строка держит высоту всегда, иначе
+   витрина дёргалась бы вверх-вниз на каждый чужой голос. */
+.gm-reward-slot {
+    flex-direction: column;
+    align-items: center;
+}
+
+.gm-vote-row {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    min-height: 14px;
+    margin-top: var(--gm-space-0);
+}
+
+.gm-vote-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+    background-color: var(--gm-color-player-1);
+}
+
+.gm-vote-dot--p1 { background-color: var(--gm-color-player-1); }
+.gm-vote-dot--p2 { background-color: var(--gm-color-player-2); }
+.gm-vote-dot--p3 { background-color: var(--gm-color-player-3); }
+.gm-vote-dot--p4 { background-color: var(--gm-color-player-4); }
+
+/* Где игрок сейчас: подпись справа от ника, тише имени — она вспомогательная. */
+.gm-participants__where {
+    margin-left: var(--gm-space-1);
+}

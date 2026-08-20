@@ -6,7 +6,7 @@
 
 import { el } from "../dom.js";
 import type { SectionDef } from "../types.js";
-import { balance, displayName, runA, type Matrix } from "./balance-data.js";
+import { balance, displayName, noDataMessage, runA, type Matrix } from "./balance-data.js";
 import { balanceControls } from "./balance-ui.js";
 
 const view = { matrix: "" };
@@ -74,7 +74,7 @@ function render(host: HTMLElement): void {
 
   void balance.settled.then(() => {
     if (balance.data.runs.length === 0) {
-      status.textContent = `Отчёты недоступны: ${balance.error ?? "нет данных"}. Нужен ./scripts/lab-serve.ps1 -Watch`;
+      status.textContent = noDataMessage("Отчёты");
       return;
     }
     draw(host);

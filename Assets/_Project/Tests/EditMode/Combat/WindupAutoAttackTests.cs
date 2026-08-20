@@ -20,6 +20,9 @@ namespace Guildmaster.Tests.EditMode.Combat
         private const int FrameCount = 7;
         private const int HitFrame   = 5;
 
+        /// <summary>Та же доля, что даёт клип (5 из 7): тайминг ОБЪЯВЛЕН, клип его лишь показывает.</summary>
+        private const float WindupShare = (float)HitFrame / FrameCount;
+
         [Test]
         public void EnterWindup_FirstTick_NoDamage_FiresAttackStarted()
         {
@@ -40,7 +43,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             var (attacker, enemy, units, ctx) = Scene();
             var sys = new AutoAttackSystem();
-            int windup = AttackTiming.WindupTicks(HitFrame, FrameCount, AttackTiming.IntervalTicks(1f));
+            int windup = AttackTiming.WindupTicksFromShare(WindupShare, AttackTiming.IntervalTicks(1f));
 
             // Ровно windup тиков — урона ещё нет.
             for (int i = 0; i < windup; i++) sys.Tick(units, ctx, 0f);
@@ -73,7 +76,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var (attacker, enemy, units, ctx) = Scene();
             var sys = new AutoAttackSystem();
             int interval = AttackTiming.IntervalTicks(1f);
-            int windup   = AttackTiming.WindupTicks(HitFrame, FrameCount, interval);
+            int windup   = AttackTiming.WindupTicksFromShare(WindupShare, interval);
 
             sys.Tick(units, ctx, 0f);                       // вход в замах (tick1)
             enemy.IsDead = true;                            // цель умерла в замахе
@@ -130,8 +133,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             var (attacker, enemy, units, ctx) = Scene();
             var sys = new AutoAttackSystem();
             int interval = AttackTiming.IntervalTicks(1f);
-            int windup   = AttackTiming.WindupTicks(HitFrame, FrameCount, interval);
-            int tail     = AttackTiming.FollowThroughTicks(HitFrame, FrameCount, interval, windup);
+            int windup   = AttackTiming.WindupTicksFromShare(WindupShare, interval);
+            int tail     = AttackTiming.FollowThroughTicks(WindupShare, interval, windup);
             Assert.Greater(tail, 0, "Предусловие: у юнита с клипом есть доигрыш-хвост");
 
             // Тикаем до кадра контакта включительно (вход в замах + windup тиков до удара).
@@ -202,7 +205,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             // Слой 1: цель за замах сместилась чуть за базовый reach, но в пределах tolerance → удар засчитан.
             var (attacker, enemy, units, ctx) = Scene();
             var s = new AutoAttackSystem();
-            int windup = AttackTiming.WindupTicks(HitFrame, FrameCount, AttackTiming.IntervalTicks(1f));
+            int windup = AttackTiming.WindupTicksFromShare(WindupShare, AttackTiming.IntervalTicks(1f));
             float reach = CombatPositioning.AttackReachCenter(attacker, enemy, SimTuning.Default);
 
             s.Tick(units, ctx, 0f);                                  // вход в замах (цель в радиусе)
@@ -220,7 +223,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var (attacker, enemy, units, ctx) = Scene();
             var s = new AutoAttackSystem();
             int interval = AttackTiming.IntervalTicks(1f);
-            int windup   = AttackTiming.WindupTicks(HitFrame, FrameCount, interval);
+            int windup   = AttackTiming.WindupTicksFromShare(WindupShare, interval);
             float reach  = CombatPositioning.AttackReachCenter(attacker, enemy, SimTuning.Default);
 
             s.Tick(units, ctx, 0f);                                  // вход в замах
@@ -289,7 +292,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx)
             FleeScene(float? enemyDist, float recedePerTick)
         {
-            UnitVisual visual = TestVisual.Make(FrameCount, HitFrame);
+            AnimationArchetypeData visual = TestVisual.Make(FrameCount, HitFrame);
             RelicData relic = TestRelic.Make(visual: visual);
 
             var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, relic: relic, range: 2f, aad: 10f, atkSpeed: 1f);
@@ -639,7 +642,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx)
             DoubleHitScene(float[] hitShares = null)
         {
-            UnitVisual visual = TestVisual.Make(FrameCount, 3, HitFrame);
+            AnimationArchetypeData visual = TestVisual.Make(FrameCount, 3, HitFrame);
             RelicData relic = TestRelic.Make(visual: visual, hitDamageShares: hitShares);
 
             var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, relic: relic, range: 5f, aad: 10f, atkSpeed: 1f);
@@ -657,7 +660,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         /// </summary>
         private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx) SlowScene()
         {
-            UnitVisual visual = TestVisual.Make(FrameCount, HitFrame);
+            AnimationArchetypeData visual = TestVisual.Make(FrameCount, HitFrame);
             RelicData relic = TestRelic.Make(visual: visual);
 
             var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, relic: relic, range: 5f, aad: 10f, atkSpeed: 0.5f);
@@ -677,7 +680,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx) Scene()
         {
-            UnitVisual visual = TestVisual.Make(FrameCount, HitFrame);
+            AnimationArchetypeData visual = TestVisual.Make(FrameCount, HitFrame);
             RelicData relic = TestRelic.Make(visual: visual);
 
             var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, relic: relic, range: 5f, aad: 10f, atkSpeed: 1f);

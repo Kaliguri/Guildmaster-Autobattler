@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Guildmaster.Core.Audio;
 using UnityEngine.UIElements;
 
@@ -89,15 +90,25 @@ namespace Guildmaster.UI
         /// Ближайший интерактивный предок (или сам элемент): клик по иконке внутри кнопки должен звучать
         /// как кнопка. Возвращает null для «мяса» — фона, лейблов, контейнеров.
         /// </summary>
+        /// <remarks>
+        /// Перечень классов берётся из <see cref="Components.UiComponentRegistry.InteractiveBlocks"/>, а
+        /// не пишется здесь. Свой список тут стоял до 06.08.2026 и держал шесть классов из тридцати:
+        /// сосуд во Дворе, карточка лавки, строка запаса, строка дропа, свотч профиля и строки пикера
+        /// кликались молча. Второй список того же факта отстаёт всегда — вопрос только в том, когда
+        /// это заметят.
+        /// </remarks>
         private static VisualElement FindInteractive(VisualElement element)
         {
+            IReadOnlyList<string> blocks = Components.UiComponentRegistry.InteractiveBlocks;
+
             for (VisualElement e = element; e != null; e = e.parent)
             {
                 if (e is Button || e is Toggle || e is Slider || e is SliderInt) return e;
-                if (e.ClassListContains("gm-button") || e.ClassListContains("gm-chip")
-                    || e.ClassListContains("gm-card") || e.ClassListContains("gm-slot")
-                    || e.ClassListContains("gm-arcana-card") || e.ClassListContains("gm-event-choice"))
-                    return e;
+
+                for (int i = 0; i < blocks.Count; i++)
+                {
+                    if (e.ClassListContains(blocks[i])) return e;
+                }
             }
             return null;
         }

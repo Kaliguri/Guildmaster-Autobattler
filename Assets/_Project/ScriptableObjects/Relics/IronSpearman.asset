@@ -18,19 +18,27 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 0
   _resourceType: 1
-  _visual: {fileID: 11400000, guid: 1726394c3d16f6b46b32737288e71402, type: 2}
-  _viewPrefab: {fileID: 4080731667428238973, guid: f1d5abc2956524d42b185654a918f37f, type: 3}
-  _bodyShade: 0
+  _rangeBand: 1
+  _rangeAdjustPct: 0
+  _archetype: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
+  _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
+  _outfit: {fileID: 11400000, guid: 924228f4836e68148ae3acf9cb94802c, type: 2}
   _vfxTone: 8
   _autoAttackShape: 1
   _autoAttackWidth: 2.25
   _autoAttackLengthMult: 2
   _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
   _windupShare: 0
+  _attackSwingTicks: 0
   _chargeAttackWindupMult: 1
+  _hitDamageShares: []
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
@@ -40,9 +48,6 @@ MonoBehaviour:
   - Stat: 8
     Op: 3
     Value: 0.6
-  - Stat: 9
-    Op: 3
-    Value: 2
   - Stat: 3
     Op: 3
     Value: 45
@@ -63,7 +68,9 @@ MonoBehaviour:
     _resourceCost: 45
     _targetMode: 0
     _damageMultiplier: 3
+    _baseDamage: 0
     _damageType: 2
+    _castRange: 0
     _areaShape: 2
     _areaRadius: 2.5
     _healFlat: 0
@@ -77,10 +84,12 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0.25
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _maxTriggerUniques: 0
     _castSeconds: 0.5
     _channelSeconds: 0
     _channelTickSeconds: 1
     _canMoveWhileCasting: 0
+    _castSource: 0
     _statScalings:
     - Target: 1
       Conversion:
@@ -88,6 +97,17 @@ MonoBehaviour:
         Form: 1
         Baseline: 0.6
         PerUnit: 0.3
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
     _displaces: 1
     _displaceDistance: 4
     _displaceDamageMult: 0

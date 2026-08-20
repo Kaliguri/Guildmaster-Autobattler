@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using Guildmaster.Data.Definitions;
@@ -38,6 +38,8 @@ namespace Guildmaster.Data.Editor
             { "encounter",     "Encounters"    },
             { "battle_preset", "BattlePresets" },
             { "event",         "Events"        },
+            { "cursor",        "Cursors"       },
+            { "outfit",        "Outfits"       },
         };
 
         /// <summary>Все типы контента, которые менеджер умеет создавать — из реестра доменов.</summary>

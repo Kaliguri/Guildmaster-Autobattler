@@ -10,6 +10,28 @@ using UnityEngine;
 namespace Guildmaster.Tests.EditMode.Net
 {
     /// <summary>
+    /// Обёртка для тестов, которым размер чанка безразличен: пишет с потолком формата и падает, если не
+    /// влезло.
+    /// </summary>
+    /// <remarks>
+    /// Живёт здесь, а не в продакшн-коде: настоящий предел приходит от транспорта и передаётся
+    /// параметром (см. <see cref="TapeChunkWriter.TryWrite"/>). Тесты про дельту, версию формата и
+    /// усечение — не про размер, и разбор <c>false</c> в каждом из них только прятал бы их смысл.
+    /// </remarks>
+    internal static class TapeChunkWriterTestExtensions
+    {
+        public static ArraySegment<byte> Write(this TapeChunkWriter writer,
+            BattleTape tape, int firstTick, int tickCount)
+        {
+            Assert.IsTrue(
+                writer.TryWrite(tape, firstTick, tickCount, TapeChunkFormat.MaxChunkBytes, out ArraySegment<byte> bytes),
+                "чанк не влез даже в потолок формата — этот тест не про размер");
+
+            return bytes;
+        }
+    }
+
+    /// <summary>
     /// Кодек чанка боевой ленты (ТЗ кооп-вертикали §5): хост укладывает срез ленты в байты, гость
     /// разбирает их в свою ленту и играет тем же плеером, которым играет соло.
     /// <para>Главное здесь — <b>что именно обещано восстановить точно, а что с потерей</b>. Числа событий
@@ -203,11 +225,19 @@ namespace Guildmaster.Tests.EditMode.Net
             Assert.IsNotEmpty(reader.LastError, "Причина названа, а не проглочена");
         }
 
+        /// <summary>
+        /// Чанк сверх предела — это <c>false</c>, а НЕ исключение, и номер чанка при этом не тратится.
+        /// </summary>
+        /// <remarks>
+        /// Ниже нашего кода размер не проверяет никто: Steam вернёт InvalidParam, а транспорт его не
+        /// читает — чанк уехал бы в тишину. Но «не влезло» здесь ожидаемый исход, на который у стримера
+        /// есть ответ (поделить диапазон), а не ошибка: так требует и конвенция .NET для Try-методов.
+        /// Пока это было исключением, оно улетало наверх с уже потраченным номером — раздача вставала
+        /// навсегда, а у гостя оставалась дыра в нумерации, которую он просил повторить до конца боя.
+        /// </remarks>
         [Test]
-        public void ChunkOverTheSizeCeiling_IsRefusedByUs()
+        public void ChunkOverTheLimit_ReturnsFalse_AndKeepsTheChunkNumber()
         {
-            // Ниже нашего кода размер не проверяет никто: Steam вернёт InvalidParam, а транспорт его не
-            // читает — чанк уехал бы в тишину.
             var tape = new BattleTape(windowTicks: 64);
             var units = new List<UnitSnapshot>(255);
             for (int i = 0; i < 255; i++) units.Add(Unit(i, 100f + i, position: new Vector2(i * 0.37f, i * 0.11f)));
@@ -222,8 +252,13 @@ namespace Guildmaster.Tests.EditMode.Net
             }
 
             var writer = new TapeChunkWriter();
-            Assert.Throws<InvalidOperationException>(() => writer.Write(tape, 0, 40),
-                "Чанк сверх потолка — громкий отказ на нашей стороне");
+            int numberBefore = writer.NextChunkNumber;
+
+            Assert.IsFalse(writer.TryWrite(tape, 0, 40, TapeChunkFormat.MaxChunkBytes, out ArraySegment<byte> bytes),
+                "Чанк сверх предела — отказ на нашей стороне, а не отправка в тишину");
+            Assert.AreEqual(0, bytes.Count, "Не влезло — отдавать нечего");
+            Assert.AreEqual(numberBefore, writer.NextChunkNumber,
+                "Номер не потрачен: этот же чанк уедет меньшими кусками, и дыры в нумерации у гостя не будет");
         }
 
         // ── Утилиты ──

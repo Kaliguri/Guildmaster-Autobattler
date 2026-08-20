@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Persistence;
 using Guildmaster.Data.Definitions;
@@ -49,6 +49,13 @@ namespace Guildmaster.Game.Services
 
         public ProfileSummary ActiveGuild { get; private set; }
 
+        public bool HasActiveProfile => _activeProfile != null;
+
+        public ProfileIdentity Identity => _activeProfile == null
+            ? new ProfileIdentity(string.Empty, useSteamName: true, colorIndex: 0, cursorSkinId: string.Empty)
+            : new ProfileIdentity(_activeProfile.DisplayName, _activeProfile.UseSteamName,
+                                  _activeProfile.ColorIndex, _activeProfile.CursorSkinId);
+
         public bool ProfilesFull => _profiles.Count >= Math.Max(1, _config.MaxProfiles);
         public bool GuildsFull   => _guilds.Count   >= Math.Max(1, _config.MaxGuildsPerProfile);
 
@@ -74,15 +81,17 @@ namespace Guildmaster.Game.Services
                 : string.Empty;
 
             if (!string.IsNullOrEmpty(lastProfileId) && SelectProfile(lastProfileId)) return;
-            if (_profiles.Count > 0 && SelectProfile(_profiles[0].Id)) return;
+            if (_profiles.Count > 0) SelectProfile(_profiles[0].Id);
 
-            // Чистая установка: без профиля и гильдии забегу некуда писаться.
-            CreateProfile("Профиль 1");
+            // Профиль здесь БОЛЬШЕ НЕ СОЗДАЁТСЯ (решение Макса 03.08.2026): на чистой установке игрок
+            // сам заводит его в свободном слоте, и первое, что он видит в игре, — этот выбор. Молчаливое
+            // создание было честной страховкой («забегу некуда писаться»), но оно же и лишало игрока
+            // единственного места, где профиль виден как сущность, а не как строчка в чужом списке.
         }
 
         // ── Профили ──────────────────────────────────────────────────────────
 
-        public ProfileSummary? CreateProfile(string name)
+        public ProfileSummary? CreateProfile()
         {
             if (ProfilesFull)
             {
@@ -93,7 +102,7 @@ namespace Guildmaster.Game.Services
             var profile = new ProfileState
             {
                 Id         = Guid.NewGuid().ToString("N"),
-                Name       = string.IsNullOrWhiteSpace(name) ? "Профиль" : name,
+                Name       = NextSlotName(),
                 CreatedUtc = DateTime.UtcNow.ToString("o"),
             };
 
@@ -109,6 +118,40 @@ namespace Guildmaster.Game.Services
 
             Changed?.Invoke();
             return new ProfileSummary(profile.Id, profile.Name);
+        }
+
+        public bool SaveIdentity(in ProfileIdentity identity)
+        {
+            if (_activeProfile == null) return false;
+
+            _activeProfile.DisplayName  = identity.DisplayName;
+            _activeProfile.UseSteamName = identity.UseSteamName;
+            _activeProfile.ColorIndex   = identity.ColorIndex;
+            _activeProfile.CursorSkinId = identity.CursorSkinId;
+
+            _save.Save(ProfileKey(_activeProfile.Id), _activeProfile);
+            Changed?.Invoke();
+            return true;
+        }
+
+        /// <summary>
+        /// Имя для нового профиля: «Профиль N» с наименьшим свободным номером. Не по числу профилей —
+        /// иначе, удалив первый из двух, игрок получил бы второй «Профиль 2» рядом с уже имеющимся.
+        /// </summary>
+        private string NextSlotName()
+        {
+            int limit = Math.Max(1, _config.MaxProfiles);
+            for (int slot = 1; slot <= limit; slot++)
+            {
+                string candidate = $"Профиль {slot}";
+
+                bool taken = false;
+                for (int i = 0; i < _profiles.Count && !taken; i++) taken = _profiles[i].Name == candidate;
+
+                if (!taken) return candidate;
+            }
+
+            return $"Профиль {_profiles.Count + 1}";
         }
 
         public bool SelectProfile(string profileId)
@@ -144,8 +187,8 @@ namespace Guildmaster.Game.Services
                 ActiveGuild = default;
                 _guilds.Clear();
 
+                // Удалили последний — профиля нет, и это законное состояние: игру встретит экран выбора.
                 if (_profiles.Count > 0) SelectProfile(_profiles[0].Id);
-                else                     CreateProfile("Профиль 1"); // без профиля игра неработоспособна
             }
 
             Changed?.Invoke();

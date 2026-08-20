@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
@@ -160,6 +161,11 @@ namespace Guildmaster.Presentation
         {
             UnbindBattle();
 
+            // Новый бой — не dev-рестарт: события OnBattleReset не будет, а виды прошлого боя надо
+            // погасить ДО привязки нового, иначе они переиспользуются по совпадающим id (в фоне меню
+            // это и открывало следующую дуэль телами предыдущей). См. ResetShownBattleVisuals.
+            ResetShownBattleVisuals();
+
             _simulation  = simulation;
             _playback    = playback;
             _dispatcher  = dispatcher;
@@ -186,6 +192,7 @@ namespace Guildmaster.Presentation
             if (_simulation == null) return;
             if (battle != null && !ReferenceEquals(_simulation, battle)) return;
 
+            CancelDeferredShow();   // бой закончился — отложенным цифрам этого боя всплывать уже негде
             UnsubscribeFromBattle();
 
             // Статус-кольца читают симуляцию и ленту напрямую (это dev-оверлей боя, не показ мира):
@@ -265,13 +272,57 @@ namespace Guildmaster.Presentation
             _dispatcher.AbilityCastInterrupted -= HandleAbilityCastInterrupted;
         }
 
+        /// <summary>
+        /// Отмена отложенного показа ЭТОГО боя: вторая цифра расщеплённого удара ждёт свои 60 мс через
+        /// <c>UniTask.Delay</c>, и ждать она должна ровно до конца боя, а не до конца жизни презентера.
+        /// </summary>
+        /// <remarks>
+        /// Связан со смертью объекта, поэтому отменится и сам по себе. Без него рестарт боя (dev-R)
+        /// оставлял задержку жить: цифра «-N» прошлого боя всплывала уже в новом, в мировой точке
+        /// прошлой цели — презентер-то пережил обоих.
+        /// </remarks>
+        private CancellationTokenSource _deferredShowCts;
+
+        private CancellationToken DeferredShowToken =>
+            (_deferredShowCts ??= CancellationTokenSource.CreateLinkedTokenSource(
+                this.GetCancellationTokenOnDestroy())).Token;
+
+        private void CancelDeferredShow()
+        {
+            if (_deferredShowCts == null) return;
+            _deferredShowCts.Cancel();
+            _deferredShowCts.Dispose();
+            _deferredShowCts = null;
+        }
+
         private void HandleBattleReset()
         {
+            CancelDeferredShow();
+
             // Лента чистится рекордером, а показ и курсор событий надо отмотать: иначе показ продолжит
             // с тика прошлого боя (и окажется впереди нового фронта), а первые события нового боя
             // сочтутся уже показанными.
             _playback.Reset();
             _dispatcher.Reset();
+
+            ResetShownBattleVisuals();
+        }
+
+        /// <summary>
+        /// Погасить весь показанный визуал прошлого боя: курсор кадров, виды и трупы, летящие цифры и VFX.
+        /// Общий для dev-рестарта (<see cref="HandleBattleReset"/>) и смены боя (<see cref="BindBattle"/>).
+        /// </summary>
+        /// <remarks>
+        /// Без сброса при смене боя виды переиспользуются по Id между несвязанными боями: id юнитов в
+        /// каждом бою свои и начинаются с нуля, поэтому вид победителя прошлого боя доставался бойцу
+        /// нового с тем же id — вместе с остаточным HP и позой. В фоне меню (дуэль за дуэлью, без
+        /// «пустого кадра» между ними, который иначе похоронил бы виды) следующая дуэль открывалась
+        /// телами и полумёртвым HP предыдущей, читаясь как «показ с середины» (наход. Макса 04.08.2026).
+        /// <para>Ленту и диспетчер НЕ трогает: у рестарта они те же и мотаются выше отдельно, у смены боя
+        /// уже новые — привязаны свежими в <see cref="BindBattle"/>.</para>
+        /// </remarks>
+        private void ResetShownBattleVisuals()
+        {
             _frameIndex.Clear();
 
             foreach (var kvp in _views)
@@ -301,6 +352,11 @@ namespace Guildmaster.Presentation
 
             // Летящие VFX-префабы — погасить и вернуть в пул.
             if (_vfx != null) _vfx.DespawnAll();
+
+            // О нехватке данных для визуала говорится один раз на факт — но «один раз» живёт в пределах
+            // боя. Иначе после первого прогона консоль замолчит до перезапуска редактора, и следующий
+            // состав будет молча терять эффекты.
+            VisualDefects.Reset();
         }
 
         /// <summary>Создать dev-слой статус-колец в рантайме (без правок сцены/префабов) и подать симуляцию.</summary>
@@ -377,6 +433,13 @@ namespace Guildmaster.Presentation
                 Combat.Tape.ProjectileSnapshot p = frame[i];
                 _seenProj.Add(p.Id);
 
+                // Направление выстрела — факт из КАДРА ЛЕНТЫ, а не из показа, поэтому запоминается до
+                // проверки вида. Иначе не разведённый префаб снаряда (он объявлен необязательным) тихо
+                // менял бы направление отброса тела, искр и выпада бьющего: импакт-фидбэк падал бы на
+                // вектор «стрелок → цель», который в этом же файле назван враньём.
+                if (p.TargetId >= 0 && p.Velocity.sqrMagnitude > 1e-8f)
+                    _lastShotDir[p.TargetId] = p.Velocity.normalized;
+
                 if (!_projViews.TryGetValue(p.Id, out ProjectileView view) || view == null)
                 {
                     view = SpawnProjectileView(in p);
@@ -384,8 +447,6 @@ namespace Guildmaster.Presentation
                 }
 
                 view.Follow(p.Position, p.PreviousPosition, p.Velocity, _stage.Alpha);
-                if (p.TargetId >= 0 && p.Velocity.sqrMagnitude > 1e-8f)
-                    _lastShotDir[p.TargetId] = p.Velocity.normalized;
             }
 
             // Исчез из кадра — значит попал или вышел за поле: вид снимается там же, где показан импакт.
@@ -416,7 +477,8 @@ namespace Guildmaster.Presentation
                     float ang = p.Velocity.sqrMagnitude > 1e-6f
                         ? Mathf.Atan2(p.Velocity.y, p.Velocity.x) * Mathf.Rad2Deg
                         : 0f;
-                    _vfx.Spawn(_feel.VfxMuzzle, srcView.ShotPoint, ang, tint: VfxPaletteFor(p.SourceId));
+                    _vfx.Spawn(_feel.VfxMuzzle, srcView.ShotPoint, ang, tint: VfxPaletteFor(p.SourceId),
+                               slot: nameof(_feel.VfxMuzzle));
                 }
             }
 
@@ -474,7 +536,8 @@ namespace Guildmaster.Presentation
             view.PlayCastOutline(VfxColorFor(casterId));   // контур — один цвет, без разброса
 
             if (_vfx != null && _feel != null && _feel.VfxCastBurst != null)
-                _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: VfxPaletteFor(casterId));
+                _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: VfxPaletteFor(casterId),
+                           slot: nameof(_feel.VfxCastBurst));
 
             // Мгновенный приём (Cast пришёл без подготовки) — свечение источника всполохом. Была подготовка —
             // заряд уже дошёл до пика и сам идёт в спад, второй раз не трогаем (иначе оружие моргнёт с нуля).
@@ -702,9 +765,13 @@ namespace Guildmaster.Presentation
             int shield = Mathf.RoundToInt(result.ShieldDamage);
             int hp     = Mathf.RoundToInt(result.HpDamage);
 
-            // Цифры — в точку попадания (грудь) цели. Размер HP-цифры растёт с весом удара (тяжёлый = крупнее).
-            Vector3 anchor  = AnchorFor(targetId, target.Position);
-            float   hpScale = _feel.EvaluateNumberScale(frac);   // кривая живёт в feel-конфиге, не здесь
+            // Точка попадания — ЗОНА ТЕЛА (голова / корпус / ноги), выбранная с поправкой на досягаемость,
+            // а не фиксированная грудь: восемь бойцов, окруживших цель, давали восемь одинаковых вспышек в
+            // одном пикселе. Сид тот же, что у формы удара, поэтому знак, искры, порез и цифра приходят В
+            // ОДНО место. Все входы берутся ИЗ ЛЕНТЫ — см. ImpactPointFor.
+            uint    impactSeed = Effects.HitFormFactory.SeedOf(sourceId, targetId, target.Position, result.HpDamage);
+            Vector3 anchor     = ImpactPointFor(targetId, target.Position, hasSource, source, sourceId, impactSeed);
+            float   hpScale    = _feel.EvaluateNumberScale(frac);   // кривая живёт в feel-конфиге, не здесь
 
             // VFX-префабы: искры в точку попадания + пыль у ног на мили-ударе. Только прямое попадание:
             // яд, горение и шипы брони бьют тиками и без стороны — искры на них читались бы как удары.
@@ -717,9 +784,10 @@ namespace Guildmaster.Presentation
                     ? Mathf.Atan2(nudgeDir.y, nudgeDir.x) * Mathf.Rad2Deg
                     : (float?)null;
 
-                _vfx.Spawn(_feel.VfxHitSpark, AnchorFor(targetId, target.Position), blockDir,
+                _vfx.Spawn(_feel.VfxHitSpark, anchor, blockDir,
                            _feel.EvaluateHitVfxSizeMultiplier(frac), _feel.EvaluateHitVfxCount(frac),
-                           BlockSparkPalette(sourceId, targetId), wound: false);
+                           BlockSparkPalette(sourceId, targetId), wound: false,
+                           slot: nameof(_feel.VfxHitSpark));
             }
 
             if (_vfx != null && _feel != null && view != null && result.IsDirectHit && !blocked)
@@ -732,24 +800,32 @@ namespace Guildmaster.Presentation
 
                 _vfx.Spawn(_feel.VfxHitSpark, anchor, sparkDir,
                            _feel.EvaluateHitVfxSizeMultiplier(frac), _feel.EvaluateHitVfxCount(frac),
-                           VfxPaletteFor(sourceId));   // искры — палитры бьющего
+                           VfxPaletteFor(sourceId),    // искры — палитры бьющего
+                           slot: nameof(_feel.VfxHitSpark));
 
                 if (sourceIsMelee)
-                    _vfx.Spawn(_feel.VfxImpactDust, view.FeetPoint);
+                    _vfx.Spawn(_feel.VfxImpactDust, view.FeetPoint, slot: nameof(_feel.VfxImpactDust));
             }
 
             // ФОРМА УДАРА — главный знак попадания. Спавнится ПОСЛЕ хита, на этом самом кадре: к моменту
             // её старта результат уже наступил, поэтому промах ничего стирать не заставляет, а серп
             // никогда не врёт о состоявшемся ударе.
-            if (_vfx != null && _feel != null && _feel.EnableHitForm && result.IsDirectHit)
-                SpawnHitForm(sourceId, targetId, in source, hasSource, in target, result, frac, blocked);
+            //
+            // Только АВТОАТАКА (решение Макса 04.08.2026: «У способностей не надо форму удара рисовать.
+            // Форма пока что только для автоатак»). Контракт таким и был — `HitFormCoverageTests` спрашивает
+            // архетип у автоатак, — а спавн стоял на IsDirectHit, то есть ловил ещё и урон способностей.
+            // Способность оружием не машет и способ доставки не называет: Воспламенение мечника прилетало
+            // сюда типом Fire, форма не резолвилась, и консоль ругалась на дефект контента, которого нет.
+            if (_vfx != null && _feel != null && _feel.EnableHitForm
+                && result.SourceKind == DamageSourceKind.AutoAttack)
+                SpawnHitForm(sourceId, targetId, in source, hasSource, in target, result, frac, blocked, anchor);
 
             // ПОРЕЗ — то, что от удара осталось. Щит вскрытия не даёт: тело целое, значит и раны нет.
             // Тики яда и шипы тоже не режут — у них нет ни стороны, ни момента, ни клинка.
             if (view != null && result.IsDirectHit && !blocked && result.HpDamage > 0f
                 && nudgeDir.sqrMagnitude > 1e-8f)
             {
-                view.AddBodyCut(AnchorFor(targetId, target.Position), nudgeDir, frac, result.HpDamage);
+                view.AddBodyCut(anchor, nudgeDir, frac, result.HpDamage);
             }
 
             // Урон по щиту — синим «-N»; по HP — «-N» цветом урона. Если задет и щит, и HP —
@@ -777,40 +853,77 @@ namespace Guildmaster.Presentation
         /// «атакующий → цель»: направление удара он передаёт верно, теряется только то, с какой высоты
         /// замахнулись.
         /// </remarks>
+        /// <param name="impactPoint">
+        /// Точка попадания, уже разбросанная по области корпуса. Приходит параметром, а не считается
+        /// заново: знак удара, искры, порез и цифра обязаны прийти В ОДНО место, а два независимых
+        /// расчёта разъедутся на первой же правке разброса.
+        /// </param>
         private void SpawnHitForm(int sourceId, int targetId,
             in Combat.Tape.UnitSnapshot source, bool hasSource,
-            in Combat.Tape.UnitSnapshot target, DamageResult result, float hpDamageFrac, bool blocked)
+            in Combat.Tape.UnitSnapshot target, DamageResult result, float hpDamageFrac, bool blocked,
+            Vector3 impactPoint)
         {
-            bool ranged = IsRanged(sourceId);
-            if (!Effects.HitFormFactory.ResolveKind(result.Type, ranged, out Effects.HitFormKind kind))
+            // Паспорт источника спрашиваем ЯВНО, а не через IsRanged: тот отвечает «не дальний» и на
+            // «источника не существует», из-за чего безымянный урон молча получал язык ближнего боя —
+            // в консоли это выглядело как «у мили-удара юнита 0 тип урона Fire». Нет паспорта — нет и
+            // способа доставки, потому что неизвестно даже, чем бьют.
+            if (!_stage.TryGet(sourceId, out Combat.Tape.UnitIdentity identity) || identity.Definition == null)
+                return;
+
+            // Способ доставки спрашиваем у ОРУЖИЯ кита, а не у типа урона события: стойка может перекрасить
+            // автоатаку в стихию (ледяная стойка Мороза шлёт Ice), но махать он от этого продолжает тем же,
+            // чем махал. Форма говорит КАК доставили, цвет — ЧЕМ ударили; событие отвечает на второй вопрос.
+            bool ranged = identity.Definition.AttackType == AttackType.Ranged;
+            if (!Effects.HitFormFactory.ResolveKind(identity.Definition.AutoAttackDamageType, ranged,
+                                                    out Effects.HitFormKind kind))
             {
-                // Дефект контента, а не «формы не бывает»: удар в ближнем бою обязан называть способ
+                // Дефект контента, а не «формы не бывает»: автоатака в ближнем бою обязана называть способ
                 // доставки. Молчать нельзя — иначе кит без формы выглядит как задумка.
-                Debug.LogError($"[CombatPresenter] у мили-удара юнита {sourceId} тип урона {result.Type} " +
-                               "не называет способ доставки — форму рисовать нечем. Задай физический тип " +
-                               "или объяви архетип явно.");
+                VisualDefects.Report($"hit-form-kind:{DefectKeyOf(sourceId)}",
+                    $"[CombatPresenter] у кита {DefectKeyOf(sourceId)} тип автоатаки " +
+                    $"{identity.Definition.AutoAttackDamageType} не называет способ доставки — форму " +
+                    "рисовать нечем. Задай физический тип (Slash / Pierce / Blunt) или объяви архетип явно.");
                 return;
             }
 
-            Vector3 b = AnchorFor(targetId, target.Position);
+            Vector3 b = impactPoint;
             _views.TryGetValue(sourceId, out UnitView sourceView);
 
-            Vector3 a;
-            if (ranged && sourceView != null)
+            // НАПРАВЛЕНИЕ УДАРА, а не пара точек (06.08.2026). Знак говорит, КУДА рубанули, поэтому у
+            // ближнего боя его задаёт движение клинка в момент касания, а у выстрела — курс снаряда.
+            //
+            // Фолбэка здесь нет намеренно: не из чего вывести направление — значит формы не будет, а в
+            // консоли будет причина. Прежний путь «строим от корпуса» рисовал знак наугад и выдавал
+            // догадку показа за замысел.
+            Vector2 dir;
+            if (ranged)
             {
-                a = sourceView.ShotPoint;
-            }
-            else if (!ranged && sourceView != null && sourceView.TryGetStrikeOrigin(out Vector3 tip))
-            {
-                a = tip;
-            }
-            else if (hasSource)
-            {
-                a = new Vector3(source.Position.x, source.Position.y, b.z);
+                if (sourceView == null) return;
+                Vector2 course = (Vector2)(b - sourceView.ShotPoint);
+                if (course.sqrMagnitude < 1e-8f)
+                {
+                    VisualDefects.Report($"hit-form-course:{DefectKeyOf(sourceId)}",
+                        $"[CombatPresenter] выстрел юнита {DefectKeyOf(sourceId)} пришёл туда же, откуда " +
+                        "вышел — курса у снаряда нет, всполох рисовать не по чему.");
+                    return;
+                }
+                dir = course.normalized;
             }
             else
             {
-                return;   // источник неизвестен целиком (яд, шипы) — направления у формы нет и быть не может
+                if (sourceView == null)
+                {
+                    if (hasSource)
+                        VisualDefects.Report($"hit-form-view:{DefectKeyOf(sourceId)}",
+                            $"[CombatPresenter] мили-удар юнита {DefectKeyOf(sourceId)} пришёл от того, у " +
+                            "кого нет вида — чем махали, спросить не у кого, формы не будет.");
+                    return;
+                }
+
+                // Направление отвечает ЗАМЕРОМ КЛИПА, а не позой прямо сейчас: этот код исполняется до
+                // того, как Animator применит позу текущего кадра, и спрашивать кости здесь значит
+                // читать прошлый кадр — на быстрой атаке это десятки градусов.
+                if (!sourceView.TryGetStrikeDirection(out dir)) return;
             }
 
             // Форма кончается в цели у дробящего всегда, а у остальных — когда удар принял щит: он в тело
@@ -825,12 +938,12 @@ namespace Guildmaster.Presentation
             float freeze = _feel.EvaluateHitstopSeconds(hpDamageFrac);
 
             Effects.HitFormParams form = Effects.HitFormFactory.Build(
-                _feel, kind, a, b, hpDamageFrac,
+                _feel, kind, b, dir, hpDamageFrac,
                 core: _feel.HitFormCoreColor,
                 rim: GlowColorFor(sourceId),   // кайма — палитра бьющего: цвет говорит, ЧЕМ ударили
                 seed, endsAtHit, freeze);
 
-            _vfx.SpawnForm(_feel.VfxHitForm, in form);
+            _vfx.SpawnForm(_feel.VfxHitForm, in form, slot: nameof(_feel.VfxHitForm));
         }
 
         private void HandleHealed(int sourceId, int targetId, float amount)
@@ -848,7 +961,8 @@ namespace Guildmaster.Presentation
                 tView.OnHealed();                                    // тело отвечает на лечение, а не только цифра
                 tView.HealBodyCuts(amount);                          // и раны затягиваются — с самых старых
                 if (_vfx != null && _feel != null)
-                    _vfx.Spawn(_feel.VfxHeal, tView.HitPoint, tint: VfxPaletteFor(sourceId));  // палитра лечащего
+                    _vfx.Spawn(_feel.VfxHeal, tView.HitPoint, tint: VfxPaletteFor(sourceId),   // палитра лечащего
+                               slot: nameof(_feel.VfxHeal));
             }
         }
 
@@ -869,9 +983,9 @@ namespace Guildmaster.Presentation
         private async UniTaskVoid DelayedNumber(Vector3 worldPosition, string text, Color color, float delay, float sizeScale)
         {
             bool canceled = await UniTask.Delay(System.TimeSpan.FromSeconds(delay), DelayType.UnscaledDeltaTime,
-                                                cancellationToken: this.GetCancellationTokenOnDestroy())
+                                                cancellationToken: DeferredShowToken)
                                          .SuppressCancellationThrow();
-            if (canceled) return;   // презентер умер за время задержки — спавнить цифру некуда
+            if (canceled) return;   // бой кончился или презентер умер за время задержки — цифре некуда
             SpawnNumber(worldPosition, text, color, sizeScale);
         }
 
@@ -895,6 +1009,112 @@ namespace Guildmaster.Presentation
             return (Vector3)shownPosition + Vector3.up * 0.4f;
         }
 
+        /// <summary>
+        /// Точка попадания — ЗОНА ТЕЛА, а не точка: голова, корпус или верх ног. Зона выбирается
+        /// заявленным весом из feel-конфига, помноженным на долю её накрытия кругом атаки, поэтому
+        /// «мечник у великана бьёт по ногам» получается само собой, а не отдельным правилом.
+        /// <para>
+        /// <b>Круг атаки считается формулой симуляции</b> (<see cref="Combat.CombatPositioning.ReachCenter"/>:
+        /// <c>AttackRange</c> — зазор между поверхностями тел, к нему радиусы обоих). Из совпадения формул
+        /// следует гарантия, а не пожелание: если бой засчитал удар, ближайшая точка тела цели достижима.
+        /// Поэтому вырожденный ответ солвера — признак поломки, и о нём мы ГРОМКО ругаемся.
+        /// </para>
+        /// <para>
+        /// <b>Числа берутся из ленты</b> (<see cref="Combat.Tape.UnitSnapshot"/>) — дальность, размеры,
+        /// позиции: считать их по трансформам живых видов нельзя, те интерполируются под кадровую частоту.
+        /// <b>Геометрия зон читается со сцены</b> — мировые позиции якорей на костях, и это осознанная
+        /// цена: удар в голову обязан попадать туда, где голова НАРИСОВАНА, включая наклон в замахе и
+        /// масштаб чужого размерного тира. Следствие для кооператива названо прямо: у двух игроков
+        /// совпадёт зона при совпадающей позе, но не бит в бит при разной фазе анимации. Это допустимо
+        /// ровно потому, что урон к этому моменту уже решён боем, а расходится только МЕСТО вспышки.
+        /// </para>
+        /// <para>
+        /// <b>Разброс детерминирован.</b> Он выведен из самого удара — участники, место, урон, — тем же
+        /// хешем, что даёт сид формы (<c>HitFormFactory.SeedOf</c>). Ни <c>UnityEngine.Random</c>, ни
+        /// поток <c>IRngService</c> здесь не годятся: первый разошёлся бы между клиентами кооператива,
+        /// второй — сам боевой поток, и показ, дёрнув его, сдвинул бы симуляцию.
+        /// </para>
+        /// </summary>
+        /// <param name="targetId">Кому прилетело.</param>
+        /// <param name="shownPosition">Позиция цели на показанном тике (фолбэк, если вида нет).</param>
+        /// <param name="hasSource">Есть ли у удара автор в кадре: яд и горение бьют без него.</param>
+        /// <param name="source">Снимок автора удара — из него берутся позиция, дальность и размер.</param>
+        /// <param name="sourceId">Id автора: нужен, чтобы ругаться по КИТУ, а не по экземпляру.</param>
+        /// <param name="seed">Сид этого удара — тот же, что у формы: они обязаны совпасть местом.</param>
+        private Vector3 ImpactPointFor(
+            int targetId, Vector2 shownPosition, bool hasSource,
+            in Combat.Tape.UnitSnapshot source, int sourceId, uint seed)
+        {
+            if (!_views.TryGetValue(targetId, out var view) || view == null)
+                return (Vector3)shownPosition + Vector3.up * 0.4f;
+
+            if (_feel == null || !_feel.EnableImpactZones)
+                return view.HitPoint;
+
+            // Автора в кадре нет (яд, горение, шипы) — бить неоткуда: круг накрывает всё, сторона не
+            // определена. Это не исключение в правилах, а вырожденный ВХОД в те же правила.
+            float reach = float.PositiveInfinity;
+            Vector2 attackerWeighAt = shownPosition;
+            Vector2 attackerStrikeAt = shownPosition;
+            if (hasSource)
+            {
+                // Радиус — БУКВАЛЬНО формула симуляции (CombatPositioning.ReachCenter): зазор атаки плюс
+                // радиусы обоих тел. Своя арифметика здесь завела бы второго владельца факта, и показ
+                // начал бы спорить с боем о том, достал удар или нет.
+                float rSelf   = BodyRadiusOf(source.Size);
+                float rTarget = _frameIndex.TryGetValue(targetId, out var t) ? BodyRadiusOf(t.Size) : 0f;
+                reach = source.AttackRange + rSelf + rTarget;
+
+                // Круг идёт от КОРПУСА атакующего, а не от его позиции: позиция в симе стоит у ног, а зоны
+                // цели висят на высоте фигуры. Круг от ступней не дотянулся бы до чужой груди никогда, и
+                // «вырожденный случай» орал бы на каждом ударе вместо настоящей поломки.
+                bool hasSourceView = _views.TryGetValue(sourceId, out var sourceView) && sourceView != null;
+                float sourceHeight = hasSourceView ? sourceView.FigureHeight : view.FigureHeight;
+                attackerWeighAt  = source.Position + Vector2.up * (_feel.ImpactZoneBodyHeight * sourceHeight);
+                attackerStrikeAt = hasSourceView ? (Vector2)sourceView.AimBodyPoint : attackerWeighAt;
+            }
+
+            float h = view.FigureHeight;
+            // Два центра у каждой зоны: по WeighAt считается ВЕС (доля роста от позиции в ленте — одинаково
+            // у всех клиентов), вокруг StrikeAt ставится ТОЧКА (живой якорь — попадает в нарисованную часть).
+            var zones = new[]
+            {
+                new Effects.ImpactZoneSample(
+                    shownPosition + Vector2.up * (_feel.ImpactZoneHeadHeight * h), view.AimHeadPoint,
+                    _feel.ImpactZoneHeadRadius * h, _feel.ImpactZoneHeadWeight),
+                new Effects.ImpactZoneSample(
+                    shownPosition + Vector2.up * (_feel.ImpactZoneBodyHeight * h), view.AimBodyPoint,
+                    _feel.ImpactZoneBodyRadius * h, _feel.ImpactZoneBodyWeight),
+                new Effects.ImpactZoneSample(
+                    shownPosition + Vector2.up * (_feel.ImpactZoneLegsHeight * h), view.AimLegsPoint,
+                    _feel.ImpactZoneLegsRadius * h, _feel.ImpactZoneLegsWeight),
+            };
+
+            var solved = Effects.ImpactZoneSolver.Solve(
+                attackerWeighAt, attackerStrikeAt, shownPosition, reach, zones,
+                _feel.ImpactZoneReachSharpness, _feel.ImpactZoneNearSideBias, seed);
+
+            if (solved.Degenerate && hasSource)
+            {
+                VisualDefects.Report($"impact-zone-unreachable:{DefectKeyOf(sourceId)}",
+                    $"[CombatPresenter] удар кита {DefectKeyOf(sourceId)} засчитан боем, но показ не нашёл " +
+                    $"НИ ОДНОЙ достижимой зоны на цели {DefectKeyOf(targetId)}: круг атаки {reach:F2} ед. не " +
+                    "накрыл ни голову, ни корпус, ни ноги. Показ и бой считают досягаемость одной формулой, " +
+                    "поэтому такого быть не может — разъехались либо якоря зон в риге, либо радиусы зон в " +
+                    "feel-конфиге, либо снимок ленты. Бьём в наименее далёкую зону, но это заплатка.");
+            }
+
+            return new Vector3(solved.Point.x, solved.Point.y, view.FeetPoint.z);
+        }
+
+        /// <summary>
+        /// Радиус тела по <c>Size</c> — тот же множитель, что у сепарации и боевой досягаемости
+        /// (<see cref="Combat.CombatPositioning.BodyRadius"/>). Метрика обязана быть одна: разъедется —
+        /// показ и бой начнут по-разному отвечать на вопрос «достал ли удар».
+        /// </summary>
+        private static float BodyRadiusOf(float size) =>
+            Mathf.Max(0.01f, size) * Core.Simulation.SimTuning.Default.BodyRadiusPerSize;
+
         /// <summary>Снимок юнита на ПОКАЗАННОМ тике. <c>false</c> — его в этом кадре нет.</summary>
         private bool TryGetShown(int unitId, out Combat.Tape.UnitSnapshot snapshot)
         {
@@ -902,6 +1122,12 @@ namespace Guildmaster.Presentation
             snapshot = default;
             return false;
         }
+
+        /// <summary>Кит, а не экземпляр: дефект показа принадлежит определению, и говорится о нём один раз.</summary>
+        private string DefectKeyOf(int unitId) =>
+            _stage.TryGet(unitId, out Combat.Tape.UnitIdentity id) && id.Definition != null
+                ? id.Definition.Id.ToString()
+                : "unit#" + unitId;
 
         private bool IsMelee(int unitId) =>
             _stage.TryGet(unitId, out Combat.Tape.UnitIdentity id) && id.Definition != null
@@ -962,13 +1188,17 @@ namespace Guildmaster.Presentation
         /// Взмах начался — пускаем дугу за клинком. Она принадлежит ДВИЖЕНИЮ ОРУЖИЯ, а не удару, поэтому
         /// заводится здесь, на старте взмаха, и ничего не знает о том, попадёт ли он.
         /// </summary>
+        /// <remarks>
+        /// Своих чисел здесь нет намеренно: тумблер, яркость и весь вид следа раскладывает
+        /// <see cref="Effects.SwingArcLaunch"/> — тот же, кого зовёт редакторный стенд. Презентер отвечает
+        /// ровно за одно: чей это взмах и какого он цвета.
+        /// </remarks>
         private void OnUnitSwingStarted(UnitView view)
         {
             if (_vfx == null || _feel == null || view == null) return;
-            if (!_feel.EnableSwingArc) return;
 
-            _vfx.SpawnArc(_feel.VfxSwingArc, view, GlowColorFor(view.UnitId),
-                          _feel.SwingArcInnerShare, _feel.SwingArcTailBias, _feel.SwingArcFadeOut);
+            _vfx.SpawnArc(_feel.VfxSwingArc, view, _feel, GlowColorFor(view.UnitId),
+                          slot: nameof(_feel.VfxSwingArc));
         }
 
         /// <summary>Contact-dust: пыль у ног при старте/стопе бега (VfxData → префаб, тумблер в feel-конфиге).</summary>
@@ -976,7 +1206,7 @@ namespace Guildmaster.Presentation
         {
             if (_vfx == null || _feel == null || view == null) return;
             if (!_feel.EnableContactDust) return;
-            _vfx.Spawn(_feel.VfxContactDust, view.FeetPoint);
+            _vfx.Spawn(_feel.VfxContactDust, view.FeetPoint, slot: nameof(_feel.VfxContactDust));
         }
 
         /// <summary>Лениво собрать пул всплывающих цифр из префаба (zero-alloc в бою, пункт QA #5).</summary>
@@ -1012,10 +1242,12 @@ namespace Guildmaster.Presentation
                 ? BodyTintOf(identity.Definition)
                 : (IsAllyOfViewer(identity.Team) ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
 
-        // Ступень → цвет. Без палитры не гадаем: белый значит «арт как нарисован», и это честнее пурпура,
-        // потому что тинт по умолчанию и есть «не красим» — большинство юнитов носит None.
+        // Оттенок юнита → цвет тела. Без палитры не гадаем: белый значит «арт как нарисован», и это
+        // честнее пурпура — невыставленный тинт и есть «не красим».
         private Color BodyTintOf(UnitData definition) =>
-            _colorPalette != null ? _colorPalette.BodyTint(definition.BodyShade) : Color.white;
+            _colorPalette != null
+                ? _colorPalette.BodyTint(definition.VfxTone)
+                : Color.white;
 
         /// <summary>
         /// Цвета ЭФФЕКТОВ юнита. Их два, и они про разное: ГЛАВНЫЙ цвет — там, где цвет один (тело снаряда,

@@ -24,37 +24,46 @@ namespace Guildmaster.Net.Tape
     public sealed class TapeStreamer : IDisposable
     {
         /// <summary>Сколько отправленных чанков держим на случай запроса повтора.</summary>
-        public const int DefaultHistoryChunks = 32;
+        /// <summary>
+        /// Сколько чанков хост держит для повторной отправки. <see cref="KeepWholeBattle"/> — весь бой.
+        /// </summary>
+        /// <remarks>
+        /// <b>По умолчанию хранится ВЕСЬ бой</b> (решение Макса 04.08.2026), а не хвост в тридцать две
+        /// секунды. Причина не в потерях пакетов — тех и правда хватало, — а в подключении посреди боя:
+        /// гость получает ленту с нуля и потому встаёт в общую нумерацию без дыр, может отмотать назад
+        /// и имеет на руках полный бой. Отвергнута альтернатива «начинать отсчёт с первого полученного
+        /// чанка»: дешевле в байтах, но лишает гостя ленты и перемотки.
+        /// <para>Цена — память: чанк это секунда боя, порядка трёх килобайт; бой на три минуты
+        /// обходится в полмегабайта и живёт ровно до <see cref="Reset"/>, то есть до следующего боя.</para>
+        /// </remarks>
+        public const int DefaultHistoryChunks = KeepWholeBattle;
 
-        private readonly INetTransport   _transport;
-        private readonly BattleTape      _tape;
-        private readonly TapeChunkWriter _writer = new TapeChunkWriter();
-        private readonly int             _ticksPerChunk;
-        private readonly int             _historyChunks;
+        /// <summary>Не выбрасывать ничего: история равна бою целиком.</summary>
+        public const int KeepWholeBattle = int.MaxValue;
+
+        private readonly INetTransport _transport;
+        private readonly TapeChunkPump _pump;
+        private readonly int           _historyChunks;
 
         // Номер чанка → его байты. Копия обязательна: писатель отдаёт переиспользуемый буфер.
         private readonly Dictionary<int, byte[]> _history = new Dictionary<int, byte[]>();
         private readonly Queue<int>              _historyOrder = new Queue<int>();
 
         private byte[] _envelope;
-        private int    _nextTick;
 
         public TapeStreamer(INetTransport transport, BattleTape tape,
                             int ticksPerChunk = TapeChunkFormat.DefaultTicksPerChunk,
                             int historyChunks = DefaultHistoryChunks)
         {
             _transport     = transport ?? throw new ArgumentNullException(nameof(transport));
-            _tape          = tape      ?? throw new ArgumentNullException(nameof(tape));
-            _ticksPerChunk = ticksPerChunk > 0 && ticksPerChunk <= 255
-                ? ticksPerChunk
-                : throw new ArgumentOutOfRangeException(nameof(ticksPerChunk), "смещение тика в чанке едет байтом: 1..255");
+            _pump          = new TapeChunkPump(tape, ticksPerChunk);
             _historyChunks = Math.Max(1, historyChunks);
 
             _transport.MessageReceived += HandleMessage;
         }
 
         /// <summary>Первый тик, который ещё не уехал.</summary>
-        public int NextTick => _nextTick;
+        public int NextTick => _pump.NextTick;
 
         /// <summary>Сколько чанков отправлено с начала боя (повторы не считаются).</summary>
         public int SentChunkCount { get; private set; }
@@ -63,35 +72,34 @@ namespace Guildmaster.Net.Tape
         public int ResentChunkCount { get; private set; }
 
         /// <summary>
-        /// Отправить всё, что уже досчитано целыми чанками. Хвост короче
-        /// <see cref="_ticksPerChunk"/> остаётся ждать: неполный чанк уезжает только через
-        /// <see cref="Flush"/>, иначе конец боя дробился бы на однотиковые посылки.
+        /// Отправить всё, что уже досчитано целыми чанками. Хвост короче размера чанка остаётся ждать:
+        /// неполный чанк уезжает только через <see cref="Flush"/>, иначе конец боя дробился бы на
+        /// однотиковые посылки.
         /// </summary>
         /// <param name="readyThroughTick">Последний тик, который гостям уже можно видеть, включительно.</param>
-        public void Pump(int readyThroughTick)
-        {
-            while (readyThroughTick - _nextTick + 1 >= _ticksPerChunk)
-                SendChunk(_nextTick, _ticksPerChunk);
-        }
+        public void Pump(int readyThroughTick) => _pump.Pump(readyThroughTick, ChunkLimit(), Send);
 
         /// <summary>
         /// Дослать хвост неполным чанком — конец боя и любой момент, после которого продолжения не
         /// будет. Без него последние тики боя (исход в их числе) остались бы у хоста.
         /// </summary>
-        public void Flush(int readyThroughTick)
-        {
-            Pump(readyThroughTick);
+        public void Flush(int readyThroughTick) => _pump.Flush(readyThroughTick, ChunkLimit(), Send);
 
-            int rest = readyThroughTick - _nextTick + 1;
-            if (rest > 0) SendChunk(_nextTick, rest);
-        }
+        /// <summary>
+        /// Переслать кадр покоя — состояние арены, пока симуляция стоит (расстановка, площадка).
+        /// Границу отправленного не двигает: см. <see cref="TapeChunkPump.Resend"/>.
+        /// </summary>
+        public void Resend(int tick) => _pump.Resend(tick, ChunkLimit(), Send);
 
         /// <summary>Новый бой: нумерация тиков и чанков начинается заново, история сбрасывается.</summary>
         public void Reset()
         {
-            _nextTick = 0;
+            _pump.Reset();
             _history.Clear();
             _historyOrder.Clear();
+            // Догрузка принадлежит ПРОШЛОМУ бою: дошли эти чанки гостю или нет, они больше не про то,
+            // что сейчас на арене, а номера в новом бою начинаются заново и совпадут с чужими.
+            _backfill.Clear();
             SentChunkCount   = 0;
             ResentChunkCount = 0;
         }
@@ -99,43 +107,19 @@ namespace Guildmaster.Net.Tape
         /// <summary>Отписаться от транспорта. Зовётся вместе с концом сессии.</summary>
         public void Dispose() => _transport.MessageReceived -= HandleMessage;
 
-        private void SendChunk(int firstTick, int tickCount)
+        /// <summary>
+        /// Предел размера чанка спрашиваем у ТРАНСПОРТА, а не берём из своей константы: у Steam это
+        /// 512 КБ, у UTP — MaximumFragmentedMessageSize, и он заметно меньше. Сообщение сверх предела
+        /// Steam роняет молча (транспорт не читает его отказ), так что проверить обязаны мы. Потолок
+        /// формата тоже участвует — берём меньшее из двух.
+        /// </summary>
+        private int ChunkLimit() => Math.Min(_transport.MaxReliableMessageBytes - NetEnvelope.HeaderBytes,
+                                             TapeChunkFormat.MaxChunkBytes);
+
+        // Готовый чанк уходит гостям и ложится в историю на случай запроса повтора — та же операция, что
+        // раньше стояла хвостом SendChunk, теперь отданная насосу как приёмник.
+        private void Send(int number, ArraySegment<byte> bytes)
         {
-            int number = _writer.NextChunkNumber;
-            ArraySegment<byte> bytes = _writer.Write(_tape, firstTick, tickCount);
-
-            // Пустой срез — это не ошибка: в диапазоне не оказалось ни одного записанного кадра
-            // (бой ещё не начинался, лента чистилась). Номер чанка при этом НЕ тратится — писатель
-            // увеличивает его только когда пишет, — поэтому у гостя не появляется вечная дыра.
-            if (bytes.Count == 0)
-            {
-                _nextTick = firstTick + tickCount;
-                return;
-            }
-
-            // Предел спрашиваем у ТРАНСПОРТА, а не берём из своей константы: у Steam это 512 КБ, у UTP —
-            // MaximumFragmentedMessageSize, и он заметно меньше нашего потолка чанка. Сообщение сверх
-            // предела Steam роняет молча (транспорт не читает его отказ), так что проверить обязаны мы.
-            int limit = _transport.MaxReliableMessageBytes - NetEnvelope.HeaderBytes;
-            if (bytes.Count > limit)
-            {
-                _writer.DiscardLast();
-
-                // Один тик, который не влезает, — это уже не вопрос нарезки: на арене столько юнитов и
-                // событий, что кадр не пролезает в сеть целиком. Отказ громкий, потому что тихо здесь
-                // означало бы «у гостя просто нет куска боя».
-                if (tickCount <= 1)
-                    throw new InvalidOperationException(
-                        $"кадр тика {firstTick} весит {bytes.Count} Б при пределе {limit} Б — " +
-                        "делить дальше нечего");
-
-                int half = tickCount / 2;
-                SendChunk(firstTick, half);
-                SendChunk(firstTick + half, tickCount - half);
-                return;
-            }
-
-            _nextTick = firstTick + tickCount;
             Remember(number, bytes);
             _transport.SendToAll(NetEnvelope.Wrap(NetChannel.TapeChunk, bytes, ref _envelope), NetDelivery.Reliable);
             SentChunkCount++;
@@ -153,10 +137,68 @@ namespace Guildmaster.Net.Tape
                 _history.Remove(_historyOrder.Dequeue());
         }
 
+        /// <summary>
+        /// Отдать очередную порцию догрузки — бой с начала тому, кто подключился посреди него.
+        /// </summary>
+        /// <remarks>
+        /// <b>Порциями, а не залпом.</b> Бой на три минуты — это под две сотни надёжных сообщений, и
+        /// высыпать их в очередь Steam одним кадром значит выбрать худший момент: ровно этот, когда
+        /// соединение только поднялось. Отдаём по нескольку за кадр — показ у всех на паузе, спешить
+        /// некуда.
+        /// </remarks>
+        public void PumpBackfill(int maxPerCall = BackfillChunksPerCall)
+        {
+            for (int sent = 0; sent < maxPerCall && _backfill.Count > 0; )
+            {
+                (int peer, int number) = _backfill.Peek();
+                _backfill.Dequeue();
+
+                if (!_history.TryGetValue(number, out byte[] bytes)) continue; // такого чанка и не было
+
+                _transport.Send(peer,
+                    NetEnvelope.Wrap(NetChannel.TapeChunk, new ArraySegment<byte>(bytes), ref _envelope),
+                    NetDelivery.Reliable);
+                ResentChunkCount++;
+                sent++;
+            }
+        }
+
+        /// <summary>Сколько чанков догрузки ещё не ушло — по нему видно, ждать ли гостя.</summary>
+        public int BackfillRemaining => _backfill.Count;
+
+        /// <summary>
+        /// Кто-то попросил бой с начала: его номер пира и сколько чанков ему предстоит получить.
+        /// Слушает тот, кто держит бой на паузе, пока гость догружается.
+        /// </summary>
+        public event Action<int, int> WholeBattleRequested;
+
+        /// <summary>За один вызов — столько чанков, то есть примерно восемь секунд боя за кадр.</summary>
+        public const int BackfillChunksPerCall = 8;
+
+        private readonly Queue<(int Peer, int Number)> _backfill = new Queue<(int, int)>();
+
         private void HandleMessage(int from, ArraySegment<byte> message)
         {
             if (!NetEnvelope.TryUnwrap(message, out NetChannel channel, out ArraySegment<byte> payload)) return;
             if (channel != NetChannel.TapeResend) return;
+
+            // Пустая просьба — «пришли бой с начала»: так просит тот, кто подключился, когда бой уже
+            // идёт. Ставим ему в очередь всё, что храним, по возрастанию номера: приёмник складывает
+            // ленту по номерам и от порядка не зависит, но человеку, который смотрит на догрузку,
+            // естественнее видеть бой прибывающим с начала.
+            if (payload.Count == 0)
+            {
+                var numbers = new List<int>(_history.Keys);
+                numbers.Sort();
+                for (int i = 0; i < numbers.Count; i++) _backfill.Enqueue((from, numbers[i]));
+
+                // Просьба «дай бой с начала» — это и есть «кто-то подключился посреди боя». Отдельного
+                // сигнала для паузы не заводим: он был бы вторым владельцем одного факта, а этот
+                // приходит ровно тогда, когда нужно, и ровно от того, кого ждём.
+                WholeBattleRequested?.Invoke(from, numbers.Count);
+                return;
+            }
+
             if (payload.Count < sizeof(int)) return;
 
             int number = BitConverter.ToInt32(payload.Array, payload.Offset);

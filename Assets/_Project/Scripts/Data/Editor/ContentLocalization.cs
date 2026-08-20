@@ -34,9 +34,11 @@ namespace Guildmaster.Data.Editor
         /// Обязательные суффиксы ключей для типа (пусто = контент не локализуется). Политика:
         /// tag / ai_preset — техническая таксономия и ИИ, игроку не видны; encounter / battle_preset —
         /// dev-конструкты без player-facing текста (пикер показывает id; получат name/desc, когда станут
-        /// узлами карты); event — весь текст ивента (заголовок, тело, подписи и результаты вариантов) идёт
-        /// ключами, выведенными из id, а не <c>.name</c>/<c>.desc</c>; effect — <c>name</c> всегда,
-        /// <c>desc</c> лишь у эффекта с иконкой (видим в бафф-баре); прочий контент — <c>name</c>+<c>desc</c>.
+        /// узлами карты); outfit — сборка спрайтов, игрок видит её НА БОЙЦЕ, а не по имени (получит
+        /// name/desc, когда скины станут выбираемыми в витрине); event — весь текст ивента (заголовок,
+        /// тело, подписи и результаты вариантов) идёт ключами, выведенными из id, а не
+        /// <c>.name</c>/<c>.desc</c>; effect — <c>name</c> всегда, <c>desc</c> лишь у эффекта с иконкой
+        /// (видим в бафф-баре); прочий контент — <c>name</c>+<c>desc</c>.
         /// </summary>
         public static IReadOnlyList<string> RequiredSuffixes(ContentDefinition def)
         {
@@ -47,6 +49,7 @@ namespace Guildmaster.Data.Editor
                 case "ai_preset":
                 case "encounter":
                 case "battle_preset":
+                case "outfit":
                 case "vfx":
                     return Array.Empty<string>();
                 case "event":

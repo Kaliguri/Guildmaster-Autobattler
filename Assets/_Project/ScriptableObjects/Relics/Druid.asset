@@ -18,20 +18,28 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 1
   _resourceType: 1
-  _visual: {fileID: 11400000, guid: a4d7ac06ec4199f45b32b0e4fe7452ac, type: 2}
-  _viewPrefab: {fileID: 4284165950888649411, guid: 596b0e53e267a4643b70c724d56f25d8, type: 3}
-  _bodyShade: 0
-  _vfxTone: 14
+  _rangeBand: 3
+  _rangeAdjustPct: 0
+  _archetype: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
+  _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
+  _outfit: {fileID: 11400000, guid: 924228f4836e68148ae3acf9cb94802c, type: 2}
+  _vfxTone: 5
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackLengthMult: 1
   _autoAttackEffects:
   - {fileID: 11400000, guid: 17b0a5bf45cc4f74e88c2127ae84c1bb, type: 2}
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
   _windupShare: 0
+  _attackSwingTicks: 0
   _chargeAttackWindupMult: 1
+  _hitDamageShares: []
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
@@ -41,9 +49,6 @@ MonoBehaviour:
   - Stat: 8
     Op: 3
     Value: 0.425
-  - Stat: 9
-    Op: 3
-    Value: 8
   - Stat: 3
     Op: 3
     Value: 8
@@ -65,9 +70,11 @@ MonoBehaviour:
     _resourceCost: 45
     _targetMode: 4
     _damageMultiplier: 0
+    _baseDamage: 0
     _damageType: 0
+    _castRange: 0
     _areaShape: 0
-    _areaRadius: 1.5
+    _areaRadius: 2
     _healFlat: 0
     _healPctTargetMissingHp: 0
     _healEffect: {fileID: 11400000, guid: dd60a04a362a4b742b77529b3558aa75, type: 2}
@@ -79,18 +86,24 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0
     _triggerTag: 2048
     _consumesTriggerTag: 0
+    _maxTriggerUniques: 3
     _castSeconds: 0
     _channelSeconds: 0
     _channelTickSeconds: 1
     _canMoveWhileCasting: 0
+    _castSource: 0
     _statScalings: []
     _summonUnit: {fileID: 0}
     _summonCount: 1
+    _summonCountGrowth: 0
+    _summonCountCap: 0
     _summonLimit: 3
     _summonLifetimeSeconds: 0
     _summonDiesWithSummoner: 0
     _payloadRepeats: 1
     _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
     _displaces: 0
     _displaceDistance: 4
     _displaceDamageMult: 1

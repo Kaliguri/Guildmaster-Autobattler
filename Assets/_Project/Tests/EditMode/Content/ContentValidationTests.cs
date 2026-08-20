@@ -189,12 +189,29 @@ namespace Guildmaster.Tests.EditMode.Content
 
         // --- §8 правило 7: BattlePreset — энкаунтер задан, слоты ростера имеют релик (кит) ---
 
+        /// <remarks>
+        /// Пресет-ОБОЛОЧКА (<see cref="BattlePresetData.IsCarrier"/>) от требования состава освобождён:
+        /// враги и ростер приезжают ему снаружи, и пустота там законна. Проверка узнаёт роль по полю
+        /// ассета, а не по обратной ссылке из конфига: обратная ссылка ответила бы тесту, но молчала бы
+        /// человеку в инспекторе — а именно человек и лезет «дозаполнять» такой пресет.
+        /// </remarks>
         [Test]
         public void BattlePresets_Valid()
         {
             foreach (BattlePresetData preset in AllContent().OfType<BattlePresetData>())
             {
                 string path = AssetDatabase.GetAssetPath(preset);
+
+                if (preset.IsCarrier)
+                {
+                    Assert.IsNull(preset.Encounter,
+                        $"Battle preset '{preset.Id}' объявлен оболочкой, но несёт энкаунтер — состав ему " +
+                        $"задают снаружи, и свой он держать не должен ({path}).");
+                    Assert.IsTrue(preset.Roster == null || preset.Roster.Count == 0,
+                        $"Battle preset '{preset.Id}' объявлен оболочкой, но несёт ростер ({path}).");
+                    continue;
+                }
+
                 Assert.IsNotNull(preset.Encounter, $"Battle preset '{preset.Id}' has no encounter ({path}).");
                 Assert.IsNotNull(preset.Roster, $"Battle preset '{preset.Id}' has a null roster ({path}).");
 
@@ -203,6 +220,20 @@ namespace Guildmaster.Tests.EditMode.Content
                         $"Battle preset '{preset.Id}' has a roster slot with no relic — the relic slot must always be " +
                         $"filled (relic.base for an empty vessel) ({path}).");
             }
+        }
+
+        /// <summary>
+        /// Оболочка ровно одна и она та самая, на которую смотрит <c>MenuBattleConfig</c>: флаг
+        /// освобождает от проверки состава, поэтому проставленный по ошибке он тихо снял бы её с
+        /// обычного боя.
+        /// </summary>
+        [Test]
+        public void OnlyTheMenuCarrier_IsMarkedAsCarrier()
+        {
+            var carriers = AllContent().OfType<BattlePresetData>().Where(p => p.IsCarrier).Select(p => p.Id).ToList();
+            CollectionAssert.AreEquivalent(new[] { "battle_preset.menu_duel" }, carriers,
+                "Оболочкой объявлен не тот пресет (или не один): флаг снимает проверку состава, и лишний " +
+                "носитель — это бой без врагов, который никто не заметит.");
         }
 
         // --- §8 правило 7: последствия ивента ссылаются на существующий контент ---

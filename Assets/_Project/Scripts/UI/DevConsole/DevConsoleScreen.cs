@@ -92,8 +92,7 @@ namespace Guildmaster.UI.DevConsole
             Root.RegisterCallback<NavigationSubmitEvent>(evt =>
             {
                 Submit();
-                evt.StopPropagation();
-                evt.PreventDefault();
+                Consume(evt);
             }, TrickleDown.TrickleDown);
 
             Root.RegisterCallback<AttachToPanelEvent>(_ =>
@@ -108,16 +107,27 @@ namespace Guildmaster.UI.DevConsole
                 _logView?.schedule.Execute(ScrollToEnd);
             });
 
-            RebuildLog();
             UpdateStatus();
 
+            if (_log == null || _log.Count == 0) PrintWelcome();
+        }
+
+        /// <inheritdoc />
+        /// <remarks>
+        /// Подписка живёт ровно столько, сколько экран показан, и потому стоит здесь, симметрично
+        /// <see cref="OnExit"/>. В <c>Build</c> её держать нельзя: навигатор строит экран, только пока
+        /// <c>Root == null</c>, то есть один раз за сессию, а закрывают и открывают консоль много раз —
+        /// после первого закрытия она осталась бы без подписок и молчала бы на любую команду.
+        /// </remarks>
+        public override void OnEnter()
+        {
             if (_log != null)
             {
                 _log.Appended += OnLineAppended;
                 _log.Cleared  += RebuildLog;
             }
 
-            if (_log == null || _log.Count == 0) PrintWelcome();
+            RebuildLog(); // заодно догоняем строки, набежавшие, пока экран был закрыт
         }
 
         /// <summary>
@@ -284,15 +294,23 @@ namespace Guildmaster.UI.DevConsole
                 evt.direction == NavigationMoveEvent.Direction.Up ||
                 evt.direction == NavigationMoveEvent.Direction.Down)
             {
-                evt.StopPropagation();
-                evt.PreventDefault();
+                Consume(evt);
             }
         }
 
-        private static void Consume(EventBase evt)
+        /// <summary>
+        /// Гасит событие целиком: и дальнейшее распространение, и навигацию по умолчанию.
+        /// </summary>
+        /// <remarks>
+        /// Второе делал <c>PreventDefault</c>, объявленный устаревшим. Замена ему не одна:
+        /// распространение останавливает <c>StopPropagation</c>, а навигацию по фокусу отменяет
+        /// только <c>focusController.IgnoreEvent</c> — без него фокус всё равно уедет на соседний
+        /// элемент, и следующий Enter нажмёт постороннюю кнопку.
+        /// </remarks>
+        private void Consume(EventBase evt)
         {
             evt.StopPropagation();
-            evt.PreventDefault();
+            Root?.focusController?.IgnoreEvent(evt);
         }
 
         private void Submit()

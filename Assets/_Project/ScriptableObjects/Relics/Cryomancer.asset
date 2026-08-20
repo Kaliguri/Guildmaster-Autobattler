@@ -18,27 +18,34 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 1
   _resourceType: 1
-  _visual: {fileID: 11400000, guid: 03da3358ac0ba5f4ba06dee0a3e46b47, type: 2}
-  _viewPrefab: {fileID: 1689081689302941222, guid: e6d3989406ba28b4b8a60415116ba999, type: 3}
-  _bodyShade: 0
+  _rangeBand: 3
+  _rangeAdjustPct: 0
+  _archetype: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
+  _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
+  _outfit: {fileID: 11400000, guid: 924228f4836e68148ae3acf9cb94802c, type: 2}
   _vfxTone: 7
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackLengthMult: 1
   _autoAttackEffects:
   - {fileID: 11400000, guid: d1a3c5e7f9b2406d8a0c2e4f6b8d0a15, type: 2}
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
+  _windupShare: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
   - Stat: 8
     Op: 3
     Value: 0.68
-  - Stat: 9
-    Op: 3
-    Value: 8
   - Stat: 3
     Op: 3
     Value: 6
@@ -60,14 +67,16 @@ MonoBehaviour:
   - _id: ice_zone
     _effects:
     - {fileID: 11400000, guid: d1a3c5e7f9b2406d8a0c2e4f6b8d0a15, type: 2}
+    _selfEffects: []
     _baseCooldown: 0
     _resourceCost: 40
     _targetMode: 1
-    _damageMultiplier: 0.15
+    _damageMultiplier: 0
+    _baseDamage: 25
     _damageType: 11
+    _castRange: 0
     _areaShape: 2
     _areaRadius: 3
-    _areaAtTarget: 1
     _healFlat: 0
     _healPctTargetMissingHp: 0
     _healEffect: {fileID: 0}
@@ -79,9 +88,24 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0.3
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _maxTriggerUniques: 0
     _castSeconds: 0
-    _channelSeconds: 5
+    _channelSeconds: 6
     _channelTickSeconds: 0.5
+    _canMoveWhileCasting: 0
+    _castSource: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 1
     _displaces: 0
     _displaceDistance: 4
     _displaceDamageMult: 1
@@ -90,11 +114,11 @@ MonoBehaviour:
     _infoTags: []
   _aiPreset: {fileID: 11400000, guid: ba7e13bce9e895841b687a35814c5415, type: 2}
   _ai:
-    _autoAttackTargeting: 8
+    _autoAttackTargeting: 0
     _autoAttackMode: 0
     _targetTag: 128
     _retreat:
-      Enabled: 1
+      Enabled: 0
       FleeAtHpPct: 0.3
       ReturnAtHpPct: 0.55
     _kite:

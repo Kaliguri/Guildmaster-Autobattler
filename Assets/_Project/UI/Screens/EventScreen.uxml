@@ -1,16 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--event">
-            <ui:Label name="event-title" text="Событие" class="gm-panel__title" />
+            <ui:Label name="event-title" text="Событие" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
             <!-- Иллюстрация (опц.) — код включает и ставит фон, если у ивента есть Image. -->
             <ui:VisualElement name="event-image" class="gm-event-image" style="display: none;" />
 
-            <ui:Label name="event-body" text="" class="gm-event-body" />
+            <ui:Label name="event-body" text="" class="gm-text-body gm-event-body" />
 
             <!-- Кнопки вариантов катит код; после выбора здесь остаётся «Продолжить». -->
-            <ui:VisualElement name="event-choices" class="gm-event-choices" />
+            <ui:VisualElement name="event-choices" class="gm-choice-list" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

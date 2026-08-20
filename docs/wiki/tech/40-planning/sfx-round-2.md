@@ -310,7 +310,7 @@ Essentials `rpg`, Sonniss GDC `son`).
 Озвучивает **все** клики и ховеры разом, без правок в экранах.
 
 Второй уровень (если нужен разный звук): компонентные базы `Chip`, `Slot`, `RelicCard`,
-`VesselCard`, `SliderRow`, `ToggleRow`, `UiDragDrop` — по одному месту на семейство.
+`SliderRow`, `ToggleRow`, `UiDragDrop` — по одному месту на семейство.
 
 Открытие/закрытие экранов — `UiNavigator.Push/Pop/RemoveScreen/PopAll`
 (`UiNavigator.cs:120,143,250,171`), там же виден `ScreenKind`.

@@ -47,6 +47,8 @@ namespace Guildmaster.Game.Activity
         public void RequestStart()
         {
             Rebind();
+            Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
+                $"роутер часов: старт → часы занятия {(_bound == null ? "ОТСУТСТВУЮТ (занятия нет?)" : "есть")}");
             _bound?.RequestStart();
         }
 

@@ -8,8 +8,9 @@ namespace Guildmaster.Game.Flow
 {
     /// <summary>
     /// Рукопожатие между <see cref="BattleFlow"/> (RootScope, оркестрирует забег) и боевым скоупом
-    /// (<c>CombatLifetimeScope</c>, живёт один бой). Живёт в RootScope, виден обоим: root кладёт «какой бой
-    /// грузить» и ждёт исход; дочерний <c>BattleBootstrap</c> забирает запрос, запускает бой и репортит исход.
+    /// (<c>BattleScope</c>, живёт один бой — его рождает и хоронит <see cref="BattleHost"/>). Живёт в
+    /// RootScope, виден обоим: root кладёт «какой бой грузить» и ждёт исход; дочерний
+    /// <see cref="BattleStartup"/> забирает запрос, собирает бой и репортит исход.
     /// Единственный шов, пересекающий границу скоупов — держит её тонкой и сетевой-ready (в Фазе 6 хост
     /// шлёт тот же запрос по сети, клиенты ждут исход через ту же абстракцию).
     /// Реализует read-side <see cref="IBattleClock"/> (Data) — так UI читает фазу/время боя без ссылки на Game.
@@ -59,6 +60,15 @@ namespace Guildmaster.Game.Flow
 
         /// <summary>root → child: перезапустить бой (ретрай). Взводит новое ожидание. false = некому (нет боя).</summary>
         bool RequestRestart();
+
+        /// <summary>
+        /// Есть ли кому исполнить перезапуск (делегат привязан живым боевым скоупом).
+        /// </summary>
+        /// <remarks>
+        /// Спрашивается ДО списания попытки из пула акта: <see cref="RequestRestart"/> отвечает тем же
+        /// «нет» уже после того, как попытка потрачена, и игрок терял бы её без единого перезапуска.
+        /// </remarks>
+        bool CanRestart { get; }
 
         /// <summary>
         /// dev → перезапустить текущий бой НА МЕСТЕ, НЕ трогая ожидание исхода (в отличие от <see cref="RequestRestart"/>):
@@ -124,6 +134,8 @@ namespace Guildmaster.Game.Flow
         public void BindRestart(Action restart) => _restart = restart;
 
         public void UnbindRestart() => _restart = null;
+
+        public bool CanRestart => _restart != null;
 
         public void BindLaunch(Action<BattlePresetData> launch) => _launch = launch;
 
@@ -214,6 +226,11 @@ namespace Guildmaster.Game.Flow
 
         public void UnbindStart() => _start = null;
 
-        public void RequestStart() => _start?.Invoke();
+        public void RequestStart()
+        {
+            Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Ready,
+                $"сессия боя: RequestStart, обработчик {(_start == null ? "НЕ ПРИВЯЗАН" : "привязан")}");
+            _start?.Invoke();
+        }
     }
 }

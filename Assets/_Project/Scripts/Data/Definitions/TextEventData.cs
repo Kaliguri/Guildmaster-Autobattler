@@ -48,6 +48,30 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private EventEffect[] _effects;
 
         public IReadOnlyList<EventEffect> Effects => _effects ?? Array.Empty<EventEffect>();
+
+        /// <summary>
+        /// Сколько золота вариант стоит игроку ИТОГО: НЕТТО всех последствий-золота, взятое со знаком
+        /// «минус». Ноль — вариант ничего не стоит или приносит прибыль.
+        /// </summary>
+        /// <remarks>
+        /// <para>Считается из самих последствий, а не отдельным полем цены: объявленная дважды цена
+        /// разъедется с тем, что реально списывается, и разъедется молча — автор поправит одно число из
+        /// двух. Здесь автор пишет «−50» ровно один раз, а гейт доступности и транзакция читают его оба.</para>
+        /// <para>Именно нетто, а не сумма расходов: вариант «получишь сотню, отдашь тридцать» доступен и
+        /// с пустым кошельком, потому что в сумме он приносит. Считать по расходной части значило бы
+        /// гасить выгодный выбор перед тем, кому он нужнее всего.</para>
+        /// </remarks>
+        public int GoldCost
+        {
+            get
+            {
+                int net = 0;
+                IReadOnlyList<EventEffect> list = Effects;
+                for (int i = 0; i < list.Count; i++)
+                    if (list[i].Kind == EventEffectKind.Gold) net += list[i].Amount;
+                return net < 0 ? -net : 0;
+            }
+        }
     }
 
     /// <summary>Тип последствия выбора ивента (план 11 §5.1). Расширяется по мере узлов; центр — switch в applier.</summary>

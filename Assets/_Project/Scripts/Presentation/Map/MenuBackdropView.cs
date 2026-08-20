@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Core.Flow;
 using Guildmaster.Presentation.Effects;
 using MessagePipe;
@@ -8,7 +8,7 @@ using VContainer;
 namespace Guildmaster.Presentation.Map
 {
     /// <summary>
-    /// Задний фон ЭКРАНОВ: тот же стол, что под картой акта. Живёт на СВОЕЙ камере со своим слоем —
+    /// Задний фон ЭКРАНОВ МЕТЫ: настройки, пауза, главное меню. Живёт на СВОЕЙ камере со своим слоем —
     /// поэтому ни с чем в мире не спорит и ничего собой не заслоняет.
     /// </summary>
     /// <remarks>
@@ -24,12 +24,15 @@ namespace Guildmaster.Presentation.Map
     /// геометрии, так что тайлмап арены перекрывал стол на любом расстоянии, вплоть до вплотную к объективу.
     /// Своя камера с собственной маской слоёв снимает вопрос порядка целиком: она видит ровно один квад,
     /// перекрывает основную по depth, пока меню открыто, и гаснет вместе с ним.
-    /// <para>Материал берётся из <see cref="MapStyle"/> — тот же, что под картой. Это не экономия: фон меню
-    /// и фон карты обязаны быть одной поверхностью, иначе вход в забег читается как смена сцены.</para>
+    /// <para>Материал берётся из <see cref="MapStyle"/>, но СВОЙ — не тот, что под картой (05.08.2026).
+    /// Прежде здесь лежал стол, и обоснованием было «фон меню и фон карты обязаны быть одной
+    /// поверхностью». Оно перестало работать, когда мета получила собственный регистр: стол принадлежит
+    /// гроссбуху — миру и забегу, — а настройки и меню стоят по другую сторону этой границы. Вход в
+    /// забег и без общей поверхности не читается сменой сцены: между ними идёт шторка перехода.</para>
     /// </remarks>
     public sealed class MenuBackdropView : MonoBehaviour
     {
-        [Tooltip("Единый стиль карты — отсюда берётся материал стола. Пусто = фона не будет.")]
+        [Tooltip("Единый стиль карты — отсюда берётся материал задника меты. Пусто = фона не будет.")]
         [SerializeField] private MapStyle _style;
 
         [Tooltip("Слой, который видит ТОЛЬКО камера меню. Мир на этом слое ничего не держит.")]
@@ -43,30 +46,39 @@ namespace Guildmaster.Presentation.Map
         [SerializeField] private float _viewHeight = 8f;
 
         private ISubscriber<ScreenBackdropChangedEvent> _menuSub;
+        private ISubscriber<MenuBattleChangedEvent> _battleSub;
         private VisualToggles _toggles;
         private IDisposable _sub;
+        private IDisposable _battleSubscription;
 
         private Camera _camera;
         private MeshRenderer _quad;
         private MaterialPropertyBlock _block;
         private bool _menuOpen;
         private bool _enabledByToggle = true;
+        // За меню может идти живой бой (04.08.2026). Тогда стол не просто лишний — он закрывает собой
+        // ровно то, ради чего бой и заведён.
+        private bool _battleBehind;
+        // ...но экран может попросить стол ЯВНО (настройки: кадр занят целиком, панели нет). Такой запрос
+        // бой не отменяет — смотреть под настройки незачем, а мельтешение арены мешает читать строки.
+        private bool _overBattle;
 
         private static readonly int AspectXId = Shader.PropertyToID("_AspectX");
-        private static readonly int LightStrengthId = Shader.PropertyToID("_LightStrength");
-        private static readonly int AmbientId = Shader.PropertyToID("_Ambient");
-        private static readonly int PatternTilingId = Shader.PropertyToID("_PatternTiling");
 
         [Inject]
-        public void Construct(ISubscriber<ScreenBackdropChangedEvent> menuSub, VisualToggles toggles)
+        public void Construct(ISubscriber<ScreenBackdropChangedEvent> menuSub,
+                              ISubscriber<MenuBattleChangedEvent> battleSub,
+                              VisualToggles toggles)
         {
-            _menuSub = menuSub;
-            _toggles = toggles;
+            _menuSub   = menuSub;
+            _battleSub = battleSub;
+            _toggles   = toggles;
         }
 
         private void Start()
         {
-            _sub = _menuSub?.Subscribe(e => SetOpen(e.Visible));
+            _sub = _menuSub?.Subscribe(e => SetOpen(e.Visible, e.OverBattle));
+            _battleSubscription = _battleSub?.Subscribe(e => { _battleBehind = e.Running; ApplyVisibility(); });
 
             _toggles?.Register("menu.table", "Стол за экранами",
                 on => { _enabledByToggle = on; ApplyVisibility(); });
@@ -77,18 +89,21 @@ namespace Guildmaster.Presentation.Map
         private void OnDestroy()
         {
             _sub?.Dispose();
+            _battleSubscription?.Dispose();
             _toggles?.Unregister("menu.table");
         }
 
-        private void SetOpen(bool open)
+        private void SetOpen(bool open, bool overBattle)
         {
             _menuOpen = open;
+            _overBattle = overBattle;
             ApplyVisibility();
         }
 
         private void ApplyVisibility()
         {
-            bool show = _menuOpen && _enabledByToggle && _style != null && _style.TableMaterial != null;
+            bool show = _menuOpen && (!_battleBehind || _overBattle) && _enabledByToggle
+                        && _style != null && _style.MenuBackdropMaterial != null;
             if (show && _camera == null) Build();
             if (_camera != null) _camera.gameObject.SetActive(show);
             if (show) Fit();
@@ -125,7 +140,7 @@ namespace Guildmaster.Presentation.Map
             quadGo.transform.localPosition = new Vector3(0f, 0f, 5f);
 
             _quad = quadGo.GetComponent<MeshRenderer>();
-            _quad.sharedMaterial = _style.TableMaterial;
+            _quad.sharedMaterial = _style.MenuBackdropMaterial;
             _quad.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             _quad.receiveShadows = false;
         }
@@ -146,15 +161,11 @@ namespace Guildmaster.Presentation.Map
             float width = height * _camera.aspect;
             _quad.transform.localScale = new Vector3(width, height, 1f);
 
-            // Пропорции — в шейдер, иначе тайл стола растянется в полосы вдоль широкой стороны экрана.
+            // Пропорция кадра — единственное, что шлём: остальное задник держит в материале. Без неё
+            // картинка растянулась бы по широкой стороне, и диагональные лучи поехали бы углом.
             _block ??= new MaterialPropertyBlock();
             _quad.GetPropertyBlock(_block);
-            // Подача стола в меню — из MapStyle, рядом с карточной: один ассет держит оба набора чисел,
-            // и разницу между «под картой» и «в меню» видно, не открывая два места.
             _block.SetFloat(AspectXId, height > 0.01f ? width / height : 1f);
-            _block.SetFloat(LightStrengthId, _style.MenuTableLight);
-            _block.SetFloat(AmbientId, _style.MenuTableAmbient);
-            _block.SetFloat(PatternTilingId, _style.MenuTableTiling);
             _quad.SetPropertyBlock(_block);
         }
     }

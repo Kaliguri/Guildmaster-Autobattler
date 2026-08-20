@@ -60,8 +60,6 @@ namespace Guildmaster.ContentHub.Editor
             root.RegisterCallback<KeyDownEvent>(OnGlobalKey);
             ContentIndex.Changed -= OnIndexChanged;
             ContentIndex.Changed += OnIndexChanged;
-            EditorApplication.update -= ClipTick;
-            EditorApplication.update += ClipTick;
             RebuildContent();
             RefreshDoctorBadge();
         }
@@ -69,7 +67,6 @@ namespace Guildmaster.ContentHub.Editor
         private void OnDisable()
         {
             ContentIndex.Changed -= OnIndexChanged;
-            EditorApplication.update -= ClipTick;
             CloseCommandPalette();
         }
 

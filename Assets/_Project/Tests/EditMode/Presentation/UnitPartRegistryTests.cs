@@ -61,13 +61,15 @@ namespace Guildmaster.Tests.EditMode.Presentation
 
             var registry = UnitPartRegistry.FromBody(new[] { sword, shield }, root.transform);
 
+            // Часть зовётся по КОСТИ-хвату, а не по предмету в ней: имя хвата нейтрально к содержимому
+            // нарочно (RigNaming.GripPrefix), иначе кит с двумя мечами требовал бы миграции рига.
             Assert.That(registry.TryGetHeld(HandSlot.Right, out UnitPart inRight), Is.True);
-            Assert.That(inRight.Bone, Is.EqualTo("Sword"));
+            Assert.That(inRight.Bone, Is.EqualTo("Weapon_R"));
             Assert.That(registry.TryGetHeld(HandSlot.Left, out UnitPart inLeft), Is.True);
-            Assert.That(inLeft.Bone, Is.EqualTo("Shield"));
+            Assert.That(inLeft.Bone, Is.EqualTo("Weapon_L"));
 
             Assert.That(registry.TryGetHeld(HeldKind.Shield, out UnitPart byKind), Is.True);
-            Assert.That(byKind.Bone, Is.EqualTo("Shield"), "«дай щит» обязан работать без знания руки");
+            Assert.That(byKind.Bone, Is.EqualTo("Weapon_L"), "«дай щит» обязан работать без знания руки");
         }
 
         /// <summary>
@@ -112,7 +114,8 @@ namespace Guildmaster.Tests.EditMode.Presentation
         {
             GameObject root = NewRoot();
             Transform grip = Arm(root.transform, BodySide.Right, out _);
-            SpriteRenderer unnamed = Bone(grip, "Torch");   // без UnitHeldItem
+            // Рисунок висит прямо в кости-хвате, но объявления (UnitHeldItem) на ней нет.
+            SpriteRenderer unnamed = Child(grip, RigNaming.ArtName("Torch")).gameObject.AddComponent<SpriteRenderer>();
 
             LogAssert.Expect(LogType.Error, new System.Text.RegularExpressions.Regex("не объявлен"));
             var registry = UnitPartRegistry.FromBody(new[] { unnamed }, root.transform);
@@ -128,17 +131,16 @@ namespace Guildmaster.Tests.EditMode.Presentation
         {
             GameObject root = NewRoot();
             SpriteRenderer head = Bone(root.transform, "Head");
-            Transform legLeft = Child(root.transform, "Leg (Left)");
-            Transform legRight = Child(root.transform, "Leg (Right)");
-            SpriteRenderer bootLeft = Bone(legLeft, "Leg_Boots");
-            SpriteRenderer bootRight = Bone(legRight, "Leg_Boots");
+            // Сторона живёт суффиксом кости, а не контейнером над ней: контейнеры конвенция отменила.
+            SpriteRenderer bootLeft = Bone(root.transform, "Leg_Boots_L");
+            SpriteRenderer bootRight = Bone(root.transform, "Leg_Boots_R");
 
             var registry = UnitPartRegistry.FromBody(new[] { head, bootLeft, bootRight }, root.transform);
 
             Assert.That(registry.TryGetBone("Head", BodySide.None, out UnitPart headPart), Is.True);
             Assert.That(headPart.Side, Is.EqualTo(BodySide.None), "голова непарная");
 
-            Assert.That(registry.TryGetBone("Leg_Boots", BodySide.Right, out UnitPart rightBoot), Is.True);
+            Assert.That(registry.TryGetBone("Leg_Boots_R", BodySide.Right, out UnitPart rightBoot), Is.True);
             Assert.That(rightBoot.Index, Is.EqualTo(2), "правая нога — третья часть тела, не первая совпавшая");
         }
 
@@ -156,7 +158,7 @@ namespace Guildmaster.Tests.EditMode.Presentation
             var registry = UnitPartRegistry.FromBody(new[] { rightHand, head }, root.transform);
 
             Assert.That(registry.TryGetStrikeSource(HandSlot.Right, out UnitPart source), Is.True);
-            Assert.That(source.Bone, Is.EqualTo("Arm_Down_R"));
+            Assert.That(source.Bone, Is.EqualTo("Hand_R"));
             Assert.That(source.IsHand, Is.True);
         }
 
@@ -172,22 +174,33 @@ namespace Guildmaster.Tests.EditMode.Presentation
             var registry = UnitPartRegistry.FromBody(new[] { shield, sword }, root.transform);
 
             Assert.That(registry.TryGetStrikeSource(HandSlot.Right, out UnitPart source), Is.True);
-            Assert.That(source.Bone, Is.EqualTo("Sword"), "щит из другой руки — не источник удара правой");
+            Assert.That(source.Bone, Is.EqualTo("Weapon_R"), "щит из другой руки — не источник удара правой");
         }
 
+        // Здесь стоял тест покадрового тела из одного спрайта (ForSingleSprite): единственная запись
+        // отвечала и на «дай часть», и на «чем ударишь». Удалён 06.08.2026 вместе с самим покадровым
+        // путём — последний такой префаб ушёл из дерева днём раньше.
+
+        /// <summary>
+        /// Предмет без объявленной рабочей части не отвечает НИЧЕМ — и кричит об этом. Требование Макса
+        /// (04.08.2026): «Мы должны мочь ЯВНО указать спрайт. И для гизмо и для этого. Т.е. поле, а не
+        /// "первое по списку"». Догадка здесь молча назначала бы вылет: у меча из клинка, гарды и рукояти
+        /// первым по порядку отрисовки идёт не клинок, и дуга за оружием выходила бы размером с этот кусок.
+        /// </summary>
         [Test]
-        public void SingleSpriteBody_AnswersEveryQueryWithItself()
+        public void HeldItem_WithoutDeclaredReachPart_AnswersNothing_AndShouts()
         {
-            var go = new GameObject("Frame");
-            _spawned.Add(go);
-            var sprite = go.AddComponent<SpriteRenderer>();
+            GameObject root = NewRoot();
+            Transform grip = Arm(root.transform, BodySide.Right, out _);
+            SpriteRenderer sword = TestRigBuilder.Held(grip, "Sword", HeldKind.Weapon, declareReach: false);
 
-            var registry = UnitPartRegistry.ForSingleSprite(sprite);
+            LogAssert.Expect(LogType.Error, new System.Text.RegularExpressions.Regex("рабочая часть"));
+            var registry = UnitPartRegistry.FromBody(new[] { sword }, root.transform);
 
-            Assert.That(registry.TryGetStrikeSource(HandSlot.Right, out UnitPart source), Is.True);
-            Assert.That(source.Index, Is.EqualTo(0));
-            Assert.That(registry.Everything, Is.EqualTo(PartMask.Single(0)),
-                "покадровое тело светится целиком — его «всё» это единственная часть");
+            Assert.That(registry.TryGetHeld(HandSlot.Right, out _), Is.False,
+                "неразведённый предмет не имеет права ответить «чем бьют» — иначе вылет назначает порядок " +
+                "отрисовки, а не автор");
+            Assert.That(registry.TryGetHeld(HeldKind.Weapon, out _), Is.False);
         }
 
         // --- The cross-seam invariant ---------------------------------------------------------------

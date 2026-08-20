@@ -4,6 +4,7 @@
    роутер держит в списке только открытый раздел, а IntersectionObserver внутри раздела гасит
    канвасы за краем экрана. При девятнадцати сценах барьера разница — порядок величины. */
 
+import { requestPaint } from "./clock.js";
 import type { StandDef } from "./types.js";
 
 interface Live {
@@ -26,7 +27,10 @@ const io =
         (entries) => {
           for (const entry of entries) {
             const rec = records.get(entry.target);
-            if (rec) rec.visible = entry.isIntersecting;
+            if (!rec) continue;
+            rec.visible = entry.isIntersecting;
+            // Доскроллили до сцены, пока часы спали, — её надо нарисовать хотя бы раз.
+            if (rec.visible) requestPaint();
           }
         },
         // Запас в экран: стенд успевает нарисоваться до того, как игрок до него доскроллит,
@@ -44,6 +48,7 @@ export function watch(canvas: HTMLCanvasElement, stand: StandDef, w: number, h: 
   records.set(canvas, rec);
   live.push(rec);
   io?.observe(canvas);
+  requestPaint();
 }
 
 /** Сцена вне потока страницы: лайтбокс. Наблюдателем не проверяется — она заведомо на экране,
@@ -52,6 +57,12 @@ export function register(canvas: HTMLCanvasElement, stand: StandDef, w: number, 
   const rec: Live = { canvas, stand, w, h, visible: true, failed: false, cssW: 0 };
   records.set(canvas, rec);
   live.push(rec);
+  requestPaint();
+}
+
+/** Есть ли на странице живые сцены. По этому часы решают, крутить время или спать. */
+export function hasLive(): boolean {
+  return live.length > 0;
 }
 
 export function unregister(canvas: HTMLCanvasElement): void {

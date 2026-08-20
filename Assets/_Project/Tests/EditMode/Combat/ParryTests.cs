@@ -195,12 +195,12 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         private static EffectData ParryWindow() =>
-            TestEffect.Make(baseDuration: 0.3f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff,
+            TestEffect.Make(baseDuration: 0.3f, polarity: EffectPolarity.Buff, 
                 stacking: StackRule.Refresh, components: new ParryWindowComponent());
 
         private static EffectData MicroStun() =>
             TestEffect.Make(baseDuration: 0.4f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Debuff | EffectTag.Control, stacking: StackRule.Refresh,
+                tags: EffectTag.Control, stacking: StackRule.Refresh,
                 components: new ControlComponent(preventAct: true, preventMove: true, preventCast: true));
 
         private static EffectData RiposteCharge()
@@ -221,7 +221,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new StatModifier(StatType.MoveSpeed, ModifierOp.PercentMult, 0.3f),
             });
 
-            return TestEffect.Make(baseDuration: 1f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff,
+            return TestEffect.Make(baseDuration: 1f, polarity: EffectPolarity.Buff, 
                 stacking: StackRule.Refresh, components: mod);
         }
 

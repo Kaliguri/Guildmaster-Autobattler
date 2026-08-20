@@ -49,6 +49,15 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Полиморфные компоненты поведения (Combat-типы через SerializeReference). Шарятся между носителями — должны быть stateless.")]
         [SerializeReference] private IEffectComponent[] _components;
 
+        // Собран в коде через CreateRuntime (напр. sys.airborne), а не авторинг-ассет. НЕ сериализуется:
+        // у настоящих ассетов всегда false. По нему лента отличает системный эффект от контентного —
+        // системный в реестре контента не живёт, и записывать его по id нельзя (не резолвится при показе).
+        [System.NonSerialized] private bool _isRuntime;
+
+        /// <summary>Эффект собран в коде (<see cref="CreateRuntime"/>), а не авторинг-ассет: дома в реестре
+        /// контента у него нет, поэтому лента его событий не пишет (показ берёт его из снимка юнита).</summary>
+        public bool IsRuntime => _isRuntime;
+
         [Header("Presentation / info")]
         [Tooltip("Телеграф: за сколько секунд ДО наложения этот эффект анонсируется показом (щит «Оплота» " +
                  "поднимается заранее). Работает благодаря лаге показа: сим уже посчитал наложение, а игрок " +
@@ -137,6 +146,7 @@ namespace Guildmaster.Data.Definitions
         {
             var d = CreateInstance<EffectData>();
             d.SetId(id);
+            d._isRuntime    = true;   // системный: в реестре контента не живёт, лента его по id не пишет
             d._polarity     = polarity;
             d._tags         = tags;
             d._baseDuration = baseDuration;

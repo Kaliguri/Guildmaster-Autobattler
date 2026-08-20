@@ -18,10 +18,12 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 0
   _resourceType: 0
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3560619905337088494, guid: b878aa196bd029646a3f3d292a658691, type: 3}
-  _bodyShade: 3
-  _vfxTone: 14
+  _rangeBand: 0
+  _rangeAdjustPct: 0
+  _archetype: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
+  _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
+  _outfit: {fileID: 11400000, guid: 924228f4836e68148ae3acf9cb94802c, type: 2}
+  _vfxTone: 8
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackLengthMult: 1
@@ -49,9 +51,6 @@ MonoBehaviour:
   - Stat: 3
     Op: 3
     Value: 4
-  - Stat: 9
-    Op: 3
-    Value: 1
   _grantedEffects:
   - {fileID: 11400000, guid: 222d43a2d43f7034d826d0185bcc8468, type: 2}
   - {fileID: 11400000, guid: 199782a45d7530445a4c81f760246514, type: 2}

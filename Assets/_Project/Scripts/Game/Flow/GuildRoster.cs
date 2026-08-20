@@ -22,10 +22,18 @@ namespace Guildmaster.Game.Flow
             // ПОРЯДОК И ДЛИНА совпадают с run.Guild слот-в-слот: по индексу этого массива фаза расстановки
             // пишет назад позиции и надетые релики. Поэтому «плохой» слот не выпадает, а откатывается на
             // базовый кит — иначе одна опечатка в id сдвигала бы всю запись на соседний сосуд.
+            // Выпасть слот может ровно в двух аварийных случаях — пустая запись в гильдии и отсутствие
+            // даже базового кита в БД; оба означают битые данные и оба кричат в лог, потому что дальше
+            // расстановка будет писать правки не тому сосуду.
             var slots = new List<PlayerSlot>(run.Guild.Length);
             foreach (RosterSlot rs in run.Guild)
             {
-                if (rs == null) continue;
+                if (rs == null)
+                {
+                    Debug.LogWarning("[GuildRoster] - пустая запись в run.Guild → слот пропущен "
+                                     + "(индексы гильдии разъедутся)");
+                    continue;
+                }
 
                 string relicId = string.IsNullOrEmpty(rs.RelicId) ? ContentIds.BaseRelic : rs.RelicId;
                 if (!content.TryGet(relicId, out RelicData relic)

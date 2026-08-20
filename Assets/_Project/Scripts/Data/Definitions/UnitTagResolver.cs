@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Data.Stats;
 
 namespace Guildmaster.Data.Definitions
@@ -56,7 +56,9 @@ namespace Guildmaster.Data.Definitions
                 for (int i = 0; i < abilities.Length; i++)
                 {
                     AbilityData a = abilities[i];
-                    if (a == null || a.DamageMultiplier <= 0f) continue; // только наносящие прямой урон
+                    // Урон способности = своя база ИЛИ доля автоатаки: кит, чьё заклинание бьёт
+                    // собственной величиной, обязан объявить её тип наравне с ударными умениями.
+                    if (a == null || (a.DamageMultiplier <= 0f && a.BaseDamage <= 0f)) continue;
                     AddDamageType(a.DamageType);
                 }
 

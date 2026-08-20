@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
@@ -296,7 +296,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var stun = new ControlComponent().With("_preventAct", true);
             sim.ApplyEffect(caster, TestEffect.Make(
                 baseDuration: 1f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Control | EffectTag.Debuff, components: stun), caster);
+                tags: EffectTag.Control, components: stun), caster);
 
             for (int i = 0; i < 10; i++) sim.Tick(SimConstants.TickDelta);
 
@@ -342,7 +342,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var shield = new MissingHpShieldComponent().With("_flat", 20f).With("_pctMissingHp", 0.15f);
             return TestEffect.Make(
                 baseDuration: 2f, polarity: EffectPolarity.Buff,
-                tags: EffectTag.Shield | EffectTag.Buff, stacking: StackRule.Refresh,
+                tags: EffectTag.Shield, stacking: StackRule.Refresh,
                 components: shield);
         }
 
@@ -361,13 +361,13 @@ namespace Guildmaster.Tests.EditMode.Combat
             var stun = new ControlComponent().With("_preventAct", true);
             EffectData stunEffect = TestEffect.Make(
                 baseDuration: 0.5f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Control | EffectTag.Debuff, components: stun);
+                tags: EffectTag.Control, components: stun);
 
             var weaken = new StatModifierComponent().With("_modifiers",
                 new[] { new StatModifier(StatType.DamageDealtEff, ModifierOp.PercentMult, -0.3f) });
             EffectData weakenEffect = TestEffect.Make(
                 baseDuration: 3f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Debuff, components: weaken);
+                components: weaken);
 
             // Модель Макса 2026-07-31: активка НЕ бьёт сама. Она взводит уникальный удар — ×2, вне
             // очереди, — а стан и ослабление ложатся ПРИ ПОПАДАНИИ. Поэтому удар можно сбить контролем,

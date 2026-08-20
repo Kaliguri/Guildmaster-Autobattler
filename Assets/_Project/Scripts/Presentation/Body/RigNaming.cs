@@ -3,107 +3,86 @@ using UnityEngine;
 namespace Guildmaster.Presentation.Body
 {
     /// <summary>
-    /// Конвенция имён рига: как называются суставы (<c>Rotation Point (Elbow)</c>), хват предмета
-    /// (<c>Rotation Point (Grip)</c>), контейнер арта кости (<c>Visual Part (Head)</c>) и сторона тела
-    /// (<c>Arm (Left)</c>). Всё, что читает структуру рига — и в редакторе, и в рантайме, — спрашивает здесь.
+    /// Конвенция имён рига: кость зовётся как сустав, который она вращает (<c>LowerArm_R</c>), сторона
+    /// живёт суффиксом (<c>_R</c> / <c>_L</c>), а рисунок висит на кости отдельным узлом с суффиксом
+    /// <c>_Art</c> (<c>LowerArm_R_Art</c>). Всё, что читает структуру рига — и в редакторе, и в
+    /// рантайме, — спрашивает здесь.
     /// </summary>
     /// <remarks>
-    /// Конвенция родилась в editor-инструментах анимации (<c>RigProfileBuilder</c>, <c>RigVisualParts</c>)
-    /// и жила там же. Рантайму она понадобилась, когда свечению каста стало нужно адресовать ЧАСТЬ —
-    /// «то, что в хвате правой руки», а не «спрайт с именем Sword», — а editor-сборка в игре недоступна.
+    /// Имя кости обязано совпадать с именем трансформа: этого требует Unity для перепривязки клипов,
+    /// и на этом же держится цепочка <c>Shoulder → UpperArm → LowerArm → Hand</c>. Предмет —
+    /// звено цепи (<c>Weapon_R</c> внутри <c>Hand_R</c>), а не ветка рядом с ней: меч едет за ладонью
+    /// структурно, а не потому, что две ветки удалось согласовать.
     /// <para>
     /// Копия строк во втором файле была бы вторым владельцем: узлы рига переименовываются только через
     /// <c>RigMigrate</c> (иначе молча рвутся пути клипов, маски и аватар), и вторая копия конвенции
-    /// разошлась бы с первой без единой ошибки компиляции. Поэтому владелец переехал в рантайм-сборку,
+    /// разошлась бы с первой без единой ошибки компиляции. Поэтому владелец живёт в рантайм-сборке,
     /// а инструменты рига читают конвенцию отсюда.
+    /// </para>
+    /// <para>
+    /// Прежняя конвенция (<c>Rotation Point (Elbow)</c>, контейнер <c>Visual Part (…)</c>, сторона в
+    /// скобках у конечности) отменена 04.08.2026 вместе с перестройкой рига: три узла на часть тела
+    /// схлопнулись в два, и «где тут ось вращения» перестало быть вопросом — ось это сам узел.
     /// </para>
     /// </remarks>
     public static class RigNaming
     {
-        /// <summary>Префикс контейнера арта кости: <c>Visual Part (Head)</c>.</summary>
-        public const string ContainerPrefix = "Visual Part";
-
-        /// <summary>Префикс узла-сустава: <c>Rotation Point (Elbow)</c>.</summary>
-        public const string JointPrefix = "Rotation Point (";
-
-        /// <summary>Метка сустава-хвата: сустав, в котором висит предмет.</summary>
-        public const string GripLabel = "Grip";
+        /// <summary>Суффикс узла с рисунком: <c>LowerArm_R</c> -&gt; <c>LowerArm_R_Art</c>.</summary>
+        public const string ArtSuffix = "_Art";
 
         /// <summary>
-        /// Кость плеча. Единственное имя КОНКРЕТНОЙ кости в конвенции, и заведено оно не для красоты:
-        /// дуга за клинком идёт вокруг плеча, потому что рука — жёсткий рычаг и вращается вся плоскость
-        /// удара. Вокруг кисти получился бы веер у запястья, которого в движении нет.
+        /// Префикс кости-хвата: узла, в котором висит предмет. Имя нейтрально к содержимому нарочно —
+        /// назови узел по мечу, и кит с двумя мечами или с копьём потребует переименования кости, то
+        /// есть новой миграции клипов, масок и аватара.
         /// </summary>
-        public const string ShoulderBone = "Arm_Shoulder";
+        public const string GripPrefix = "Weapon_";
 
-        const string LeftMark  = "(Left)";
-        const string RightMark = "(Right)";
+        const string LeftSuffix  = "_L";
+        const string RightSuffix = "_R";
 
-        /// <summary>Имя контейнера арта для кости: <c>Head</c> -&gt; <c>Visual Part (Head)</c>.</summary>
-        public static string ContainerName(string boneName) => $"{ContainerPrefix} ({boneName})";
+        /// <summary>Имя узла рисунка для кости: <c>Head</c> -&gt; <c>Head_Art</c>.</summary>
+        public static string ArtName(string boneName) => boneName + ArtSuffix;
 
-        public static bool IsContainer(Transform node) =>
-            node != null && node.name.StartsWith(ContainerPrefix + " (", System.StringComparison.Ordinal);
+        /// <summary>Узел рисунка — лист с суффиксом <see cref="ArtSuffix"/>.</summary>
+        public static bool IsArt(Transform node) =>
+            node != null && node.name.EndsWith(ArtSuffix, System.StringComparison.Ordinal);
 
-        /// <summary>Узел-сустав (в том числе хват): имя начинается с <see cref="JointPrefix"/>.</summary>
-        public static bool IsJoint(Transform node) =>
-            node != null && node.name.StartsWith(JointPrefix, System.StringComparison.Ordinal);
+        /// <summary>
+        /// Кость — любой узел рига, который не рисунок. Отдельного понятия «сустав» больше нет: кость и
+        /// есть точка вращения, и это главное, что дала перестройка.
+        /// </summary>
+        public static bool IsBone(Transform node) => node != null && !IsArt(node);
 
-        /// <summary>Сустав-хват — тот, чья метка равна <see cref="GripLabel"/>.</summary>
+        /// <summary>Кость-хват: та, внутри которой висит предмет.</summary>
         public static bool IsGrip(Transform node) =>
-            IsJoint(node) && ExtractLabel(node.name) == GripLabel;
-
-        /// <summary><c>Rotation Point (Elbow)</c> -&gt; <c>Elbow</c>; имя без скобок возвращается как есть.</summary>
-        public static string ExtractLabel(string nodeName)
-        {
-            if (string.IsNullOrEmpty(nodeName)) return nodeName;
-            int open = nodeName.IndexOf('(');
-            int close = nodeName.LastIndexOf(')');
-            if (open < 0 || close <= open + 1) return nodeName;
-            return nodeName.Substring(open + 1, close - open - 1).Trim();
-        }
-
-        /// <summary><c>Visual Part (Head)</c> -&gt; <c>Head</c>.</summary>
-        public static string BoneNameFromContainer(string containerName) => ExtractLabel(containerName);
-
-        /// <summary>Контейнер арта этой кости, если он уже выделен (риг мог быть не разделён).</summary>
-        public static Transform FindContainer(Transform bone)
-        {
-            if (bone == null) return null;
-            for (int i = 0; i < bone.childCount; i++)
-            {
-                Transform child = bone.GetChild(i);
-                if (IsContainer(child)) return child;
-            }
-            return null;
-        }
+            node != null && node.name.StartsWith(GripPrefix, System.StringComparison.Ordinal);
 
         /// <summary>
-        /// True для контейнера и всего, что внутри него. Имена там принадлежат художнику — спрайтовый узел
-        /// может зваться <c>Head</c>, <c>Hair</c>, <c>Armor Plate</c>, — поэтому код, узнающий кости ПО ИМЕНИ,
-        /// обязан остановиться на контейнере, иначе выдумает сустав из куска арта.
+        /// Опознаватель ВОЛОС в имени узла рисунка (<c>Head_Hair_Art</c>). Волосы — единственная часть
+        /// самого тела, которую красит тинт юнита, поэтому их надо уметь отличать от лица и шеи.
         /// </summary>
-        public static bool IsUnderContainer(Transform node)
-        {
-            for (Transform t = node; t != null; t = t.parent)
-                if (IsContainer(t)) return true;
-            return false;
-        }
+        public const string HairToken = "Hair";
 
         /// <summary>
-        /// Кость, которую рисует этот рендерер: узел НАД контейнером арта. Рендерер, ещё не переехавший в
-        /// контейнер, сам себе кость.
+        /// Этот рисунок — волосы? Спрашивается по имени узла, потому что отдельной кости у волос нет:
+        /// они висят на голове вторым рисунком, и заводить им сустав значило бы врать риг ради ярлыка.
         /// </summary>
+        public static bool IsHair(string nodeName) =>
+            !string.IsNullOrEmpty(nodeName) &&
+            nodeName.IndexOf(HairToken, System.StringComparison.OrdinalIgnoreCase) >= 0;
+
+        /// <summary>Кость плеча нужной стороны — начало дуги удара: рука вращается как жёсткий рычаг.</summary>
+        public static string ShoulderBone(BodySide side) =>
+            side == BodySide.Left ? "Shoulder" + LeftSuffix : "Shoulder" + RightSuffix;
+
+        /// <summary>Кость, которую рисует этот рендерер: сам узел, если он не рисунок, иначе его родитель.</summary>
         public static Transform BoneOf(Transform rendererNode)
         {
             if (rendererNode == null) return null;
-            for (Transform t = rendererNode; t != null; t = t.parent)
-                if (IsContainer(t))
-                    return t.parent != null ? t.parent : t;
-            return rendererNode;
+            return IsArt(rendererNode) && rendererNode.parent != null ? rendererNode.parent : rendererNode;
         }
 
-        /// <summary>Имя кости, которую рисует этот рендерер (<c>Arm_Down</c>, <c>Sword</c>).</summary>
+        /// <summary>Имя кости, которую рисует этот рендерер (<c>LowerArm_R</c>, <c>Weapon_R</c>).</summary>
         public static string BoneNameOf(Transform rendererNode)
         {
             Transform bone = BoneOf(rendererNode);
@@ -111,25 +90,41 @@ namespace Guildmaster.Presentation.Body
         }
 
         /// <summary>
-        /// Сторона тела: берётся с конечности НАД узлом (<c>Arm (Left)</c>), поэтому сами суставы носят
-        /// одно имя на обе стороны. Поиск идёт до <paramref name="root"/> включительно-исключая: выше корня
-        /// тела уже чужая иерархия.
+        /// Первый узел рисунка на этой кости. Кость вправе нести несколько рисунков (лицо и волосы,
+        /// клинок, гарда и рукоять), поэтому «первый» — это порядок в иерархии, а не привилегия.
+        /// </summary>
+        public static Transform FindArt(Transform bone)
+        {
+            if (bone == null) return null;
+            for (int i = 0; i < bone.childCount; i++)
+            {
+                Transform child = bone.GetChild(i);
+                if (IsArt(child)) return child;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Сторона тела: читается из суффикса имени, своего или ближайшего предка до <paramref name="root"/>.
+        /// Кисть и хват собственного суффикса не теряют, но предок нужен для рисунков и вложенных предметов.
         /// </summary>
         public static BodySide SideOf(Transform node, Transform root)
         {
             for (Transform t = node; t != null && t != root; t = t.parent)
             {
-                if (t.name.Contains(LeftMark)) return BodySide.Left;
-                if (t.name.Contains(RightMark)) return BodySide.Right;
+                string name = t.name;
+                if (IsArt(t)) name = name.Substring(0, name.Length - ArtSuffix.Length);
+                if (name.EndsWith(LeftSuffix, System.StringComparison.Ordinal)) return BodySide.Left;
+                if (name.EndsWith(RightSuffix, System.StringComparison.Ordinal)) return BodySide.Right;
             }
             return BodySide.None;
         }
 
-        /// <summary>Суффикс логического id сустава: <c>.L</c> / <c>.R</c> / пусто.</summary>
+        /// <summary>Суффикс стороны для имени кости: <c>_L</c> / <c>_R</c> / пусто.</summary>
         public static string SideSuffix(BodySide side) => side switch
         {
-            BodySide.Left  => ".L",
-            BodySide.Right => ".R",
+            BodySide.Left  => LeftSuffix,
+            BodySide.Right => RightSuffix,
             _              => "",
         };
     }

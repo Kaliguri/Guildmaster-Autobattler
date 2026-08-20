@@ -83,7 +83,8 @@ namespace Guildmaster.UI
             SetBtn (root, "sort", L("ui.loadout.sort.name", "Имя") + " ↓");
             SetText(root, "video-hint", L("ui.loadout.video", "видео-вставка 16:9"));
             SetText(root, "basics-label", L("ui.loadout.basics", "Основное"));
-            SetText(root, "skills-label", L("ui.loadout.skills", "Способности"));
+            // Заголовка у секции способностей нет намеренно (см. комментарий в LoadoutInventoryScreen.uxml),
+            // поэтому и подписи здесь быть не должно: SetText искал бы элемент, которого в разметке нет.
             SetText(root, "upgrades-label", L("ui.loadout.upgrades", "Улучшения"));
             SetText(root, "stats-label", L("ui.loadout.stats", "Характеристики"));
 
@@ -214,7 +215,9 @@ namespace Guildmaster.UI
                 }
 
                 SetText(cardRoot, "num", Roman(i + 1));
-                SetText(cardRoot, "title", (Title(relic, titleOf) ?? relic.Id).ToUpperInvariant());
+                // Title возвращает null ровно при relic == null, поэтому запасной путь обязан быть таким
+                // же терпимым, как соседние строки цикла: иначе фолбэк падал бы именно там, где нужен.
+                SetText(cardRoot, "title", (Title(relic, titleOf) ?? relic?.Id ?? string.Empty).ToUpperInvariant());
 
                 // Клик → детали + запуск анимации ЭТОГО юнита (остальные замирают). Настройка «анимация
                 // карточек» выключена → карты статичны (idle-кадр), Animate не зовём.
@@ -341,15 +344,24 @@ namespace Guildmaster.UI
                 prev = t.Category;
             }
 
-            // Свёртка считается по РЕАЛЬНОЙ раскладке, поэтому ждём первый прошедший layout
-            // (до него ширины нулевые). Ширина панели фиксирована, так что замер нужен ровно один раз.
+            // Свёртка считается по РЕАЛЬНОЙ раскладке, поэтому ждём первый прошедший layout: до него
+            // ширины чипов нулевые, а считаем мы именно по ним.
+            //
+            // Ждём геометрию ЧИПА, а не контейнера. У контейнера размер задан в USS и при смене
+            // реликвии не меняется — GeometryChangedEvent на нём приходил ровно один раз, за всю
+            // жизнь панели: у первой показанной карточки теги сворачивались, у всех следующих лишние
+            // молча срезались overflow'ом, без чипа «+N» и без подсказки. Чипы же пересоздаются на
+            // каждое заполнение, и их геометрия устанавливается всегда.
+            VisualElement probe = container.childCount > 0 ? container[0] : null;
+            if (probe == null) return;
+
             void OnLaidOut(GeometryChangedEvent _)
             {
-                container.UnregisterCallback<GeometryChangedEvent>(OnLaidOut);
+                probe.UnregisterCallback<GeometryChangedEvent>(OnLaidOut);
                 CollapseOverflowingTags(container, names, L);
             }
 
-            container.RegisterCallback<GeometryChangedEvent>(OnLaidOut);
+            probe.RegisterCallback<GeometryChangedEvent>(OnLaidOut);
         }
 
         private const int TagRows = 3;    // столько строк тегов помещается в ряд (высота — из USS)
@@ -471,6 +483,8 @@ namespace Guildmaster.UI
         private static VisualElement TagSeparator()
         {
             var sep = new Label("|") { pickingMode = PickingMode.Ignore };
+            sep.AddToClassList("gm-text-note");
+            sep.AddToClassList("gm-text--muted");
             sep.AddToClassList("gm-tag-sep");
             return sep;
         }
@@ -501,9 +515,14 @@ namespace Guildmaster.UI
         {
             var cell = new VisualElement { focusable = true };
             cell.AddToClassList("gm-stat");
+            // Подпись — роль «метка» приглушённой меткой. Свой класс ей всё же нужен, и не ради
+            // вида: `.gm-stat:disabled .gm-stat__label` адресует её в выключенном состоянии строки.
             var l = new Label(label) { pickingMode = PickingMode.Ignore };
+            l.AddToClassList("gm-text-label");
+            l.AddToClassList("gm-text--muted");
             l.AddToClassList("gm-stat__label");
             var v = new Label(value) { pickingMode = PickingMode.Ignore };
+            v.AddToClassList("gm-text-note");
             v.AddToClassList("gm-stat__value");
             cell.Add(l);
             cell.Add(v);
@@ -514,11 +533,11 @@ namespace Guildmaster.UI
         private static string Title(RelicData r, Func<RelicData, string> titleOf)
             => r == null ? null : (titleOf != null ? titleOf(r) : r.Id);
 
-        // Спрайт релика: портрет из UnitVisual, иначе иконка-фолбэк.
+        // Спрайт релика: портрет из AnimationArchetypeData, иначе иконка-фолбэк.
         private static Sprite RelicSprite(RelicData relic)
         {
             if (relic == null) return null;
-            return relic.Visual != null && relic.Visual.Portrait != null ? relic.Visual.Portrait : relic.Icon;
+            return relic.Archetype != null && relic.Archetype.Portrait != null ? relic.Archetype.Portrait : relic.Icon;
         }
 
         // Номер аркана (плейсхолдер по индексу; финально — стабильный id из компендиума).

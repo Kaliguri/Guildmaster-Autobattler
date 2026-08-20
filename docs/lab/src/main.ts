@@ -10,7 +10,7 @@
 import * as clock from "./clock.js";
 import { clear, el } from "./dom.js";
 import { AREAS, PAGES, areaOf, pagesOf } from "./registry.js";
-import { invalidateSizes, paint, register, reset } from "./stage.js";
+import { hasLive, invalidateSizes, paint, register, reset } from "./stage.js";
 import type { AreaDef, PageDef, SectionDef, StandDef } from "./types.js";
 import { eachStand, hero, renderArea, renderHome, renderLegacy, renderSection, routeHref } from "./views.js";
 
@@ -40,7 +40,10 @@ const LEGACY_ANCHORS: Record<string, string> = {
 };
 
 function parseRoute(): Route {
-  const raw = location.hash;
+  // Хвост «?…» — параметры раздела (kit=, mode=): их читают сами разделы прямо из location.hash, а
+  // маршруту он мешает. Без этой строки `#/balance-kits?kit=Assassin` искался как раздел с именем
+  // «balance-kits?kit=Assassin» — то есть КАЖДАЯ ссылка на кита из таблиц вела на «Раздела нет».
+  const raw = location.hash.split("?")[0] ?? "";
   if (!raw.startsWith("#/")) {
     const flat = raw.slice(1);
     if (!flat) return { page: "index", anchor: null };
@@ -481,7 +484,7 @@ function boot(): void {
   });
 
   void renderRoute();
-  clock.start(render);
+  clock.start(render, hasLive);
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);

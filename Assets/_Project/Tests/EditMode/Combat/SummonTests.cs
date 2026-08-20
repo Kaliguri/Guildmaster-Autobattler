@@ -137,12 +137,17 @@ namespace Guildmaster.Tests.EditMode.Combat
             WithSummonFactory(ctx, kit);
 
             RuntimeUnit necro = Summoner();
+            // Мана с ЗАПАСОМ и тиков больше, чем лимит: иначе тест зелёный по чужой причине — армию
+            // останавливает не предел, а кончившийся ресурс, и отсутствие гейта он не заметит. Так и
+            // было до 03.08.2026: при 100 маны и цене 40 третий каст отсекался ценой, а лимита в коде
+            // не существовало вовсе.
+            necro.CurrentResource = 1000f;
             necro.Abilities.Add(new AbilityRuntime(TestAbility.Make(
                 cooldown: 0f, cost: 40f, mode: AbilityTargetMode.Self,
                 summonUnit: kit, summonCount: 1, summonLimit: 2, id: "necro.raise")));
 
             var units = new List<RuntimeUnit> { necro };
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 5; i++)
             {
                 sys.Tick(units, ctx, SimConstants.TickDelta);
                 units = new List<RuntimeUnit> { necro };
@@ -150,8 +155,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             }
 
             Assert.AreEqual(2, ctx.Summons.Count, "Лимит держит армию на двух телах");
-            Assert.AreEqual(20f, necro.CurrentResource, 1e-3f,
-                "Заблокированный каст не сжёг ману: 100 − 40 × 2");
+            Assert.AreEqual(1000f - 80f, necro.CurrentResource, 1e-3f,
+                "Заблокированный каст не сжёг ману: списано ровно за два состоявшихся призыва");
         }
 
         [Test]

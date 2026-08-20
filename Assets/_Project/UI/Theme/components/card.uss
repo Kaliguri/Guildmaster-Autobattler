@@ -1,0 +1,195 @@
+/* --- Карточка релика: спрайт персонажа + подпись (primary=спрайт по дизайну) ---
+   РАЗМЕР СЧИТАН ПО СОДЕРЖИМОМУ, а не назначен на глаз (заказ Макса 07.08.2026: «понять что
+   собирается и сделать норм размер, реальный размер»). Прежние 76x88 не вмещали ни того, ни
+   другого:
+     - имя. Роль «имя вещи» — 22px; чистого поля в старой карточке оставалось 58px (76 минус
+       padding и кайма). Самое длинное слово в наших именах классов — «копейщик», при этом кегле
+       около 88px. То есть не влезало НИ ОДНО реальное имя, а не только длинное;
+     - спрайт. Он тянется остатком (flex-grow), и после двух строк имени ему доставалось около
+       20px по высоте — при том, что карточка задумана показом анимированного персонажа
+       (план 10 §5), а не иконкой.
+   Отсюда 112x168: 94px чистой ширины вмещают самое длинное слово, а по высоте после имени в две
+   строки и отступов остаётся ровно 96 — размер спрайта юнита из нашей сетки.
+   Число проверяется ТОЛЬКО в игре: расчёт даёт вместимость, а не читаемость. */
+.gm-card {
+    width: 112px;
+    height: 168px;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+    border-radius: var(--gm-radius-0);
+    margin: var(--gm-space-1);
+    align-items: center;
+    justify-content: flex-end;
+    padding: var(--gm-space-1);
+}
+
+.gm-card:hover {
+    border-color: var(--gm-outline-color-hover);
+}
+
+/* Надетая/выбранная: подсветка того же аутлайна. */
+.gm-card--current {
+    border-color: var(--gm-color-accent);
+}
+
+.gm-card--selected {
+    border-color: var(--gm-color-focus-ring);
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-card__sprite {
+    flex-grow: 1;
+    width: 100%;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-card__name {
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* Карточка витрины — крупная (фокус экрана: показываем анимированный спрайт персонажа).
+   Пропорция ближе к карте таро, чем к плитке: тот же язык, что у грида инвентаря. */
+.gm-card--reward {
+    width: 240px;
+    height: 330px;
+    margin: var(--gm-space-2);
+}
+
+/* Карточка лавки — средняя, высоту держит содержимое (имя, цена, кнопка).
+   ПЕРЕЕХАЛА СЮДА 06.08.2026 из screens/shop.uss, где жила отдельным классом .gm-shop__card.
+   Отличалась она размером — и КАЙМОЙ: --gm-border-2 цвета --gm-color-border-inner против
+   --gm-outline-width цвета --gm-outline-color у базовой. Расхождение историческое (лавка писалась
+   отдельно), смысла за ним нет: витрина не «другая карточка», а та же в другом размере.
+   Кайма сведена к базовой по решению Макса 06.08.2026 — вид лавки при этом изменился. */
+.gm-card--shop {
+    width: 200px;
+    height: auto;
+    flex-shrink: 0;
+    padding: var(--gm-space-2);
+    justify-content: flex-start;
+}
+
+/* Проданная позиция: гаснет, но остаётся на месте — иначе витрина перекладывается под курсором. */
+.gm-card--sold {
+    opacity: 0.4;
+}
+
+/* Скроллбар грида карт вида не переопределяет: он приходит из общего правила контрола выше
+   (искать «СКРОЛЛБАР — ОДНО ПРАВИЛО»). Прежняя копия правил жила здесь и расходилась бы с ним. */
+
+/* --- Таро-карточка релика: кайма-в-кайме, номер аркана в углу, титул на нижней плашке --- */
+.gm-arcana-card {
+    width: var(--gm-card-width);
+    height: 227px;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+    border-radius: var(--gm-radius-0);
+    margin: var(--gm-card-gap);
+    padding: var(--gm-space-1);
+    flex-direction: column;
+}
+
+.gm-arcana-card:hover {
+    border-color: var(--gm-outline-color-hover);
+}
+
+/* Выбранная (ЛКМ) — латунная рамка + лёгкая заливка. */
+.gm-arcana-card--selected {
+    border-color: var(--gm-color-focus-ring);
+    background-color: var(--gm-color-hover-surface);
+}
+
+
+/* Заблокированная (не открытая) карта: тусклая, в центре — замок вместо арта, без номера/титула. */
+.gm-arcana-card--locked {
+    opacity: 0.45;
+}
+
+.gm-arcana-card--locked .gm-arcana-card__art {
+    background-image: url("../../../../Honeti/PixelArtGUI/Textures/Icons/16/LockGold.png");
+    -unity-background-image-tint-color: var(--gm-color-text-muted);
+    width: 40px;
+    flex-grow: 0;
+    height: 40px;
+}
+
+/* Внутренняя рамка вокруг арта — вторая кайма таро. */
+.gm-arcana-card__frame {
+    flex-grow: 1;
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color-inner);
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.gm-arcana-card__art {
+    flex-grow: 1;
+    width: 100%;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+/* Номер аркана (по ID релика) — латунь, верхний-правый угол арта. */
+.gm-arcana-card__num {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    color: var(--gm-color-heading-accent);
+    font-size: var(--gm-font-xs);
+}
+
+/* Нижняя плашка титула: отделена латунной линией сверху. Высота ФИКСИРОВАНА под две строки и текст
+   центрирован по вертикали — иначе 1-строчные и 2-строчные имена давали карты разной высоты (ряд скакал).
+   Теперь резерв всегда «как под 2 строки», и одна строка садится по центру того же места. */
+.gm-arcana-card__plaque {
+    height: 44px;
+    flex-shrink: 0;
+    justify-content: center;
+    border-top-width: var(--gm-border-1);
+    border-top-color: var(--gm-color-border-frame);
+    margin-top: var(--gm-space-1);
+    padding-top: var(--gm-space-1);
+}
+
+/* Титул таро-карты: очень мелкий (--gm-font-xxs) и с переносом в 2 строки — узкая таро-карта не
+   вмещает длинные имена («THE LIGHT SHEPHERD») в одну строку, а обрезать эллипсисом Макс не хочет. */
+.gm-arcana-card__title {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-xxs);
+    -unity-text-align: middle-center;
+    white-space: normal;
+    overflow: hidden;
+}
+
+/* === ЛЕСТНИЦА СОСТОЯНИЙ КАРТОЧЕК (06.08.2026) ===============================
+ * У карточек было только наведение: нажатие, фокус и недоступность не отличались от покоя ничем.
+ * Язык — общий с кнопкой: наведение поднимает, нажатие утапливает, фокус берёт латунную кайму
+ * (синюю рамку темы Unity мы гасим везде), недоступное гаснет ТЕКСТОМ и остаётся живым.
+ *
+ * Фокус здесь работает потому, что 06.08.2026 карточки стали focusable в конструкторе: до этого
+ * `VisualElement` не принимал фокус вовсе, и правило `:focus` было бы декорацией.
+ * ========================================================================== */
+.gm-card:active,
+.gm-arcana-card:active {
+    background-color: var(--gm-color-surface-sunken);
+    border-color: var(--gm-color-border-inner);
+}
+
+.gm-card:focus,
+.gm-arcana-card:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-card:disabled .gm-card__name,
+.gm-arcana-card:disabled .gm-arcana-card__title {
+    color: var(--gm-color-disabled-text);
+}
+
+/* Недоступная карточка не поднимается под курсором — см. строки настроек. */
+.gm-card:disabled:hover,
+.gm-arcana-card:disabled:hover {
+    border-color: var(--gm-color-border-subtle);
+}

@@ -48,6 +48,9 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Винительный: «накладывает {Горение}».</summary>
         public const string AccusativeSuffix = "name.acc";
 
+        /// <summary>Творительный: «поглощается {Щитом}».</summary>
+        public const string InstrumentalSuffix = "name.ins";
+
         /// <summary>Множественное число: «сжигает {стаки Горения}».</summary>
         public const string PluralSuffix = "name.plural";
 
@@ -71,7 +74,11 @@ namespace Guildmaster.Data.Definitions
             {
                 case "gen":    return GenitiveSuffix;
                 case "acc":    return AccusativeSuffix;
+                case "ins":    return InstrumentalSuffix;
                 case "plural": return PluralSuffix;
+                // «nom» — именительный, он и есть базовый {id}.name; сюда же попадает неизвестный
+                // падеж: текст звучит хуже, но остаётся целым.
+                case "nom":
                 default:       return NameSuffix;
             }
         }

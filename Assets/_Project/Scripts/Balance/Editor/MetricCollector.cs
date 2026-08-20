@@ -15,6 +15,27 @@ namespace Guildmaster.Balance.Editor
         public string Archetype;
         public int Team;
 
+        // --- ПРИЗЫВЫ ---
+        // Тело получает СВОЮ строку метрик, как любой юнит: «сколько бьёт один скелет» — такой же
+        // законный вопрос, как «сколько бьёт кит». Связь с хозяином держит OwnerId, и по ней же
+        // строится третий взгляд — призыватель вместе с армией.
+
+        /// <summary>Id хозяина для призванного тела; −1 у обычного юнита. Цепочка свёрнута до корня.</summary>
+        public int OwnerId = -1;
+
+        /// <summary>Строка описывает призванное тело, а не бойца отряда.</summary>
+        public bool IsSummon => OwnerId >= 0;
+
+        /// <summary>Тик появления. У расставленных до боя — 0.</summary>
+        public int SpawnTick;
+
+        /// <summary>
+        /// Сколько тиков юнит прожил в бою. У тел это шкала аптайма: сумма по армии, поделённая на
+        /// длительность боя, даёт СРЕДНЕЕ ЧИСЛО ЖИВЫХ ТЕЛ — без неё «набрал восемь к сороковой секунде»
+        /// неотличимо от «держал три весь бой», а играются они противоположно.
+        /// </summary>
+        public int AliveTicks;
+
         public double DamageDealt;
         public double DamageTaken;
         public double ShieldAbsorbed;
@@ -51,6 +72,17 @@ namespace Guildmaster.Balance.Editor
         /// <summary>Полученное лечение (от союзников и от себя).</summary>
         public double HealingReceived;
 
+        /// <summary>
+        /// Сколько урона приняли на себя щиты, которые ВЫДАЛ этот юнит (свои и чужие). Вторая половина
+        /// поддержки рядом с <see cref="HealingDone"/>: щитовик не лечит вовсе, и без этой строки вся его
+        /// работа читалась нулём.
+        /// </summary>
+        /// <remarks>
+        /// Считается по факту поглощения, а не по величине выданного щита: невостребованный щит команде
+        /// ничего не сберёг, и приписывать его как работу значило бы награждать за холостой каст.
+        /// </remarks>
+        public double ShieldGranted;
+
         /// <summary>Урон, срезанный бронёй и эффективностями до того, как коснулся щита или HP.</summary>
         public double DamageMitigated;
 
@@ -79,6 +111,26 @@ namespace Guildmaster.Balance.Editor
         /// <summary>Наложено дебаффов с тегом яда/горения — «химия» отдельно от прочей порчи.</summary>
         public int DotsApplied;
 
+        // --- СТАКОВЫЕ ЛИНИИ: лёд и угли ---
+        // Кит стаковой линии живёт не числом наложений, а тем, СКОЛЬКО стаков он успел собрать НА ОДНОЙ
+        // цели: сила там растёт со стаком, а размазанные по четверым стаки не дают ничего. Без разреза
+        // «всего / на цель / максимум» вопрос «он мало кладёт или кладёт не туда» неразрешим.
+
+        /// <summary>Наложено стаков «Изморози» суммарно по всем целям.</summary>
+        public int FrostStacksApplied;
+
+        /// <summary>Наибольшее число стаков «Изморози», доведённое до ОДНОЙ цели.</summary>
+        public int FrostStacksMaxOnTarget;
+
+        /// <summary>Сколько разных целей получили хотя бы один стак «Изморози».</summary>
+        public int FrostTargets;
+
+        /// <summary>Наложено стаков «Углей» суммарно по всем целям.</summary>
+        public int EmberStacksApplied;
+
+        /// <summary>Наибольшее число стаков «Углей» на одной цели.</summary>
+        public int EmberStacksMaxOnTarget;
+
         // --- УТИЛИТА: что юнит дал своим ---
 
         /// <summary>Сколько бафов выдал СОЮЗНИКАМ (себя не считаем — свои пассивки это не помощь команде).</summary>
@@ -104,9 +156,55 @@ namespace Guildmaster.Balance.Editor
 
         /// <summary>Остаток HP на конец боя, доля [0,1]. У погибшего — 0.</summary>
         public double HpPctLeft => MaxHp > 0.0 ? HpLeft / MaxHp : 0.0;
+
+        /// <summary>
+        /// Имя для таблиц: у тела с пометкой. Без неё строка «погиб SkeletonSwordsman» читается как
+        /// потеря бойца, хотя тело для того и призывалось, чтобы умереть вместо живого.
+        /// </summary>
+        public string DisplayLabel => IsSummon ? Label + " (призыв)" : Label;
+    }
+
+    /// <summary>
+    /// Свёрнутая работа ВСЕЙ армии одного призывателя за бой — третий взгляд рядом с «кит сам» и
+    /// «одно тело»: сколько армия нанесла, сколько приняла на себя и сколько её было.
+    /// </summary>
+    internal readonly struct SummonRollup
+    {
+        public readonly double DamageDealt;
+        public readonly double DamageTaken;
+        public readonly double HealingDone;
+        public readonly int Spawned;
+        public readonly int Deaths;
+        public readonly int AliveTicks;
+        public readonly int FirstSpawnTick;
+
+        public SummonRollup(double damageDealt, double damageTaken, double healingDone,
+            int spawned, int deaths, int aliveTicks, int firstSpawnTick)
+        {
+            DamageDealt = damageDealt;
+            DamageTaken = damageTaken;
+            HealingDone = healingDone;
+            Spawned = spawned;
+            Deaths = deaths;
+            AliveTicks = aliveTicks;
+            FirstSpawnTick = firstSpawnTick;
+        }
+
+        /// <summary>Среднее число живых тел за бой: аптайм армии, а не число вызовов.</summary>
+        public double AvgAlive(int durationTicks)
+            => durationTicks > 0 ? AliveTicks / (double)durationTicks : 0.0;
+
+        /// <summary>Секунда появления первого тела — рампа кита. −1, если не призвал ни разу.</summary>
+        public double FirstSpawnSeconds
+            => FirstSpawnTick < 0 ? -1.0 : FirstSpawnTick / (double)SimConstants.TickRate;
     }
 
     /// <summary>Итог одного боя: исход, длительность, timeout и метрики отслеживаемых юнитов.</summary>
+    /// <remarks>
+    /// В <see cref="Units"/> лежат и призванные тела (у них <see cref="UnitMetric.IsSummon"/>). Всё, что
+    /// считает ОТРЯД — павших, остаток HP, состав — обязано их отбросить: тело расходное, его смерть не
+    /// потеря бойца, а его HP не часть запаса отряда. Инвариант держит <c>SummonMetricsTests</c>.
+    /// </remarks>
     internal sealed class BattleReport
     {
         public BattleOutcome Outcome;
@@ -121,6 +219,29 @@ namespace Guildmaster.Balance.Editor
             for (int i = 0; i < Units.Count; i++)
                 if (Units[i].Id == id) return Units[i];
             return null;
+        }
+
+        /// <summary>Вся армия призывателя, свёрнутая в одну строку. Не призывал — все нули.</summary>
+        public SummonRollup Summons(int ownerId)
+        {
+            double dealt = 0.0, taken = 0.0, healed = 0.0;
+            int spawned = 0, deaths = 0, aliveTicks = 0, first = -1;
+
+            for (int i = 0; i < Units.Count; i++)
+            {
+                UnitMetric m = Units[i];
+                if (m.OwnerId != ownerId) continue;
+
+                dealt += m.DamageDealt;
+                taken += m.DamageTaken;
+                healed += m.HealingDone;
+                spawned++;
+                if (m.Died) deaths++;
+                aliveTicks += m.AliveTicks;
+                if (first < 0 || m.SpawnTick < first) first = m.SpawnTick;
+            }
+
+            return new SummonRollup(dealt, taken, healed, spawned, deaths, aliveTicks, first);
         }
     }
 
@@ -161,6 +282,8 @@ namespace Guildmaster.Balance.Editor
             sim.OnHealed += HandleHeal;
             sim.OnUnitDied += HandleDeath;
             sim.OnAttackEvaded += HandleEvaded;
+            sim.OnShieldAbsorbed += HandleShieldAbsorbed;
+            sim.OnUnitSpawned += HandleSpawned;
 
             // Контроль, проклятия и выданные бафы видны только на шве наложения эффекта. Он необязателен:
             // часть бенчей строит окружение без общего EffectSystem, и тогда эти корзины просто пусты.
@@ -230,6 +353,57 @@ namespace Guildmaster.Balance.Editor
                 sm.BuffsGranted++;
                 sm.BuffSecondsGranted += seconds;
             }
+        }
+
+        /// <summary>
+        /// Родилось призванное тело — заводим ему СВОЮ строку метрик. Дальше его считают те же
+        /// обработчики, что и всех: отдельного пути для призывов нет, есть только пометка хозяина.
+        /// </summary>
+        /// <remarks>
+        /// Хозяин ищется по цепочке <see cref="RuntimeUnit.Summoner"/> до первого отслеживаемого: призыв
+        /// призыва работает на того же кита, и его вклад должен доехать до корня, а не потеряться на
+        /// безымянном посреднике. Тело без отслеживаемого хозяина (вражеский костолом в энкаунтере)
+        /// строку не получает — приписывать его некому, а в отряд врага стенд и так не смотрит.
+        /// </remarks>
+        private void HandleSpawned(RuntimeUnit unit)
+        {
+            if (unit == null || !unit.IsSummon || _byId.ContainsKey(unit.Id)) return;
+
+            int ownerId = RootOwnerId(unit);
+            if (ownerId < 0) return;
+
+            _unitById[unit.Id] = unit;
+            _byId[unit.Id] = new UnitMetric
+            {
+                Id = unit.Id,
+                Label = unit.Unit != null ? unit.Unit.name : "summon",
+                Archetype = _byId[ownerId].Archetype,
+                Team = unit.Team,
+                OwnerId = ownerId,
+                SpawnTick = _sim.CurrentTick,
+            };
+        }
+
+        /// <summary>Id первого ОТСЛЕЖИВАЕМОГО хозяина в цепочке призывов; −1, если такого нет.</summary>
+        private int RootOwnerId(RuntimeUnit summon)
+        {
+            RuntimeUnit owner = summon.Summoner;
+            for (int guard = 0; owner != null && guard < 8; guard++)
+            {
+                if (_byId.TryGetValue(owner.Id, out UnitMetric m))
+                    return m.IsSummon ? m.OwnerId : m.Id;   // призыв призыва сворачиваем до корня
+                owner = owner.Summoner;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Щит поглотил урон. Автору идёт работа щита, носителю — уже посчитанный в
+        /// <see cref="HandleDamage"/> приём урона; двойного счёта нет, это разные корзины.
+        /// </summary>
+        private void HandleShieldAbsorbed(RuntimeUnit author, RuntimeUnit target, float amount)
+        {
+            if (author != null && _byId.TryGetValue(author.Id, out UnitMetric m)) m.ShieldGranted += amount;
         }
 
         private void HandleEvaded(RuntimeUnit target)
@@ -310,6 +484,11 @@ namespace Guildmaster.Balance.Editor
                     m.MaxHp = u.Stats.Get(StatType.MaxHP);
                     m.HpLeft = m.Died ? 0.0 : Mathf.Max(0f, u.CurrentHP);
                 }
+
+                // Прожитое считается ЗДЕСЬ по двум уже известным тикам, а не накапливается по ходу боя:
+                // счётчик времени жизни был бы вторым источником правды рядом с тиком смерти.
+                int endTick = m.Died ? m.DeathTick : durationTicks;
+                m.AliveTicks = Mathf.Max(0, endTick - m.SpawnTick);
 
                 report.Units.Add(m);
             }

@@ -18,10 +18,23 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Токен отмены забега (QA #37): отмена закрывает ивент через навигатор.</summary>
         public readonly CancellationToken Cancellation;
 
-        public OpenTextEventRequest(TextEventData ev, Action<int> onChosen, CancellationToken cancellation = default)
+        /// <summary>
+        /// Золото забега на момент открытия — по нему экран гасит варианты, которые игроку не по карману.
+        /// </summary>
+        /// <remarks>
+        /// Приезжает числом в запросе, а не запрашивается экраном у забега: UI не знает про
+        /// <c>RunState</c> и знать не должен, а ивент открыт ровно на один выбор — за это время золото
+        /// измениться неоткуда. Настоящий гейт всё равно стоит в <c>EventEffectApplier</c>: здесь только
+        /// то, что игрок видит.
+        /// </remarks>
+        public readonly int Gold;
+
+        public OpenTextEventRequest(TextEventData ev, Action<int> onChosen, int gold = 0,
+                                    CancellationToken cancellation = default)
         {
             Event        = ev;
             OnChosen     = onChosen;
+            Gold         = gold;
             Cancellation = cancellation;
         }
     }

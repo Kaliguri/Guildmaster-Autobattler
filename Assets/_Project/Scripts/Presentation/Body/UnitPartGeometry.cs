@@ -31,22 +31,60 @@ namespace Guildmaster.Presentation.Body
             SpriteRenderer renderer = part.Renderer;
             if (renderer == null || renderer.sprite == null) return false;
 
-            Bounds local = renderer.sprite.bounds;   // уже с учётом pivot: ноль = точка крепления
-            Vector2 min = local.min;
-            Vector2 max = local.max;
+            // ОБЪЯВЛЕННЫЙ размер важнее замера: длина оружия — величина данных, а не картинки. Пока её
+            // не объявили, работает замер по мешу (переходный режим, см. UnitHeldItem.DeclaredLength).
+            if (part.IsReach && renderer.transform.parent != null
+                && renderer.transform.parent.TryGetComponent(out UnitHeldItem held)
+                && held.TryGetDeclaredTip(out world))
+                return true;
 
-            Vector2 best = min;
+            if (!TryMeasureTipFromMesh(renderer, out Vector3 local)) return false;
+            world = renderer.transform.TransformPoint(local);
+            return true;
+        }
+
+        /// <summary>
+        /// ЧИСТЫЙ замер кончика по мешу спрайта, в локальных координатах рендерера: дальняя от точки
+        /// крепления вершина. Объявленный размер здесь НЕ учитывается — это и есть смысл метода.
+        /// </summary>
+        /// <returns><c>false</c>, если у спрайта нет вершин.</returns>
+        /// <remarks>
+        /// Отдельный публичный метод нужен редакторной кнопке «Замерить вылет по мешу»: она обязана
+        /// спросить именно картинку. Позови она <see cref="TryGetTip"/>, тот вернул бы уже объявленное
+        /// значение, и «замер» переписал бы число им же самим — тождество вместо проверки.
+        /// <para>
+        /// Меряем по МЕШУ, а не по углам рамки: клинок «сторибука» нарисован по диагонали кадра, и дальний
+        /// угол рамки лежит в пустоте за остриём. Меш обтягивает рисунок (28 вершин у клинка), поэтому
+        /// дальняя вершина и есть остриё. Спрайт с рамочным мешом (4 вершины) деградирует к углам сам
+        /// собой — это те же вершины.
+        /// </para>
+        /// <para>
+        /// Похожий на вид <c>RigProfile.MeasureAxis</c> — НЕ дубль и сливать их нельзя: он меряет от точки
+        /// ХВАТА (не от нуля рендерера) и ищет заодно пятку, потому что отвечает на другой вопрос — «куда
+        /// смотрит предмет», а не «где его остриё».
+        /// </para>
+        /// </remarks>
+        public static bool TryMeasureTipFromMesh(SpriteRenderer renderer, out Vector3 local)
+        {
+            local = default;
+            if (renderer == null || renderer.sprite == null) return false;
+
+            Vector2[] vertices = renderer.sprite.vertices;
+            if (vertices == null || vertices.Length == 0) return false;
+
+            Vector2 best = vertices[0];
             float bestSqr = -1f;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < vertices.Length; i++)
             {
-                var corner = new Vector2(i < 2 ? min.x : max.x, (i & 1) == 0 ? min.y : max.y);
-                float sqr = corner.sqrMagnitude;
+                // Ноль локальных координат = точка крепления: риг авторится так, что pivot спрайта сидит
+                // там, где часть держится за родителя. Значит дальняя от нуля вершина — остриё.
+                float sqr = vertices[i].sqrMagnitude;
                 if (sqr <= bestSqr) continue;
                 bestSqr = sqr;
-                best = corner;
+                best = vertices[i];
             }
 
-            world = renderer.transform.TransformPoint(best);
+            local = best;
             return true;
         }
     }

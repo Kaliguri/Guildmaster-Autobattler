@@ -1,0 +1,34 @@
+﻿# SimBench — матрица матчапов, отряды 4v4
+_Сгенерировано 2026-08-04 06:07 — SimBench_
+
+Ячейка [строка i, столбец j] — исход для i (левого) против j (правого): W/L/D. Число рядом с W/D — остаток HP команды левого на конец боя, %: цена победы. У L он всегда 0 и не пишется.
+
+| Left \ Right | Antimage | Arcanist | Assassin | BaseRelic | Cryomancer | Defender | Dreameater | Druid | Emberkeeper | FlameSwordsman | Frostbound | Hemomancer | IronSpearman | LightShepherd | Necromancer | Nightblade | Ranger | TrashArcher | TrashBonecaller | TrashBrawler | TrashCutthroat | TrashHerbalist | TrashHexer | TrashShieldbearer | Treant | WaterMonk | WhirlMonk |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Antimage | - | L | L | W 42% | W 16% | L | W 11% | L | L | L | L | W 24% | L | L | L | L | L | W 21% | W 23% | W 32% | W 42% | W 34% | D 13% | W 22% | L | L | D 13% |
+| Arcanist | W 13% | - | D 23% | W 45% | W 18% | L | D 16% | L | D 4% | D 4% | L | W 28% | D 3% | D 3% | L | D 1% | W 17% | W 32% | W 37% | W 40% | W 46% | W 39% | W 25% | W 39% | D 4% | L | D 27% |
+| Assassin | W 37% | D 5% | - | W 45% | W 34% | L | W 37% | D 1% | D 2% | W 7% | D 1% | W 41% | D 1% | W 62% | D 5% | L | D 4% | W 62% | W 61% | W 22% | W 43% | W 66% | W 35% | W 31% | D 2% | L | D 28% |
+| BaseRelic | L | L | L | - | L | L | L | L | L | L | L | L | L | L | L | L | L | L | L | L | L | L | L | L | L | L | L |
+| Cryomancer | L | L | L | W 43% | - | L | W 14% | L | L | L | L | W 24% | L | L | L | L | L | W 21% | W 29% | W 32% | W 44% | W 30% | W 17% | W 20% | L | L | D 18% |
+| Defender | W 52% | W 14% | W 26% | W 62% | W 28% | - | D 37% | L | W 8% | W 38% | W 18% | W 41% | W 47% | L | W 43% | L | W 51% | W 40% | W 59% | W 58% | W 60% | W 56% | W 52% | W 54% | L | W 27% | W 51% |
+| Dreameater | L | D 2% | L | W 35% | L | D 0% | - | D 2% | L | D 4% | D 3% | W 16% | L | L | L | L | D 5% | W 15% | W 30% | W 28% | W 31% | W 43% | D 19% | L | L | L | D 7% |
+| Druid | W 49% | W 34% | D 12% | W 48% | W 54% | W 29% | D 33% | - | W 33% | W 46% | W 39% | W 51% | L | D 16% | W 52% | D 1% | W 49% | W 56% | W 67% | W 60% | W 52% | W 72% | W 57% | W 49% | W 13% | L | D 36% |
+| Emberkeeper | W 6% | D 33% | D 7% | W 46% | W 25% | L | W 37% | L | - | W 34% | W 4% | W 34% | L | L | L | L | W 12% | W 32% | W 38% | W 41% | W 51% | W 44% | D 34% | W 35% | L | L | D 34% |
+| FlameSwordsman | W 15% | D 1% | L | W 42% | W 11% | L | D 33% | L | L | - | L | W 20% | L | L | L | L | D 1% | W 26% | W 41% | W 30% | W 43% | W 39% | D 20% | W 25% | D 1% | L | D 3% |
+| Frostbound | W 35% | W 25% | D 38% | W 49% | W 29% | L | D 34% | L | L | W 28% | - | W 35% | L | L | L | L | W 21% | W 37% | W 45% | W 42% | W 51% | W 52% | W 38% | W 35% | L | L | D 25% |
+| Hemomancer | L | L | L | W 29% | L | L | L | L | L | L | L | - | L | L | L | L | L | L | W 17% | W 18% | W 29% | L | L | L | L | L | L |
+| IronSpearman | W 27% | D 9% | D 11% | W 44% | W 35% | L | W 34% | W 19% | W 15% | W 27% | W 25% | W 27% | - | L | W 38% | L | W 32% | W 43% | W 39% | W 35% | W 43% | W 58% | W 35% | W 42% | L | L | D 34% |
+| LightShepherd | W 44% | D 25% | L | W 57% | W 50% | W 46% | W 61% | D 7% | W 39% | W 48% | W 44% | W 55% | W 17% | - | W 49% | L | W 44% | W 52% | W 60% | W 56% | W 57% | W 70% | W 48% | W 60% | W 38% | W 40% | W 47% |
+| Necromancer | W 34% | L | D 28% | W 50% | W 26% | W 4% | W 41% | L | D 5% | W 20% | W 4% | W 30% | L | L | - | L | W 7% | W 34% | W 42% | W 46% | W 49% | W 45% | W 36% | W 32% | W 6% | L | W 38% |
+| Nightblade | W 43% | D 37% | W 39% | W 56% | W 43% | W 37% | W 50% | D 18% | W 30% | W 46% | W 35% | W 42% | W 30% | W 31% | L | - | W 38% | W 52% | W 51% | W 52% | W 56% | W 64% | W 49% | W 51% | W 30% | L | W 47% |
+| Ranger | W 11% | L | D 29% | W 48% | W 5% | L | D 8% | L | L | D 6% | L | W 24% | L | L | L | L | - | W 26% | W 36% | W 42% | W 49% | W 39% | W 26% | W 11% | L | L | D 25% |
+| TrashArcher | L | L | L | W 35% | L | L | L | L | L | L | L | W 14% | L | L | L | L | L | - | L | W 24% | W 42% | W 11% | L | W 28% | L | L | L |
+| TrashBonecaller | D 3% | L | L | W 32% | L | L | L | L | L | L | L | L | L | L | L | L | L | D 4% | - | W 27% | W 40% | W 18% | D 4% | L | L | L | L |
+| TrashBrawler | L | L | L | W 27% | L | L | L | L | L | L | L | L | L | L | L | L | L | L | L | - | W 30% | W 7% | L | L | L | L | L |
+| TrashCutthroat | L | L | L | W 4% | L | L | L | L | L | L | L | L | L | L | L | L | L | L | L | L | - | L | L | L | L | L | L |
+| TrashHerbalist | L | L | L | W 4% | L | L | L | L | L | L | L | W 11% | L | L | L | L | L | L | L | L | W 6% | - | L | L | L | L | L |
+| TrashHexer | D 0% | L | L | W 40% | L | L | D 2% | L | D 0% | D 3% | L | W 14% | L | L | L | L | L | W 12% | D 11% | W 30% | W 38% | W 25% | - | D 1% | L | L | D 1% |
+| TrashShieldbearer | L | L | L | W 40% | L | L | W 7% | L | L | L | L | W 23% | L | L | L | L | L | L | W 18% | W 30% | W 37% | W 26% | D 13% | - | L | L | D 34% |
+| Treant | W 32% | D 7% | D 9% | W 44% | W 11% | W 18% | W 28% | L | W 16% | D 26% | W 18% | W 27% | W 19% | L | L | L | W 26% | W 34% | W 34% | W 39% | W 52% | W 38% | W 33% | W 35% | - | L | D 31% |
+| WaterMonk | W 44% | W 35% | W 37% | W 58% | W 48% | L | W 47% | W 16% | W 35% | W 49% | W 35% | W 40% | W 35% | L | L | W 37% | W 35% | W 50% | W 53% | W 56% | W 57% | W 61% | W 45% | W 31% | W 19% | - | D 51% |
+| WhirlMonk | D 5% | D 5% | D 6% | W 51% | D 5% | L | D 4% | D 3% | D 3% | D 3% | D 0% | W 21% | D 5% | L | L | L | D 5% | W 26% | W 36% | W 47% | W 50% | W 35% | D 30% | D 34% | D 5% | D 5% | - |

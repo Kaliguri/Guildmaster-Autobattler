@@ -148,7 +148,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             AreaShape autoAttackShape = AreaShape.None,
             float autoAttackWidth = 1f,
             float resourceOnHit = 0f,
-            UnitVisual visual = null,
+            AnimationArchetypeData visual = null,
             AIProfile ai = null,
             EffectData[] autoAttackEffects = null,
             bool canAttackWhileMoving = false,
@@ -170,7 +170,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(r, "_autoAttackShape", autoAttackShape);
             Set(r, "_autoAttackWidth", autoAttackWidth);
             Set(r, "_resourceOnHit", resourceOnHit);
-            Set(r, "_visual", visual);
+            Set(r, "_archetype", visual);
             Set(r, "_ai", ai ?? new AIProfile());
             Set(r, "_autoAttackEffects", autoAttackEffects ?? Array.Empty<EffectData>());
             Set(r, "_canAttackWhileMoving", canAttackWhileMoving);
@@ -190,7 +190,7 @@ namespace Guildmaster.Tests.EditMode.Combat
     }
 
     /// <summary>
-    /// Билдер <see cref="UnitVisual"/> для тестов windup: собирает Attack-<see cref="AnimationClip"/> с
+    /// Билдер <see cref="AnimationArchetypeData"/> для тестов windup: собирает Attack-<see cref="AnimationClip"/> с
     /// заданным числом кадров (длина = frameCount/fps) и маркером контакта на hitFrame — сим выводит
     /// windup из клипа (<see cref="ClipMarkers"/>), как в проде. Спрайты не нужны: длину задаёт float-кривая.
     /// </summary>
@@ -198,11 +198,37 @@ namespace Guildmaster.Tests.EditMode.Combat
     {
         private const float Fps = 10f;
 
-        public static UnitVisual Make(int frameCount, params int[] hitFrames)
+        public static AnimationArchetypeData Make(int frameCount, params int[] hitFrames)
         {
-            var v = ScriptableObject.CreateInstance<UnitVisual>();
-            FieldInfo attackClip = typeof(UnitVisual).GetField("_attackClip", BindingFlags.Instance | BindingFlags.NonPublic);
-            attackClip.SetValue(v, BuildAttackClip(frameCount, hitFrames));
+            var v = ScriptableObject.CreateInstance<AnimationArchetypeData>();
+            const BindingFlags F = BindingFlags.Instance | BindingFlags.NonPublic;
+            typeof(AnimationArchetypeData).GetField("_attackClip", F)
+                .SetValue(v, BuildAttackClip(frameCount, hitFrames));
+
+            // Тайминг ОБЪЯВЛЯЕТСЯ, а не выводится из клипа (06.08.2026) — и фабрика обязана делать ровно
+            // то же, что редакторный замер, иначе тест собирал бы юнита, невозможного в проде: с клипом,
+            // но без объявленного замаха, то есть с телеграф-полом в три тика вместо настоящей длины.
+            if (frameCount > 0 && hitFrames != null && hitFrames.Length > 0)
+            {
+                var shares = new float[hitFrames.Length];
+                for (int i = 0; i < hitFrames.Length; i++) shares[i] = (float)hitFrames[i] / frameCount;
+
+                typeof(AnimationArchetypeData).GetField("_windupShare", F).SetValue(v, shares[0]);
+                typeof(AnimationArchetypeData).GetField("_contactShares", F).SetValue(v, shares);
+            }
+            return v;
+        }
+
+        /// <summary>
+        /// Архетип с ОБЪЯВЛЕННОЙ долей замаха и без клипа — для тестов, которым нужен тайминг, а не
+        /// анимация. Ровно так живёт скелетный юнит: клип показывает, число решает.
+        /// </summary>
+        public static AnimationArchetypeData WithShare(float windupShare)
+        {
+            var v = ScriptableObject.CreateInstance<AnimationArchetypeData>();
+            typeof(AnimationArchetypeData)
+                .GetField("_windupShare", BindingFlags.Instance | BindingFlags.NonPublic)
+                .SetValue(v, windupShare);
             return v;
         }
 

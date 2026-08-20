@@ -26,7 +26,7 @@ namespace Guildmaster.Data.Editor
     ///   "edits": [
     ///     { "op": "scaleStat", "asset": "Druid", "stat": "Power", "factor": 0.58 },
     ///     { "op": "setStat",   "asset": "BaseRelic", "stat": "MaxHP", "modOp": "Override", "value": 2000 },
-    ///     { "op": "setFloat",  "asset": "BulwarkShield", "path": "_baseDuration", "value": 0.5 },
+    ///     { "op": "setValue",  "asset": "BulwarkShield", "path": "_baseDuration", "value": 0.5 },
     ///     { "op": "scaleStat", "cohort": { "class": "Tank" }, "stat": "MaxHP", "factor": 1.1 }
     ///   ]
     /// }
@@ -92,6 +92,7 @@ namespace Guildmaster.Data.Editor
                 {
                     case "scaleStat": ScaleStat(edit, target, changes, undo); break;
                     case "setStat":   SetStat(edit, target, changes, undo);   break;
+                    case "removeStat": RemoveStat(edit, target, changes, undo); break;
                     case "setValue":  SetValue(edit, target, changes, undo);  break;
                     case "addValue":  AddValue(edit, target, changes, undo);  break;
                     case "addCooldown": AddCooldown(edit, target, changes, undo); break;
@@ -109,8 +110,9 @@ namespace Guildmaster.Data.Editor
             if (!AsUnit(target, out UnitData unit) || !AsStat(edit, out StatType stat)) return;
 
             float factor = Float(edit["factor"], 1f);
-            changes.Add(ContentEditService.ScaleStat(unit, stat, factor));
-            if (Mathf.Abs(factor) > 1e-6f)
+            ContentEditService.Change change = ContentEditService.ScaleStat(unit, stat, factor);
+            changes.Add(change);
+            if (change.Applied && Mathf.Abs(factor) > 1e-6f)
             {
                 undo.Add(Edit("scaleStat", unit.name, new JProperty("stat", stat.ToString()),
                     new JProperty("factor", 1f / factor)));
@@ -125,10 +127,31 @@ namespace Guildmaster.Data.Editor
             var modOp = ParseEnum((string)edit["modOp"], ModifierOp.Override);
             ContentEditService.Change change = ContentEditService.SetStat(unit, stat, modOp, Float(edit["value"], 0f));
             changes.Add(change);
-            if (change.Applied)
+
+            // Правка ДОБАВИЛА модификатор — «как было» тут не число, а его отсутствие: откатывается это
+            // снятием записи. Записать сюда change.Before значило бы положить в ассет NaN.
+            if (change.Added)
+            {
+                undo.Add(Edit("removeStat", unit.name, new JProperty("stat", stat.ToString())));
+            }
+            else if (change.Applied)
             {
                 undo.Add(Edit("setStat", unit.name, new JProperty("stat", stat.ToString()),
                     new JProperty("modOp", modOp.ToString()), new JProperty("value", change.Before)));
+            }
+        }
+
+        private static void RemoveStat(JObject edit, ScriptableObject target,
+            List<ContentEditService.Change> changes, JArray undo)
+        {
+            if (!AsUnit(target, out UnitData unit) || !AsStat(edit, out StatType stat)) return;
+
+            ContentEditService.Change change = ContentEditService.RemoveStat(unit, stat, out ModifierOp removedOp);
+            changes.Add(change);
+            if (change.Applied)
+            {
+                undo.Add(Edit("setStat", unit.name, new JProperty("stat", stat.ToString()),
+                    new JProperty("modOp", removedOp.ToString()), new JProperty("value", change.Before)));
             }
         }
 
@@ -154,8 +177,12 @@ namespace Guildmaster.Data.Editor
             if (string.IsNullOrEmpty(path)) return;
 
             float delta = Float(edit["delta"], 0f);
-            changes.Add(ContentEditService.AddValue(target, path, delta));
-            undo.Add(Edit("addValue", target.name, new JProperty("path", path), new JProperty("delta", -delta)));
+            ContentEditService.Change change = ContentEditService.AddValue(target, path, delta);
+            changes.Add(change);
+            if (change.Applied)
+            {
+                undo.Add(Edit("addValue", target.name, new JProperty("path", path), new JProperty("delta", -delta)));
+            }
         }
 
         private static void AddCooldown(JObject edit, ScriptableObject target,
@@ -165,9 +192,13 @@ namespace Guildmaster.Data.Editor
 
             string ability = (string)edit["ability"];
             float delta = Float(edit["delta"], 0f);
-            changes.Add(ContentEditService.AddAbilityCooldown(unit, ability, delta));
-            undo.Add(Edit("addCooldown", unit.name, new JProperty("ability", ability),
-                new JProperty("delta", -delta)));
+            ContentEditService.Change change = ContentEditService.AddAbilityCooldown(unit, ability, delta);
+            changes.Add(change);
+            if (change.Applied)
+            {
+                undo.Add(Edit("addCooldown", unit.name, new JProperty("ability", ability),
+                    new JProperty("delta", -delta)));
+            }
         }
 
         private static void SetEffectField(JObject edit, ScriptableObject target,

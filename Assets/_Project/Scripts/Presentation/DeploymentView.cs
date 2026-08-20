@@ -134,7 +134,16 @@ namespace Guildmaster.Presentation
         /// DragInvalid и позицией у ног ПРИЗРАКА (следует за курсором) — так видно, кого тащишь и можно ли
         /// поставить. Пул переиспользуется покадрово, лишние круги гасятся.
         /// </summary>
-        public void SetUnitRings(IReadOnlyList<(Vector2 center, float radius, RingState state)> rings)
+        /// <summary>
+        /// Круги-опоры под бойцами. <c>tint</c> перекрывает цвет состояния — им красится ЧУЖОЕ
+        /// наведение мейн-цветом того, кто навёл.
+        /// </summary>
+        /// <remarks>
+        /// Цвет приходит снаружи, а не становится пятым состоянием: состояний у кольца четыре и все они
+        /// про мою руку («навёл», «тащу», «сюда можно»), а мейн-цвет — про чужого человека и берётся из
+        /// состава сеанса. Загони его в перечисление — и цвет игрока пришлось бы дублировать в показе.
+        /// </remarks>
+        public void SetUnitRings(IReadOnlyList<(Vector2 center, float radius, RingState state, Color? tint)> rings)
         {
             int n = rings?.Count ?? 0;
             while (_rings.Count < n) _rings.Add(MakeRing());
@@ -142,13 +151,13 @@ namespace Guildmaster.Presentation
             {
                 if (i < n)
                 {
-                    (Vector2 center, float radius, RingState state) = rings[i];
+                    (Vector2 center, float radius, RingState state, Color? tint) = rings[i];
                     Disc d = _rings[i];
                     d.gameObject.SetActive(true);
                     d.transform.position   = new Vector3(center.x, center.y, OverlayZ);
                     d.transform.localScale = new Vector3(1f, RingFlatten, 1f); // эллипс «на полу»
                     d.Radius    = Mathf.Max(0.05f, radius * RingRadiusScale);
-                    d.Color     = RingColor(state);
+                    d.Color     = tint ?? RingColor(state);
                     d.Thickness = state == RingState.Normal ? RingNormalThickness : RingBoldThickness;
                 }
                 else if (_rings[i].gameObject.activeSelf)

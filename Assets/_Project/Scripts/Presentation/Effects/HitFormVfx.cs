@@ -29,11 +29,18 @@ namespace Guildmaster.Presentation.Effects
     /// </summary>
     public readonly struct HitFormParams
     {
-        /// <summary>Точка A — откуда пришёл удар (кончик оружия в начале взмаха либо старт снаряда).</summary>
-        public readonly Vector3 From;
+        /// <summary>Точка удара: середина формы либо её конец, см. <see cref="EndsAtHit"/>.</summary>
+        public readonly Vector3 At;
 
-        /// <summary>Точка B — куда пришёл удар: середина формы либо её конец, см. <see cref="EndsAtHit"/>.</summary>
-        public readonly Vector3 To;
+        /// <summary>
+        /// Единичное направление удара — куда шёл клинок в момент касания (у выстрела — курс снаряда).
+        /// </summary>
+        /// <remarks>
+        /// Пришло на смену паре точек «начало взмаха → попадание» 06.08.2026. Хорда врала о направлении:
+        /// замах начинается за спиной и выше, цель стоит впереди, поэтому знак рубящего удара ложился
+        /// почти горизонтально (~20°) вместо честных ~75° вниз, а длину брал по расстоянию до цели.
+        /// </remarks>
+        public readonly Vector2 Dir;
 
         public readonly HitFormKind Kind;
 
@@ -49,6 +56,22 @@ namespace Guildmaster.Presentation.Effects
 
         /// <summary>Полутолщина в середине, мировые единицы.</summary>
         public readonly float HalfThickness;
+
+        /// <summary>
+        /// Ширина тёмной ОБВОДКИ снаружи формы, мировые единицы. Ноль — обводки нет.
+        /// </summary>
+        /// <remarks>
+        /// Не путать с <see cref="Rim"/>: кайма живёт ВНУТРИ формы и несёт цвет элемента, обводка лежит
+        /// СНАРУЖИ и цвета не имеет вовсе — она перекрывает кадр чёрным (канон
+        /// <c>gdd/70-gamefeel/vfx-language</c> §«Форму обводит чёрный контур», 05.08.2026).
+        /// </remarks>
+        public readonly float LineWidth;
+
+        /// <summary>
+        /// Мягкость переходов МЕЖДУ ступенями знака (ядро → кайма → обводка), доля толщины. Внешней
+        /// границы обводки не касается: лайн обязан быть краем, а не растушёвкой.
+        /// </summary>
+        public readonly float Softness;
 
         /// <summary>Прогиб, мировые единицы. Знак задаёт сторону выгиба.</summary>
         public readonly float Arc;
@@ -92,14 +115,15 @@ namespace Guildmaster.Presentation.Effects
         /// </summary>
         public readonly float FreezeSeconds;
 
-        public HitFormParams(Vector3 from, Vector3 to, HitFormKind kind, bool endsAtHit,
-            float length, float halfThickness,
+        public HitFormParams(Vector3 at, Vector2 dir, HitFormKind kind, bool endsAtHit,
+            float length, float halfThickness, float lineWidth, float softness,
             float arc, float roughness, float starRadius, int starRays, float seed,
             Color core, Color rim, float life, float growShare, float tailLag, float coreWidth,
             float freezeSeconds)
         {
-            From = from; To = to; Kind = kind; EndsAtHit = endsAtHit;
-            Length = length; HalfThickness = halfThickness; Arc = arc; Roughness = roughness;
+            At = at; Dir = dir; Kind = kind; EndsAtHit = endsAtHit;
+            Length = length; HalfThickness = halfThickness; LineWidth = lineWidth; Softness = softness;
+            Arc = arc; Roughness = roughness;
             StarRadius = starRadius; StarRays = starRays; Seed = seed;
             Core = core; Rim = rim;
             Life = life; GrowShare = growShare; TailLag = tailLag;
@@ -125,10 +149,18 @@ namespace Guildmaster.Presentation.Effects
     public sealed class HitFormVfx : MonoBehaviour
     {
         /// <summary>
-        /// Во сколько раз quad шире звезды дробящего: лучи неравной длины и рвутся наружу, поэтому
-        /// впритык к радиусу их обрезало бы краем меша.
+        /// Во сколько раз quad шире честного вылета формы. Ровно вдвое — это «впритык» (вылет мерится
+        /// от центра), плюс десятая доля запаса: лучи звезды неравной длины и слегка рвутся наружу, а
+        /// обводка ложится поверх краёв.
         /// </summary>
-        private const float StarQuadMargin = 2.4f;
+        private const float StarQuadMargin = 2.2f;
+
+        /// <summary>
+        /// Потолок ширины обводки в долях полудлины формы — тот же, что в проперти шейдера
+        /// (<c>_LineWidth</c>). Держится здесь, потому что <see cref="MaterialPropertyBlock"/> объявленный
+        /// в шейдере диапазон не соблюдает: <c>Range</c> ограничивает только инспектор материала.
+        /// </summary>
+        private const float MaxLineShare = 0.3f;
 
         private static readonly int CoreColorId  = Shader.PropertyToID("_CoreColor");
         private static readonly int RimColorId   = Shader.PropertyToID("_RimColor");
@@ -144,6 +176,8 @@ namespace Guildmaster.Presentation.Effects
         private static readonly int ProgressId   = Shader.PropertyToID("_Progress");
         private static readonly int GrowId       = Shader.PropertyToID("_Grow");
         private static readonly int TailLagId    = Shader.PropertyToID("_TailLag");
+        private static readonly int LineWidthId  = Shader.PropertyToID("_LineWidth");
+        private static readonly int SoftnessId   = Shader.PropertyToID("_Softness");
 
         private Renderer _renderer;
         private MaterialPropertyBlock _block;
@@ -169,28 +203,39 @@ namespace Guildmaster.Presentation.Effects
         {
             Cache();
 
-            Vector3 axis = p.To - p.From;
-            // Вырожденный случай (A совпал с B) не должен ронять поворот в NaN: тогда форма ложится
-            // горизонтально — это честнее, чем не показать удар вовсе.
-            float angle = axis.sqrMagnitude > 1e-8f
-                ? Mathf.Atan2(axis.y, axis.x) * Mathf.Rad2Deg
-                : 0f;
+            // Направление приходит готовым: это движение клинка в момент касания, а не хорда «замах →
+            // цель». Вырожденный вектор сюда не доезжает — вид ругается и формы не заказывает вовсе.
+            Vector2 d2 = p.Dir.sqrMagnitude > 1e-8f ? p.Dir.normalized : Vector2.right;
+            float angle = Mathf.Atan2(d2.y, d2.x) * Mathf.Rad2Deg;
+            Vector3 dir = new Vector3(d2.x, d2.y, 0f);
 
-            Vector3 dir = axis.sqrMagnitude > 1e-8f ? axis.normalized : Vector3.right;
-
-            // Где стоит середина quad. Клинок проходит НАВЫЛЕТ, поэтому точка хита лежит в середине формы;
-            // если удар кончился в цели (булава, принявший щит) — она конечная, и форма уезжает назад.
+            // Где стоит середина quad. Клинок проходит НАВЫЛЕТ, поэтому точка удара лежит в середине
+            // формы, и она же центр меша. Форма кончается в цели (булава, удар, принятый щитом) — тогда
+            // знак уезжает назад по своему же направлению.
             Vector3 centre = p.EndsAtHit
-                ? p.To - dir * (p.Length * 0.5f)
-                : p.To;
+                ? p.At - dir * (p.Length * 0.5f)
+                : p.At;
 
-            // Quad вмещает и форму, и звезду: у дробящего вторая шире первой, и меш растягивается по ней.
-            // Шейдер про мировые единицы не знает — ему всё приходит долями полу-quad, поэтому перевод
-            // живёт здесь, в одном месте.
+            // Quad вмещает и форму, и звезду. Шейдер про мировые единицы не знает — ему всё приходит
+            // долями полу-quad, поэтому перевод живёт здесь, в одном месте.
+            //
+            // ЗВЕЗДА СТОИТ НЕ В ЦЕНТРЕ, А В ТОЧКЕ УДАРА — на конце формы (шейдер центрирует её в
+            // `q.x - _Len`). Прежняя формула считала её habitat от центра квада и потому недодавала
+            // ровно половину длины формы: лучи дробящего уезжали за меш и срезались краем. Считаем
+            // ЧЕСТНЫЙ вылет от центра: половина формы плюс радиус звезды.
+            //
+            // ОБВОДКА ТРЕБУЕТ ЗАПАСА: контур лежит СНАРУЖИ формы, и на quad, натянутом впритык, он
+            // обрезался бы краем меша ровно там, где и должен быть виден.
+            float line     = Mathf.Max(0f, p.LineWidth);
             float length   = Mathf.Max(0.001f, p.Length);
-            float quadSize = Mathf.Max(length, p.StarRadius * StarQuadMargin);
+            float halfLenRaw = length * 0.5f;
+
+            float reach = p.StarRadius > 0f
+                ? halfLenRaw + p.StarRadius     // звезда живёт на конце формы, а не вокруг её середины
+                : halfLenRaw;
+            float quadSize = (reach + line) * StarQuadMargin;
             float halfQuad = quadSize * 0.5f;
-            float halfLen  = length * 0.5f;
+            float halfLen  = halfLenRaw;
 
             transform.SetPositionAndRotation(centre, Quaternion.Euler(0f, 0f, angle));
             transform.localScale = new Vector3(quadSize, quadSize, 1f);
@@ -201,6 +246,12 @@ namespace Guildmaster.Presentation.Effects
             _block.SetFloat(LenId, Mathf.Clamp(halfLen / halfQuad, 0.05f, 1f));
             _block.SetFloat(ArcId, p.Arc / halfLen);
             _block.SetFloat(HalfThickId, p.HalfThickness / halfLen);
+            // Обводка мерится в тех же долях полудлины формы, что и толщина, — не полу-quad: она растёт
+            // вместе с формой и вместе с ней же ужимается на слабом ударе. Потолок тот же, что в
+            // проперти шейдера: блок свойств диапазон не соблюдает, а контур шире трети полудлины
+            // съел бы саму форму.
+            _block.SetFloat(LineWidthId, Mathf.Clamp(line / halfLen, 0f, MaxLineShare));
+            _block.SetFloat(SoftnessId, Mathf.Clamp01(p.Softness));
             _block.SetFloat(CoreWidthId, p.CoreWidth);
             _block.SetFloat(RoughId, p.Roughness);
             _block.SetFloat(SeedId, p.Seed);

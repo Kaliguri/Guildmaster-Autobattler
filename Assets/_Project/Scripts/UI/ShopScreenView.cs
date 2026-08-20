@@ -50,6 +50,7 @@ namespace Guildmaster.UI
                 if (toast == null)
                 {
                     toast = new Label();
+                    toast.AddToClassList("gm-text--negative");
                     toast.AddToClassList("gm-shop__toast-label");
                     toastBox.Add(toast);
                 }
@@ -65,9 +66,10 @@ namespace Guildmaster.UI
                 for (int i = 0; i < shelf.Count; i++)
                 {
                     ShopItem item = shelf[i];
-                    var card = new VisualElement();
-                    card.AddToClassList("gm-shop__card");
-                    if (item.Sold) card.AddToClassList("gm-shop__card--sold");
+                    var card = new VisualElement { focusable = true };
+                    card.AddToClassList("gm-card");
+                    card.AddToClassList("gm-card--shop");
+                    if (item.Sold) card.AddToClassList("gm-card--sold");
                     // Витрина показывает имя и цену; чем реликвия ЯВЛЯЕТСЯ — тем же тултипом, что в награде
                     // и в инвентаре (Трек Т): решение о покупке принимается по киту, а не по цене.
                     card.WithTooltip(TooltipRequest.Relic(item.Relic?.Id));
@@ -78,10 +80,13 @@ namespace Guildmaster.UI
                     card.Add(sprite);
 
                     var name = new Label(item.Relic != null ? nameOf(item.Relic) : "—");
+                    name.AddToClassList("gm-text-name");
                     name.AddToClassList("gm-card__name");
                     card.Add(name);
 
                     var price = new Label(item.Sold ? L("ui.shop.sold", "Куплено") : $"{item.Price}");
+                    price.AddToClassList("gm-text-body");
+                    price.AddToClassList("gm-text--value");
                     price.AddToClassList("gm-shop__price");
                     card.Add(price);
 
@@ -102,11 +107,11 @@ namespace Guildmaster.UI
                 stashBox.Clear();
                 foreach (ShopStashItem st in shop.Stash)
                 {
-                    var row = new VisualElement();
+                    var row = new VisualElement { focusable = true };
                     row.AddToClassList("gm-shop__stash-row");
 
                     var n = new Label(nameOf(st.Relic));
-                    n.AddToClassList("gm-shop__stash-name");
+                    n.AddToClassList("gm-text-body");
                     n.WithTooltip(TooltipRequest.Relic(st.Relic?.Id)); // продаём вслепую только по имени — плохо
                     row.Add(n);
 

@@ -29,6 +29,12 @@ namespace Guildmaster.Guild.Commands
         void AwardBattleReward();
 
         /// <summary>
+        /// Войти в узел карты. Достижимость проверяет применитель — по СВОЕЙ копии состояния, а не по
+        /// той, что видел нажавший: у напарника карта могла отстать на снимок.
+        /// </summary>
+        void ChooseNode(string nodeId);
+
+        /// <summary>
         /// Попросить владельца зафиксировать состояние на диск (точка автосейва).
         /// </summary>
         /// <remarks>

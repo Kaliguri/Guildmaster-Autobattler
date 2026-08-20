@@ -87,7 +87,9 @@ jobs:
             version="${GITHUB_REF_NAME#v}"
             note="${{ github.ref_name }}"
           else
-            base=$(grep -m1 'bundleVersion:' ProjectSettings/ProjectSettings.asset | awk '{print $2}')
+            # Якорь ^ обязателен: без него первым совпадает visionOSBundleVersion двумя строками
+            # выше, и в Steam уезжает версия платформы, которую мы не собираем (было до 05.08.2026).
+            base=$(grep -m1 -E '^\s*bundleVersion:' ProjectSettings/ProjectSettings.asset | awk '{print $2}')
             version="${base}-dev.${GITHUB_SHA::7}"
             note="${{ inputs.note }}"
           fi
@@ -115,6 +117,36 @@ jobs:
           path: Library
           key: Library-build-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: Library-build-
+
+      # Дев-консоль в сборке ПО КНОПКЕ — тем же дефайном, что ставит локальный PlayerBuilder.
+      #
+      # Две дороги выкладки обязаны давать одинаковый билд, а давали разный: локальная звала наш
+      # PlayerBuilder (он дефайн ставит сам), облачная зовёт unity-builder штатным методом — и в
+      # Steam уезжала игра без F1, F2 и F3. Симптом читается как поломка тулинга, а не как разница
+      # сборок: 08.08.2026 Макс так и написал — «мб другая сессия сломала?».
+      #
+      # По ТЕГУ (push) дефайна нет: это релиз, и консоль в нём не открывается ничем. Условие
+      # повторяет развилку шага Version — кнопка значит тестовую сборку, тег значит релиз.
+      #
+      # Правка живёт только в чекауте раннера и в репозиторий не уезжает.
+      - name: Dev tools define
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          file=ProjectSettings/ProjectSettings.asset
+          # Адресно, а не sed по «Standalone:»: этот ключ есть ещё у bundle id и у архитектуры,
+          # и общая замена молча переписала бы идентификатор приложения.
+          awk '
+            /^  scriptingDefineSymbols:/ { inblock = 1 }
+            inblock && !done && /^    Standalone:/ {
+              line = $0
+              sub(/[ \t]+$/, "", line)
+              print (line ~ /:$/) ? line " GM_DEVTOOLS" : line ";GM_DEVTOOLS"
+              done = 1
+              next
+            }
+            { print }
+          ' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+          grep -n -A12 '^  scriptingDefineSymbols:' "$file" | grep '^[0-9]*-\?    Standalone:'
 
       - name: Build player
         uses: game-ci/unity-builder@v4

@@ -228,8 +228,10 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private float _shatterSpin = 3f;
         [Tooltip("Разброс направлений от радиального (рад) — больше = летят «во все стороны», не строго от центра.")]
         [SerializeField] private float _shatterSpread = 1.2f;
-        [Tooltip("Размер чанка-осколка в ИСХОДНЫХ пикселях спрайта (меньше = мельче куски, больше = крупнее блоки).")]
-        [SerializeField, Range(2, 16)] private int _shatterBlockPixels = 6;
+        [Tooltip("Размер осколка в ДОЛЯХ РОСТА юнита (0.1 = кусок в десятую часть тела). Мера длины, а не " +
+                 "пикселей исходника: части скелетного юнита нарисованы в разном разрешении, и общий " +
+                 "«чанк в N пикселей» дробил их на куски несопоставимого размера.")]
+        [SerializeField, Range(0.02f, 0.5f)] private float _shatterShardSize = 0.12f;
         [Tooltip("Сила ПСЕВДО-3D кувыркания осколков (переворот вокруг случайной оси). 0 = плоско, больше = активнее кувыркаются.")]
         [SerializeField] private float _shatterTumble = 9f;
         [Tooltip("Восходящий дрейф: смещает разлёт вверх-и-наружу (0 = строго радиально, больше = осколки уходят вверх).")]
@@ -350,6 +352,63 @@ namespace Guildmaster.Presentation.Design
                  "самого юнита (UnitData), поэтому один префаб служит всем.")]
         [SerializeField] private VfxData _vfxCastBurst;
 
+        // --- Зона удара: КУДА по фигуре цели приходит попадание (ГД-журнал 2026-08-06/7) ---
+        [Header("Зона удара — куда по телу цели приходит попадание")]
+        [Tooltip("Выбирать зону тела (голова / корпус / ноги) с поправкой на досягаемость. Выключено — " +
+                 "удар всегда приходит в HitPoint, как до 06.08.2026.")]
+        [SerializeField] private bool _enableImpactZones = true;
+
+        [Tooltip("ЗАЯВЛЕННЫЙ вес головы. Это база, а не итог: вес каждой зоны множится на долю её " +
+                 "накрытия кругом атаки, поэтому мечник, достающий великану лишь до ног, по голове не " +
+                 "попадёт вовсе. Веса не обязаны давать в сумме единицу — они нормализуются.")]
+        [SerializeField, Range(0f, 1f)] private float _impactZoneHeadWeight = 0.05f;
+
+        [Tooltip("Заявленный вес корпуса — основная масса ударов.")]
+        [SerializeField, Range(0f, 1f)] private float _impactZoneBodyWeight = 0.80f;
+
+        [Tooltip("Заявленный вес верха ног.")]
+        [SerializeField, Range(0f, 1f)] private float _impactZoneLegsWeight = 0.15f;
+
+        // Стартовые радиусы ЗАМЕРЕНЫ по арту BoneUnit_Storybook (06.08.2026), а не выбраны на глаз:
+        // полуразмер головы 0.099 роста, торса 0.190, верхней ноги 0.115. Зона чуть меньше своей части —
+        // так удар приходит В неё, а не по касательной к контуру.
+        [Tooltip("Радиус зоны головы В ДОЛЯХ РОСТА юнита. В долях, а не в метрах: сменится сетка " +
+                 "размеров — числа переживут, и крупный враг получит пропорционально крупные зоны.")]
+        [SerializeField, Range(0.02f, 0.4f)] private float _impactZoneHeadRadius = 0.09f;
+
+        [Tooltip("Радиус зоны корпуса в долях роста.")]
+        [SerializeField, Range(0.05f, 0.5f)] private float _impactZoneBodyRadius = 0.19f;
+
+        [Tooltip("Радиус зоны ног в долях роста.")]
+        [SerializeField, Range(0.05f, 0.5f)] private float _impactZoneLegsRadius = 0.11f;
+
+        [Tooltip("Насколько точка тянется к ближнему краю зоны, когда зона накрыта не целиком: " +
+                 "0 — всегда центр зоны, 1 — вплотную к краю со стороны атакующего. Отдельной ручки " +
+                 "«смещение к атакующему» нет — смещение И ЕСТЬ недостача накрытия.")]
+        [SerializeField, Range(0f, 1f)] private float _impactZoneNearSideBias = 0.6f;
+
+        [Tooltip("Насколько РЕЗКО недостача досягаемости давит заявленный вес зоны. 1 — линейно, и тогда " +
+                 "базовый вес почти всегда перевешивает: корпус, доступный на четверть, выигрывает у ног, " +
+                 "доступных на три четверти. 2 — квадрат, эту разницу переворачивает. 3 и выше — " +
+                 "досягаемость решает почти всё.")]
+        [SerializeField, Range(1f, 4f)] private float _impactZoneReachSharpness = 2f;
+
+        // Высоты зон в долях роста: по НИМ считаются веса, а не по живым якорям. Дискретный выбор зоны
+        // обязан быть одинаков у всех клиентов, а якорь на кости зависит от фазы анимации — на границе
+        // весов это перебросило бы удар из корпуса в ногу у одного игрока и не перебросило у другого.
+        // Числа замерены по якорям BoneUnit_Storybook (06.08.2026) и обязаны им соответствовать: разъедутся —
+        // вес зоны начнёт считаться не от того места, где зону в итоге бьют.
+        [Tooltip("Высота центра зоны головы в долях роста — по ней считается ВЕС зоны (бьём всё равно " +
+                 "по якорю на кости). Держать согласованной с Aim_Head в риге.")]
+        [SerializeField, Range(0.4f, 1f)] private float _impactZoneHeadHeight = 0.71f;
+
+        [Tooltip("Высота центра зоны корпуса в долях роста. Это же число задаёт, откуда бьёт АТАКУЮЩИЙ: " +
+                 "круг атаки строится от его корпуса, а не от ступней.")]
+        [SerializeField, Range(0.3f, 0.9f)] private float _impactZoneBodyHeight = 0.56f;
+
+        [Tooltip("Высота центра зоны ног в долях роста. Держать согласованной с Aim_Legs в риге.")]
+        [SerializeField, Range(0.05f, 0.6f)] private float _impactZoneLegsHeight = 0.32f;
+
         // --- Форма удара: главный знак попадания (серп / веретено / звезда / линия-всполох) ---
         [Header("VFX — форма удара")]
         [Tooltip("Форма попадания: серп режущего, веретено колющего, звезда дробящего, линия-всполох выстрела. " +
@@ -392,6 +451,20 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Размер формы на самом лёгком ударе — множитель к числам архетипа.")]
         [SerializeField, Range(0.2f, 1f)] private float _hitFormSizeMin = 0.55f;
 
+        [Tooltip("Тёмная ОБВОДКА снаружи формы. Не путать с каймой: та живёт внутри формы и несёт цвет " +
+                 "элемента, а обводка цвета не имеет вовсе — она перекрывает кадр чёрным. Выключено — " +
+                 "форма остаётся бесконтурным свечением, как до 05.08.2026.")]
+        [SerializeField] private bool _enableHitFormLine = true;
+
+        [Tooltip("Ширина обводки в долях H. Едет вместе с размером удара. Мелкая намеренно (Макс, " +
+                 "06.08.2026): лайн обязан читаться краем, а не полосой. Внешняя граница у него резкая, " +
+                 "мягкость живёт только на внутренних переходах.")]
+        [SerializeField, Range(0f, 0.06f)] private float _hitFormLineWidthH = 0.009f;
+
+        [Tooltip("Мягкость переходов МЕЖДУ ступенями формы: ядро → кайма → обводка. Ноль — ступени " +
+                 "встык, и знак читается тремя вложенными наклейками вместо одного градиента.")]
+        [SerializeField, Range(0f, 1f)] private float _hitFormSoftness = 0.35f;
+
         // --- Порезы: тело помнит бой ---
         [Header("VFX — порезы на теле")]
         [Tooltip("Каждое попадание оставляет светящуюся красную прореху; хил заживляет самые старые. " +
@@ -430,12 +503,80 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Сколько дуга догорает после конца взмаха, сек. Канон: около двух кадров.")]
         [SerializeField] private float _swingArcFadeOut = 0.07f;
 
+        [Tooltip("Яркость дуги относительно свечения каста. 1 = как свет каста; ниже — дуга тусклее. " +
+                 "Своя ручка, потому что дуга идёт на КАЖДЫЙ взмах: то, что читается один раз за каст, " +
+                 "в непрерывной серии ударов пересвечивает бой.")]
+        [SerializeField, Range(0.05f, 1f)] private float _swingArcBrightness = 0.35f;
+
+        [Tooltip("Длина следа ВО ВРЕМЕНИ: виден путь клинка за последние столько секунд. Не в градусах — " +
+                 "иначе укол и тяжёлый замах оставили бы одинаковый след, и вес удара перестал бы " +
+                 "читаться. Быстрый взмах даёт длинный след, медленный короткий — как остаточное " +
+                 "изображение и работает.")]
+        [SerializeField, Range(0.02f, 0.5f)] private float _swingArcTrailSeconds = 0.15f;
+
+        [Tooltip("СТРАХОВКА от сектора длиннее оборота: шейдер считает долю от начала следа до клинка, и " +
+                 "на перекрывающем себя секторе врёт. Длину следа задаёт не это поле, а время выше — " +
+                 "сюда упирается только непрерывное вращение (поток «Вихря»).")]
+        [SerializeField, Range(45f, 360f)] private float _swingArcMaxSpanDeg = 350f;
+
+        [Tooltip("След становится РОСЧЕРКОМ: пересвет в середине, цвет к краям, чёрная кромка снаружи, " +
+                 "плюс профиль ширины полумесяцем. Выключено — прежнее ровное кольцо одного цвета, " +
+                 "которое и гаснет только прозрачностью.")]
+        [SerializeField] private bool _enableSwingArcShaping = true;
+
+        [Tooltip("Какую долю полутолщины следа занимает пересвет в его середине.")]
+        [SerializeField, Range(0f, 1f)] private float _swingArcCoreShare = 0.34f;
+
+        [Tooltip("Какую долю полутолщины занимает цвет. Всё, что снаружи, и есть чёрная кромка — она " +
+                 "съедает толщину изнутри, а не нарастает снаружи, поэтому габарит дуги не меняется.")]
+        [SerializeField, Range(0f, 1f)] private float _swingArcColourShare = 0.74f;
+
+        [Tooltip("Резкость сужения у хвоста: МЕНЬШЕ — сужается быстрее к самому концу. 0.55 — принятый " +
+                 "профиль, 0.35 острее, 0.85 мягче.")]
+        [SerializeField, Range(0.15f, 2f)] private float _swingArcTailSharpness = 0.55f;
+
+        [Tooltip("Яркость пересвета в середине следа — множитель к базе, как у ядра формы удара.")]
+        [SerializeField, Range(1f, 6f)] private float _swingArcCoreBrightness = 2.4f;
+
+        [Tooltip("Мягкость переходов МЕЖДУ ступенями следа: пересвет → цвет → кромка. Внешнюю границу " +
+                 "не трогает — она резкая, потому что она и есть лайн.")]
+        [SerializeField, Range(0f, 0.6f)] private float _swingArcSoftness = 0.28f;
+
+        [Tooltip("Рванность краёв следа: клинок не оставляет ровной ленты. Шум идёт по углу и по сиду " +
+                 "взмаха, поэтому след не кипит покадрово, но у соседних ударов разный.")]
+        [SerializeField, Range(0f, 1f)] private float _swingArcRoughness = 0.35f;
+
         [SerializeField] private HitFormArchetypeConfig _hitFormSlash = HitFormArchetypeConfig.Slash();
         [SerializeField] private HitFormArchetypeConfig _hitFormPierce = HitFormArchetypeConfig.Pierce();
         [SerializeField] private HitFormArchetypeConfig _hitFormBlunt = HitFormArchetypeConfig.Blunt();
         [SerializeField] private HitFormArchetypeConfig _hitFormBolt = HitFormArchetypeConfig.Bolt();
 
         // --- Getters ---
+        /// <summary>Выбирать зону тела с поправкой на досягаемость; <c>false</c> — бить в <c>HitPoint</c>.</summary>
+        public bool  EnableImpactZones       => _enableImpactZones;
+        /// <summary>Заявленный вес головы ДО поправки на досягаемость.</summary>
+        public float ImpactZoneHeadWeight    => _impactZoneHeadWeight;
+        /// <summary>Заявленный вес корпуса до поправки на досягаемость.</summary>
+        public float ImpactZoneBodyWeight    => _impactZoneBodyWeight;
+        /// <summary>Заявленный вес верха ног до поправки на досягаемость.</summary>
+        public float ImpactZoneLegsWeight    => _impactZoneLegsWeight;
+        /// <summary>Радиус зоны головы в долях роста юнита.</summary>
+        public float ImpactZoneHeadRadius    => _impactZoneHeadRadius;
+        /// <summary>Радиус зоны корпуса в долях роста юнита.</summary>
+        public float ImpactZoneBodyRadius    => _impactZoneBodyRadius;
+        /// <summary>Радиус зоны ног в долях роста юнита.</summary>
+        public float ImpactZoneLegsRadius    => _impactZoneLegsRadius;
+        /// <summary>Тяга точки к ближнему краю зоны при неполном накрытии: 0 — центр, 1 — край.</summary>
+        public float ImpactZoneNearSideBias  => _impactZoneNearSideBias;
+        /// <summary>Резкость влияния досягаемости на вес: 1 — линейно, 2 — квадрат.</summary>
+        public float ImpactZoneReachSharpness => _impactZoneReachSharpness;
+        /// <summary>Высота центра зоны головы в долях роста — по ней считается вес зоны.</summary>
+        public float ImpactZoneHeadHeight    => _impactZoneHeadHeight;
+        /// <summary>Высота центра зоны корпуса в долях роста; она же — высота, откуда бьёт атакующий.</summary>
+        public float ImpactZoneBodyHeight    => _impactZoneBodyHeight;
+        /// <summary>Высота центра зоны ног в долях роста — по ней считается вес зоны.</summary>
+        public float ImpactZoneLegsHeight    => _impactZoneLegsHeight;
+
         public bool  EnableContactDust       => _enableContactDust;
         public bool  EnableHitNudge          => _enableHitNudge;
         public bool  EnableFacingFlipSquash  => _enableFacingFlipSquash;
@@ -540,7 +681,7 @@ namespace Guildmaster.Presentation.Design
         public float ShatterGravity    => _shatterGravity;
         public float ShatterSpin       => _shatterSpin;
         public float ShatterSpread     => _shatterSpread;
-        public int   ShatterBlockPixels => _shatterBlockPixels;
+        public float ShatterShardSize  => _shatterShardSize;
         public float ShatterTumble     => _shatterTumble;
         public float ShatterUpBias     => _shatterUpBias;
         public float ShatterFlashOut   => _shatterFlashOut;
@@ -572,6 +713,9 @@ namespace Guildmaster.Presentation.Design
 
         public bool    EnableHitForm              => _enableHitForm;
         public bool    EnableHitFormBreakOnShield => _enableHitFormBreakOnShield;
+        public bool    EnableHitFormLine          => _enableHitFormLine;
+        public float   HitFormLineWidthH          => _hitFormLineWidthH;
+        public float   HitFormSoftness            => _hitFormSoftness;
         public VfxData VfxHitForm                 => _vfxHitForm;
         public float   HitFormUnitHeight          => _hitFormUnitHeight;
         public float   HitFormLife                => _hitFormLife;
@@ -610,6 +754,25 @@ namespace Guildmaster.Presentation.Design
         public float   SwingArcInnerShare  => _swingArcInnerShare;
         public float   SwingArcTailBias    => _swingArcTailBias;
         public float   SwingArcFadeOut     => _swingArcFadeOut;
+        public float   SwingArcBrightness  => _swingArcBrightness;
+        public float   SwingArcTrailSeconds => _swingArcTrailSeconds;
+        public float   SwingArcMaxSpanDeg  => _swingArcMaxSpanDeg;
+        /// <summary>
+        /// Как окрашен и какой формы поперёк след клинка. Выключенная подача возвращает прежнее ровное
+        /// кольцо одного цвета: перекрытия нет вовсе (шейдер снова ведёт себя как чистый аддитив),
+        /// профиль ширины выключен, пересвет не выделяется.
+        /// </summary>
+        /// <remarks>
+        /// Тумблер <c>_enableSwingArcShaping</c> публичного свойства НЕ имеет намеренно: он применяется
+        /// здесь же, при сборке стиля, и наружу торчать ему незачем. Публичный <c>Enable*</c> обязан
+        /// читаться кодом презентации — это держит <c>FeelToggleCoverageTests</c>, и он же поймал первую
+        /// версию этой правки, где ручка существовала, но её никто не спрашивал.
+        /// </remarks>
+        public Effects.SwingArcStyle SwingArcStyle => _enableSwingArcShaping
+            ? new Effects.SwingArcStyle(Overbright(_swingArcCoreBrightness),
+                _swingArcCoreShare, _swingArcColourShare, 1f, true, _swingArcTailSharpness,
+                _swingArcSoftness, _swingArcRoughness)
+            : new Effects.SwingArcStyle(Color.clear, 0f, 1f, 0f, false, _swingArcTailSharpness, 0f, 0f);
 
         /// <summary>
         /// Правило генерации архетипа. Тотальна по построению: новый архетип, забытый здесь, вернёт

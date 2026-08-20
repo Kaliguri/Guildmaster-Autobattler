@@ -439,6 +439,70 @@ MonoBehaviour:
     m_Key: ui.boot.legal
     m_Metadata:
       m_Items: []
+  - m_Id: 8745786747904000
+    m_Key: ui.mainmenu.title_over
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8745786768875520
+    m_Key: ui.mainmenu.create
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8745786773069824
+    m_Key: ui.mainmenu.join
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8745786773069825
+    m_Key: ui.mainmenu.profile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10339908864696320
+    m_Key: ui.outcome.restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10339908986331136
+    m_Key: ui.outcome.to_guild
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10672321578917888
+    m_Key: ui.notice.ok
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10672321633443840
+    m_Key: ui.coop.connecting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10672321633443841
+    m_Key: ui.coop.join_failed_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10672321633443842
+    m_Key: ui.coop.join_failed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10672321633443843
+    m_Key: ui.coop.join_rejected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10729317896282112
+    m_Key: ui.coop.lost.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10729317896282113
+    m_Key: ui.coop.lost.host_body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10729317896282114
+    m_Key: ui.coop.invite.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10729317896282115
+    m_Key: ui.coop.invite.accept
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10729317896282116
+    m_Key: ui.coop.invite.decline
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

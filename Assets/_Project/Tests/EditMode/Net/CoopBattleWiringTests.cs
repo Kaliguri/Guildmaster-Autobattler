@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Tape;
 using Guildmaster.Core.Random;
@@ -141,8 +141,14 @@ namespace Guildmaster.Tests.EditMode.Net
             hostSim.Tick(SimConstants.TickDelta);
             net.PollAll();
 
-            Assert.AreEqual(2, announcer.AnnouncedCount,  "Хост объявил обоих");
-            Assert.AreEqual(2, guestRoster.ReceivedCount, "И оба доехали до гостя");
+            // Паспорт на бойца приходит гостю ДВАЖДЫ, и это не дефект: один раз событием спавна, второй
+            // — в ответ на его же вопрос «кто сейчас на арене» (без вопроса подключившийся к стоящей
+            // арене не узнавал состав НИКОГДА). Считать объявления бессмысленно — важно, что гость
+            // знает всех и что повтор не плодит записей: реестр идемпотентен по id.
+            Assert.GreaterOrEqual(announcer.AnnouncedCount, 2, "Хост объявил обоих");
+            Assert.AreEqual(announcer.AnnouncedCount, guestRoster.ReceivedCount, "И всё объявленное доехало");
+            Assert.AreEqual(hostSim.Units.Count, guestRegistry.Count,
+                "У гостя ровно столько бойцов, сколько на арене — повторный паспорт не заводит второго");
 
             foreach (RuntimeUnit unit in hostSim.Units)
             {
@@ -264,7 +270,13 @@ namespace Guildmaster.Tests.EditMode.Net
 
             public int DropNextSends { get; set; }
 
+            // Подъём сессии, вход и назначенный номер обёртка не трогает: она про ДОСТАВКУ.
+            public bool StartHost()                => _inner.StartHost();
+            public bool Connect(ulong hostAddress) => _inner.Connect(hostAddress);
+            public void SetLocalPeerId(int peerId) => _inner.SetLocalPeerId(peerId);
+
             public bool IsRunning               => _inner.IsRunning;
+            public System.Collections.Generic.IReadOnlyList<int> ConnectedPeers => _inner.ConnectedPeers;
             public int  LocalPeerId             => _inner.LocalPeerId;
             public bool IsHost                  => _inner.IsHost;
             public int  MaxReliableMessageBytes => _inner.MaxReliableMessageBytes;

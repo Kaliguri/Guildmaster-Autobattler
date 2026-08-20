@@ -42,17 +42,19 @@ namespace Guildmaster.UI.Components
         /// частоту обновления Unity меняет только в эксклюзивном полноэкранном, и живой список,
         /// который ничего не делает, врал бы игроку.
         /// </summary>
-        public void SetRowEnabled(bool enabled)
-        {
-            SetEnabled(enabled);
-            EnableInClassList("gm-select-row--disabled", !enabled);
-        }
+        /// <remarks>
+        /// Класса-модификатора здесь больше нет: он вешался ровно вместе с <c>SetEnabled(false)</c>
+        /// и потому был вторым владельцем одного факта. Вид выключенной строки держит псевдокласс
+        /// <c>:disabled</c> — тот, что движок поднимает сам.
+        /// </remarks>
+        public void SetRowEnabled(bool enabled) => SetEnabled(enabled);
 
         public SelectRow()
         {
             AddToClassList("gm-select-row");
 
             _label = new Label { name = "label" };
+            _label.AddToClassList("gm-text-body");
             _label.AddToClassList("gm-select-row__label");
             Add(_label);
 

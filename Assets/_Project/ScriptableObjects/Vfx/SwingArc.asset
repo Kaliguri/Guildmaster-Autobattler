@@ -15,6 +15,6 @@ MonoBehaviour:
   _id: vfx.swing_arc
   _prefab: {fileID: 7313375012211877782, guid: 232e80a19d6885147b5da91a7556c181, type: 3}
   _sizeUnits: 1
-  _sortingLayer: OverheadFX
-  _sortingOrder: 0
+  _sortingLayer: Units
+  _sortingOrder: -1
   _defaultDirDeg: 0

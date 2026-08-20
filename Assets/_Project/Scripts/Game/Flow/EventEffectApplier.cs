@@ -26,15 +26,48 @@ namespace Guildmaster.Game.Flow
             _commands  = commands;
         }
 
-        /// <summary>Применить список последствий по порядку. Пишет автосейв, если что-то изменилось.</summary>
-        public void Apply(IReadOnlyList<EventEffect> effects)
+        /// <summary>Золото забега сейчас — экран ивента гасит по нему варианты не по карману.</summary>
+        public int Gold => _runStates.Current?.Gold ?? 0;
+
+        /// <summary>
+        /// Применить последствия выбранного варианта. Золото проводится ОДНОЙ записью на нетто всех
+        /// его последствий, до всего остального: не хватило — не применяется ничего.
+        /// </summary>
+        /// <remarks>
+        /// <para>Раньше цена уходила той же односторонней записью, что и награда, а
+        /// <c>RunStateService.AddGold</c> клампит результат в ноль — то есть выбор «купить за 50» с
+        /// десятью золотыми списывал десять и всё равно выдавал награду.</para>
+        /// <para><b>Почему нетто одной записью, а не по порядку.</b> Кламп в ноль ломает и сам порядок:
+        /// «−30, потом +100» с пустым кошельком дало бы 100 вместо 70, потому что первое списание
+        /// упёрлось в дно. Промежуточная сумма всё равно не видна нигде, кроме лога, а итог от порядка
+        /// не зависит.</para>
+        /// <para>Отказ громкий (<c>LogError</c>), потому что до applier дело доходит только через экран,
+        /// а экран такой вариант уже погасил: сработавшая проверка означает разошедшийся гейт, а не
+        /// поведение игрока.</para>
+        /// </remarks>
+        public bool Apply(IReadOnlyList<EventEffect> effects)
         {
-            if (effects == null || effects.Count == 0) return;
+            if (effects == null || effects.Count == 0) return true;
+
+            int net = 0;
+            for (int i = 0; i < effects.Count; i++)
+                if (effects[i].Kind == EventEffectKind.Gold) net += effects[i].Amount;
+
+            if (net < 0 && !_runStates.TrySpendGold(-net))
+            {
+                Debug.LogError($"[EventEffect] - вариант стоит {-net} золота, у игрока {Gold}. " +
+                               "Не применено НИЧЕГО: экран обязан был погасить этот вариант.");
+                return false;
+            }
+
+            if (net > 0) _commands.AddGold(net);
+            if (net != 0) Debug.Log($"[EventEffect] - золото {net:+#;-#;0} → {_runStates.Current?.Gold}");
 
             for (int i = 0; i < effects.Count; i++)
                 ApplyOne(effects[i]);
 
             _runStates.Autosave();
+            return true;
         }
 
         private void ApplyOne(EventEffect e)
@@ -42,9 +75,7 @@ namespace Guildmaster.Game.Flow
             switch (e.Kind)
             {
                 case EventEffectKind.Gold:
-                    _commands.AddGold(e.Amount);
-                    Debug.Log($"[EventEffect] - золото {e.Amount:+#;-#;0} → {_runStates.Current?.Gold}");
-                    break;
+                    break; // золото проведено нетто-записью в Apply — здесь оно уже учтено
 
                 case EventEffectKind.GrantRelic:
                     if (string.IsNullOrEmpty(e.ContentId)) { WarnNoId(e); break; }

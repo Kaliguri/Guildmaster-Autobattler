@@ -40,7 +40,7 @@ namespace Guildmaster.Tests.EditMode.Content
             Assert.IsEmpty(broken,
                 $"Юнитов без тела: {broken.Count}.\n{string.Join("\n", broken)}\n" +
                 "Временное тело даётся переиспользованием чужого пака (Visuals/*) и его ViewPrefab, " +
-                "различитель — своя ступень BodyShade. Результат проверяется листом " +
+                "Результат проверяется листом " +
                 "Alebardium/Visuals/Export Unit Visual Catalog.");
         }
     }

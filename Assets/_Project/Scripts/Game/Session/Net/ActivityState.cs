@@ -20,7 +20,12 @@ namespace Guildmaster.Game.Session.Net
     {
         public readonly ActivityKind Kind;
         public readonly bool         HideOpponent;
-        public readonly bool         OwnUnitsOnly;
+
+        /// <summary>
+        /// Кому принадлежит вторая сторона арены. Едет по проводу, потому что из неё гость выводит
+        /// своё право двигать бойцов — и обязан вывести ровно то же, что хозяин.
+        /// </summary>
+        public readonly OpposingSide Opposition;
 
         /// <summary>Открыта ли арена. У гостя это команда поднять свой боевой скоуп — или снести его.</summary>
         public readonly bool BattleOpen;
@@ -38,12 +43,15 @@ namespace Guildmaster.Game.Session.Net
         /// </remarks>
         public readonly bool MapOpen;
 
-        public ActivityState(ActivityKind kind, bool hideOpponent, bool ownUnitsOnly,
+        /// <summary>
+        /// Открыт ли двор гильдии. Гость открывает и закрывает его вслед за хостом.
+        /// </summary>
+        public ActivityState(ActivityKind kind, bool hideOpponent, OpposingSide opposition,
                              bool battleOpen, BattlePhase phase, bool mapOpen = false)
         {
             Kind         = kind;
             HideOpponent = hideOpponent;
-            OwnUnitsOnly = ownUnitsOnly;
+            Opposition   = opposition;
             BattleOpen   = battleOpen;
             Phase        = phase;
             MapOpen      = mapOpen;
@@ -51,28 +59,28 @@ namespace Guildmaster.Game.Session.Net
 
         /// <summary>Как это выглядит у того, кто нигде: ни мероприятия, ни арены.</summary>
         public static ActivityState Nowhere =>
-            new ActivityState(ActivityKind.None, false, false, false, BattlePhase.None);
+            new ActivityState(ActivityKind.None, false, OpposingSide.Encounter, false, BattlePhase.None);
 
         /// <summary>Настройка мероприятия без состава: состав у гостя приезжает своим каналом.</summary>
-        public ActivitySetup ToSetup() => new ActivitySetup(Kind, HideOpponent, OwnUnitsOnly, roster: null);
+        public ActivitySetup ToSetup() => new ActivitySetup(Kind, Opposition, HideOpponent, roster: null);
 
         public bool Equals(ActivityState other) =>
             Kind == other.Kind && HideOpponent == other.HideOpponent &&
-            OwnUnitsOnly == other.OwnUnitsOnly && BattleOpen == other.BattleOpen &&
+            Opposition == other.Opposition && BattleOpen == other.BattleOpen &&
             Phase == other.Phase && MapOpen == other.MapOpen;
 
         public override bool Equals(object obj) => obj is ActivityState other && Equals(other);
 
         public override int GetHashCode() =>
-            ((int)Kind << 8) ^ ((int)Phase << 3) ^ (HideOpponent ? 1 : 0) ^
-            (OwnUnitsOnly ? 2 : 0) ^ (BattleOpen ? 4 : 0) ^ (MapOpen ? 8 : 0);
+            ((int)Kind << 8) ^ ((int)Phase << 3) ^ ((int)Opposition << 5) ^
+            (HideOpponent ? 1 : 0) ^ (BattleOpen ? 4 : 0) ^ (MapOpen ? 8 : 0);
 
         public override string ToString() =>
             $"{Kind}(бой {(BattleOpen ? "открыт" : "закрыт")}, фаза {Phase}, " +
             $"карта {(MapOpen ? "открыта" : "закрыта")})";
     }
 
-    /// <summary>Состояние мероприятия в байтах и обратно. Шесть полей, все примитивные.</summary>
+    /// <summary>Состояние мероприятия в байтах и обратно. Семь полей, все примитивные.</summary>
     public static class ActivityStateCodec
     {
         /// <summary>
@@ -86,7 +94,7 @@ namespace Guildmaster.Game.Session.Net
             writer.Reset();
             writer.WriteByte((byte)state.Kind);
             writer.WriteBool(state.HideOpponent);
-            writer.WriteBool(state.OwnUnitsOnly);
+            writer.WriteByte((byte)state.Opposition);
             writer.WriteBool(state.BattleOpen);
             writer.WriteByte((byte)state.Phase);
             writer.WriteBool(state.MapOpen);
@@ -104,20 +112,23 @@ namespace Guildmaster.Game.Session.Net
 
             var bytes = new NetByteReader(payload);
 
-            byte kind = bytes.ReadByte();
+            byte kind  = bytes.ReadByte();
             bool hide  = bytes.ReadBool();
-            bool own   = bytes.ReadBool();
+            byte side  = bytes.ReadByte();
             bool open  = bytes.ReadBool();
             byte phase = bytes.ReadByte();
             bool map   = bytes.ReadBool();
 
             // Приводим к ОСНОВЕ перечисления, а не к типу поля в пакете: Enum.IsDefined сверяет типы
-            // строго и бросает на несовпадении. Оба этих перечисления целочисленные, хотя по проводу
-            // едут байтом, — и byte здесь уронил бы разбор целиком.
+            // строго и бросает на несовпадении. Эти два перечисления целочисленные, хотя по проводу
+            // едут байтом, — и byte здесь уронил бы разбор целиком. У владельца стороны основа как раз
+            // байтовая, поэтому он сверяется как есть.
             if (!Enum.IsDefined(typeof(ActivityKind), (int)kind))  return false;
             if (!Enum.IsDefined(typeof(BattlePhase), (int)phase)) return false;
+            if (!Enum.IsDefined(typeof(OpposingSide), side))      return false;
 
-            state = new ActivityState((ActivityKind)kind, hide, own, open, (BattlePhase)phase, map);
+            state = new ActivityState((ActivityKind)kind, hide, (OpposingSide)side, open,
+                                      (BattlePhase)phase, map);
             return true;
         }
     }

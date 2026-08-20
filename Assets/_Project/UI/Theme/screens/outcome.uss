@@ -1,0 +1,15 @@
+.gm-outcome__title--defeat {
+    color: var(--gm-color-negative);
+}
+
+.gm-outcome__sub {
+    -unity-text-align: middle-center;
+    flex-grow: 1;
+    margin-top: var(--gm-space-3);
+}
+
+.gm-outcome__footer {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: var(--gm-space-3);
+}

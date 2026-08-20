@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--reward">
-            <ui:Label name="reward-title" text="Награда" class="gm-panel__title" />
+            <ui:Label name="reward-title" text="Награда" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
             <!-- Витрина: карточки катит код (RewardService), контейнер и рамка — из UXML. -->
@@ -9,7 +9,7 @@
 
             <!-- Секция сброса: видна только при полном запасе реликвий (§5.4). -->
             <ui:VisualElement name="drop-section" class="gm-reward-drop" style="display: none;">
-                <ui:Label name="drop-hint" text="" class="gm-text-muted gm-reward-drop__hint" />
+                <ui:Label name="drop-hint" text="" class="gm-text-caption gm-text--muted gm-reward-drop__hint" />
                 <ui:VisualElement name="drop-list" />
             </ui:VisualElement>
 

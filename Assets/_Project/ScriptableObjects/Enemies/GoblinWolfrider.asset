@@ -18,10 +18,12 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 0
   _resourceType: 0
-  _visual: {fileID: 11400000, guid: 5e18a695936c40a4c94eaefe3364adf9, type: 2}
-  _viewPrefab: {fileID: 8877763347292836115, guid: 5b0792deec91a774284d9be47be085d9, type: 3}
-  _bodyShade: 0
-  _vfxTone: 14
+  _rangeBand: 0
+  _rangeAdjustPct: 0
+  _archetype: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
+  _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
+  _outfit: {fileID: 11400000, guid: 924228f4836e68148ae3acf9cb94802c, type: 2}
+  _vfxTone: 3
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackLengthMult: 1

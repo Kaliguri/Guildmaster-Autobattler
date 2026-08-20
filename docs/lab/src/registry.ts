@@ -25,9 +25,21 @@ export const AREAS: AreaDef[] = [
     icon: "◈"
   },
   {
+    id: "meta",
+    title: "Мета",
+    blurb: "Что копится между забегами: оси открытий, каналы оплаты и созвездия на экране хаба.",
+    icon: "✦"
+  },
+  {
     id: "style",
     title: "Стиль",
     blurb: "Цвет, типографика, сетка спрайтов — то, что читается из проекта и показывается как есть."
+  },
+  {
+    id: "ui",
+    title: "Интерфейс",
+    blurb: "Чертежи экранов: что на них лежит, какого размера и почему именно так у рефов.",
+    icon: "▣"
   },
   {
     id: "balance",
@@ -50,6 +62,20 @@ export const PAGES: PageDef[] = [
     title: "Удар",
     blurb: "Взмах, три архетипа формы, слои попадания, гибриды двух стихий и дальний бой.",
     load: () => import("./sections/gamefeel-hits.js")
+  },
+  {
+    id: "geometry",
+    area: "gamefeel",
+    title: "Геометрия удара",
+    blurb: "Замер живых ассетов: якоря вида, путь клинка из клипа, длина и толщина всех четырёх форм.",
+    load: () => import("./sections/gamefeel-geometry.js")
+  },
+  {
+    id: "lineart",
+    area: "gamefeel",
+    title: "Лайн у эффектов",
+    blurb: "Нужна ли форме удара тёмная кайма: четыре способа обвести серп, свалка из восьми и цена приёма.",
+    load: () => import("./sections/gamefeel-lineart.js")
   },
   {
     id: "barrier",
@@ -78,6 +104,13 @@ export const PAGES: PageDef[] = [
     title: "Зоны",
     blurb: "Телеграф площади: подводка, срабатывание, след. Круг, линия и то, что стоит на арене.",
     load: () => import("./sections/gamefeel-zones.js")
+  },
+  {
+    id: "bloom",
+    area: "gamefeel",
+    title: "Витрина блума",
+    blurb: "Все светящиеся эффекты боя в одном кадре, по кадру на вариацию настроек свечения.",
+    load: () => import("./sections/gamefeel-bloom.js")
   },
   {
     id: "floor",
@@ -138,6 +171,15 @@ export const PAGES: PageDef[] = [
   },
 
   {
+    id: "meta-unlocks",
+    area: "meta",
+    title: "Открытия и созвездия",
+    blurb: "Восемь осей, три канала оплаты, все открытия списком и то, как они видны на экране хаба.",
+    load: () => import("./sections/meta-unlocks.js"),
+    icon: "✦"
+  },
+
+  {
     id: "palette",
     area: "style",
     title: "Палитра",
@@ -184,6 +226,151 @@ export const PAGES: PageDef[] = [
     blurb: "Что сломано, чем это видно, какие правки предложены и что решил Макс.",
     load: () => import("./sections/balance-issues.js"),
     icon: "!"
+  },
+
+  {
+    id: "ui-mainmenu",
+    area: "ui",
+    title: "Главное меню",
+    blurb: "Шесть раскладок по четырнадцати рефам: колонка у кромки, плита, центр, обложка, низ, два списка.",
+    load: () => import("./sections/ui-mainmenu.js"),
+    icon: "▤"
+  },
+  {
+    id: "ui-settings",
+    area: "ui",
+    title: "Настройки",
+    blurb: "Три схемы раскладки категорий: горизонтальные табы, вертикальные, две колонки без табов.",
+    load: () => import("./sections/ui-settings.js"),
+    icon: "▦"
+  },
+  {
+    id: "ui-states",
+    area: "ui",
+    title: "Элементы интерфейса",
+    blurb: "Каждый элемент во всех состояниях: покой, наведение, нажатие, фокус, выключено, отмечено. Снято из живой игры контактным листом.",
+    load: () => import("./sections/ui-states.js"),
+    icon: "▦"
+  },
+  {
+    id: "ui-tabs",
+    area: "ui",
+    title: "Лента разделов",
+    blurb: "Чем помечен активный таб: реф промерен, пять вариантов пометки. Вердикт общий для настроек, отряда и реликвий.",
+    load: () => import("./sections/ui-tabs.js"),
+    icon: "▭"
+  },
+  {
+    id: "ui-backdrop",
+    area: "ui",
+    title: "Фон экранов меты",
+    blurb: "Из чего сделана плоскость под настройками и меню: реф промерен пипеткой, четыре варианта в патине.",
+    load: () => import("./sections/ui-backdrop.js"),
+    icon: "◑"
+  },
+  {
+    id: "ui-loadout",
+    area: "ui",
+    title: "Сбор отряда",
+    blurb: "Единственный экран забега с решениями и единственный без рефов: вкладки, отряд сверху, боец слева.",
+    load: () => import("./sections/ui-loadout.js"),
+    icon: "⚔"
+  },
+  {
+    id: "ui-lobby",
+    area: "ui",
+    title: "Создать игру и лобби",
+    blurb: "Настройки сессии и список игроков: панели рядом, два таба, развилка карточками.",
+    load: () => import("./sections/ui-lobby.js"),
+    icon: "◈"
+  },
+  {
+    id: "ui-outcome",
+    area: "ui",
+    title: "Итоги боя",
+    blurb: "Исход крупнее чисел, полосы на бойца, разбор по наведению: две панели, одна, лента.",
+    load: () => import("./sections/ui-outcome.js"),
+    icon: "✦"
+  },
+  {
+    id: "ui-pause",
+    area: "ui",
+    title: "Пауза",
+    blurb: "Пять строк и вопрос, сколько кадра закрыть: центр, колонка слева, полоса поперёк.",
+    load: () => import("./sections/ui-pause.js"),
+    icon: "‖"
+  },
+  {
+    id: "ui-reward",
+    area: "ui",
+    title: "Награда",
+    blurb: "Выбор из трёх: карточки с плашкой последствия, лежачие строки Hades, самодостаточные карточки.",
+    load: () => import("./sections/ui-reward.js"),
+    icon: "◆"
+  },
+  {
+    id: "ui-shop",
+    area: "ui",
+    title: "Лавка",
+    blurb: "Товары, кошелёк, реролл и продажа: ряд с панелью статов, плотная сетка, наша полка.",
+    load: () => import("./sections/ui-shop.js"),
+    icon: "¤"
+  },
+  {
+    id: "ui-chest",
+    area: "ui",
+    title: "Сундук",
+    blurb: "Рефов класса нет: два такта, раскрытие на месте или отказ от отдельного экрана.",
+    load: () => import("./sections/ui-chest.js"),
+    icon: "▣"
+  },
+  {
+    id: "ui-event",
+    area: "ui",
+    title: "Событие",
+    blurb: "Панель с заходящим артом, текст без панели вовсе, модалка по центру. И что обещает плашка.",
+    load: () => import("./sections/ui-event.js"),
+    icon: "§"
+  },
+  {
+    id: "ui-camp",
+    area: "ui",
+    title: "Привал",
+    blurb: "Бюджет действий и адресат: список как у события, отряд телами, карточки как у награды.",
+    load: () => import("./sections/ui-camp.js"),
+    icon: "▲"
+  },
+  {
+    id: "ui-hud",
+    area: "ui",
+    title: "Боевой HUD",
+    blurb: "Единственный экран, который меряется долей кадра: полная периферия, минимум, лента снизу.",
+    load: () => import("./sections/ui-hud.js"),
+    icon: "◍"
+  },
+  {
+    id: "ui-courtyard",
+    area: "ui",
+    title: "Двор гильдии",
+    blurb: "Заготовка под разговор: сцена с телами, сцена с панелью, витрина разделов без места.",
+    load: () => import("./sections/ui-courtyard.js"),
+    icon: "⌂"
+  },
+  {
+    id: "ui-profile",
+    area: "ui",
+    title: "Выбор профиля",
+    blurb: "Три раскладки экрана «кто я»: ряд карточек, ряд на подложке, слоты рядом с идентичностью.",
+    load: () => import("./sections/ui-profile.js"),
+    icon: "▤"
+  },
+  {
+    id: "ui-guilds",
+    area: "ui",
+    title: "Выбор гильдии",
+    blurb: "Дом как слот сохранения: ряд карточек, список с панелью дома, один раскрытый при свёрнутых.",
+    load: () => import("./sections/ui-guilds.js"),
+    icon: "▥"
   },
 
   {

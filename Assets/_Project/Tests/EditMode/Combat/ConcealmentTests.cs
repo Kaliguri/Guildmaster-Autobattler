@@ -179,7 +179,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             var conceal = new ConcealmentComponent().With("_tier", tier);
             return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Buff,
-                tags: EffectTag.Buff | EffectTag.Stealth, stacking: StackRule.Refresh, components: conceal);
+                tags: EffectTag.Stealth, stacking: StackRule.Refresh, components: conceal);
         }
 
         private static CombatSimulation BuildSim(ulong seed) =>

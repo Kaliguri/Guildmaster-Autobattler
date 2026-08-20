@@ -7,15 +7,17 @@ using UnityEngine;
 namespace Guildmaster.AnimationLab.Editor
 {
     /// <summary>
-    /// Builds the knight's animator controllers from the clips on disk, so that both of them — the combat
-    /// one and the R&amp;D stand — always carry the same states.
+    /// Builds the knight's animator controller from the clips on disk, so that a clip which exists on disk
+    /// exists as a state, and adding one means writing its recipe and nothing else.
     ///
-    /// <b>Why this exists.</b> The two controllers used to be kept in step by hand, which made the clip
-    /// list a fact with two owners. It drifted exactly as such facts do: a new clip would be added to the
-    /// combat controller, and the stand — the one actually used to LOOK at animations in the Animation
-    /// window — would silently not have it. "Where is the stun?" is the question that costs the drift.
-    /// Now a clip that exists on disk exists in both controllers, and adding one means writing its recipe
-    /// and nothing else.
+    /// <b>Why this exists.</b> The clip list used to be kept in step by hand, which made it a fact with two
+    /// owners — and it drifted exactly as such facts do: a new clip would be added to one controller and
+    /// silently miss the other. "Where is the stun?" is the question that costs the drift.
+    ///
+    /// <b>There used to be two controllers here.</b> A "combat" one and an R&amp;D stand — and their names
+    /// lied backwards: the stand was what actually played in battle for the whole roster, while the one
+    /// called combat sat on a dev duellist alone. Both the duellist and that controller were removed on
+    /// 2026-08-06; what is left is the single controller the game plays.
     ///
     /// <b>What stays authored.</b> Only the structure: which layers exist, which mask each wears, and which
     /// clip belongs to an overlay rather than to the base layer. That list is short, it is the design, and
@@ -25,7 +27,7 @@ namespace Guildmaster.AnimationLab.Editor
     {
         const string Folder = "Assets/_Project/Prefabs/Bones/";
 
-        static readonly string[] Controllers = { "BoneUnit_Combat", "BoneUnit_Standart" };
+        static readonly string[] Controllers = { "BoneUnit_SwordShield" };
 
         /// <summary>
         /// Clips that belong to an overlay layer instead of the base one, and the mask that layer wears.

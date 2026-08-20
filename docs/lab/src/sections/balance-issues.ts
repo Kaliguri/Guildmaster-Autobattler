@@ -8,7 +8,7 @@
 
 import { el, html } from "../dom.js";
 import type { SectionDef } from "../types.js";
-import { balance, rich, statusOf, type Issue } from "./balance-data.js";
+import { balance, noDataMessage, rich, statusOf, type Issue } from "./balance-data.js";
 
 /** Статус пишется свободным текстом с уточнением после точки — класс берём по первому слову. */
 const STATUS_CLASS: Record<string, string> = {
@@ -16,9 +16,20 @@ const STATUS_CLASS: Record<string, string> = {
   "требует дизайна": "st-design",
   "решение принято": "st-design",
   "правка внесена": "st-applied",
+  // Состояния РЕВИЗИИ: что показал свежий прогон по старой записи. Отдельно от «закрыта», потому
+  // что закрывает только Макс словом — здесь лишь видно, что симптома больше нет.
+  "не воспроизводится": "st-applied",
+  "смягчилось": "st-applied",
+  "подтверждается": "st-open",
+  "подтверждается частично": "st-open",
+  "подтверждается и ухудшилось": "st-design",
   "закрыта": "st-closed",
+  "закрыта как не балансная": "st-closed",
   "отклонена": "st-closed"
 };
+
+/** Записи, чей симптом свежий прогон больше не воспроизводит: их можно закрывать словом. */
+const READY_TO_CLOSE = ["не воспроизводится", "смягчилось"];
 
 function issueCard(issue: Issue): HTMLElement {
   const status = statusOf(issue);
@@ -39,6 +50,9 @@ function issueCard(issue: Issue): HTMLElement {
   const body = el("div", "i-body");
   if (issue.symptom) body.appendChild(html("p", `<span class="lbl">Симптом. </span>${rich(issue.symptom)}`));
   if (issue.diagnosis) body.appendChild(html("p", `<span class="lbl">Диагноз. </span>${rich(issue.diagnosis)}`));
+  // Перемер идёт СРАЗУ после диагноза: сначала «что было», потом «что стало», иначе читатель
+  // принимает старые числа за сегодняшние — ровно так и вышло 03.08.
+  if (issue.recheck) body.appendChild(html("p", `<span class="lbl">Перемер. </span>${rich(issue.recheck)}`));
 
   if (issue.options?.length) {
     body.appendChild(html("p", '<span class="lbl">Варианты правки</span>'));
@@ -63,23 +77,30 @@ function render(host: HTMLElement): void {
     const issues = balance.data.issues;
     if (issues.length === 0) {
       status.textContent = balance.error
-        ? `Реестр недоступен: ${balance.error}. Нужен ./scripts/lab-serve.ps1 -Watch`
+        ? noDataMessage("Реестр")
         : "В реестре пусто.";
       return;
     }
     host.replaceChildren();
 
-    const open = issues.filter((i) => !["закрыта", "отклонена"].includes(statusOf(i)));
-    const closed = issues.filter((i) => ["закрыта", "отклонена"].includes(statusOf(i)));
+    // Закрытость определяется ПЕРВЫМ словом статуса: «закрыта как не балансная» — тоже закрытая,
+    // и без этого она осталась бы в работе, ради чего реестр и разгребали.
+    const isClosed = (i: Issue): boolean =>
+      statusOf(i).startsWith("закрыта") || statusOf(i).startsWith("отклонена");
+    const open = issues.filter((i) => !isClosed(i));
+    const closed = issues.filter(isClosed);
     const noVerdict = open.filter((i) => !i.verdict || i.verdict === "—").length;
+    const ready = open.filter((i) => READY_TO_CLOSE.some((s) => statusOf(i).startsWith(s)));
 
     host.appendChild(el("p", "dim",
       `${issues.length} проблем · ${open.length} в работе · ${closed.length} закрыто` +
+      (ready.length ? ` · ${ready.length} готовы к закрытию` : "") +
       (noVerdict ? ` · ${noVerdict} ждут вердикта` : "")));
 
     const filters = el("div", "bal-tabs");
     const groups: Array<[string, Issue[]]> = [
       ["В работе", open],
+      ["Готовы к закрытию", ready],
       ["Ждут вердикта", open.filter((i) => !i.verdict || i.verdict === "—")],
       ["Закрытые", closed],
       ["Все", issues]

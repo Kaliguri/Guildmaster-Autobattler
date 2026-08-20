@@ -77,10 +77,21 @@ namespace Guildmaster.Net.Transport
             _rng     = new XorShiftRng(seed);
         }
 
+        // Подъём сессии и вход хаос не искажает намеренно: он моделирует КАНАЛ (задержку, потерю,
+        // переупорядочивание), а не отказ платформы. Отказ в подключении — отдельная история, и
+        // подмешивать его сюда значило бы получить тест, который падает по двум причинам сразу.
+        public bool StartHost()                 => _inner.StartHost();
+        public bool Connect(ulong hostAddress)  => _inner.Connect(hostAddress);
+        public void SetLocalPeerId(int peerId)  => _inner.SetLocalPeerId(peerId);
+
         public bool IsRunning              => _inner.IsRunning;
         public int  LocalPeerId            => _inner.LocalPeerId;
         public bool IsHost                 => _inner.IsHost;
         public int  MaxReliableMessageBytes => _inner.MaxReliableMessageBytes;
+
+        // Состав соединений хаос не портит намеренно: он моделирует ПОРЧУ КАНАЛА, а «кто подключён» —
+        // это состояние платформы. Врать здесь значило бы получить тест, падающий по двум причинам.
+        public System.Collections.Generic.IReadOnlyList<int> ConnectedPeers => _inner.ConnectedPeers;
 
         public event Action<int> PeerConnected
         {

@@ -100,12 +100,17 @@ namespace Guildmaster.Tests.EditMode.Presentation
             new Entry("HealBodyCuts",    Switch.Toggle, nameof(CombatFeelConfig.EnableBodyCuts)),
             new Entry("HitForm",         Switch.Toggle, nameof(CombatFeelConfig.EnableHitForm)),
             new Entry("HitFormBreak",    Switch.Toggle, nameof(CombatFeelConfig.EnableHitFormBreakOnShield)),
+            new Entry("HitFormLine",     Switch.Toggle, nameof(CombatFeelConfig.EnableHitFormLine)),
             new Entry("SwingArc",        Switch.Toggle, nameof(CombatFeelConfig.EnableSwingArc)),
+            new Entry("SwingArcShaping", Switch.InternalToggle, "_enableSwingArcShaping — применяется внутри конфига"),
+            // Зона удара выбирает МЕСТО попадания, а не рисует эффект: выключенная, она возвращает удар в
+            // HitPoint — то есть в поведение до 06.08.2026. Оба режима сравниваются в бою.
+            new Entry("ImpactZone",      Switch.Toggle, nameof(CombatFeelConfig.EnableImpactZones)),
 
             // Взмах и его геометрия — ЗАПРОСЫ к виду, а не эффекты: отвечают «где клинок», ничего не рисуя.
             new Entry("TryGetSwingArc",      Switch.NotAnEffect, "геометрия взмаха для дуги — запрос, не эффект"),
             new Entry("TryGetSwingProgress", Switch.NotAnEffect, "насколько прошёл взмах — запрос, не эффект"),
-            new Entry("TryGetStrikeOrigin",  Switch.NotAnEffect, "точка A текущего удара — запрос, не эффект"),
+            new Entry("TryGetStrikeDirection", Switch.NotAnEffect, "куда шёл клинок в момент касания — запрос, не эффект"),
 
             // VFX — выключаются пустой ссылкой на VfxData
             new Entry("VfxHitForm",     Switch.Asset, "форма удара по A→B"),

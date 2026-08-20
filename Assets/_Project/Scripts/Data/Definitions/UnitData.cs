@@ -29,23 +29,30 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private AttackType _attackType = AttackType.Melee;
         [SerializeField] private ResourceType _resourceType = ResourceType.None;
 
-        [Header("Visual (Phase 3)")]
-        [Tooltip("Набор спрайт-кадров. Сим/фабрика читают отсюда кадр контакта авто-атаки для windup " +
-                 "(вики «14»). ОБЯЗАТЕЛЕН: пусто = UnitView не найдёт клип атаки и ругнётся в лог, а замах " +
-                 "свалится на телеграф-пол в три тика. Сторож — ContentValidationService (Doctor в Content Hub).")]
-        [SerializeField] private UnitVisual _visual;
+        [Tooltip("Ступень дальности авто-атаки. Число за ступенью живёт в StatsConfig — здесь юнит " +
+                 "объявляет, кто он по дистанции, а не сколько метров достаёт. Своё число в стат-блоке " +
+                 "задавать нельзя: тогда у дальности снова стало бы два владельца (AttackRangeBandTests).")]
+        [SerializeField] private AttackRangeBand _rangeBand = AttackRangeBand.Melee;
 
-        [Tooltip("Свой префаб визуала юнита (с настроенным Animator и реальным размером ПРЯМО в префабе). " +
-                 "ОБЯЗАТЕЛЕН: пусто = юнит выйдет на арену дефолтным видом презентера и станет неотличим " +
-                 "от соседа. Временное тело берётся переиспользованием чужого пака + своя ступень " +
-                 "BodyShade — заглушкой это не закрывают.")]
-        [SerializeField] private GameObject _viewPrefab;
+        [Tooltip("Личная поправка к ступени, доля: 0.1 = на 10% дальше своих. Намеренно мелкая и в долях, " +
+                 "а не в единицах, — чтобы правка ступени доезжала и до тех, кто от неё отличается.")]
+        [Range(-0.25f, 0.25f)]
+        [SerializeField] private float _rangeAdjustPct;
 
-        [Tooltip("Приглушение тела: различитель тех, кто носит ОДИН спрайт. Один юнит из группы остаётся " +
-                 "None и показывает арт как есть, остальные берут ступень. Тинт умножается на готовый арт, " +
-                 "поэтому перекрасить им персонажа нельзя — это работа Palette Remapper. " +
-                 "Свой арт → всегда None (сторож — UnitTintPolicyTests).")]
-        [SerializeField] private BodyShade _bodyShade = BodyShade.None;
+        [Header("Архетип анимаций")]
+        [Tooltip("Набор клипов, по которому юнит двигается. Сим/фабрика читают отсюда кадр контакта " +
+                 "авто-атаки для windup. ОБЯЗАТЕЛЕН: пусто = UnitView не найдёт клип атаки и ругнётся в " +
+                 "лог, а замах свалится на телеграф-пол в три тика. Сторож — ContentValidationService " +
+                 "(Doctor в Content Hub).")]
+        // Поле звалось _visual до 06.08.2026: имя врало, внутри клипы, а не спрайты. FormerlySerializedAs
+        // держит ссылки 47 живых ассетов — без него они обнулились бы молча, и весь ростер потерял бы
+        // анимацию при следующем сохранении.
+        [FormerlySerializedAs("_visual")]
+        [SerializeField] private AnimationArchetypeData _archetype;
+
+        [Tooltip("Облачение: броня и предметы в руках. Пусто = играет то, что лежит на префабе рига. " +
+                 "Именно здесь снимается щит у тех, кто его не носит: строка с пустым спрайтом.")]
+        [SerializeField] private OutfitData _outfit;
 
         [Tooltip("Оттенок, которым юнит СВЕТИТ: снаряд, его след, контур каста, искры, осколки. Хранится " +
                  "роль, а не цвет — значение живёт в палитре (UI/Theme/tokens.*.uss → GuildmasterPalette), " +
@@ -84,13 +91,6 @@ namespace Guildmaster.Data.Definitions
                  "(тот считается автоматически). Юнит «занят» (рут/штраф скорости) весь хвост. 0 = только " +
                  "доигрыш клипа. Ненулевое — сознательный «оверкоммит» (замедляет эффективную скорость атаки).")]
         [SerializeField] private float _attackRecoverySeconds;
-
-        [Tooltip("Доля свинга до кадра контакта, 0..1: сколько удар «замахивается», прежде чем прилететь. " +
-                 "0.45 = контакт чуть позже середины (размашистый удар с внятным телеграфом), 0.2 = быстрый " +
-                 "тычок. 0 = взять из кадров UnitVisual (покадровые юниты так и делают). ЗАДАВАТЬ ОБЯЗАТЕЛЬНО " +
-                 "юнитам без UnitVisual (скелетный риг): кадров у них нет, расчёт падает на телеграф-пол в " +
-                 "3 тика, и клип атаки скрабится в 0.1 с — удар прилетает почти мгновенно и выглядит рвано.")]
-        [SerializeField, Range(0f, 1f)] private float _windupShare;
 
         [Tooltip("Потолок длительности свинга ЭТОГО юнита в сим-тиках (30 = 1 сек при 30 Гц; 45 = 1.5 сек, " +
                  "60 = 2 сек). 0 = глобальный дефолт SimConstants.MaxAttackAnimTicks. Ставить тем, чья " +
@@ -156,16 +156,29 @@ namespace Guildmaster.Data.Definitions
         public DamageType AutoAttackDamageType => _autoAttackDamageType;
         public CreatureType CreatureType => _creatureType;
         public AttackType AttackType => _attackType;
-        public ResourceType ResourceType => _resourceType;
-        public UnitVisual Visual => _visual;
-        public GameObject ViewPrefab => _viewPrefab;
-        /// <summary>
-        /// Ступень приглушения тела. Цвет из неё достаёт <c>UnitColorRoles.Shade</c> — здесь только
-        /// решение автора, потому что владелец цвета один и это палитра.
-        /// </summary>
-        public BodyShade BodyShade => _bodyShade;
 
-        /// <summary>Оттенок свечения юнита; цвет по роли отдаёт <c>CombatColorPalette</c>.</summary>
+        /// <summary>Ступень дальности авто-атаки; дистанцию за ней знает <see cref="StatsConfig"/>.</summary>
+        public AttackRangeBand RangeBand => _rangeBand;
+
+        /// <summary>Личная поправка к ступени, доля от неё (0.1 = +10%).</summary>
+        public float RangeAdjustPct => _rangeAdjustPct;
+
+        public ResourceType ResourceType => _resourceType;
+        /// <summary>Архетип анимаций: какие клипы играет юнит. Звался <c>Visual</c> до 06.08.2026.</summary>
+        public AnimationArchetypeData Archetype => _archetype;
+        /// <summary>Облачение: броня и предметы в руках. <c>null</c> — как на префабе.</summary>
+        public OutfitData Outfit => _outfit;
+
+        /// <summary>
+        /// Префаб вида. Своего поля у юнита НЕТ (снято 06.08.2026): вид приходит из архетипа, потому что
+        /// риг и набор клипов — одна вещь. Пока это были два поля, ничто не мешало свести в данных
+        /// архетип копья с префабом меча, и юнит вышел бы на арену махать клипами копья по мечу.
+        /// </summary>
+        public GameObject ViewPrefab => _archetype != null ? _archetype.ViewPrefab : null;
+        /// <summary>
+        /// Оттенок юнита: и чем он СВЕТИТ (снаряд, искры, контур каста), и каким цветом окрашено его
+        /// ТЕЛО. Один источник на оба (05.08.2026); цвет по роли отдаёт <c>CombatColorPalette</c>.
+        /// </summary>
         public UnitTone VfxTone => _vfxTone;
 
         public AreaShape AutoAttackShape => _autoAttackShape;
@@ -189,8 +202,16 @@ namespace Guildmaster.Data.Definitions
         public float MovingAttackSpeedPenaltyPct => _movingAttackSpeedPenaltyPct;
         public float AttackRecoverySeconds => _attackRecoverySeconds;
 
-        /// <summary>Доля свинга до кадра контакта (0..1). 0 = считать из кадров <see cref="UnitVisual"/>.</summary>
-        public float WindupShare => _windupShare;
+        /// <summary>
+        /// Доля свинга до контакта (0..1) — сколько удар замахивается, прежде чем прилететь.
+        /// <para>
+        /// <b>Своего поля у юнита НЕТ</b> (снято 06.08.2026): «время замаха должно быть у всех
+        /// одинаковым» — решение Макса. Доля живёт на архетипе, потому что она свойство ХОРЕОГРАФИИ:
+        /// один и тот же взмах не может замахиваться по-разному у двух бойцов. Персональные доли
+        /// десяти юнитов (0.25–0.50, заданные вручную) сняты этим же решением.
+        /// </para>
+        /// </summary>
+        public float WindupShare => _archetype != null ? _archetype.WindupShare : 0f;
 
         /// <summary>Заданные доли урона по Ударам; <c>null</c>/пусто = каждый Удар в полную силу.</summary>
         public float[] HitDamageShares => _hitDamageShares;
@@ -242,10 +263,11 @@ namespace Guildmaster.Data.Definitions
         /// </summary>
         public AIProfile Ai => _aiPreset != null ? _aiPreset.Profile : _ai;
 
-        // Цветов у юнита больше нет НИ ОДНОГО — только роли выше (BodyShade / VfxTone). Владелец значений
-        // один: палитра проекта (UI/Theme/tokens.*.uss → GuildmasterPalette). Резолв тинта — в
-        // UnitColorRoles.Shade, резолв свечения с HDR-множителями — в CombatColorPalette: множители это
-        // авторинг фидбэка, и в снимок палитры значения больше единицы не едут.
+        // Цветов у юнита больше нет НИ ОДНОГО, и роль осталась ровно ОДНА — VfxTone. Ею красится и тело,
+        // и всё, чем юнит светит: ступень приглушения тела снята 05.08.2026 как второй владелец цвета.
+        // Владелец значений один: палитра проекта (UI/Theme/tokens.*.uss → GuildmasterPalette). Резолв
+        // цвета тела — в UnitColorRoles.Body, резолв свечения с HDR-множителями — в CombatColorPalette:
+        // множители это авторинг фидбэка, и в снимок палитры значения больше единицы не едут.
     }
 
     /// <summary>

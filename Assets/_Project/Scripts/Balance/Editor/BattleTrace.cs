@@ -47,6 +47,13 @@ namespace Guildmaster.Balance.Editor
             env.Sim.OnUnitDied += HandleDeath;
             env.Sim.OnAttackEvaded += HandleEvaded;
 
+            // Каст — единственное событие, которое видно ТОЛЬКО отсюда. Умение, которое никого не задело,
+            // не поднимает ни урона, ни лечения, ни эффектов, и его отсутствие в ленте неотличимо от
+            // «кит не кастовал вовсе» — а это два разных диагноза с разным лечением.
+            env.Abilities.OnAbilityCast += HandleAbilityCast;
+            env.Abilities.OnAbilityCastStarted += HandleCastStarted;
+            env.Abilities.OnAbilityCastInterrupted += HandleCastInterrupted;
+
             env.Effects.OnEffectApplied += HandleEffectApplied;
             env.Effects.OnEffectEnded += HandleEffectEnded;
             env.Effects.OnEffectDispelled += HandleDispelled;
@@ -67,6 +74,18 @@ namespace Guildmaster.Balance.Editor
         private void HandleHeal(RuntimeUnit source, RuntimeUnit target, float amount)
             => Add(Name(source), ReferenceEquals(source, target) ? "самолечение" : "лечение",
                 Name(target), amount, "", Hp(target));
+
+        /// <summary>Умение применено — нагрузка ушла. Что она задела, скажут строки следом.</summary>
+        private void HandleAbilityCast(RuntimeUnit caster, AbilityData data)
+            => Add(Name(caster), "скастовал", "", null, data != null ? data.Id : "", Hp(caster));
+
+        /// <summary>Начата подготовка или канал: между ней и нагрузкой кит уязвим и занят.</summary>
+        private void HandleCastStarted(RuntimeUnit caster, AbilityData data, int castTicks)
+            => Add(Name(caster), "начал каст", "", castTicks / (double)SimConstants.TickRate,
+                (data != null ? data.Id : "") + ", подготовка", Hp(caster));
+
+        private void HandleCastInterrupted(RuntimeUnit caster)
+            => Add(Name(caster), "каст сорван", "", null, "", Hp(caster));
 
         private void HandleEvaded(RuntimeUnit target)
             => Add(Name(target), "уклонился", "", null, "входящий удар отменён целиком", Hp(target));

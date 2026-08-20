@@ -32,6 +32,7 @@ export function isPlaying(): boolean {
 
 export function setPlaying(value: boolean): void {
   playing = value;
+  if (value) requestPaint();
 }
 
 export function setSpeed(value: number): void {
@@ -43,31 +44,62 @@ export function setSpeed(value: number): void {
 export function setFrame(value: number): void {
   frame = ((value % TOTAL) + TOTAL) % TOTAL;
   tick = Math.max(0, value);
+  requestPaint();
 }
 
 /** Шаг вручную: транспорт ставит показ на паузу и двигает время сам. */
 export function stepBy(delta: number): void {
   frame = (frame + delta + TOTAL) % TOTAL;
   tick = Math.max(0, tick + delta);
+  requestPaint();
+}
+
+// Цикл спит, когда рисовать некому. Раньше он крутился ВСЕГДА: на разделе с таблицами сцен нет
+// вовсе, а сайт всё равно занимал кадр шестьдесят раз в секунду и писал в DOM показание часов.
+// Отсюда и тормоза там, где ничего не движется, — платил за анимацию каждый раздел.
+let awake = false;
+let renderFn: (() => void) | null = null;
+let hasScenes: () => boolean = () => false;
+
+/**
+ * Разбудить показ: нарисовать кадр и, если есть что анимировать, продолжить крутить время.
+ * Зовётся из всего, что меняет картинку, — появления сцены, шага транспорта, смены раздела.
+ */
+export function requestPaint(): void {
+  if (awake || renderFn == null) return;
+  awake = true;
+  last = 0;
+  requestAnimationFrame(step);
+}
+
+function step(ts: number): void {
+  if (renderFn == null) { awake = false; return; }
+
+  if (!last) last = ts;
+  const dt = ts - last;
+  last = ts;
+
+  if (playing) {
+    acc += dt * speed;
+    const per = 1000 / FPS;
+    while (acc >= per) {
+      acc -= per;
+      frame = (frame + 1) % TOTAL;
+      tick++;
+    }
+  }
+
+  renderFn();
+
+  // Спим, если нечего двигать: часы на паузе или на странице нет ни одной сцены. Показание кадра
+  // при этом остаётся верным — оно и не менялось.
+  if (playing && hasScenes()) requestAnimationFrame(step);
+  else awake = false;
 }
 
 /** Крутит время и зовёт отрисовку. Владелец цикла один — иначе кадры пойдут вразнобой. */
-export function start(render: () => void): void {
-  const loop = (ts: number): void => {
-    if (!last) last = ts;
-    const dt = ts - last;
-    last = ts;
-    if (playing) {
-      acc += dt * speed;
-      const per = 1000 / FPS;
-      while (acc >= per) {
-        acc -= per;
-        frame = (frame + 1) % TOTAL;
-        tick++;
-      }
-    }
-    render();
-    requestAnimationFrame(loop);
-  };
-  requestAnimationFrame(loop);
+export function start(render: () => void, scenesAlive: () => boolean): void {
+  renderFn = render;
+  hasScenes = scenesAlive;
+  requestPaint();
 }

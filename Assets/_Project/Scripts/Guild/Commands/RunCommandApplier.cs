@@ -59,6 +59,15 @@ namespace Guildmaster.Guild.Commands
                     _state.AwardBattleReward();
                     return true;
 
+                // Достижимость проверяется ЗДЕСЬ, а не у нажавшего: у напарника карта могла отстать на
+                // снимок, и его клик по уже пройденному узлу обязан отвалиться так же тихо, как отвалился
+                // бы свой. Отказ не громкий именно поэтому — это гонка, а не забытая проводка.
+                case RunCommandKind.ChooseNode:
+                    if (_state.Current?.Map == null || string.IsNullOrEmpty(command.Text)) return false;
+                    if (!MapTraversal.CanEnter(_state.Current.Map, command.Text)) return false;
+                    _state.EnterNode(command.Text);
+                    return true;
+
                 // Вид команды без ветки — это забытая проводка, а не «ничего страшного»: изменение молча
                 // не произошло бы у всех сразу, и разъезд состояний нашёлся бы много позже (политика
                 // фолбэков: наше авторство = громкий отказ).

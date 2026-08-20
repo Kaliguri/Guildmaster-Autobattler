@@ -11,6 +11,10 @@ namespace Guildmaster.Combat.Tape
     /// моменту, когда до юнита доходит картинка, живого <see cref="RuntimeUnit"/> может уже не быть под
     /// рукой — а спросить «кто это, какой у него арт и палитра» надо. Заполняется по событию спавна:
     /// это регистрация, а не показ, и приходить заранее ей не мешает.</para>
+    /// <para><b>Симуляция необязательна.</b> Владелец и гость подают её, чтобы реестр сам заполнялся по
+    /// спавну; у кого сима нет вовсе (реплей с диска), состав приходит только через
+    /// <see cref="RegisterRemote"/>, и подписываться не на что. Требовать сим там, где его нет, значило
+    /// бы держать в реплей-скоупе бесполезную симуляцию ради одной подписки.</para>
     /// </summary>
     public sealed class BattleUnitRegistry : IUnitDirectory, IDisposable
     {
@@ -20,12 +24,16 @@ namespace Guildmaster.Combat.Tape
         public BattleUnitRegistry(CombatSimulation simulation)
         {
             _simulation = simulation;
+            if (_simulation == null) return;   // реплей: спавнов нет, состав придёт RegisterRemote
+
             _simulation.OnUnitSpawned += Register;
             _simulation.OnBattleReset += Clear;
         }
 
         public void Dispose()
         {
+            if (_simulation == null) return;
+
             _simulation.OnUnitSpawned -= Register;
             _simulation.OnBattleReset -= Clear;
         }

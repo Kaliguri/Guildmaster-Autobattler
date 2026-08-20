@@ -1,4 +1,4 @@
-using Guildmaster.Core.Audio;
+﻿using Guildmaster.Core.Audio;
 using Guildmaster.Core.Persistence;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Session;
@@ -140,6 +140,19 @@ namespace Guildmaster.Tests.EditMode.Run
         /// заглушками: VContainer проверяет разрешимость всей ветки на <c>Build</c>, а дефолтные
         /// значения параметров конструктора он не подставляет.
         /// </remarks>
+        /// <summary>Указатель без камеры: в EditMode мира нет, и присутствию нечего отправлять.</summary>
+        private sealed class TestPointer : Guildmaster.Core.Input.IPointerWorld
+        {
+            public UnityEngine.Vector2 Position   => UnityEngine.Vector2.zero;
+            public bool                IsAvailable => false;
+        }
+
+        /// <summary>Платформа без платформы: имя есть, Steam-а нет.</summary>
+        private sealed class TestPlatform : Guildmaster.Core.Players.IPlatformIdentity
+        {
+            public string PlayerName => "Игрок";
+        }
+
         private static IObjectResolver BuildSession(SessionRole role)
         {
             var builder = new ContainerBuilder();
@@ -147,6 +160,14 @@ namespace Guildmaster.Tests.EditMode.Run
             builder.RegisterInstance<IProfileService>(new FixedProfileService());
             builder.RegisterInstance(ScriptableObject.CreateInstance<GameConfig>());
             builder.RegisterInstance<IAudioService>(new SilentAudio());
+
+            // Личность платформы: сеанс представляет игрока по имени, и в EditMode Steam-а нет. Шов
+            // узкий ровно затем, чтобы подменяться одной строкой.
+            builder.RegisterInstance<Guildmaster.Core.Players.IPlatformIdentity>(new TestPlatform());
+
+            // Указатель в мире: присутствие спрашивает, где курсор. В EditMode камеры нет, и шов честно
+            // отвечает «недоступен» — курсор просто не отправляется.
+            builder.RegisterInstance<Guildmaster.Core.Input.IPointerWorld>(new TestPointer());
 
             // Транспорт и владелец мероприятий приходят из предков: раздача состояния и объявление
             // «где мы» живут в сеансе, потому что это обязанность роли.
@@ -160,11 +181,50 @@ namespace Guildmaster.Tests.EditMode.Run
             builder.RegisterInstance<Guildmaster.Game.Flow.IPartyStage>(new SilentStage());
             builder.RegisterInstance<Guildmaster.Game.Flow.IActMapPresence>(new SilentMap());
 
+            // Гостевая половина ещё и ПОКАЗЫВАЕТ итог боя, поэтому просит паблишер экрана, ленту боя,
+            // свою сторону и выход из чужой сессии. Всё это приходит из предков и здесь заглушается: тест
+            // проверяет СОСТАВ сеанса по роли, а не показ.
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenOutcomeRequest>>(
+                new SilentOutcomePublisher());
+            builder.RegisterInstance<MessagePipe.ISubscriber<Guildmaster.Presentation.BattleEndedEvent>>(
+                new SilentBattleEnded());
+            builder.RegisterInstance<Guildmaster.Core.Net.ICoopSessionControl>(new SilentCoop());
+            builder.RegisterInstance<Guildmaster.Core.Players.ILocalPlayer>(new TestLocalPlayer());
+
+            // Реестр контента: гость собирает витрину награды из присланных id. Пустой — тест смотрит
+            // на состав сеанса, а не на то, что в базе лежит.
+            builder.RegisterInstance<IContentDatabase>(new EmptyContent());
+
+            // Экраны узла публикует общий потребитель, один на обе роли, — поэтому заглушки нужны и
+            // владельцу, и гостю. Сам показ здесь не проверяется: тест смотрит на состав сеанса.
+            builder.RegisterInstance<MessagePipe.IPublisher<OpenRewardRequest>>(new Silent<OpenRewardRequest>());
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenContinueRequest>>(
+                new Silent<Guildmaster.Guild.OpenContinueRequest>());
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Core.Flow.GoToModeRequest>>(
+                new Silent<Guildmaster.Core.Flow.GoToModeRequest>());
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenNodeFarewellRequest>>(
+                new Silent<Guildmaster.Guild.OpenNodeFarewellRequest>());
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenChestRequest>>(
+                new Silent<Guildmaster.Guild.OpenChestRequest>());
+            builder.RegisterInstance<MessagePipe.IPublisher<OpenTextEventRequest>>(
+                new Silent<OpenTextEventRequest>());
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenOutcomeRequest>>(
+                new Silent<Guildmaster.Guild.OpenOutcomeRequest>());
+            // Двор переехал на общий шов 09.08.2026 и стал таким же экраном шага, как витрина и сундук.
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Guild.OpenHubRequest>>(
+                new Silent<Guildmaster.Guild.OpenHubRequest>());
+
+            // «В меню» с экрана исхода — тот же путь, что из паузы, и он общий для обеих ролей.
+            builder.RegisterInstance<Guildmaster.Core.Flow.IRunControl>(new SilentRunControl());
+
+            // Где мы сейчас: состав сеанса возит место каждого участника. В EditMode мест нет вовсе.
+            builder.RegisterInstance<ILocalWhereabouts>(new NowhereInParticular());
+
             // Шина корня. Заглушкой, а не настоящим MessagePipe: сеанс только ПУБЛИКУЕТ «забег
             // начался», и поднимать ради этого весь брокер значило бы проверять не состав сеанса.
             builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Game.Flow.RunPartyReadyEvent>>(
                 new SilentPublisher());
-            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Core.Net.ReadyGateChangedEvent>>(
+            builder.RegisterInstance<MessagePipe.IPublisher<Guildmaster.Core.Net.SharedDecisionChangedEvent>>(
                 new SilentReadyPublisher());
 
             new SessionInstaller(role).Install(builder);
@@ -181,6 +241,11 @@ namespace Guildmaster.Tests.EditMode.Run
             public bool IsShown => false;
             public void SetVisible(bool visible) { }
             public void Refresh() { }
+            public bool IsChoosing => false;
+            public void BeginChoose(
+                System.Collections.Generic.IReadOnlyList<Guildmaster.Guild.MapNode> available,
+                bool show = true) { }
+            public void EndChoose() { }
         }
 
         private sealed class SilentPublisher : MessagePipe.IPublisher<Guildmaster.Game.Flow.RunPartyReadyEvent>
@@ -188,10 +253,95 @@ namespace Guildmaster.Tests.EditMode.Run
             public void Publish(Guildmaster.Game.Flow.RunPartyReadyEvent message) { }
         }
 
-        private sealed class SilentReadyPublisher
-            : MessagePipe.IPublisher<Guildmaster.Core.Net.ReadyGateChangedEvent>
+        private sealed class SilentOutcomePublisher
+            : MessagePipe.IPublisher<Guildmaster.Guild.OpenOutcomeRequest>
         {
-            public void Publish(Guildmaster.Core.Net.ReadyGateChangedEvent message) { }
+            public void Publish(Guildmaster.Guild.OpenOutcomeRequest message) { }
+        }
+
+        /// <summary>Лента боя, по которой никто не бьётся: подписаться можно, событий не будет.</summary>
+        private sealed class SilentBattleEnded
+            : MessagePipe.ISubscriber<Guildmaster.Presentation.BattleEndedEvent>
+        {
+            public System.IDisposable Subscribe(
+                MessagePipe.IMessageHandler<Guildmaster.Presentation.BattleEndedEvent> handler,
+                params MessagePipe.MessageHandlerFilter<Guildmaster.Presentation.BattleEndedEvent>[] filters) =>
+                new NoSubscription();
+
+            private sealed class NoSubscription : System.IDisposable
+            {
+                public void Dispose() { }
+            }
+        }
+
+        /// <summary>Сессии нет: сеанс проверяется в отрыве от сети, и уходить неоткуда.</summary>
+        private sealed class SilentCoop : Guildmaster.Core.Net.ICoopSessionControl
+        {
+            public Guildmaster.Core.Net.CoopSessionState State => Guildmaster.Core.Net.CoopSessionState.Offline;
+            public Guildmaster.Core.Net.CoopEndReason EndReason => Guildmaster.Core.Net.CoopEndReason.None;
+            public string EndMessage => string.Empty;
+            public bool CanInvite    => false;
+            public bool IsSteamReady => false;
+
+            public event System.Action<Guildmaster.Core.Net.CoopSessionState> StateChanged;
+            public event System.Action<int> PeerLeft;
+#pragma warning disable 67 // Событие шва: сессии нет, звать некого — фейк его не поднимает.
+            public event System.Action<string, ulong> Invited;
+#pragma warning restore 67
+
+            public bool StartHost() => false;
+            public void InviteFriend() { }
+            public void AcceptInvite(ulong hostSteamId) { }
+            public void BrowseFriends() { }
+            public void Leave()
+            {
+                StateChanged?.Invoke(State);
+                PeerLeft?.Invoke(0);
+            }
+        }
+
+        /// <summary>Своя сторона вне сеанса — первая: сторон в EditMode-тесте всё равно одна.</summary>
+        private sealed class TestLocalPlayer : Guildmaster.Core.Players.ILocalPlayer
+        {
+            public int Team => 0;
+        }
+
+        /// <summary>Мест в EditMode нет: ни экранов, ни карты, ни арены — и это честный ответ.</summary>
+        private sealed class NowhereInParticular : ILocalWhereabouts
+        {
+            public Guildmaster.Core.Players.PlayerWhere Current =>
+                Guildmaster.Core.Players.PlayerWhere.Unknown;
+        }
+
+        private sealed class SilentRunControl : Guildmaster.Core.Flow.IRunControl
+        {
+            public void RequestReturnToMainMenu() { }
+            public void RequestQuit() { }
+        }
+
+        /// <summary>Публикатор, которому некуда публиковать: экраны в этом тесте не проверяются.</summary>
+        private sealed class Silent<T> : MessagePipe.IPublisher<T>
+        {
+            public void Publish(T message) { }
+        }
+
+        /// <summary>Реестр без контента: в этом тесте важно, КТО спрашивает базу, а не что в ней лежит.</summary>
+        private sealed class EmptyContent : IContentDatabase
+        {
+            public bool TryGet<T>(string id, out T def) where T : ContentDefinition
+            {
+                def = null;
+                return false;
+            }
+
+            public System.Collections.Generic.IReadOnlyList<T> All<T>() where T : ContentDefinition =>
+                System.Array.Empty<T>();
+        }
+
+        private sealed class SilentReadyPublisher
+            : MessagePipe.IPublisher<Guildmaster.Core.Net.SharedDecisionChangedEvent>
+        {
+            public void Publish(Guildmaster.Core.Net.SharedDecisionChangedEvent message) { }
         }
 
         private sealed class SilentAudio : IAudioService

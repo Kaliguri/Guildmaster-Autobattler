@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Stats;
 using UnityEngine;
 
@@ -16,7 +16,11 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Ближайший союзник (для бафф/хил-способностей).</summary>
         NearestAlly = 2,
 
-        /// <summary>Союзник с наименьшим HP% — глобально, без ограничения дальности (хилер-ульта «Длань жизни»).</summary>
+        /// <summary>
+        /// Союзник с наименьшим HP% по всей арене (хилер-ульта «Длань жизни»). Выбор цели глобален, но
+        /// каст до неё обязан ДОСТАВАТЬ: дистанцию задаёт <see cref="AbilityData.CastRange"/>, по
+        /// умолчанию равная дальности авто-атаки (2026-08-04).
+        /// </summary>
         LowestHpAlly = 3,
 
         /// <summary>Все живые враги с тегом <see cref="AbilityData.TriggerTag"/> — глобально, без ограничения дальности (масс-стан «Ледяные оковы» по «Заморозке»). Цель не одиночная.</summary>
@@ -64,10 +68,24 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Множитель прямого урона от AutoAttackDamage кастующего. 0 = только эффекты (поведение Ф2). «Стальной вихрь» = 3.")]
         [SerializeField] private float _damageMultiplier;
 
+        [Tooltip("СОБСТВЕННАЯ база урона способности, плоским числом. Складывается с множителем от " +
+                 "автоатаки: заклинателю нужна своя величина, растущая от силы способностей, а не от " +
+                 "того, как больно он бьёт посохом. Скейл от AP задаётся правилом на BaseDamage.")]
+        [SerializeField] private float _baseDamage;
+
         [Tooltip("Тип урона ЭТОЙ способности — свой, не унаследованный от юнита. Обязателен, если " +
                  "способность наносит прямой урон (множитель > 0). Копейщик: ульта Режущая при " +
                  "автоатаке Колющей.")]
         [SerializeField] private DamageType _damageType = DamageType.Undefined;
+
+        [Header("Дальность каста")]
+        [Tooltip("С какого расстояния умение достаёт до ЦЕЛИ. Дефолт — как у авто-атаки: обычно умение " +
+                 "бьёт оттуда же, откуда кит бьёт рукой. Своя ступень нужна тем, у кого умение достаёт " +
+                 "иначе, чем оружие.\n\n" +
+                 "Умению БЕЗ внешней цели (на себя, аура по своим, круг вокруг себя, масс-по-тегу) " +
+                 "дальность не применяется вовсе: у него нет точки, до которой мерить. Копейщик кастует " +
+                 "вихрь с центром на себе — ему хватает того, что задело хоть кого-то.")]
+        [SerializeField] private CastRangeBand _castRange = CastRangeBand.LikeAutoAttack;
 
         [Header("Area of effect (Phase 3)")]
         [Tooltip("Форма зоны поражения. None = одиночная цель по TargetMode (поведение Ф2).")]
@@ -112,6 +130,12 @@ namespace Guildmaster.Data.Definitions
 
         [Tooltip("После наложения эффектов снять TriggerTag с цели (конверсия: «Ледяные оковы» превращают «Заморозку» в стан).")]
         [SerializeField] private bool _consumesTriggerTag;
+
+        [Tooltip("Потолок на число РАЗНЫХ эффектов с TriggerTag, которые считаются за одну детонацию " +
+                 "(«Взрыв спор» Друида: до 3 ядов). 0 = без потолка. Ограничивает награду за разнообразие " +
+                 "порчи, чтобы отряд с шестью источниками яда не превращал взрыв в шестикратный.")]
+        [Min(0)]
+        [SerializeField] private int _maxTriggerUniques;
 
         [Header("Cast time and channel (M3) — Копейщик, Маг молний, Барабанщик")]
         [Tooltip("Подготовка перед применением, сек. 0 = мгновенно (поведение всего текущего контента). Маг молний = 1.5. Ресурс и КД списываются в НАЧАЛЕ подготовки: прерывание контролем жжёт каст.")]
@@ -187,20 +211,15 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private bool _areaAtTarget;
 
         [Header("Displacement (§9.9) — Монах")]
-        [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance; длительность полёта считается из дистанции. На линии полёта — урон-ядро.")]
+        [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance; длительность полёта считается из дистанции. " +
+                 "Урона на линии отбрасывания НЕ наносит: ядро — свойство рывка, и живёт на WhirlDashLandingComponent.")]
         [SerializeField] private bool _displaces;
 
         [Tooltip("Дистанция отбрасывания (фиксированная, мировые единицы).")]
         [SerializeField] private float _displaceDistance = 4f;
 
-        [Tooltip("Множитель урона-ядра от AutoAttackDamage кастующего (0 = без урона на линии).")]
-        [SerializeField] private float _displaceDamageMult = 1f;
-
-        [Tooltip("Ширина линии «ядра» (мировые единицы).")]
-        [SerializeField] private float _displaceWidth = 1f;
-
         [Header("Visual")]
-        [Tooltip("Слот визуала каста: проигрывается клип UnitVisual.SkillClip(этот слот). По умолчанию Skill1.")]
+        [Tooltip("Слот визуала каста: проигрывается клип AnimationArchetypeData.SkillClip(этот слот). По умолчанию Skill1.")]
         [SerializeField] private SkillSlot _visualSlot = SkillSlot.Skill1;
 
         [Header("Info")]
@@ -222,6 +241,12 @@ namespace Guildmaster.Data.Definitions
 
         public float DamageMultiplier => _damageMultiplier;
 
+        /// <summary>Своя база урона способности (без учёта конвертаций). 0 = бьёт только долей автоатаки.</summary>
+        public float BaseDamage => _baseDamage;
+
+        /// <summary>База урона с учётом конвертаций: сюда приходит скейл от силы способностей.</summary>
+        public float ResolveBaseDamage(IStatReader stats) => Resolve(AbilityParameter.BaseDamage, _baseDamage, stats);
+
         /// <summary>
         /// Тип урона способности — собственный. Наследования от кастера нет: прежний <c>Inherit</c>
         /// был единственным способом не назвать тип и выглядеть при этом законно (реформа
@@ -230,6 +255,10 @@ namespace Guildmaster.Data.Definitions
         /// </summary>
         public DamageType DamageType => _damageType;
         public AreaShape AreaShape => _areaShape;
+
+        /// <summary>Ступень дальности каста; <see cref="CastRangeBand.LikeAutoAttack"/> = как у авто-атаки.</summary>
+        public CastRangeBand CastRange => _castRange;
+
         public float AreaRadius => _areaRadius;
 
         /// <summary>
@@ -273,6 +302,9 @@ namespace Guildmaster.Data.Definitions
         public float CastOverrideSelfHpPct => _castOverrideSelfHpPct;
         public EffectTag TriggerTag => _triggerTag;
         public bool ConsumesTriggerTag => _consumesTriggerTag;
+
+        /// <summary>Потолок засчитываемых уникальных эффектов-триггеров за детонацию; 0 = без потолка.</summary>
+        public int MaxTriggerUniques => _maxTriggerUniques;
         /// <summary>
         /// Подготовка перед применением, сек (0 = мгновенно). Цена платится на СТАРТЕ подготовки —
         /// решение Макса 2026-07-29: иначе контроль лишь задерживает каст, и телеграф не стоит ничего.
@@ -393,11 +425,9 @@ namespace Guildmaster.Data.Definitions
 
         public bool Displaces => _displaces;
         public float DisplaceDistance => _displaceDistance;
-        public float DisplaceDamageMult => _displaceDamageMult;
-        public float DisplaceWidth => _displaceWidth;
         public TagData[] InfoTags => _infoTags;
 
-        /// <summary>Слот визуала каста (клип из <see cref="UnitVisual.SkillClip"/>).</summary>
+        /// <summary>Слот визуала каста (клип из <see cref="AnimationArchetypeData.SkillClip"/>).</summary>
         public SkillSlot VisualSlot => _visualSlot;
     }
 }

@@ -25,12 +25,25 @@ namespace Guildmaster.Combat
         /// расталкивание физически не может выпихнуть юнита из радиуса атаки (иначе — вечный удар «вхолостую»).
         /// </summary>
         public static float AttackReachCenter(RuntimeUnit self, RuntimeUnit target, in SimTuning tuning)
-            => self.Stats.Get(StatType.AttackRange) + BodyRadius(self, tuning) + BodyRadius(target, tuning);
+            => ReachCenter(self, target, self.Stats.Get(StatType.AttackRange), tuning);
+
+        /// <summary>
+        /// То же для ПРОИЗВОЛЬНОЙ дистанции: зазор между поверхностями плюс радиусы обоих тел. Отдельная
+        /// функция появилась вместе с дальностью каста — у умения своя дистанция, но правило перевода
+        /// «зазор → расстояние центров» обязано остаться одно на всех, иначе удар и умение начнут мерить
+        /// одну и ту же арену по-разному.
+        /// </summary>
+        public static float ReachCenter(RuntimeUnit self, RuntimeUnit target, float gap, in SimTuning tuning)
+            => gap + BodyRadius(self, tuning) + BodyRadius(target, tuning);
 
         /// <summary>Цель в пределах досягаемости атаки (сравнение квадратов — без sqrt). См. <see cref="AttackReachCenter"/>.</summary>
         public static bool InAttackRange(RuntimeUnit self, RuntimeUnit target, in SimTuning tuning)
+            => WithinReach(self, target, self.Stats.Get(StatType.AttackRange), tuning);
+
+        /// <summary>Цель в пределах заданной дистанции (дальность каста умения).</summary>
+        public static bool WithinReach(RuntimeUnit self, RuntimeUnit target, float gap, in SimTuning tuning)
         {
-            float reach = AttackReachCenter(self, target, tuning);
+            float reach = ReachCenter(self, target, gap, tuning);
             return (target.Position - self.Position).sqrMagnitude <= reach * reach;
         }
 

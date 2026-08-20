@@ -1,0 +1,457 @@
+/* Выключенное поле ввода: то же тихое поле, курсор в него не встаёт — состояние должно читаться
+   до попытки клика. */
+.unity-base-field:disabled .unity-base-text-field__input,
+.unity-base-field.unity-disabled .unity-base-text-field__input,
+.gm-loadout__search:disabled .unity-text-field__input,
+.gm-loadout__search.unity-disabled .unity-text-field__input {
+    background-color: var(--gm-color-surface-panel);
+    border-color: var(--gm-color-border-subtle);
+    color: var(--gm-color-disabled-text);
+    opacity: 1;
+}
+
+/* --- Тело loadout: грид слева, детали справа --- */
+.gm-loadout-body {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+/* --- Грид карточек реликов --- */
+.gm-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    flex-grow: 1;
+}
+
+/* --- Панель деталей выбранного релика --- */
+.gm-detail {
+    width: 190px;
+    flex-shrink: 0;
+    margin-left: var(--gm-space-3);
+    padding: var(--gm-space-3);
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+    border-radius: var(--gm-radius-0);
+}
+
+.gm-detail__name {
+    -unity-font-style: bold;
+    margin-bottom: var(--gm-space-2);
+    white-space: normal;
+}
+
+.gm-detail__desc {
+    margin-bottom: var(--gm-space-2);
+    white-space: normal;
+}
+
+.gm-detail__tags {
+    margin-bottom: var(--gm-space-2);
+    white-space: normal;
+}
+
+.gm-detail__stats {
+    white-space: normal;
+}
+
+/* ============================================================================
+ * ЛОАДАУТ-ЭКРАН — РЕДИЗАЙН (Ф3a): полноэкранный трёхколоночник (реф Bloodlines/Blasphemous).
+ * НЕ модалка-оверлей: занимает весь экран. Топбар-режимы сверху; тело = боевая зона
+ * (сквозная «дырка» слева, в Ф3b под ней camera.rect) | грид таро-карточек | панель деталей.
+ * Нижняя панель золота сидит ТОЛЬКО под центром+правым (боевую зону не режет).
+ * ========================================================================== */
+
+.gm-loadout {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    /* Корень ПРОЗРАЧЕН (Ф3b P1): левая зона — дырка сквозь панель к реальной боевой камере; непрозрачную
+       подложку несёт .gm-loadout__main (центр+детали). PanelSettings не заливает фон (ClearColor off). */
+    flex-direction: column;
+    /* Тело сдвинуто под глобальный топбар забега (app-shell): он рисуется поверх этой полосы. */
+    padding-top: var(--gm-topbar-height);
+}
+
+/* Стат-лейбл в глобальной панели (золото/акт/таймер). */
+.gm-loadout__stat {
+    margin-left: var(--gm-space-1);
+    margin-right: var(--gm-space-1);
+}
+
+.gm-loadout__stat--timer {
+    color: var(--gm-color-accent);
+    -unity-font-style: bold;
+}
+
+/* Таймер боя виден только в бою (RunModeBarView.SetFighting). */
+.gm-loadout__battle-timer {
+    display: none;
+}
+
+/* Кнопка «Начать» бой — ПЛАСТИНА-primary + иконка боя, как у таба «Бой» в ленте.
+   До 2026-08-02 она несла 9-slice-заливку Honeti (Gold2_gm) — ровно ту пиксельную плашку, которую
+   вывели из primary-кнопок 25.07 как чужеродную. Здесь она пережила зачистку и осталась
+   единственным местом со старым набором, причём на самом видном действии забега.
+   min-width держит ширину постоянной: без него кнопка меняла размер вслед за длиной подписи
+   в другой локали, и «центр» уезжал (реш. Макса, раунд 2). */
+/* «Начать» бой — ГЛАВНАЯ кнопка (роль из набора), а не свой класс. Здесь остаётся только
+   РАСКЛАДКА: иконка и подпись в ряд, постоянная ширина. Цвет, кайма и отклик приходят с
+   gm-button--primary — до 06.08.2026 они были выписаны отдельно, и самое видное действие забега
+   жило собственным набором правил, расходившимся с остальными главными кнопками.
+   min-width держит ширину постоянной: без него кнопка меняла размер вслед за длиной подписи
+   в другой локали, и «центр» уезжал (реш. Макса, раунд 2). */
+.gm-loadout__battle-center > .gm-button {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-width: 220px;
+    font-size: var(--gm-font-sm);
+    padding: var(--gm-space-1) var(--gm-space-4);
+    margin: 0;
+}
+
+.gm-loadout__start-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    margin-right: var(--gm-space-1);
+    background-image: url("../../../Art/UI/Icons-gm/Modes/crossed-swords.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    -unity-background-image-tint-color: var(--gm-color-text);
+}
+
+/* Подпись — сериф, как у прочих кнопок-пластин (голос игры), поэтому синтетический жир снят:
+   поле у кнопки нагретое, и подпись читается без него. */
+.gm-loadout__start-label {
+    -unity-font-definition: var(--gm-font-voice);
+    -unity-font-style: normal;
+}
+
+/* --- Топбар-режимы: 3 зоны (гильдия | табы-режимы по центру | время+меню). --- */
+/* Боковые зоны растут поровну (flex-basis:0 + grow:1) → центр всегда строго по центру. */
+.gm-loadout__topbar {
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--gm-color-surface-panel);
+    border-bottom-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    /* Вертикального padding нет: бар фиксированной высоты, а лента режимов намеренно свисает ниже кромки. */
+    padding: 0 var(--gm-space-3);
+    overflow: visible; /* иначе кромка бара срезает ленте верх и низ — свисание пропадает */
+}
+
+.gm-loadout__topbar-side {
+    flex-direction: row;
+    align-items: center;
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.gm-loadout__topbar-side--right {
+    justify-content: flex-end;
+}
+
+
+/* Гильдия + возвышение + акт (слева) — ОДНОЙ строкой: двухстрочная верстка держала высоту бара на 84. */
+.gm-loadout__guild-name {
+    -unity-font-style: bold;
+    margin: 0;
+}
+
+.gm-loadout__guild-asc {
+    letter-spacing: 2px;
+    margin: 0;
+    margin-left: var(--gm-space-1);
+    -unity-text-align: middle-left;
+}
+
+/* Центр-слот «Начать»/таймер боя (QA #14): по центру X, ЧУТЬ НИЖЕ панели (absolute под топбаром). */
+/* Центр-слот «Начать»/таймер: лента режимов свисает ниже кромки бара, поэтому отступ считается
+   от НЕЁ, а не от кромки — при space-1 кнопка почти касалась ленты (реш. Макса, раунд 2). */
+/* Центрируем РАСТЯЖКОЙ на всю ширину, а не сдвигом на половину себя: пара left: 50% + translate: -50%
+   давала смещение вправо на пол-кнопки — и в отрисовке, и в попаданиях (наход. Макса 2026-07-27).
+   Контейнер сквозной (picking-mode Ignore в разметке), поэтому широкая полоса не крадёт клики у арены. */
+.gm-loadout__battle-center {
+    position: absolute;
+    top: var(--gm-topbar-height);
+    left: 0;
+    right: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-top: var(--gm-space-4);
+}
+
+
+/* --- Тело: боевая зона | (центр + правый + нижняя панель золота) --- */
+.gm-loadout__body {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+/* Боевая зона-«дырка»: сквозная на всю высоту, ПРОЗРАЧНА (Ф3b P1) — сквозь неё виден реальный вид
+   боевой камеры (пока загружена боевая сцена). Рамка справа — визуальный разделитель с телом инвентаря.
+   Нижняя панель золота её НЕ перекрывает (сидит в __main). */
+.gm-loadout__battle {
+    flex-grow: 1;
+    border-right-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    align-items: center;
+    justify-content: center;
+}
+
+.gm-loadout__battle-hint {
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* Правая часть тела: центр+детали в ряд, снизу — панель золота. Несёт непрозрачную подложку тела
+   (корень прозрачен ради дырки слева) — центр/детали остаются читаемыми поверх мира/фона. */
+/* Тело инвентаря НЕ тянется (строгий размер): его ширина = грид + панель деталей, фиксированные;
+   боевая зона забирает весь остаток. Иначе панель на flex-grow распирало содержимым за край экрана. */
+.gm-loadout__main {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-direction: column;
+    background-color: var(--gm-color-surface-sunken);
+}
+
+.gm-loadout__cols {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+/* --- Центр: фильтр-табы (по центру) + поиск/сортировка + грид карточек ---
+   Ширина ФИКСИРОВАНА ровно под 4 карты (4×132 + зазоры + padding + скроллбар): грид не тянется в пустоту,
+   и весь остаток строки уходит панели деталей (flex-grow), а не пустой полосе между ними (реш. Макса). */
+/* Ширина колонки = ряд из 4 карт (4 × 132 + 8×8 полей) + полоса скроллбара + собственные поля:
+   32 + 592 + 14 = 638. ОДНО число, а не четыре подгонки в соседних правилах, и оно проверяется
+   тестом-инвариантом (левый край поиска == левый край первой карты).
+   Формулой это не записать: USS не поддерживает calc() — см. комментарий у --gm-card-width.
+   Прежние 642px были посчитаны руками и промахнулись на 4px: отсюда и разъезд тулбара (п.7). */
+.gm-loadout__center {
+    width: 638px;
+    flex-shrink: 0;
+    padding: var(--gm-space-2);
+}
+
+/* Таб-бар категорий: одна полоса на всю ширину тела (грид + детали), табы равными долями.
+   Отделён от содержимого линией — так видно, что полоса главенствует над ОБЕИМИ зонами под ней.
+   БЕЗ padding: таб обязан занимать ВСЮ свою долю полосы — и по ширине, и по высоте, чтобы
+   подсветка заливала всю кликабельную область, а не «кусочек внутри» (реш. Макса, раунд 2). */
+.gm-loadout__filters {
+    flex-direction: row;
+    align-items: stretch;
+    height: 52px;
+    border-bottom-width: var(--gm-outline-width);
+    border-bottom-color: var(--gm-outline-color);
+    padding: 0;
+}
+
+/* Поиск/сортировка встают ВРОВЕНЬ с карточками грида: слева отступ = зазору карты (space-1),
+   справа = зазор + ширина скроллбара. Скроллбар грида всегда видим и ужимает содержимое, поэтому
+   симметричные поля разъезжались ровно на его ширину — правый край сортировки не доходил до края
+   крайней карты (реш. Макса, раунд 2). */
+/* Тулбар обязан совпадать краями с рядом карт: слева — поле карточки, справа — то же поле ПЛЮС
+   полоса скроллбара, которую ScrollView отнимает у своего содержимого.
+   Два отступа справа не складываются формулой (USS не знает calc()), поэтому складываем их
+   раскладкой: поле карточки даёт margin, полосу скроллбара — padding. Флекс суммирует сам,
+   и оба слагаемых остаются теми же токенами, что у карточек и у скроллбара. */
+.gm-loadout__toolbar {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--gm-space-2);
+    margin-left: var(--gm-card-gap);
+    margin-right: var(--gm-card-gap);
+    padding-right: var(--gm-scrollbar-width);
+}
+
+/* Поле поиска: пиксель-рамка Honeti, тянется на всю ширину; компактная высота, текст по центру. */
+.gm-loadout__search {
+    flex-grow: 1;
+    margin-right: var(--gm-space-2);
+    /* Гасим собственный отступ поля из темы Unity (4px): из-за него левый край поиска стоял
+       на 4px правее левого края первой карты — тулбар «почти» совпадал с гридом. */
+    margin-left: 0;
+}
+
+.gm-loadout__search .unity-text-field__input {
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color-subtle);
+    border-radius: var(--gm-radius-0);
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-xs);
+    height: 36px;
+    padding-left: var(--gm-space-2);
+    padding-right: var(--gm-space-2);
+    -unity-text-align: middle-left;
+}
+
+/* Сортировка: кнопка «Имя ↓» — клик циклит ключ + переключает стрелку (логика во View).
+   Аутлайн и высота — ровно как у поля поиска рядом (тихий контур, 36px): это пара одного тулбара. */
+/* Кнопка сортировки — ОБЫЧНАЯ кнопка, панель инструментов лишь ужимает её под свою высоту.
+   Свой вид (утопленный фон, тонкая кайма) она держала классом gm-loadout__sort, и это была не
+   роль, а место: «кнопка на панели инструментов инвентаря». Цвет и отклик приходят с gm-button. */
+.gm-loadout__toolbar > .gm-button {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--gm-font-xs);
+    height: 36px;
+    margin: 0;
+    padding-left: var(--gm-space-3);
+    padding-right: var(--gm-space-3);
+}
+
+/* Грид таро-карточек: перенос по ширине, лево-паковка (владеемые — слева, пустые-локи — далее вправо).
+   width:100% ОБЯЗАТЕЛЕН — в ScrollView contentContainer иначе тянется по контенту вширь
+   (ряд не заворачивается, карточки уезжают/клипаются вместо переноса). */
+.gm-loadout__grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+/* --- Правая панель деталей: видео 16:9, титул, способности, улучшения, нарратив ---
+   СТРОГАЯ ширина (реш. Макса): панель не тянется по контенту, поэтому нарратив/видео переносятся
+   и остаются внутри, а не распирают её за экран. */
+.gm-loadout__detail {
+    width: 480px;
+    flex-shrink: 0;
+    background-color: var(--gm-color-surface-panel);
+    border-left-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-1) var(--gm-space-2);
+    flex-direction: column;
+}
+
+/* Видео-вставка геймплея (пока плейсхолдер). Высоту НЕ задаём: элемент — AspectBox с Aspect="16:9",
+   он выводит её из фактической ширины. Раньше здесь стояло height: 180px с комментарием
+   «320 × 9/16 = 180» — договор жил в комментарии, и смена ширины панели молча ломала пропорцию. */
+.gm-loadout__video {
+    width: 320px;
+    /* По левому краю, как всё остальное в панели: центрированная вставка выбивалась из колонки
+       (наход. Макса, раунд 3). */
+    align-self: flex-start;
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+    border-radius: var(--gm-radius-0);
+    align-items: center;
+    justify-content: center;
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-loadout__video-hint {
+}
+
+/* Имя персонажа — НАД видео, компактно (не плакат). */
+.gm-loadout__detail-title {
+    letter-spacing: 1px;
+    -unity-font-style: bold;
+    margin-bottom: 0;
+}
+
+/* Секция правой колонки (способности / улучшения / статы): БЕЗ своей подложки/рамки — единая
+   панель, секции разделяются только воздухом (реш. Макса: рамки-в-рамке читались «слишком отдельно»).
+   Зазор между секциями = space-2: при space-3 подпись отрывалась от своего содержимого и
+   прилипала к предыдущему блоку, а по высоте панели набегало ~50px пустоты. */
+/* Зазор между секциями правой панели: space-2 → space-1 (п.6 раунда 4). Секции и так разделены
+   подписями и рамками, а двойной воздух рвал панель на отдельные острова — особенно между
+   видео и способностями и между нарративом и улучшениями. */
+.gm-loadout__section {
+    margin-top: var(--gm-space-1);
+}
+
+
+/* Мелкая подпись секции. Прижата к своему блоку (space-0): подпись принадлежит тому, что под ней. */
+.gm-loadout__section-label {
+    margin-bottom: var(--gm-space-0);
+}
+
+/* Ряды слотов (способности / улучшения): слоты сами несут зазор (.gm-slot margin), поэтому
+   ряду собственные вертикальные отступы не нужны — иначе они складывались в двойную пустоту.
+   Отрицательный боковой margin гасит крайние зазоры слотов, чтобы ряд встал вровень с краем панели.
+   ЧИСЛОМ, А НЕ ФОРМУЛОЙ: USS не поддерживает calc() вообще (и не умеет математику над
+   переменными) — стоявшее здесь calc(var(--gm-space-0) * -1) молча не применялось. Значение
+   обязано быть минус --gm-space-0. */
+.gm-loadout__abilities,
+.gm-loadout__upgrade-row {
+    flex-direction: row;
+    align-items: center;
+    margin: 0 -4px;
+}
+
+/* Зона улучшений: 2 ряда × 3 узла (подложку/рамку даёт секция-обёртка).
+   Ряд паковано влево тем же зазором, что у способностей — space-between раскидывал узлы
+   по всей ширине панели, и два блока читались как из разных интерфейсов (реш. Макса). */
+.gm-loadout__upgrades {
+    align-items: flex-start;
+}
+
+.gm-loadout__upgrade-row {
+    justify-content: flex-start;
+}
+
+/* Нарратив — курсив, сериф-голос; стоит под способностями (реш. Макса, раунд 3).
+   min-height = резерв под 3 строки (17px × 1.35 ≈ 23 на строку): у разных китов описания разной
+   длины, и без резерва блоки под ним ездили бы вслед за текстом. */
+.gm-loadout__narrative-text {
+    -unity-font-definition: var(--gm-font-voice-italic);
+    -unity-font-style: italic;
+    font-size: var(--gm-font-xs);
+    white-space: normal;
+    min-height: 70px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Теги юнита — чипы под именем (оси Role→DamageType→Playstyle→Mechanic, «|» между осями).
+   ВЫСОТА ФИКСИРОВАНА под 3 строки (реш. Макса): у Убийцы тегов на 3 строки, у Защитника на 4, и
+   плавающий блок двигал видео/способности/статы — панель «дышала» при каждом клике по карте.
+   Строка = иконка 16 + margin 2×4 = 24; три строки = 72. Что не влезло — сворачивается в чип «+N»
+   (логика в LoadoutInventoryView.FillTags, наполнение по замеру реальной раскладки). */
+.gm-loadout__tags {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    height: 72px;
+    overflow: hidden;
+    margin-top: var(--gm-space-0);
+    margin-bottom: var(--gm-space-0);
+}
+
+/* Иконок тегов здесь больше нет: 55 правил .gm-tag--<slug> задавали картинку по slug'у, а
+   рантайм ставит её из TagData._icon — единственного владельца, достижимого по id тега
+   (T-22). Правила не срабатывали ни разу: класс со slug'ом на чип никто не вешает. */
+
+/* Слоты внутри правой панели плотнее, чем в хабе: их тут девять (3 способности + 6 улучшений),
+   и зазор space-1 разносил их в редкую решётку на пол-панели. */
+.gm-loadout__abilities .gm-slot,
+.gm-loadout__upgrade-row .gm-slot {
+    margin: var(--gm-space-0);
+}
+
+/* Распорка: flex-grow отжимает статблок к низу панели. */
+.gm-loadout__spacer { flex-grow: 1; }
+
+/* Статблок — строки «подпись — значение» в две колонки, как лист персонажа (реш. Макса, раунд 2).
+   Квадраты «значение над подписью» требовали сокращений («М.броня») и плыли на нечётном числе
+   статов: седьмая клетка оставляла дыру. Строка вмещает полное название в один ряд, а нечётность
+   не видна вовсе — последняя строка просто одна. */
+.gm-loadout__stats {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

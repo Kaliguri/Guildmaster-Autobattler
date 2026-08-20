@@ -16,11 +16,22 @@ namespace Guildmaster.Net.Tape
     /// <para><b>Собирается только у гостя</b> (см. <c>CombatLifetimeScope</c>): у владельца дыр в
     /// собственной ленте не бывает и просить нечего.</para>
     /// </remarks>
-    public sealed class TapeIntakePump : ITickable
+    public sealed class TapeIntakePump : IStartable, ITickable
     {
         private readonly TapeIntake _intake;
 
         public TapeIntakePump(TapeIntake intake) => _intake = intake;
+
+        /// <summary>
+        /// Первым делом просим бой С НАЧАЛА: гостевой боевой скоуп рождается и тогда, когда бой у хоста
+        /// уже идёт, и тогда, когда он только начинается.
+        /// </summary>
+        /// <remarks>
+        /// Спрашиваем ВСЕГДА, без «а идёт ли уже бой»: в начале боя история у хоста пуста, и просьба
+        /// стоит одного пустого пакета. Условие же потребовало бы гостю знать чужой тик — то есть
+        /// заводить второго владельца факта, который и так приедет лентой.
+        /// </remarks>
+        public void Start() => _intake.RequestWholeBattle();
 
         public void Tick() => _intake.RequestMissing(Time.unscaledTime);
     }

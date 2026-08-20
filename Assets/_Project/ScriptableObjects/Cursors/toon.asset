@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28a06e47af544fafb3429b71b33aa078, type: 3}
+  m_Name: toon
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.CursorSkinData
+  _id: cursor.toon
+  _texture: {fileID: 2800000, guid: d7d07c43e8aadd64b84c7e68d9e451db, type: 3}
+  _hotspot: {x: 0.025, y: 0.025}

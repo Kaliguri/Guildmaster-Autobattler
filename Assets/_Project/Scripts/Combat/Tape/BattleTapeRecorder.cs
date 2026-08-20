@@ -149,11 +149,21 @@ namespace Guildmaster.Combat.Tape
         private void HandleAbilityCastInterrupted(RuntimeUnit caster) =>
             _tape.Record(new TapeEvent(TapeEventKind.AbilityCastInterrupted, Tick, caster != null ? caster.Id : -1));
 
-        private void HandleEffectApplied(RuntimeUnit target, Data.Definitions.EffectData def, RuntimeUnit source) =>
+        // Системные эффекты (sys.airborne и родня) в ленту НЕ пишем: они собраны в коде, в реестре
+        // контента их нет, и показ по сети/из файла не смог бы разрешить их id — чанк отвергался бы
+        // целиком, и воспроизведение вставало. Их визуал (полёт, оглушение) показ и так берёт из снимка
+        // юнита (IsDisplaced, маска тегов), а иконки/телеграфа у системного эффекта нет.
+        private void HandleEffectApplied(RuntimeUnit target, Data.Definitions.EffectData def, RuntimeUnit source)
+        {
+            if (def != null && def.IsRuntime) return;
             _tape.RecordEffect(Tick, TapeEventKind.EffectApplied, target != null ? target.Id : -1, def);
+        }
 
-        private void HandleEffectEnded(RuntimeUnit target, Data.Definitions.EffectData def, RuntimeUnit source) =>
+        private void HandleEffectEnded(RuntimeUnit target, Data.Definitions.EffectData def, RuntimeUnit source)
+        {
+            if (def != null && def.IsRuntime) return;
             _tape.RecordEffect(Tick, TapeEventKind.EffectEnded, target != null ? target.Id : -1, def);
+        }
 
         private void HandleBattleEnded(BattleOutcome outcome) => _tape.RecordBattleEnded(Tick, in outcome);
 

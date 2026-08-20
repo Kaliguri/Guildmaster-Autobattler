@@ -22,11 +22,12 @@ namespace Guildmaster.Data.Definitions
         // Локаль по умолчанию тут не живёт: её ведёт Unity Localization (выбранная локаль) и файл
         // настроек игрока через SettingsService. Поле _defaultLocale не читал никто — снято.
 
-        [Header("Rules")]
-        [Tooltip("Команда локального игрока. По умолчанию первая (0). В бою нет «стороны игрока» — " +
-                 "есть команды, и победа определяется сравнением исхода с этим номером (шов под PvP).")]
-        [SerializeField] private int _localPlayerTeam;
+        // «Команда локального игрока» тут больше не живёт (снято 08.08.2026). Сторона — не настройка
+        // и не свойство режима, а НАЗНАЧЕНИЕ в составе сеанса, которое можно менять по ходу игры:
+        // единственный её владелец — ISessionRoster. Пока поле было, у ответа «за кого я играю»
+        // существовало два источника, и при пустом составе тихо побеждал этот.
 
+        [Header("Rules")]
         [Tooltip("Слотов предметов на персонажа (Vessel-скоуп, вики «13» §3.2 ItemData.Scope). GDD 16: 3, не 4.")]
         [SerializeField] private int _vesselItemSlots;
 
@@ -104,10 +105,13 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Классовые коридоры баланса. Ссылка живёт здесь по той же причине, что и StatsConfig.")]
         [SerializeField] private ClassBalanceConfig _classBalanceConfig;
 
+        [Tooltip("Набор скинов курсора: что можно надеть и что стоит по умолчанию. Ссылка здесь по той " +
+                 "же причине — иначе каждая автономная сцена завела бы свой набор.")]
+        [SerializeField] private CursorSkinCatalog _cursorSkins;
+
         public float  DefaultMasterVolume => _defaultMasterVolume;
         public float  DefaultMusicVolume  => _defaultMusicVolume;
         public float  DefaultSfxVolume    => _defaultSfxVolume;
-        public int    LocalPlayerTeam     => _localPlayerTeam;
         public int    VesselItemSlots     => _vesselItemSlots;
         public int    PartyBannerSlots    => _partyBannerSlots;
         public int    RelicCapacityBase   => _relicCapacityBase;
@@ -151,6 +155,9 @@ namespace Guildmaster.Data.Definitions
         public StatsConfig        Stats        => _statsConfig;
         public ClassBalanceConfig ClassBalance => _classBalanceConfig;
 
+        /// <summary>Набор скинов курсора. <c>null</c> — курсор остаётся системным, игра идёт как обычно.</summary>
+        public CursorSkinCatalog  CursorSkins  => _cursorSkins;
+
         /// <summary>
         /// Заготовка значений: инстанс в памяти, заполненный тем, с чего начинают новый ассет. Нужна
         /// авторингу и тестам, которым конфиг требуется, но не важен по существу.
@@ -165,7 +172,6 @@ namespace Guildmaster.Data.Definitions
             c._defaultMasterVolume = 1f;
             c._defaultMusicVolume  = 0.8f;
             c._defaultSfxVolume    = 1f;
-            c._localPlayerTeam     = 0;
             c._vesselItemSlots     = 3;
             c._partyBannerSlots    = 2;
             c._relicCapacityBase   = 12;

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.bone_shield
   _polarity: 0
-  _tags: 65
+  _tags: 64
   _baseDuration: 12
   _stacking: 3
   _maxStacks: 5

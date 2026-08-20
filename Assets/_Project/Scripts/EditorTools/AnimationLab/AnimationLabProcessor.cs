@@ -94,7 +94,9 @@ namespace Guildmaster.AnimationLab.Editor
             string directory = System.IO.Path.GetDirectoryName(sourcePath).Replace('\\', '/');
             string outputPath = AssetDatabase.GenerateUniqueAssetPath($"{directory}/{working.name}.anim");
             AssetDatabase.CreateAsset(working, outputPath);
-            AssetDatabase.SaveAssets();
+            // Точечно: SaveAssets() пишет ВСЕ грязные ассеты проекта, включая чужую несохранённую
+            // работу в инспекторе. Здесь сохранять надо ровно созданный клип.
+            AssetDatabase.SaveAssetIfDirty(working);
 
             report.ClipPath = outputPath;
             return report;
@@ -267,8 +269,9 @@ namespace Guildmaster.AnimationLab.Editor
         static float ResolveImpactTime(AnimationClip source, Options options)
         {
             if (options.ImpactTime >= 0f) return options.ImpactTime;
-            var events = AnimationUtility.GetAnimationEvents(source);
-            return events is { Length: > 0 } ? events[0].time : -1f;
+            // Именно маркер КОНТАКТА: в клипе атаки их теперь трое (StrikeStart, Hit, StrikeEnd), и
+            // «первое событие» подсунуло бы тангенс-пассу начало взмаха вместо удара.
+            return Guildmaster.Data.Definitions.ClipMarkers.FirstHitTime(source);
         }
 
         static int Depth(string path)

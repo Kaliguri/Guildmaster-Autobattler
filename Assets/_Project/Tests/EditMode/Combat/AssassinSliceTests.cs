@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
@@ -318,7 +318,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             // подкрепляет его и заново взводит одноразовое усиление (IRearmOnRefreshComponent).
             return TestEffect.Make(
                 baseDuration: -1f, polarity: EffectPolarity.Buff,
-                tags: EffectTag.Stealth | EffectTag.Buff, stacking: StackRule.Refresh,
+                tags: EffectTag.Stealth, stacking: StackRule.Refresh,
                 components: new IEffectComponent[] { mod, empower });
         }
 
@@ -354,7 +354,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new StatModifier(StatType.MoveSpeed, ModifierOp.PercentMult, 1f),
             });
             return TestEffect.Make(
-                baseDuration: 1f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff,
+                baseDuration: 1f, polarity: EffectPolarity.Buff, 
                 stacking: StackRule.Refresh, components: mod);
         }
 

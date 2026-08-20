@@ -53,6 +53,13 @@ namespace Guildmaster.Tests.EditMode.Content
                 "_campScreen",             // стоит якорем на этажах 8 и 13 КАЖДОГО акта — мимо не пройти
                 "_outcomeScreen",
                 "_mainMenuScreen",
+                // Цепочка входа в игру: режим → дом → двор. Пусто в любом звене = игрок упирается в
+                // красную ошибку прямо на пути «Создать игру → забег», то есть на первом же экране,
+                // который он вообще видит.
+                "_newGameScreen",
+                "_guildSelectScreen",
+                "_hubScreen",
+                "_profileScreen",
                 "_titleCardScreen",
                 "_runModeBar",
                 "_loadoutInventoryScreen",

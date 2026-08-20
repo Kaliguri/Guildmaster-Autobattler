@@ -186,6 +186,12 @@ namespace Guildmaster.Combat
             target.CurrentShield -= shieldAbsorbed;
             float hpDamage = totalDamage - shieldAbsorbed;
 
+            // Поглощение уходит наружу отдельным сообщением: пул щита общий, а держат его конкретные
+            // эффекты конкретных авторов, и разложить поглощённое обратно по держателям может только тот,
+            // кто их видит. Без этого щит остаётся работой без исполнителя — «сколько он заблокировал»
+            // не отвечалось вовсе, а у кита на щитах вся поддержка читалась нулём.
+            if (shieldAbsorbed > 0f) sink.OnShieldAbsorbed(target, shieldAbsorbed);
+
             // 2. Дельты складываются, и только потом кламп: успевший хилер спасает от смертельного удара.
             float maxHp    = target.Stats.Get(StatType.MaxHP);
             float before   = target.CurrentHP;
@@ -308,6 +314,12 @@ namespace Guildmaster.Combat
 
         /// <summary>Урон дошёл до цели: доля этого источника в общем ударе тика.</summary>
         void OnDamageResolved(RuntimeUnit source, RuntimeUnit target, in DamageResult result);
+
+        /// <summary>
+        /// Щит цели поглотил часть урона этого тика. Реестр знает только величину — кто этот щит держал,
+        /// видит сим, и разложить поглощённое по авторам он обязан здесь же, пока состав щитов не изменился.
+        /// </summary>
+        void OnShieldAbsorbed(RuntimeUnit target, float absorbed);
 
         /// <summary>Лечение дошло до цели: доля этого источника в фактически вылеченном (overheal не входит).</summary>
         void OnHealResolved(RuntimeUnit source, RuntimeUnit target, float applied);

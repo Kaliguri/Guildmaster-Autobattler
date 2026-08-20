@@ -31,16 +31,26 @@ namespace Guildmaster.Core.Settings
         /// </summary>
         public bool FreeCombatCamera;
 
+        /// <summary>
+        /// Скрыть курсоры остальных игроков. Настройка личная и только на свой экран: свой курсор от
+        /// других не спрятать (ГДД, кооп-кластер, presence §Правила слоя, п. 4) — тайное присутствие в
+        /// игре про общий кошелёк это инструмент грифинга. Существует потому, что молчаливый курсор за
+        /// плечом ощущается наблюдением, и лечится это выключателем, а не приглушением для всех.
+        /// </summary>
+        public bool HideOtherCursors;
+
         public GameplaySettings(bool cardAnimations, bool cardAttackAnimation, bool alwaysDetailedTooltips = false,
-                                bool freeCombatCamera = false)
+                                bool freeCombatCamera = false, bool hideOtherCursors = false)
         {
             CardAnimations         = cardAnimations;
             CardAttackAnimation    = cardAttackAnimation;
             AlwaysDetailedTooltips = alwaysDetailedTooltips;
             FreeCombatCamera       = freeCombatCamera;
+            HideOtherCursors       = hideOtherCursors;
         }
 
-        /// <summary>Значения первого запуска: вся анимация карточек включена, подсказки краткие, камера боя сценарная.</summary>
-        public static GameplaySettings Defaults() => new GameplaySettings(true, true, false, false);
+        /// <summary>Значения первого запуска: вся анимация карточек включена, подсказки краткие, камера боя сценарная,
+        /// чужие курсоры видны.</summary>
+        public static GameplaySettings Defaults() => new GameplaySettings(true, true, false, false, false);
     }
 }

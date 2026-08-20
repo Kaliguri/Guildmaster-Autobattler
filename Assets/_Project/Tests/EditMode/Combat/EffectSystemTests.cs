@@ -78,7 +78,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var sys = new EffectSystem();
             var ctx = new MockCombatContext();
             var unit = TestUnit.Make();
-            EffectData def = TestEffect.Make(baseDuration: 1f, tags: EffectTag.Debuff | EffectTag.DoT);
+            EffectData def = TestEffect.Make(baseDuration: 1f, tags: EffectTag.DoT);
 
             sys.Apply(unit, def, unit, ctx);
 
@@ -90,7 +90,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectSystem.CommitPending(unit);
 
             Assert.IsTrue((unit.EffectTagMask & EffectTag.DoT) != 0);
-            Assert.IsTrue((unit.EffectTagMask & EffectTag.Debuff) != 0);
+            Assert.IsTrue((unit.EffectTagMask & EffectTag.DoT) != 0);
         }
 
         [Test]
@@ -100,12 +100,12 @@ namespace Guildmaster.Tests.EditMode.Combat
             var ctx = new MockCombatContext();
             var unit = TestUnit.Make();
             var comp = new CountingComponent();
-            EffectData def = TestEffect.Make(baseDuration: 1f, tags: EffectTag.Buff, components: comp);
+            EffectData def = TestEffect.Make(baseDuration: 1f, tags: EffectTag.Shield, components: comp);
 
             sys.Apply(unit, def, unit, ctx);
             EffectSystem.CommitPending(unit);   // конец тика наложения: эффект стал виден
             Assert.AreEqual(1, comp.Applied);
-            Assert.AreEqual(EffectTag.Buff, unit.EffectTagMask, "Предусловие: тег виден");
+            Assert.AreEqual(EffectTag.Shield, unit.EffectTagMask, "Предусловие: тег виден");
 
             // 1 сек = 30 тиков → истекает ровно на 30-м.
             for (int i = 0; i < SimConstants.TickRate; i++) sys.Tick(One(unit), ctx, SimConstants.TickDelta);

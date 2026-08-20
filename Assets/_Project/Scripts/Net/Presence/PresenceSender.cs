@@ -38,6 +38,25 @@ namespace Guildmaster.Net.Presence
         private bool          _hasSample;
         private ushort        _sequence;
 
+        /// <summary>Сколько времени жест едет в пакетах после запроса.</summary>
+        public const float GestureHoldSeconds = 0.4f;
+
+        private Core.Players.PlayerGesture _gesture;
+        private float           _gestureAt = float.NegativeInfinity;
+
+        /// <summary>
+        /// Показать жест: он поедет в ближайших пакетах и погаснет сам.
+        /// </summary>
+        /// <remarks>
+        /// Гасить его отдельным вызовом было бы вторым владельцем одного факта: жест мгновенный, и
+        /// «сколько он живёт» — свойство самого жеста, а не того, кто его показал.
+        /// </remarks>
+        public void Show(Core.Players.PlayerGesture gesture, float now)
+        {
+            _gesture   = gesture;
+            _gestureAt = now;
+        }
+
         /// <summary>Сколько пакетов отправлено — для диагностики и тестов, не для логики.</summary>
         public int SentCount { get; private set; }
 
@@ -54,10 +73,17 @@ namespace Guildmaster.Net.Presence
         {
             state = default;
 
+            // Жест держится несколько пакетов: канал ненадёжный, и один-единственный пакет с ним мог бы
+            // не доехать вовсе — а жест, которого не увидели, не жест.
+            Core.Players.PlayerGesture gesture = now - _gestureAt <= GestureHoldSeconds
+                ? _gesture
+                : Core.Players.PlayerGesture.None;
+
             bool changed = !_hasSample
                            || (cursor - _lastCursor).sqrMagnitude > MoveEpsilon * MoveEpsilon
                            || hoveredId != _last.HoveredId
-                           || heldId    != _last.HeldId;
+                           || heldId    != _last.HeldId
+                           || gesture   != _last.Gesture;
 
             // Скорость считается по фактическому промежутку между ЗАМЕРАМИ, а не по частоте отправки:
             // приёмник экстраполирует именно ею, и завышенная скорость увела бы чужой курсор в сторону
@@ -73,7 +99,7 @@ namespace Guildmaster.Net.Presence
             if (!changed) return false;                       // курсор стоит — молчим
             if (now - _lastSentAt < _minInterval) return false; // потолок частоты
 
-            state = new PresenceState(playerId, _sequence++, cursor, velocity, hoveredId, heldId);
+            state = new PresenceState(playerId, _sequence++, cursor, velocity, hoveredId, heldId, gesture);
 
             _last       = state;
             _lastSentAt = now;

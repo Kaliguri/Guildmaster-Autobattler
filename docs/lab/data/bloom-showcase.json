@@ -1,0 +1,376 @@
+{
+  "effects": [
+    {
+      "id": "HitSlash",
+      "label": "Хит: режущий",
+      "tone": "Fire",
+      "shots": [
+        {
+          "file": "HitSlash_i0.35_s0.45.png",
+          "intensity": 0.35,
+          "scatter": 0.45,
+          "current": false
+        },
+        {
+          "file": "HitSlash_i0.55_s0.55.png",
+          "intensity": 0.55,
+          "scatter": 0.55,
+          "current": false
+        },
+        {
+          "file": "HitSlash_i0.75_s0.60.png",
+          "intensity": 0.75,
+          "scatter": 0.6,
+          "current": false
+        },
+        {
+          "file": "HitSlash_i1.00_s0.70.png",
+          "intensity": 1.0,
+          "scatter": 0.7,
+          "current": true
+        }
+      ]
+    },
+    {
+      "id": "HitPierce",
+      "label": "Хит: колющий",
+      "tone": "Fire",
+      "shots": [
+        {
+          "file": "HitPierce_i0.35_s0.45.png",
+          "intensity": 0.35,
+          "scatter": 0.45,
+          "current": false
+        },
+        {
+          "file": "HitPierce_i0.55_s0.55.png",
+          "intensity": 0.55,
+          "scatter": 0.55,
+          "current": false
+        },
+        {
+          "file": "HitPierce_i0.75_s0.60.png",
+          "intensity": 0.75,
+          "scatter": 0.6,
+          "current": false
+        },
+        {
+          "file": "HitPierce_i1.00_s0.70.png",
+          "intensity": 1.0,
+          "scatter": 0.7,
+          "current": true
+        }
+      ]
+    },
+    {
+      "id": "HitBlunt",
+      "label": "Хит: дробящий",
+      "tone": "Fire",
+      "shots": [
+        {
+          "file": "HitBlunt_i0.35_s0.45.png",
+          "intensity": 0.35,
+          "scatter": 0.45,
+          "current": false
+        },
+        {
+          "file": "HitBlunt_i0.55_s0.55.png",
+          "intensity": 0.55,
+          "scatter": 0.55,
+          "current": false
+        },
+        {
+          "file": "HitBlunt_i0.75_s0.60.png",
+          "intensity": 0.75,
+          "scatter": 0.6,
+          "current": false
+        },
+        {
+          "file": "HitBlunt_i1.00_s0.70.png",
+          "intensity": 1.0,
+          "scatter": 0.7,
+          "current": true
+        }
+      ]
+    },
+    {
+      "id": "HitBolt",
+      "label": "Хит: всполох",
+      "tone": "Fire",
+      "shots": [
+        {
+          "file": "HitBolt_i0.35_s0.45.png",
+          "intensity": 0.35,
+          "scatter": 0.45,
+          "current": false
+        },
+        {
+          "file": "HitBolt_i0.55_s0.55.png",
+          "intensity": 0.55,
+          "scatter": 0.55,
+          "current": false
+        },
+        {
+          "file": "HitBolt_i0.75_s0.60.png",
+          "intensity": 0.75,
+          "scatter": 0.6,
+          "current": false
+        },
+        {
+          "file": "HitBolt_i1.00_s0.70.png",
+          "intensity": 1.0,
+          "scatter": 0.7,
+          "current": true
+        }
+      ]
+    },
+    {
+      "id": "SwingArc",
+      "label": "Дуга за клинком",
+      "tone": "Fire",
+      "shots": [
+        {
+          "file": "SwingArc_i0.35_s0.45.png",
+          "intensity": 0.35,
+          "scatter": 0.45,
+          "current": false
+        },
+        {
+          "file": "SwingArc_i0.55_s0.55.png",
+          "intensity": 0.55,
+          "scatter": 0.55,
+          "current": false
+        },
+        {
+          "file": "SwingArc_i0.75_s0.60.png",
+          "intensity": 0.75,
+          "scatter": 0.6,
+          "current": false
+        },
+        {
+          "file": "SwingArc_i1.00_s0.70.png",
+          "intensity": 1.0,
+          "scatter": 0.7,
+          "current": true
+        }
+      ]
+    },
+    {
+      "id": "Sparks",
+      "label": "Искры",
+      "tone": "Fire",
+      "shots": [
+        {
+          "file": "Sparks_i0.35_s0.45.png",
+          "intensity": 0.35,
+          "scatter": 0.45,
+          "current": false
+        },
+        {
+          "file": "Sparks_i0.55_s0.55.png",
+          "intensity": 0.55,
+          "scatter": 0.55,
+          "current": false
+        },
+        {
+          "file": "Sparks_i0.75_s0.60.png",
+          "intensity": 0.75,
+          "scatter": 0.6,
+          "current": false
+        },
+        {
+          "file": "Sparks_i1.00_s0.70.png",
+          "intensity": 1.0,
+          "scatter": 0.7,
+          "current": true
+        }
+      ]
+    },
+    {
+      "id": "ImpactDust",
+      "label": "Пыль удара",
+      "tone": "Fire",
+      "shots": [
+        {
+          "file": "ImpactDust_i0.35_s0.45.png",
+          "intensity": 0.35,
+          "scatter": 0.45,
+          "current": false
+        },
+        {
+          "file": "ImpactDust_i0.55_s0.55.png",
+          "intensity": 0.55,
+          "scatter": 0.55,
+          "current": false
+        },
+        {
+          "file": "ImpactDust_i0.75_s0.60.png",
+          "intensity": 0.75,
+          "scatter": 0.6,
+          "current": false
+        },
+        {
+          "file": "ImpactDust_i1.00_s0.70.png",
+          "intensity": 1.0,
+          "scatter": 0.7,
+          "current": true
+        }
+      ]
+    },
+    {
+      "id": "CastBurst",
+      "label": "Всплеск каста",
+      "tone": "Fire",
+      "shots": [
+        {
+          "file": "CastBurst_i0.35_s0.45.png",
+          "intensity": 0.35,
+          "scatter": 0.45,
+          "current": false
+        },
+        {
+          "file": "CastBurst_i0.55_s0.55.png",
+          "intensity": 0.55,
+          "scatter": 0.55,
+          "current": false
+        },
+        {
+          "file": "CastBurst_i0.75_s0.60.png",
+          "intensity": 0.75,
+          "scatter": 0.6,
+          "current": false
+        },
+        {
+          "file": "CastBurst_i1.00_s0.70.png",
+          "intensity": 1.0,
+          "scatter": 0.7,
+          "current": true
+        }
+      ]
+    },
+    {
+      "id": "CastGlow",
+      "label": "Свечение каста",
+      "tone": "Fire",
+      "shots": [
+        {
+          "file": "CastGlow_i0.35_s0.45.png",
+          "intensity": 0.35,
+          "scatter": 0.45,
+          "current": false
+        },
+        {
+          "file": "CastGlow_i0.55_s0.55.png",
+          "intensity": 0.55,
+          "scatter": 0.55,
+          "current": false
+        },
+        {
+          "file": "CastGlow_i0.75_s0.60.png",
+          "intensity": 0.75,
+          "scatter": 0.6,
+          "current": false
+        },
+        {
+          "file": "CastGlow_i1.00_s0.70.png",
+          "intensity": 1.0,
+          "scatter": 0.7,
+          "current": true
+        }
+      ]
+    },
+    {
+      "id": "BlockFlash",
+      "label": "Вспышка блока",
+      "tone": "Fire",
+      "shots": [
+        {
+          "file": "BlockFlash_i0.35_s0.45.png",
+          "intensity": 0.35,
+          "scatter": 0.45,
+          "current": false
+        },
+        {
+          "file": "BlockFlash_i0.55_s0.55.png",
+          "intensity": 0.55,
+          "scatter": 0.55,
+          "current": false
+        },
+        {
+          "file": "BlockFlash_i0.75_s0.60.png",
+          "intensity": 0.75,
+          "scatter": 0.6,
+          "current": false
+        },
+        {
+          "file": "BlockFlash_i1.00_s0.70.png",
+          "intensity": 1.0,
+          "scatter": 0.7,
+          "current": true
+        }
+      ]
+    },
+    {
+      "id": "DeathFlash",
+      "label": "Смерть: вспышка",
+      "tone": "Fire",
+      "shots": [
+        {
+          "file": "DeathFlash_i0.35_s0.45.png",
+          "intensity": 0.35,
+          "scatter": 0.45,
+          "current": false
+        },
+        {
+          "file": "DeathFlash_i0.55_s0.55.png",
+          "intensity": 0.55,
+          "scatter": 0.55,
+          "current": false
+        },
+        {
+          "file": "DeathFlash_i0.75_s0.60.png",
+          "intensity": 0.75,
+          "scatter": 0.6,
+          "current": false
+        },
+        {
+          "file": "DeathFlash_i1.00_s0.70.png",
+          "intensity": 1.0,
+          "scatter": 0.7,
+          "current": true
+        }
+      ]
+    },
+    {
+      "id": "Shatter",
+      "label": "Смерть: осколки",
+      "tone": "Fire",
+      "shots": [
+        {
+          "file": "Shatter_i0.35_s0.45.png",
+          "intensity": 0.35,
+          "scatter": 0.45,
+          "current": false
+        },
+        {
+          "file": "Shatter_i0.55_s0.55.png",
+          "intensity": 0.55,
+          "scatter": 0.55,
+          "current": false
+        },
+        {
+          "file": "Shatter_i0.75_s0.60.png",
+          "intensity": 0.75,
+          "scatter": 0.6,
+          "current": false
+        },
+        {
+          "file": "Shatter_i1.00_s0.70.png",
+          "intensity": 1.0,
+          "scatter": 0.7,
+          "current": true
+        }
+      ]
+    }
+  ]
+}

@@ -18,7 +18,7 @@ MonoBehaviour:
     _autoAttackMode: 0
     _targetTag: 0
     _retreat:
-      Enabled: 1
+      Enabled: 0
       FleeAtHpPct: 0.35
       ReturnAtHpPct: 0.6
     _kite:
@@ -27,4 +27,3 @@ MonoBehaviour:
       FallbackDist: 3
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
-  _archetypeTags: []

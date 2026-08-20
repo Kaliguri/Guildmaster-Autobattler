@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Persistence;
 
@@ -37,7 +37,19 @@ namespace Guildmaster.Tests.EditMode
             ? $"profiles/{_profile.Id}/guilds/{_guild.Id}/run"
             : string.Empty;
 
-        public ProfileSummary? CreateProfile(string name) => null;
+        public bool HasActiveProfile => true;
+
+        public ProfileIdentity Identity { get; private set; } =
+            new ProfileIdentity(string.Empty, useSteamName: true, colorIndex: 0, cursorSkinId: string.Empty);
+
+        public ProfileSummary? CreateProfile() => null;
+
+        public bool SaveIdentity(in ProfileIdentity identity)
+        {
+            Identity = identity;
+            return true;
+        }
+
         public bool SelectProfile(string profileId) => false;
         public bool DeleteProfile(string profileId) => false;
         public ProfileSummary? CreateGuild(string name) => null;

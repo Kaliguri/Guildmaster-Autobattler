@@ -1,12 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--shop">
-            <ui:Label name="shop-title" text="Лавка" class="gm-panel__title" />
+            <ui:Label name="shop-title" text="Лавка" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
             <!-- Шапка: золото + реролл -->
             <ui:VisualElement class="gm-shop__topbar">
-                <ui:Label name="shop-gold" text="Золото: 0" class="gm-shop__gold" />
+                <ui:Label name="shop-gold" text="Золото: 0" class="gm-text-title gm-text--value" />
                 <gm:PlateButton name="btn-reroll" text="Обновить" class="gm-button" />
             </ui:VisualElement>
 
@@ -16,7 +16,7 @@
             <ui:VisualElement class="gm-divider" />
 
             <!-- Продажа: запас игрока (наполняет код) -->
-            <ui:Label text="Продать реликвии" class="gm-shop__section-title" />
+            <ui:Label text="Продать реликвии" class="gm-text-subtitle gm-text--muted gm-shop__section-title" />
             <ui:ScrollView name="shop-stash" class="gm-shop__stash" />
 
             <!-- Подвал -->

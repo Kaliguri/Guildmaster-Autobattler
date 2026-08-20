@@ -6,9 +6,9 @@ using UnityEngine;
 namespace Guildmaster.Tests.EditMode.Presentation
 {
     /// <summary>
-    /// Builds rigs by hand for part-registry tests: bone -> "Visual Part (Bone)" -> sprite, arms with
-    /// grips, declared items. The prefab carries one arrangement (sword plus shield) while the code has
-    /// to hold for arrangements that have no art yet — two daggers, a two-handed spear, bare fists.
+    /// Builds rigs by hand for part-registry tests: bone -> "Bone_Art" sprite node, arms with grips,
+    /// declared items. The prefab carries one arrangement (sword plus shield) while the code has to hold
+    /// for arrangements that have no art yet — two daggers, a two-handed spear, bare fists.
     /// </summary>
     public sealed class TestRigBuilder
     {
@@ -36,33 +36,43 @@ namespace Guildmaster.Tests.EditMode.Presentation
             return go.transform;
         }
 
-        /// <summary>Bone plus its art container plus the sprite node — the three levels the rig demands.</summary>
+        /// <summary>Bone plus its art node — the two levels the rig demands since the restructure.</summary>
         public static SpriteRenderer Bone(Transform parent, string boneName)
         {
             Transform bone = Child(parent, boneName);
-            Transform container = Child(bone, RigNaming.ContainerName(boneName));
-            return Child(container, boneName).gameObject.AddComponent<SpriteRenderer>();
+            return Child(bone, RigNaming.ArtName(boneName)).gameObject.AddComponent<SpriteRenderer>();
         }
 
         public SpriteRenderer BodyPart(string boneName) => Bone(Root.transform, boneName);
 
-        /// <summary>An arm that can hold something: limb (side) -> elbow -> hand -> grip.</summary>
+        /// <summary>
+        /// An arm that can hold something: shoulder -> forearm -> hand -> grip. The side is a suffix on
+        /// every bone, not a container above them, so the chain reads the same on both sides.
+        /// </summary>
         public Transform Arm(BodySide side, out SpriteRenderer hand)
         {
-            Transform limb = Child(Root.transform, side == BodySide.Left ? "Arm (Left)" : "Arm (Right)");
-            Transform elbow = Child(limb, RigNaming.JointPrefix + "Elbow)");
-            hand = Bone(elbow, side == BodySide.Left ? "Arm_Down_L" : "Arm_Down_R");
-            return Child(hand.transform.parent.parent, RigNaming.JointPrefix + RigNaming.GripLabel + ")");
+            string s = RigNaming.SideSuffix(side);
+            Transform shoulder = Child(Root.transform, "Shoulder" + s);
+            Transform forearm = Child(shoulder, "LowerArm" + s);
+            hand = Bone(forearm, "Hand" + s);
+            return Child(hand.transform.parent, RigNaming.GripPrefix.TrimEnd('_') + s);
         }
 
-        /// <summary>An item in a grip, declared the way the game demands: kind on the item's bone.</summary>
-        public static SpriteRenderer Held(Transform grip, string boneName, HeldKind kind, bool twoHanded = false)
+        /// <summary>An item in a grip, declared the way the game demands: kind on the grip bone itself.</summary>
+        /// <summary>
+        /// Предмет в хвате. <paramref name="declareReach"/> = false собирает его БЕЗ рабочей части — так
+        /// выглядит неразведённый контент, и запрос «чем бьют» обязан ответить «нечем», а не угадать кусок.
+        /// </summary>
+        public static SpriteRenderer Held(Transform grip, string artName, HeldKind kind, bool twoHanded = false,
+            bool declareReach = true)
         {
-            SpriteRenderer renderer = Bone(grip, boneName);
-            var mark = renderer.transform.parent.parent.gameObject.AddComponent<UnitHeldItem>();
+            var renderer = Child(grip, artName + RigNaming.ArtSuffix).gameObject.AddComponent<SpriteRenderer>();
+            var mark = grip.gameObject.AddComponent<UnitHeldItem>();
             var so = new SerializedObject(mark);
             so.FindProperty("_kind").enumValueIndex = (int)kind;
             so.FindProperty("_twoHanded").boolValue = twoHanded;
+            // Рабочая часть объявляется ЯВНО — в игре тоже (04.08.2026). У предмета из одного куска это он сам.
+            if (declareReach) so.FindProperty("_reachPart").objectReferenceValue = renderer;
             so.ApplyModifiedPropertiesWithoutUndo();
             return renderer;
         }

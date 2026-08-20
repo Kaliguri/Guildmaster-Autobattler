@@ -24,6 +24,11 @@ namespace Guildmaster.Game
                  "Боевые ассеты (тюнинг сима, джус, состав Ристалища) выбираются на самом префабе.")]
         [SerializeField] private CombatLifetimeScope _battleScopePrefab;
 
+        [Tooltip("Тот же боевой скоуп в режиме Replay (вариант BattleScopeReplay): из него директор фона " +
+                 "меню поднимает воспроизведение записанной дуэли — без сима-водителя и сессии. " +
+                 "Пусто = фон меню останется обычным задником.")]
+        [SerializeField] private CombatLifetimeScope _replayBattleScopePrefab;
+
         protected override void Configure(IContainerBuilder builder)
         {
             // Снапшот арены из авторинга в ЭТОЙ (persist) сцене. Бой берёт тот же layout из предка —
@@ -41,7 +46,13 @@ namespace Guildmaster.Game
             // рождается и умирает вместе с боем, и вечного владельца тел больше нет
             // (решение Макса 02.08.2026, см. журнал «The Simulation Belongs To The Battle»).
             builder.Register<Combat.Tape.WorldBodyStage>(Lifetime.Singleton);
-            builder.Register<Combat.Tape.StageFrameRouter>(Lifetime.Singleton);
+            // Под интерфейсом — тоже, и это не «на всякий случай»: роутер и ЕСТЬ единственный вход за
+            // кадром сцены, а спрашивают его те, кому всё равно, бой сейчас или мир (руки игрока на
+            // арене). Без этой строки боевой скоуп гостя не поднимался ВЕСЬ: `TapeArenaUnits` просил
+            // `IStageFrameSource`, VContainer не находил регистрации и ронял `Awake` скоупа целиком —
+            // у гостя пропадали и юниты, и противники, и круги под ногами (прогон 05.08.2026).
+            builder.Register<Combat.Tape.StageFrameRouter>(Lifetime.Singleton)
+                   .AsSelf().As<Combat.Tape.IStageFrameSource>();
 
             // Кто ставит отряд на арену вне боя. Живёт здесь, а не в боевом скоупе: отряд стоит во
             // дворе и между боями, когда боя — и его скоупа — не существует. Сборщик тел приходит из
@@ -56,9 +67,22 @@ namespace Guildmaster.Game
             // Мир держит только выбор ассета — он делается в инспекторе, то есть здесь.
             builder.RegisterInstance(new Activity.BattleScopePrefab(_battleScopePrefab));
 
+            // Реплей-вариант того же скоупа для фона меню — отдельным типом, чтобы инъекция не путала
+            // его с боевым префабом.
+            builder.RegisterInstance(new Flow.MenuReplayScope(_replayBattleScopePrefab));
+
+            // Бой за главным меню. Живёт в МИРЕ, а не в корне: отсюда виден и префаб реплей-скоупа,
+            // и сам скоуп-родитель, от которого воспроизведению рождаться. Через мероприятие он
+            // подниматься не может — в меню ещё нет сеанса, а мероприятие рождается от него.
+            builder.RegisterEntryPoint<Flow.MenuBattleDirector>(Lifetime.Singleton);
+
             // Вне боя камера ни за кем не следует (пустой источник точек фокуса). На входе в бой
             // боевой скоуп переключит источник через CombatFocusTarget.SetSource(живые юниты).
             builder.RegisterInstance<Presentation.IFocusPointSource>(Presentation.EmptyFocusPointSource.Instance);
+
+            // Сигнал «на сцене идёт бой» для камеры — ортогонален часам забега: повтор за меню поднимает
+            // его, а забеговый UI/ввод/звук про показ не знают (журнал 2026-08-04-battle-on-stage-vs-the-run-clock).
+            builder.Register<Presentation.BattleStagePresence>(Lifetime.Singleton);
 
             // Единая камера-риг (Main Camera + Brain + vcam + focus + controller): резолвится из
             // этой persist-сцены. Держим здесь, чтобы риг пережил смену боевых сцен.

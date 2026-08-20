@@ -23,11 +23,19 @@ namespace Guildmaster.Net.Session
     /// </remarks>
     public sealed class CoopSession : ICoopSessionControl, IDisposable
     {
-        private readonly SteamNetTransport _transport;
-        private readonly SteamLobbyService _lobby;
+        // Транспорт — ЗА ШВОМ, а не конкретный Steam: подъём сессии и вход к другу теперь часть
+        // интерфейса, и потому подключение, разрыв и приём приглашения проверяются петлёй в одном
+        // процессе. Пока здесь стоял конкретный тип, всё это можно было увидеть только вживую вдвоём.
+        private readonly Transport.INetTransport _transport;
+        // Комната — тоже за швом, по той же причине, что и транспорт: гостевая половина сеанса иначе
+        // не отыгрывается нигде, кроме живого прогона вдвоём.
+        private readonly ICoopLobby _lobby;
         private readonly CoopHandshake     _handshake;
 
-        public CoopSession(SteamNetTransport transport, SteamLobbyService lobby, CoopHandshake handshake)
+        // ПАРАМЕТРЫ — тоже за швом, и это не косметика: тип поля можно сузить до интерфейса, а
+        // параметр оставить конкретным, и всё скомпилируется — инъекция при этом продолжит подавать
+        // Steam-транспорт даже там, где в контейнере выбрана петля (моя ошибка 05.08.2026).
+        public CoopSession(Transport.INetTransport transport, ICoopLobby lobby, CoopHandshake handshake)
         {
             _transport = transport ?? throw new ArgumentNullException(nameof(transport));
             _lobby     = lobby;
@@ -40,11 +48,16 @@ namespace Guildmaster.Net.Session
             {
                 _handshake.Approved += HandleApproved;
                 _handshake.Rejected += HandleRejected;
+                // Хозяйскую половину рукопожатия не слушал никто, и «гость принят» не оставляло следа
+                // нигде: хозяин узнавал о напарнике только тогда, когда тот отваливался.
+                _handshake.GuestApproved += HandleGuestApproved;
+                _handshake.GuestRejected += HandleGuestRejected;
             }
 
             if (_lobby != null)
             {
                 _lobby.JoinRequested += HandleJoinRequested;
+                _lobby.Invited       += HandleInvited;
                 _lobby.LobbyChanged  += HandleLobbyChanged;
             }
         }
@@ -67,6 +80,8 @@ namespace Guildmaster.Net.Session
         public bool StartHost()
         {
             if (State != CoopSessionState.Offline) return false;
+
+            Log("поднимаю сессию: сокет плюс лобби");
 
             if (!_transport.StartHost())
             {
@@ -91,6 +106,26 @@ namespace Guildmaster.Net.Session
         /// <summary>Открыть список друзей — оттуда входят в чужую игру.</summary>
         public void BrowseFriends() => _lobby?.OpenFriendsOverlay();
 
+        /// <inheritdoc />
+        public event Action<string, ulong> Invited;
+
+        /// <summary>
+        /// Пришло приглашение. Сами по нему НЕ идём — спрашиваем игрока.
+        /// </summary>
+        /// <remarks>
+        /// Подключиться прямо здесь означало бы, что чужой клик вырывает человека из его забега без
+        /// спроса. Поэтому приглашение поднимается наружу вопросом, а входит в игру уже
+        /// <see cref="AcceptInvite"/>.
+        /// </remarks>
+        private void HandleInvited(string fromName, ulong fromSteamId, ulong lobbyId)
+        {
+            Log($"нас зовут: {fromName} ({fromSteamId}), лобби {lobbyId}; наше состояние {State}");
+            Invited?.Invoke(fromName, fromSteamId);
+        }
+
+        /// <inheritdoc />
+        public void AcceptInvite(ulong hostSteamId) => HandleJoinRequested(0, hostSteamId);
+
         /// <summary>Выйти. У хоста это конец сессии для всех.</summary>
         public void Leave()
         {
@@ -110,11 +145,14 @@ namespace Guildmaster.Net.Session
             {
                 _handshake.Approved -= HandleApproved;
                 _handshake.Rejected -= HandleRejected;
+                _handshake.GuestApproved -= HandleGuestApproved;
+                _handshake.GuestRejected -= HandleGuestRejected;
             }
 
             if (_lobby != null)
             {
                 _lobby.JoinRequested -= HandleJoinRequested;
+                _lobby.Invited       -= HandleInvited;
                 _lobby.LobbyChanged  -= HandleLobbyChanged;
             }
         }
@@ -124,6 +162,8 @@ namespace Guildmaster.Net.Session
         // Steam зовёт нас в чужое лобби: у нас есть SteamId хозяина, а значит и адрес relay-сокета.
         private void HandleJoinRequested(ulong lobbyId, ulong hostSteamId)
         {
+            Log($"Steam зовёт в лобби {lobbyId} к хозяину {hostSteamId}; наше состояние {State}");
+
             if (State != CoopSessionState.Offline) Stop();
 
             if (!_transport.Connect(hostSteamId))
@@ -139,27 +179,69 @@ namespace Guildmaster.Net.Session
 
         private void HandlePeerConnected(int peerId)
         {
+            // Канал «сеанс» существовал, но в него не писал никто: включив его на разборе, игрок видел
+            // пустой лог и заключал, что диагностика не работает (наход. Макса 07.08.2026). Здесь —
+            // единственное место, где видны обе половины входа: и соединение, и рукопожатие.
+            Log($"соединение с пиром {peerId} поднято (мы {(_transport.IsHost ? "хозяин" : "гость")}, " +
+                $"состояние {State})");
+
             // Гость: соединение с хостом есть — представляемся. «В сессии» мы станем на его ответ.
             if (!_transport.IsHost && peerId == NetPeer.HostPeerId) _handshake?.SayHello();
         }
 
+        private static void Log(string message) =>
+            Guildmaster.Core.Diagnostics.Diag.Log(Guildmaster.Core.Diagnostics.DiagChannel.Session, message);
+
+        public event Action<int> PeerLeft;
+
         private void HandlePeerDisconnected(int peerId)
         {
-            // У хоста уход гостя сессию не кончает: он остаётся хостом, пусть и в одиночестве.
-            if (_transport.IsHost) return;
+            Log($"соединение с пиром {peerId} разорвано (состояние {State})");
+
+            // У хоста уход гостя сессию не кончает: он остаётся хостом, пусть и в одиночестве. Но
+            // молчать об этом нельзя — он не должен узнавать о потере напарника по тому, что курсор
+            // перестал двигаться.
+            if (_transport.IsHost) { PeerLeft?.Invoke(peerId); return; }
             if (peerId != NetPeer.HostPeerId) return;
 
-            if (State == CoopSessionState.Connecting) Fail(CoopEndReason.ConnectionFailed, "Хост не ответил");
-            else                                      Fail(CoopEndReason.HostLeft, "Хост завершил игру");
+            // Текст описывает НАБЛЮДАЕМОЕ, а не догадку о чужой стороне. «Хост не ответил» здесь стояло
+            // до 09.08.2026 и врало: разрыв на этапе подключения приходил и тогда, когда хост отвечал
+            // исправно — например, эхом закрытого соединения прошлой сессии. Диагноз назначался по
+            // состоянию, а игрок читал его как факт (разбор прогона 08.08.2026).
+            if (State == CoopSessionState.Connecting)
+                Fail(CoopEndReason.ConnectionFailed, "Соединение закрылось, не дойдя до рукопожатия");
+            else
+                Fail(CoopEndReason.HostLeft, "Соединение с хозяином игры закрыто");
         }
 
         private void HandleApproved(int myPeerId)
         {
+            Log($"рукопожатие прошло: наш номер в сеансе — {myPeerId}");
             _transport.SetLocalPeerId(myPeerId);
             Set(CoopSessionState.Connected);
         }
 
-        private void HandleRejected(string reason) => Fail(CoopEndReason.Rejected, reason);
+        private void HandleRejected(string reason)
+        {
+            Log($"хозяин отказал: {reason}");
+            Fail(CoopEndReason.Rejected, reason);
+        }
+
+        /// <summary>
+        /// Гость прошёл проверку версии и контента — с этой секунды он участник сеанса.
+        /// </summary>
+        /// <remarks>
+        /// Своего события наружу отсюда НЕ поднимается, и это осознанно: приход игрока игре показывает
+        /// панель участников, которая читает состав сеанса сама. Второй путь к тому же факту завёл бы
+        /// слушателя, которому нечего делать, — а диалог, как на уходе, здесь был бы прямо вреден:
+        /// уход требует решения («продолжить, позвать, уйти»), приход не требует ничего и прерывал бы
+        /// игру ради новости.
+        /// </remarks>
+        private void HandleGuestApproved(int peerId) =>
+            Log($"гость {peerId} принят: версия и контент сошлись");
+
+        private void HandleGuestRejected(int peerId, string reason) =>
+            Log($"гостю {peerId} отказано: {reason}");
 
         // ── общее ────────────────────────────────────────────────────────────────
 
@@ -181,6 +263,8 @@ namespace Guildmaster.Net.Session
         private void Set(CoopSessionState state)
         {
             if (State == state) return;
+
+            Log($"состояние сеанса: {State} → {state}");
             State = state;
             Raise();
         }

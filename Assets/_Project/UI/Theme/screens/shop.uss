@@ -1,0 +1,91 @@
+.gm-shop__topbar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--gm-space-2);
+}
+
+/* Витрина и карточки НЕ сжимаются: как только у панели появился потолок высоты, флекс начал
+   ужимать их первыми — карточка становилась ниже своего содержимого, и кнопка «Купить» вылезала
+   за нижнюю кромку прямо на разделитель (рендер 2026-08-02). Место под нехватку высоты отдаёт
+   список запаса: он и так прокручивается. */
+.gm-shop__shelf {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.gm-shop__price {
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-shop__section-title {
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-shop__stash {
+    max-height: 240px;
+}
+
+.gm-shop__stash-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--gm-space-1);
+    border-bottom-width: var(--gm-border-1);
+    border-bottom-color: var(--gm-color-border-subtle);
+}
+
+.gm-shop__footer {
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: var(--gm-space-2);
+}
+
+/* Тост «нет места»: полноэкранный слой по центру, клики сквозь. */
+.gm-shop__toast {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Кегль мимо ролей: 48 у гротеска роли не имеет (--gm-text-display это 48 ДИСПЛЕЙНОЙ гарнитуры,
+   то есть вывеска игры). Тост об отказе и глиф сундука — два таких случая на всё дерево; заводить
+   девятую роль ради двух непохожих друг на друга вещей значит плодить роли под места. Оба выписаны
+   исключениями в UiTypographyGateTests. */
+.gm-shop__toast-label {
+    font-size: var(--gm-font-lg);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+/* === ОТКЛИК ВИТРИНЫ ЛАВКИ (06.08.2026) ======================================
+ * Карточка витрины и строка запаса не отвечали НИ НА ЧТО — ни наведения, ни нажатия, при том что
+ * по ним кликают. Свою разметку лавка строит кодом (ShopScreenView), поэтому и вид ей приходится
+ * задавать здесь, а не общими правилами карточки: это долг, а не замысел (см. план захода).
+ * ========================================================================== */
+.gm-shop__stash-row:hover {
+    background-color: var(--gm-color-hover-surface);
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-shop__stash-row:active {
+    background-color: var(--gm-color-surface-sunken);
+    border-color: var(--gm-color-border-inner);
+}
+
+.gm-shop__stash-row:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
+/* Проданное недоступно: гаснет текст, отклик остаётся (правило ui-feedback). */
+.gm-shop__stash-row:disabled {
+    color: var(--gm-color-disabled-text);
+}

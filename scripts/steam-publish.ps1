@@ -89,19 +89,46 @@ if ($dirty -and -not $Force) {
 
 # ── Версия: владелец — тег ─────────────────────────────────────────────────────
 
+$settings = Join-Path $repoRoot 'ProjectSettings\ProjectSettings.asset'
+# ЯКОРЬ НА НАЧАЛО СТРОКИ ОБЯЗАТЕЛЕН. Без него первым совпадением идёт `visionOSBundleVersion: 1.0`
+# двумя строками выше — Unity держит там версии для платформ, которые мы не собираем, и они не
+# меняются никогда. Именно отсюда в Steam уехали сборки «1.0-dev.<sha>» при bundleVersion 0.1.0:
+# скрипт читал версию visionOS и был уверен, что читает нашу (поймано 05.08.2026).
+$bundle = (Select-String -Path $settings -Pattern '^\s*bundleVersion:\s*(.+)' |
+           Select-Object -First 1).Matches.Groups[1].Value.Trim()
+
 if (-not $Version) {
     $tag = git -C $repoRoot describe --tags --exact-match HEAD 2>$null
     if ($LASTEXITCODE -eq 0 -and $tag) {
         $Version = $tag -replace '^v', ''
     }
     else {
-        $settings = Join-Path $repoRoot 'ProjectSettings\ProjectSettings.asset'
-        $base = (Select-String -Path $settings -Pattern 'bundleVersion:\s*(.+)' |
-                 Select-Object -First 1).Matches.Groups[1].Value.Trim()
         $sha  = (git -C $repoRoot rev-parse --short=7 HEAD).Trim()
-        $Version = "$base-dev.$sha"
+        $Version = "$bundle-dev.$sha"
     }
     $global:LASTEXITCODE = 0
+}
+
+# ГЕЙТ РАСХОЖДЕНИЯ (05.08.2026). Версию релиза назначает тег, а dev-сборка берёт за основу
+# bundleVersion — и если эти двое разъехались, номер молча врёт всем сразу. Ровно это и случилось:
+# теги стояли на v0.0.3, bundleVersion — на 0.1.0, а каждая выкладка по кнопке уезжала как
+# «0.1.0-dev.<sha>», из-за чего номер выглядел застывшим и не совпадал ни с одним тегом.
+#
+# Проверка механическая, потому что «не забыть поднять версию» проигрывает на третий раз — то же
+# рассуждение, по которому владельцем версии вообще стал тег, а не память человека. Обойти можно
+# явным -Version: аварийная выкладка не должна упираться в номер.
+$lastTag = git -C $repoRoot tag --list 'v*' --sort=-v:refname | Select-Object -First 1
+$global:LASTEXITCODE = 0
+if ($lastTag -and -not $PSBoundParameters.ContainsKey('Version')) {
+    $lastTagVersion = $lastTag -replace '^v', ''
+    if ($bundle -ne $lastTagVersion) {
+        Write-Host ""
+        Write-Host "Версия разъехалась:" -ForegroundColor Yellow
+        Write-Host "  bundleVersion (ProjectSettings): $bundle"
+        Write-Host "  последний тег:                   $lastTag"
+        Write-Host ""
+        throw "Приведи bundleVersion к $lastTagVersion либо поставь тег на новую версию. Аварийная выкладка — с явным -Version."
+    }
 }
 
 Write-Host ""

@@ -1,4 +1,4 @@
-﻿using Guildmaster.Combat;
+using Guildmaster.Combat;
 using Guildmaster.Core.Input;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
@@ -81,10 +81,12 @@ namespace Guildmaster.DevTools
         // визуал MedievalWarrior (→ анимации). Резолвится из контент-БД, поэтому не нужен serialized-ref в сцене.
         private UnitData _dummyEnemy;
 
-        // Дев-дуэлянт на скелетном визуале (EnemyData «enemy.bone_dev»): отдельный ассет ради того, чтобы
-        // смотр анимации не требовал подмены вида у игровой реликвии. Бьёт и умирает — иначе не увидеть ни
-        // удар, ни разлёт на осколки.
-        private UnitData _boneDuelist;
+        // Дев-дуэлянт на скелетном визуале (EnemyData «enemy.bone_storybook»): отдельный ассет ради того,
+        // чтобы смотр анимации не требовал подмены вида у игровой реликвии. Бьёт и умирает — иначе не
+        // увидеть ни удар, ни разлёт на осколки.
+        // Второй такой же (`enemy.bone_dev` на виде Standart) удалён 06.08.2026: он существовал, чтобы
+        // сравнивать новый арт со старым рядом, а старого больше нет — Storybook единственный живой вид.
+        private UnitData _boneStorybookDuelist;
 
         // Контент-БД для дев-срезов: релик берётся по id (relic.*) в момент вызова команды.
         private IContentDatabase _content;
@@ -166,7 +168,7 @@ namespace Guildmaster.DevTools
             _content = contentDatabase;
             _arena   = arena;
             contentDatabase.TryGet("enemy.training_dummy", out _dummyEnemy);
-            contentDatabase.TryGet("enemy.bone_dev", out _boneDuelist);
+            contentDatabase.TryGet("enemy.bone_storybook", out _boneStorybookDuelist);
             // Сессия боя живёт в RootScope: в реальном забеге резолвится, в standalone dev-арене (без Root) — null.
             resolver.TryResolve(out _activities);
             resolver.TryResolve(out _runControl);
@@ -215,6 +217,8 @@ namespace Guildmaster.DevTools
                 ArenaDevCommands.Register(_commands);
                 MapDevCommands.Register(_commands);
                 VisualFxCommands.Register(_commands);
+                DiagCommands.Register(_commands);
+                SessionDevCommands.Register(_commands);
             }
         }
 
@@ -306,7 +310,7 @@ namespace Guildmaster.DevTools
 
             // R (перезапуск боя) глушим, пока консоль открыта: иначе буква «r» в команде дёргает рестарт.
             // Dev-спавн (gm_spawn_*) задал последний бой → перезапускаем его; иначе это бой ЗАБЕГА (грузится
-            // BattleFlow→BattleBootstrap, dev-сетап пуст) → перезапуск на месте через сессию.
+            // BattleFlow→BattleHost→BattleStartup, dev-сетап пуст) → перезапуск на месте через сессию.
             if (!_consoleOpen && kb.rKey.wasPressedThisFrame)
             {
                 if (_lastBattleSetup != null) RestartLastBattle();
@@ -331,8 +335,8 @@ namespace Guildmaster.DevTools
             // мимо расстановки, которая площадкой владеет. Работали они, пока боевой скоуп был вечным;
             // с рождением боя по требованию каждая стала гонкой «заказ раньше владельца». Балансные
             // прогоны (mirror, crowd) живут в SimBench, где им и место — там не нужен ни показ, ни арена.
-            set.Add("bones", "1×1 дуэль скелетных дев-бойцов (смоук вида юнита)",
-                _ => { SpawnBoneDuel(); return null; });
+            set.Add("storybook", "1×1 дуэль скелетных дев-бойцов (смоук вида юнита)",
+                _ => { SpawnBoneStorybookDuel(); return null; });
 
             set.Add("win", "Мгновенно завершить бой победой команды A",
                 _ => { SkipBattle(); return null; });
@@ -621,8 +625,8 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>
-        /// 1×1 зеркально на дев-дуэлянте (<c>enemy.bone_dev</c>) — смотреть скелетный визуал в живом бою.
-        /// Кит у него ЗАЩИТНИКА (Оплот + «Решительный удар»): смотреть скелетную анимацию на бойце без
+        /// 1×1 зеркально на дев-дуэлянте (<c>enemy.bone_storybook</c>) — смотреть скелетный визуал в живом
+        /// бою. Кит у него ЗАЩИТНИКА (Оплот + «Решительный удар»): смотреть скелетную анимацию на бойце без
         /// активок было нечего — ни каста, ни телеграфа щита, ради которого поза блока и делается. Отличие
         /// от Защитника ровно одно: HP 800 вместо 3000, иначе дуэль двух танков идёт полторы минуты и до
         /// смерти с осколками дело не доходит.
@@ -631,26 +635,36 @@ namespace Guildmaster.DevTools
         /// и пока подмена стояла, костяным становился каждый бой базовой реликвии.
         /// Тот же вход на Ристалище, что у <see cref="SpawnMirror"/>.
         /// </summary>
-        public void SpawnBoneDuel()
+        public void SpawnBoneStorybookDuel()
+            => SpawnSkeletalDuel(_boneStorybookDuelist, "enemy.bone_storybook", "storybook",
+                self => self.SpawnBoneStorybookDuel());
+
+        /// <summary>
+        /// Общий вход зеркальной скелетной дуэли: один юнит слева и справа, либо заказ на Ристалище,
+        /// либо прямой спавн на standalone dev-арене.
+        /// </summary>
+        private void SpawnSkeletalDuel(
+            UnitData duelist, string contentId, string commandName, System.Action<GuildmasterCommands> restart)
         {
-            if (_boneDuelist == null)
+            if (duelist == null)
             {
-                Debug.LogError("[GuildmasterCommands] - юнита 'enemy.bone_dev' нет в контент-БД → дуэль не запущена");
+                Debug.LogError($"[GuildmasterCommands] - юнита '{contentId}' нет в контент-БД → дуэль не запущена");
                 return;
             }
 
             ResolveDuelEdges(out Vector2 left, out Vector2 right);
             var mine   = new System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn>
-                { new Data.Definitions.ProvingGroundsSpawn(_boneDuelist, left) };
+                { new Data.Definitions.ProvingGroundsSpawn(duelist, left) };
             var theirs = new System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn>
-                { new Data.Definitions.ProvingGroundsSpawn(_boneDuelist, right) };
+                { new Data.Definitions.ProvingGroundsSpawn(duelist, right) };
 
-            _lastBattleSetup = self => self.SpawnBoneDuel();
-            string view = _boneDuelist.ViewPrefab != null ? _boneDuelist.ViewPrefab.name : "null";
+            _lastBattleSetup = restart;
+            string view = duelist.ViewPrefab != null ? duelist.ViewPrefab.name : "null";
+            string tag = $"gm_spawn_{commandName}_duel";
 
-            if (StageOnProvingGrounds(mine, theirs, "gm_spawn_bone_duel"))
+            if (StageOnProvingGrounds(mine, theirs, tag))
             {
-                Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: дуэль заказана площадке " +
+                Debug.Log($"[GuildmasterCommands] - {tag}: дуэль заказана площадке " +
                           $"({left.x:0.##} vs {right.x:0.##}, дистанция {(right.x - left.x):0.##}; ViewPrefab={view}). " +
                           "Бой начинает кнопка «Начать».");
                 return;
@@ -661,9 +675,9 @@ namespace Guildmaster.DevTools
             if (!FactoryReady()) return;
 
             ResetForNewBattle();
-            Sim.EnqueueUnitSpawn(Factory.Create(_boneDuelist, null, 0, left));
-            Sim.EnqueueUnitSpawn(Factory.Create(_boneDuelist, null, 1, right));
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: дуэль поставлена на dev-арене " +
+            Sim.EnqueueUnitSpawn(Factory.Create(duelist, null, 0, left));
+            Sim.EnqueueUnitSpawn(Factory.Create(duelist, null, 1, right));
+            Debug.Log($"[GuildmasterCommands] - {tag}: дуэль поставлена на dev-арене " +
                       $"(дистанция {(right.x - left.x):0.##}; ViewPrefab={view})");
         }
 

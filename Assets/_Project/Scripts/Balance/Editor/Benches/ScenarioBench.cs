@@ -36,7 +36,7 @@ namespace Guildmaster.Balance.Editor
                 table.Add(new object[]
                 {
                     m.Team == 0 ? "A" : "B",
-                    m.Label,
+                    m.DisplayLabel,   // тела идут своей строкой: «сколько бьёт один скелет» — свой вопрос
                     m.DamageDealt,
                     m.DamageAutoPhysical,
                     m.DamageAutoMagical,

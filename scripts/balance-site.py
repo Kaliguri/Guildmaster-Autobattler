@@ -278,6 +278,9 @@ def read_issues() -> list[dict]:
             "status": _field(body, "Статус"),
             "symptom": _block(body, "Симптом"),
             "diagnosis": _block(body, "Диагноз"),
+            # Что показал последний прогон по ЭТОЙ записи. Живёт в самой записи, а не сводной
+            # таблицей: сводку страница не рендерит, и ревизия оставалась невидимой (03.08).
+            "recheck": _block(body, "Перемер"),
             "options": _options(body),
             "verdict": _field(body, "Вердикт Макса"),
         })

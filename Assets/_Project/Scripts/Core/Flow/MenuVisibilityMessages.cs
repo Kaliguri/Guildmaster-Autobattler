@@ -32,7 +32,19 @@ namespace Guildmaster.Core.Flow
         /// <summary>true — под экраном нужен стол, false — за экраном живой мир (бой, карта, передышка).</summary>
         public readonly bool Visible;
 
-        public ScreenBackdropChangedEvent(bool visible) => Visible = visible;
+        /// <summary>
+        /// Стол нужен ДАЖЕ ЕСЛИ за экраном идёт живой бой. Обычно бой стол снимает: меню открывают, стоя
+        /// посреди арены, и подложка закрыла бы ровно то, ради чего бой заведён. Но экран, который занял
+        /// кадр целиком и панели не имеет (настройки), смотреть под собой не предлагает — там наоборот,
+        /// мельтешение арены мешает читать строки.
+        /// </summary>
+        public readonly bool OverBattle;
+
+        public ScreenBackdropChangedEvent(bool visible, bool overBattle = false)
+        {
+            Visible = visible;
+            OverBattle = overBattle;
+        }
     }
 
     /// <summary>

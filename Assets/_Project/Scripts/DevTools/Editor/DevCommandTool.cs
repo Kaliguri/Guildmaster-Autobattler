@@ -100,7 +100,7 @@ namespace Guildmaster.DevTools.Editor
             failure = null;
 
             List<LifetimeScope> scopes = UnityEngine.Object
-                .FindObjectsByType<LifetimeScope>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .FindObjectsByType<LifetimeScope>(FindObjectsInactive.Include)
                 .ToList();
 
             if (scopes.Count == 0)

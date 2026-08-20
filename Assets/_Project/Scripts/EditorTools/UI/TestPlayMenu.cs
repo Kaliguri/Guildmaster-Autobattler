@@ -16,11 +16,16 @@ namespace Guildmaster.UI.EditorTools
         private const string ExeName = "Guildmaster-Test.exe";
 
         /// <summary>
-        /// Собирает Windows-плеер из сцен Build Settings и сразу запускает его. Игра стартует настоящим
-        /// полноэкранным окном (PlayerSettings.fullscreenMode = FullScreenWindow, нативное разрешение) —
-        /// это единственный честный способ ощутить реальный размер интерфейса на своём мониторе.
+        /// Собирает Windows-плеер из сцен Build Settings и сразу запускает его — единственный честный
+        /// способ ощутить реальный размер интерфейса на своём мониторе, а не в Game View.
         /// Билд идёт в Builds/Test (в .gitignore). Development — ради быстрых пересборок и консоли.
         /// </summary>
+        /// <remarks>
+        /// Режим окна тул НЕ выставляет, хотя пункт меню обещает fullscreen: он берётся из
+        /// <c>ProjectSettings</c> (сейчас там полноэкранное окно) и дальше может быть переписан игровым
+        /// <c>IDisplayService</c> из <c>Local/machine.json</c> — то есть с чужой машины прилетит чужой
+        /// режим. Если билд стартовал окном, дело в одном из этих двух мест, а не в сборке.
+        /// </remarks>
         [MenuItem("Alebardium/Test/Build & Run (Windows, fullscreen)", priority = 500)]
         private static void BuildAndRun()
         {

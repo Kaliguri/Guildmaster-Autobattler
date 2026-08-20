@@ -31,6 +31,15 @@ namespace Guildmaster.Net.Tape
 
         private bool _flushed;
 
+        /// <summary>
+        /// Как часто уезжает кадр покоя. Тридцать раз в секунду он не нужен: игрок таскает бойца рукой,
+        /// и десяти хватает, чтобы у напарника фигурка ехала плавно. Считать «изменилось ли» дороже и
+        /// хуже — отпечаток пришлось бы держать вторым владельцем состояния арены.
+        /// </summary>
+        private const float RestSendInterval = 0.1f;
+
+        private float _restTimer;
+
         public BattleTapeBroadcast(CombatSimulation simulation, TapeStreamer streamer,
                                    INetTransport transport)
         {
@@ -47,13 +56,33 @@ namespace Guildmaster.Net.Tape
             // которые никто не примет.
             if (!_transport.IsRunning) return;
 
+            // Догрузка тому, кто подключился посреди боя: порция за кадр, поверх обычной раздачи. Стоит
+            // первой строкой намеренно — пока гость не получил прошлое, свежие чанки ему всё равно
+            // лягут в дыры, а показ у всех на паузе и никто не ждёт кадра прямо сейчас.
+            _streamer.PumpBackfill();
+
             int readyThrough = _simulation.CurrentTick - 1;
+
+            // Арена в ПОКОЕ: расстановка узла, площадка, пауза. Тик не растёт, новых кадров для нарезки
+            // нет — но состояние меняется, потому что игрок таскает бойцов. Досылаем тот же кадр заново,
+            // иначе у гостя арена пуста при полной арене у хоста (наход. Макса 04.08.2026).
+            //
+            // Здесь же лечится и самый первый кадр: на свежей арене CurrentTick равен нулю, и прежняя
+            // проверка «readyThrough < 0» выходила ДО всякой логики — гость не получал ни одного кадра
+            // вовсе, хотя в ленте кадр покоя лежал с первого же рендера.
+            if (_simulation.IsPaused)
+            {
+                Resend(System.Math.Max(readyThrough, 0));
+                return;
+            }
+
             if (readyThrough < 0) return;
 
             if (_simulation.Outcome == BattleOutcome.Ongoing)
             {
                 _streamer.Pump(readyThrough);
                 _flushed = false;
+                _restTimer = 0f;
                 return;
             }
 
@@ -62,6 +91,17 @@ namespace Guildmaster.Net.Tape
             if (_flushed) return;
             _streamer.Flush(readyThrough);
             _flushed = true;
+        }
+
+        // Кадр покоя с ограничением частоты. Время берём нескалированное: пауза расстановки — это как раз
+        // тот случай, когда шкала времени стоит, а слать надо.
+        private void Resend(int tick)
+        {
+            _restTimer -= UnityEngine.Time.unscaledDeltaTime;
+            if (_restTimer > 0f) return;
+
+            _restTimer = RestSendInterval;
+            _streamer.Resend(tick);
         }
 
         public void Dispose() => _simulation.OnBattleReset -= HandleBattleReset;

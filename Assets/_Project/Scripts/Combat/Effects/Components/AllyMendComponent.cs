@@ -13,6 +13,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// <para><b>Числа:</b>
     /// <list type="bullet">
     /// <item><c>_fraction</c> — доля нанесённого урона, уходящая в лечение СЕБЯ (1 = 100% удара).</item>
+    /// <item><c>_flatHeal</c> — плоская прибавка за удар, от величины урона не зависящая.</item>
     /// <item><c>_allyBonus</c> — насколько лечение союзника выгоднее (0.5 = +50%, итого 150% удара).</item>
     /// <item><c>_radius</c> — радиус поиска раненого союзника вокруг носителя, мировые единицы.</item>
     /// <item><c>_autoAttackOnly</c> — реагировать только на автоатаку (иначе лечил бы и с ульты).</item>
@@ -38,6 +39,11 @@ namespace Guildmaster.Combat.Effects.Components
         [Range(0f, 3f)]
         [SerializeField] private float _allyBonus = 0.5f;
 
+        [Tooltip("Плоское лечение за удар, НЕ зависящее от нанесённого урона. Половина света идёт от " +
+                 "того, как сильно он бьёт, половина — просто за то, что он бьёт: иначе лекарь лечит " +
+                 "тем лучше, чем толще цель, и падает в ноль против брони (реворк Макса 04.08.2026).")]
+        [SerializeField] private float _flatHeal;
+
         [Tooltip("Радиус поиска раненого союзника вокруг носителя (мировые единицы).")]
         [SerializeField] private float _radius = 5f;
 
@@ -56,7 +62,9 @@ namespace Guildmaster.Combat.Effects.Components
         {
             if (_autoAttackOnly && !e.IsAutoAttack) return;
 
-            float heal = e.Amount * _fraction * ctx.Stacks;
+            // Плоская часть входит ДО надбавки за союзника: она такая же награда за попадание, как и
+            // доля от урона, и делить их разными правилами значило бы завести две механики вместо одной.
+            float heal = (e.Amount * _fraction + _flatHeal) * ctx.Stacks;
             if (heal <= 0f) return;
 
             RuntimeUnit self = ctx.Target; // носитель события DamageDealt = тот, кто нанёс урон

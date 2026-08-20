@@ -360,6 +360,14 @@ namespace Guildmaster.Presentation
             }
         }
 
+        /// <summary>Играет ли прямо сейчас — то есть должен ли когда-нибудь вернуться в пул.</summary>
+        /// <remarks>
+        /// Спрашивает владелец пула, подбирая эффекты, которые выключили чужой рукой: срок жизни
+        /// считается в <see cref="Update"/>, а выключенный объект не тикает. См.
+        /// <c>CombatVfx.ReclaimOrphans</c>.
+        /// </remarks>
+        public bool IsPlaying => _playing;
+
         private void Finish()
         {
             _playing = false;

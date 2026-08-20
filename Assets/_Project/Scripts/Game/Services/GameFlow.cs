@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
@@ -49,11 +49,12 @@ namespace Guildmaster.Game.Services
 
         private readonly IOutcomePresenter   _outcomePresenter;
         private readonly IMainMenuPresenter  _mainMenuPresenter;
+        private readonly IProfilePresenter   _profilePresenter;
+        private readonly IHubPresenter       _hubPresenter;
         private readonly ActConfig           _actConfig;
         private readonly IRngService         _rng;
         private readonly ILocalPlayer        _localPlayer;
         private readonly IScreenTransition   _transition;
-        private readonly IPublisher<OpenTextEventRequest> _openEventPub;
         private readonly IPublisher<RunPartyReadyEvent>   _partyReadyPub;
 
         // Ристалище: интент входа и состояние площадки — цикл открывает её и ждёт, пока игрок не выйдет.
@@ -70,11 +71,12 @@ namespace Guildmaster.Game.Services
             Core.Persistence.IProfileService profiles,
             IOutcomePresenter   outcomePresenter,
             IMainMenuPresenter  mainMenuPresenter,
+            IProfilePresenter   profilePresenter,
+            IHubPresenter       hubPresenter,
             ActConfig           actConfig,
             IRngService         rng,
             ILocalPlayer        localPlayer,
             IScreenTransition   transition,
-            IPublisher<OpenTextEventRequest> openEventPub,
             IPublisher<RunPartyReadyEvent>   partyReadyPub,
             ISubscriber<Data.Definitions.TestZoneChangedEvent> provingGroundsChangedSub)
         {
@@ -86,11 +88,12 @@ namespace Guildmaster.Game.Services
             _profiles         = profiles;
             _outcomePresenter = outcomePresenter;
             _mainMenuPresenter = mainMenuPresenter;
+            _profilePresenter  = profilePresenter;
+            _hubPresenter      = hubPresenter;
             _actConfig       = actConfig;
             _rng             = rng;
             _localPlayer     = localPlayer;
             _transition      = transition;
-            _openEventPub    = openEventPub;
             _partyReadyPub   = partyReadyPub;
         }
 
@@ -175,7 +178,27 @@ namespace Guildmaster.Game.Services
                 // игра» с «Отключиться» больше нет: сессия — свойство игры, и пережить возврат в меню
                 // она не может. У хоста это конец сессии для всех — так и задумано, миграции авторитета
                 // мы не пишем (решение 01.08.2026).
+                // ...КРОМЕ случая, когда мы УЖЕ идём к кому-то в гости. Приглашение принимается и из
+                // оверлея Steam посреди своего забега: забег рвётся, цикл возвращается сюда — и
+                // закрыл бы то самое подключение, ради которого всё и прервалось. Признак гостя —
+                // само состояние сессии: у хоста оно Hosting, у гостя Connecting/Connected.
+                bool joiningSomeone = _coop != null
+                                      && (_coop.State == Core.Net.CoopSessionState.Connecting
+                                          || _coop.State == Core.Net.CoopSessionState.Connected);
+
+                if (joiningSomeone)
+                {
+                    // Меню не показываем вовсе: игрок уже сделал выбор — в оверлее Steam. Лишний кадр
+                    // главного меню между «принял приглашение» и «я в чужой игре» читался бы как сбой.
+                    await PlayAsGuestAsync();
+                    continue;
+                }
+
                 if (_coop != null && _coop.State != Core.Net.CoopSessionState.Offline) _coop.Leave();
+
+                // Кем заходим — спрашивается ДО меню и только когда профиля нет: дом живёт внутри
+                // профиля, и выбирать дом раньше слота попросту нечем. Профиль есть — экран не мелькает.
+                if (_profilePresenter != null) await _profilePresenter.RequireAsync();
 
                 MainMenuOutcome outcome = await _mainMenuPresenter.ShowAsync();
 
@@ -205,6 +228,12 @@ namespace Guildmaster.Game.Services
 
             if (request.Mode != GameMode.Campaign)
             {
+                // Сеанс нужен и здесь, хотя забега нет: мероприятие рождается ВНУТРИ сеанса, и без него
+                // площадке не от кого родиться — SessionHost.CreateChild возвращал null, а игрок видел
+                // синий экран (наход. Макса 04.08.2026). Прежде сеанс открывала только Кампания, потому
+                // что открывал его RequireRun, а площадке забег не нужен.
+                _sessions.Open(Session.SessionRole.Owner);
+
                 // Площадка и матч — не забег: ни сейва, ни акта, ни карты. Открываем, ждём выхода и
                 // возвращаемся к меню тем же витком.
                 await ShowProvingGroundsAsync(request.Mode == GameMode.Pvp
@@ -241,15 +270,36 @@ namespace Guildmaster.Game.Services
                 runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
             }
 
-            // QA #18: «В главное меню» из системного меню отменяет забег → OperationCanceledException
-            // всплывает из петли акта; ловим и уходим на новый виток while (показ главного меню). Сейв
-            // остаётся (autosave по ходу) — забег можно продолжить.
-            try { await RunActAsync(); } // BeginAct + петля + экран исхода + чистка сейва
-            catch (OperationCanceledException)
+            // Двор гильдии: дом выбран, забег заряжен — но уходит игрок из него сам. Хаб стоит ЗДЕСЬ, а
+            // не внутри RunActAsync: акт — это уже дорога, а двор — то, откуда на неё выходят, и всё
+            // междузабежное (ростер, найм, лавка) будет жить тут же. Пока заглушка (ГДД
+            // [[guild-hub-courtyard]]).
+            bool throughCourtyard = true;
+            while (true)
             {
-                Debug.Log("[GameFlow] - забег прерван из меню → возврат в главное меню");
+                if (throughCourtyard && _hubPresenter != null) await _hubPresenter.ShowAsync();
+
+                // QA #18: «В главное меню» отменяет забег → OperationCanceledException всплывает из
+                // петли акта; ловим и уходим на новый виток while снаружи (показ главного меню). Сейв
+                // остаётся (autosave по ходу) — забег можно продолжить.
+                RunOutcomeChoice next;
+                try { next = await RunActAsync(); } // BeginAct + петля + экран исхода + чистка сейва
+                catch (OperationCanceledException)
+                {
+                    Debug.Log("[GameFlow] - забег прерван из меню → возврат в главное меню");
+                    return true;
+                }
+
+                if (next == RunOutcomeChoice.ToMenu) return true;
+
+                // Забег кончился, а дом остался: сейв старого забега уже стёрт, заводим новый прямо
+                // здесь. Двор проходим только по пути «во двор» — «заново» тем и быстрый, что мимо.
+                runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
+                throughCourtyard = next == RunOutcomeChoice.ToGuild;
+
+                Debug.Log($"[GameFlow] - с экрана исхода: {next} → новый забег" +
+                          (throughCourtyard ? " через двор" : " сразу"));
             }
-            return true;
         }
 
         /// <summary>
@@ -266,11 +316,13 @@ namespace Guildmaster.Game.Services
 
             if (!request.IsNewGuild) return _profiles.SelectGuild(request.GuildId);
 
-            // Профиль заводится тем же кликом, если его ещё нет: игрок просил игру, а не анкету.
-            // Экран выбора профилей — своя задача, и до неё дом обязан появляться сам.
-            if (string.IsNullOrEmpty(_profiles.ActiveProfile.Id) && _profiles.CreateProfile("Игрок") == null)
+            // Профиль здесь уже обязан быть: до главного меню игрок проходит через выбор слота
+            // (03.08.2026). Молчаливое создание отсюда убрано — оно заводило профиль под именем,
+            // которого игрок не выбирал, и делало это в момент, когда он думал о доме, а не о слоте.
+            if (!_profiles.HasActiveProfile)
             {
-                Debug.LogError("[GameFlow] - профиль не завёлся (лимит?) → кампанию не начать");
+                Debug.LogError("[GameFlow] - активного профиля нет → кампанию не начать. " +
+                               "Экран выбора профиля обязан отработать до главного меню.");
                 return false;
             }
 
@@ -393,13 +445,16 @@ namespace Guildmaster.Game.Services
 
         /// <summary>
         /// A2-разрез забега: сгенерировать карту акта (если нет) и прогнать петлю обхода через <see cref="ActRunner"/>
-        /// (делегирование). Заводит забег, если его ещё нет (dev-запуск «начать акт»). Возвращает итог акта:
-        /// <c>Completed</c> — босс пройден; <c>PlayerDefeated</c> — поражение; <c>Aborted</c> — сбой.
+        /// (делегирование). Заводит забег, если его ещё нет (dev-запуск «начать акт»).
         /// </summary>
-        public async UniTask<EventResult> RunActAsync()
+        /// <returns>
+        /// Куда игрок ушёл с экрана исхода. Сбой акта и путь, на котором экрана не было, читаются как
+        /// <see cref="RunOutcomeChoice.ToMenu"/>: продолжать нечего.
+        /// </returns>
+        public async UniTask<RunOutcomeChoice> RunActAsync()
         {
             RunStateService runStates = RequireRun();
-            if (runStates == null) return EventResult.Aborted;
+            if (runStates == null) return RunOutcomeChoice.ToMenu;
 
             RunState run = runStates.Current
                            ?? runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
@@ -423,12 +478,17 @@ namespace Guildmaster.Game.Services
                 Debug.Log($"[GameFlow] - акт завершён: {result.Outcome}");
 
                 // Экран исхода (C2): победа (босс) / поражение (пул перезапусков пуст). Забег окончен — чистим сейв.
-                if (result.Outcome == EventOutcome.Completed || result.Outcome == EventOutcome.PlayerDefeated)
-                {
-                    await _outcomePresenter.ShowAsync(result.Outcome == EventOutcome.Completed);
-                    runStates.DeleteSave();
-                }
-                return result;
+                if (result.Outcome != EventOutcome.Completed && result.Outcome != EventOutcome.PlayerDefeated)
+                    return RunOutcomeChoice.ToMenu;
+
+                // Токен забега сюда передаётся не для порядка: «В меню» на этом экране — тот же путь,
+                // что и из паузы, то есть отмена. Без токена ожидание общего выбора пережило бы её и
+                // держало бы игрока на экране, с которого он уже ушёл.
+                RunOutcomeChoice choice = await _outcomePresenter.ShowAsync(
+                    result.Outcome == EventOutcome.Completed, _activityCts.Token);
+
+                runStates.DeleteSave();
+                return choice;
             }
             finally
             {
@@ -449,9 +509,27 @@ namespace Guildmaster.Game.Services
             }
         }
 
-        // QA #18: управление забегом из системного меню (pause) через IRunControl.
+        /// <summary>
+        /// QA #18: управление забегом из системного меню (pause) через <c>IRunControl</c>.
+        /// </summary>
+        /// <remarks>
+        /// <b>У гостя прерывать нечего</b> — своего забега у него нет, а токен мероприятия взводят те
+        /// две петли, которых он не проходит вовсе (акт и площадка). Пока эта разница не учитывалась,
+        /// кнопка «В главное меню» у гостя молча не делала НИЧЕГО: отменять было нечего, и он оставался
+        /// в чужой игре (найдено 07.08.2026 при разборе живого прогона).
+        /// <para>Уйти из чужой игры значит покинуть сеанс — тогда гостевая петля кончается сама и
+        /// возвращает игрока в его меню. Признак гостя берём у сеанса, а не у состояния сессии: роль
+        /// назвали при входе, и это факт, а не догадка по признакам.</para>
+        /// </remarks>
         public void RequestReturnToMainMenu()
         {
+            if (_sessions?.Context?.Role == Session.SessionRole.Guest)
+            {
+                Debug.Log("[GameFlow] - запрос «В главное меню» у гостя → покидаю чужой сеанс");
+                _coop?.Leave();
+                return;
+            }
+
             Debug.Log("[GameFlow] - запрос «В главное меню» → прерываю текущий забег");
             _activityCts?.Cancel();
         }
@@ -471,9 +549,19 @@ namespace Guildmaster.Game.Services
                            ?? runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
             _activities.Open(ActivitySetup.Campaign);
-            var ctx  = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents);
-            var flow = new TextEventFlow(ev, _openEventPub, _activities.EventEffects);
-            return await flow.Run(ctx);
+            try
+            {
+                var ctx  = new RunContext(run, _rng, _activities.ReadyGate, _activities.Intents);
+                var flow = new TextEventFlow(ev, _activities.EventEffects,
+                                             _sessions.Decision, _sessions.SessionStage);
+                return await flow.Run(ctx);
+            }
+            finally
+            {
+                // Как и у одиночного боя: занятие закрывает тот, кто его открыл. Оставленное открытым,
+                // оно переживёт метод, и следующий Open закроет его уже посреди чужой работы.
+                _activities.Close();
+            }
         }
     }
 }

@@ -31,6 +31,10 @@ namespace Guildmaster.Game.Session
 
             if (_role == SessionRole.Owner) InstallOwner(builder);
             else                            InstallGuest(builder);
+
+            // Экраны узла — ОДИН код на обе роли (HARD-правило «равные игроки», 08.08.2026). Роль
+            // решает, кто ОБЪЯВЛЯЕТ шаг узла; кто его показывает, от роли не зависит — смотрят оба.
+            builder.RegisterEntryPoint<Net.SessionStageScreens>(Lifetime.Singleton);
         }
 
         /// <summary>Владелец сейва: держит забег сам, сам его пишет и сам раздаёт гостям.</summary>
@@ -50,6 +54,10 @@ namespace Guildmaster.Game.Session
             // что это обязанность роли — владелец объявляет, гость следует.
             builder.RegisterEntryPoint<Net.ActivityBroadcast>(Lifetime.Singleton).AsSelf();
 
+            // «Что на экране»: шаг узла с содержимым. Не entry point — его зовут те, кто ведёт узел
+            // (витрина награды), а сам он ничего не тикает.
+            builder.Register<Net.HostSessionStage>(Lifetime.Singleton).AsSelf().As<Net.ISessionStageView>();
+
             // Шина команд забега: снаружи сборки Guild в RunState пишут только через неё, и мутаторы
             // internal держат это компилятором. Лог append-only даёт реплей, аудит «кто передвинул» и
             // хвост для реконнекта; соло идёт этим же путём, иначе кооп нашёл бы обход первым же
@@ -64,8 +72,18 @@ namespace Guildmaster.Game.Session
 
             // Общее согласие считает владелец — он единственный знает, кто в сессии. В соло участник один,
             // и гейт пропускает действие в тот же кадр: ветки «а мы одни?» у вызывающих нет.
-            builder.RegisterEntryPoint<Net.HostReadyGate>(Lifetime.Singleton)
-                   .AsSelf().As<Guildmaster.Core.Net.IReadyGate>();
+            builder.RegisterEntryPoint<Net.HostSharedDecision>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Net.ISharedDecision>();
+
+            // Состав сеанса: кто играет и за какую сторону. Ведёт владелец по той же причине, что и
+            // согласие, — участников знает соединение, а оно есть только у него.
+            builder.RegisterEntryPoint<Net.HostSessionRoster>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Players.ISessionRoster>();
+
+            // Присутствие: собирает курсоры всех и раздаёт каждому курсоры ЕГО стороны. Отбор стоит на
+            // отправке, поэтому раздавать может только тот, у кого сходятся все соединения.
+            builder.RegisterEntryPoint<Net.HostPresence>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Players.IPresenceView>();
         }
 
         /// <summary>
@@ -92,10 +110,24 @@ namespace Guildmaster.Game.Session
             // боя: тела кладёт петля акта, а её у гостя нет.
             builder.RegisterEntryPoint<Net.GuestPartyFollower>(Lifetime.Singleton).AsSelf();
 
+            // Витрина награды и прочие экраны узла — вслед за объявлением хозяина. Своей петли акта у
+            // гостя нет, поэтому показать их ему больше некому.
+            builder.RegisterEntryPoint<Net.GuestSessionStage>(Lifetime.Singleton)
+                   .AsSelf().As<Net.ISessionStageView>();
+
             // Своё согласие гость отправляет, счёт получает. Решать, все ли готовы, ему нечем: кто в
             // сессии, знает хост.
-            builder.RegisterEntryPoint<Net.GuestReadyGate>(Lifetime.Singleton)
-                   .AsSelf().As<Guildmaster.Core.Net.IReadyGate>();
+            builder.RegisterEntryPoint<Net.GuestSharedDecision>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Net.ISharedDecision>();
+
+            // Состав сеанса приходит таблицей — гость только представляется именем. Своё мнение о том,
+            // кто ему союзник, в PvP означало бы, что стороны решает каждый клиент сам.
+            builder.RegisterEntryPoint<Net.GuestSessionRoster>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Players.ISessionRoster>();
+
+            // Свой курсор уходит хосту, чужие приходят от него уже отобранными по стороне.
+            builder.RegisterEntryPoint<Net.GuestPresence>(Lifetime.Singleton)
+                   .AsSelf().As<Guildmaster.Core.Players.IPresenceView>();
         }
     }
 }

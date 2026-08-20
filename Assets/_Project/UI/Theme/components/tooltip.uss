@@ -1,0 +1,130 @@
+/* ============================================================================
+ * Подсказка (компонент Tooltip): всплывает при наведении на карточку.
+ * ========================================================================== */
+
+/* Тултип — ВТОРИЧНЫЙ слой над плотным экраном, поэтому он на ступень мельче того, что объясняет:
+   заголовок sm против body у панели, текст xs против body, подписи xxs. Раньше окно было набрано
+   КРУПНЕЕ панели деталей (body/sm против её xxs/xs) и читалось как отдельный экран, а не как сноска.
+   Ширина при этом ВЫРОСЛА (220 → 320): узкая колонка при крупном кегле рвала фразу на обрывки —
+   высокое окно из шести строк выглядит массивнее широкого из двух.
+   Шкала и ярусы — docs/wiki/tech/10-reference/ui-typography.md (единый источник правды). */
+.gm-tooltip {
+    background-color: var(--gm-color-surface-panel);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+    border-radius: var(--gm-radius-0);
+    padding: var(--gm-space-1) var(--gm-space-2);
+    max-width: 320px;
+}
+
+.gm-tooltip__title {
+    -unity-font-style: bold;
+}
+
+.gm-tooltip__meta {
+    margin-bottom: var(--gm-space-0);
+}
+
+.gm-tooltip__tags {
+}
+
+.gm-tooltip__desc {
+    margin-top: var(--gm-space-0);
+}
+
+/* Содержимое окна (Трек Т). Рамку/фон/паддинг держит .gm-tooltip, карточка — только раскладка,
+   поэтому одно окно обслуживает и короткое пояснение, и разбор со стат-строками. */
+.gm-tooltip__card {
+    flex-direction: column;
+}
+
+/* ЕДИНЫЙ КАРКАС: шапка есть у ЛЮБОЙ подсказки — у реликвии, у характеристики, у пояснения к слоту
+   (реш. Макса 2026-07-26). Заголовок слева, мета справа: так они делят одну строку, а не занимают
+   две, и окно не растёт ради двух слов. */
+.gm-tooltip__header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.gm-tooltip__divider {
+    height: var(--gm-border-1);
+    background-color: var(--gm-outline-color-subtle);
+    margin-top: var(--gm-space-0);
+    margin-bottom: var(--gm-space-0);
+}
+
+/* Определения терминов, дописанные ВНУТРЬ карточки в подробном режиме (слой 2 вложенности).
+   Отделены сверху, набраны мельче тела: это сноска к тексту, а не второй текст. */
+.gm-tooltip__glossary {
+    flex-direction: column;
+    margin-top: var(--gm-space-1);
+    border-top-width: var(--gm-border-1);
+    border-color: var(--gm-outline-color-subtle);
+    padding-top: var(--gm-space-0);
+}
+
+.gm-tooltip__glossary-row {
+    flex-direction: column;
+    margin-bottom: var(--gm-space-0);
+}
+
+.gm-tooltip__glossary-term {
+    -unity-font-style: bold;
+}
+
+/* Разбор со стат-строками шире текстовой подсказки — размер даётся МОДИФИКАТОРОМ, а не правкой
+   базового класса: иначе вслед за ним разъедутся все короткие текстовые подсказки. */
+.gm-tooltip--wide {
+    max-width: 380px;
+}
+
+/* ЗАЛИПШЕЕ окно (курсор подержали, полоса заполнилась): принимает курсор, живёт после ухода с
+   якоря, по терминам внутри идёт цепочка. Сильная рамка — знак того, что окно теперь «твоё»,
+   а не подсказка, которая исчезнет сама. Требование «hoverable» из WCAG 1.4.13 выполняется
+   именно этим состоянием. */
+.gm-tooltip--sticky {
+    border-color: var(--gm-outline-color-hover);
+}
+
+/* ЦВЕТ ТЕРМИНОВ ПО РАЗДЕЛАМ ГЛОССАРИЯ. Rich text не умеет читать USS-переменные, но и заводить
+   вторую палитру в C# нельзя — цвет разъедется. Поэтому значения остаются ЗДЕСЬ, а код читает их
+   с этих доноров (UiColorProbe) и подставляет в <color=…>. Роли названы по смыслу, как и токены. */
+.gm-kw--status    { color: var(--gm-color-arcane); }    /* горение, заморозка, метка — то, что висит на юните */
+.gm-kw--damage    { color: var(--gm-color-negative); }  /* школы урона */
+.gm-kw--defense   { color: var(--gm-color-info); }      /* броня, щит — «холодная» защита */
+.gm-kw--behaviour { color: var(--gm-color-accent); }    /* угроза, стелс — поведение в бою */
+.gm-kw--run       { color: var(--gm-color-positive); }  /* понятия забега */
+.gm-kw--other     { color: var(--gm-color-accent); }
+
+/* Полоса ожидания живёт ВНИЗУ окна и занимает своё место в раскладке: поверх текста она сделала бы
+   последнюю строку нечитаемой. Появляется только там, где есть куда переходить. */
+.gm-tooltip__dwell {
+    height: 3px;
+    margin-top: var(--gm-space-0);
+    background-color: var(--gm-color-surface-sunken);
+}
+
+.gm-tooltip__dwell-fill {
+    height: 3px;
+    width: 0;
+    background-color: var(--gm-color-hover-border);
+}
+
+
+.gm-tooltip__lines {
+    flex-direction: column;
+    margin-top: var(--gm-space-0);
+}
+
+.gm-tooltip__line {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* Те же кегли, что у статблока панели (.gm-stat__label / __value) — подсказка и панель говорят
+   об одном и том же одинаковым голосом. */
+.gm-tooltip__line-value {
+    -unity-font-style: bold;
+    margin-left: var(--gm-space-2);
+}

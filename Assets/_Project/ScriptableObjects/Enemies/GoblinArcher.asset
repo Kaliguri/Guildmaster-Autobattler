@@ -18,16 +18,27 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 1
   _resourceType: 0
-  _visual: {fileID: 11400000, guid: 3915bda3962c1304d845007568e37a70, type: 2}
-  _viewPrefab: {fileID: 5941402093529111970, guid: a2b200a01d3a9174fa1c0a689413a030, type: 3}
-  _bodyShade: 0
+  _rangeBand: 2
+  _rangeAdjustPct: 0.2
+  _archetype: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
+  _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
+  _outfit: {fileID: 11400000, guid: 924228f4836e68148ae3acf9cb94802c, type: 2}
   _vfxTone: 11
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
+  _windupShare: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
@@ -37,9 +48,6 @@ MonoBehaviour:
   - Stat: 8
     Op: 3
     Value: 0.9
-  - Stat: 9
-    Op: 3
-    Value: 6
   - Stat: 3
     Op: 3
     Value: 1

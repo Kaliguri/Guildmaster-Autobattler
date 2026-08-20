@@ -264,6 +264,17 @@ namespace Guildmaster.Guild
         }
 
         /// <summary>
+        /// Записать, что игроки входят в этот узел. Петля акта ждёт именно этой записи.
+        /// <para><b>internal:</b> снаружи через <c>IRunCommands.ChooseNode</c> — как и всё, что меняет
+        /// забег. Достижимость проверил применитель команды, здесь только запись.</para>
+        /// </summary>
+        internal void EnterNode(string nodeId)
+        {
+            if (Current?.Map == null) return;
+            Current.Map.EnteringNodeId = nodeId;
+        }
+
+        /// <summary>
         /// Убрать один экземпляр релика из запаса (сброс ради места под награду).
         /// <para><b>internal:</b> снаружи через <c>IRunCommands.RemoveRelic</c>.</para>
         /// </summary>

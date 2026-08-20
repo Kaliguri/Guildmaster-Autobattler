@@ -6,10 +6,10 @@
          Строки-плейсхолдеры RU; локализованные проставляет RunModeBarView (ключи ui.*). -->
     <ui:VisualElement name="runbar-root" class="gm-loadout__topbar gm-runbar">
         <ui:VisualElement class="gm-loadout__topbar-side">
-            <ui:Label name="guild-name" text="Alebardium" class="gm-loadout__guild-name" />
-            <ui:Label name="guild-asc" text="· ASC IV" class="gm-loadout__guild-asc" />
-            <ui:Label name="topbar-act" text="· Акт 1" class="gm-loadout__guild-asc" />
-            <ui:Label name="topbar-floor" text="· Веха 1/15" class="gm-loadout__guild-asc" />
+            <ui:Label name="guild-name" text="Alebardium" class="gm-text-subtitle gm-loadout__guild-name" />
+            <ui:Label name="guild-asc" text="· ASC IV" class="gm-text-caption gm-text--muted gm-loadout__guild-asc" />
+            <ui:Label name="topbar-act" text="· Акт 1" class="gm-text-caption gm-text--muted gm-loadout__guild-asc" />
+            <ui:Label name="topbar-floor" text="· Веха 1/15" class="gm-text-caption gm-text--muted gm-loadout__guild-asc" />
         </ui:VisualElement>
 
         <!-- Лента-островок: форму рисует SlantedPanel вершинами (скос на 9-slice «плывёт» по ширине). -->
@@ -36,11 +36,11 @@
         <ui:VisualElement class="gm-loadout__topbar-side gm-loadout__topbar-side--right">
             <gm:SlantedPanel Slant="10" class="gm-runbar__capsule">
                 <ui:VisualElement class="gm-runbar__capsule-icon gm-runbar__capsule-icon--gold" />
-                <ui:Label name="topbar-gold" text="0" class="gm-runbar__capsule-value" />
+                <ui:Label name="topbar-gold" text="0" class="gm-text-body gm-runbar__capsule-value" />
             </gm:SlantedPanel>
             <gm:SlantedPanel Slant="10" class="gm-runbar__capsule">
                 <ui:VisualElement class="gm-runbar__capsule-icon gm-runbar__capsule-icon--hp" />
-                <ui:Label name="topbar-hp" text="2/2" class="gm-runbar__capsule-value" />
+                <ui:Label name="topbar-hp" text="2/2" class="gm-text-body gm-runbar__capsule-value" />
             </gm:SlantedPanel>
         </ui:VisualElement>
 
@@ -50,9 +50,9 @@
             <!-- «Начать» = иконка боя + подпись (иконка та же, что у таба «Бой» в ленте — один язык).
                  Текст живёт в дочернем Label, а не в атрибуте Button: у кнопки с детьми собственный
                  текст рисуется поверх содержимого и наезжает на иконку. -->
-            <gm:PlateButton name="btn-start" class="gm-loadout__start-btn">
+            <gm:PlateButton name="btn-start" class="gm-button gm-button--primary">
                 <ui:VisualElement class="gm-loadout__start-icon" picking-mode="Ignore" />
-                <ui:Label name="btn-start-label" text="Начать" class="gm-loadout__start-label" picking-mode="Ignore" />
+                <ui:Label name="btn-start-label" text="Начать" class="gm-text-name gm-loadout__start-label" picking-mode="Ignore" />
             </gm:PlateButton>
             <ui:Label name="battle-timer" text="00:00" class="gm-loadout__stat gm-loadout__stat--timer gm-loadout__battle-timer" />
         </ui:VisualElement>

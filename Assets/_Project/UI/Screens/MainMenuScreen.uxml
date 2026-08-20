@@ -1,23 +1,42 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
-    <ui:VisualElement class="gm-screen">
-        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--mainmenu gm-panel--system">
-            <ui:Label name="menu-title" text="Happy Guildmasters" class="gm-panel__title gm-mainmenu__title" />
-            <ui:VisualElement class="gm-divider" />
+    <!-- ПАНЕЛИ НЕТ (реш. Макса 04.08.2026). Меню — колонка текста у левой кромки поверх живого
+         кадра; правые две трети остаются игре. Прежний диалог по центру со скримом на весь экран
+         повторял единственный реф, которому разбор выписал цену: «читается как отдельная
+         программа, а не как игра» (Factorio). Числа и приёмы — `_teardowns/01-main-menu.md`. -->
+    <ui:VisualElement class="gm-mainmenu">
+        <!-- Затемнение трёхслойное (04.08.2026). Общее приглушение кадра лежит фоном на самом корне;
+             здесь — вторая ступень, вуаль ПОД колонкой: под пунктами идёт бой, и его яркость меняется
+             каждый кадр. Так делают пятеро рефов из восьми, кладущих меню прямо на фон. -->
+        <gm:EdgeVeil class="gm-mainmenu__veil" side="Left" />
+
+        <!-- Третья ступень — зерно поверх обоих затемнений. Стоит ПОСЛЕ вуали и ДО колонки: фактура
+             обязана лечь на затемнения, но остаться под текстом. -->
+        <ui:VisualElement class="gm-mainmenu__texture" picking-mode="Ignore" />
+
+        <ui:VisualElement class="gm-mainmenu__column">
+            <!-- Вывеска: надстрочник между линейками, крупное слово, метка сборки (вариант «линейки»,
+                 выбор Макса 04.08.2026). С 07.08.2026 это КОНТРОЛ, а не разметка: ту же вывеску
+                 просит бут-экран, и композиция обязана быть одна на оба места. Тексты ставит View
+                 из локализации — здесь только то, что видно без неё. -->
+            <gm:Wordmark name="menu-title" class="gm-mainmenu__title" over="HAPPY" main="GUILDMASTERS" stage="DEMO" />
 
             <!-- ДВЕ кнопки входа, а не список режимов (модель Макса 02.08.2026). Режим выбирается
-                 следующим шагом, вместе с домом и открытостью для друзей: кооп у нас свойство сеанса,
-                 а не отдельная игра, и прежний вход «Сетевая игра» рядом с «Начать забег» вёл в то же
-                 самое место — две двери в одну комнату. -->
-            <ui:ScrollView class="gm-panel__body gm-mainmenu__buttons">
-                <gm:PlateButton name="btn-create" text="Создать игру" class="gm-button gm-button--primary gm-mainmenu__btn" />
-                <gm:PlateButton name="btn-join" text="Присоединиться" class="gm-button gm-mainmenu__btn" />
-                <gm:PlateButton name="btn-settings" text="Настройки" class="gm-button gm-mainmenu__btn" />
-                <gm:PlateButton name="btn-quit" text="Выход" class="gm-button gm-mainmenu__btn" />
-            </ui:ScrollView>
+                 следующим шагом, вместе с домом и открытостью для друзей: кооп у нас свойство
+                 сеанса, а не отдельная игра, и прежний вход «Сетевая игра» рядом с «Начать забег»
+                 вёл в то же самое место — две двери в одну комнату.
+                 Игровые пункты отделены от служебных зазором на «Профиле», без линии и подзаголовка. -->
+            <ui:VisualElement class="gm-mainmenu__buttons">
+                <gm:PlateButton name="btn-create" text="Создать игру" class="gm-button gm-button--display gm-button--primary" />
+                <gm:PlateButton name="btn-join" text="Присоединиться" class="gm-button gm-button--display gm-button--primary" />
+                <gm:PlateButton name="btn-profile" text="Профиль" class="gm-button gm-button--display gm-mainmenu__group-start" />
+                <gm:PlateButton name="btn-settings" text="Настройки" class="gm-button gm-button--display" />
+                <gm:PlateButton name="btn-quit" text="Выход" class="gm-button gm-button--display" />
+            </ui:VisualElement>
         </ui:VisualElement>
 
-        <!-- Версия билда: угол экрана, а не панели — не спорит с меню и одинаково стоит при любом
-             размере панели. Текст проставляется кодом из Application.version. -->
-        <ui:Label name="menu-version" class="gm-text-muted gm-version-stamp" />
+        <!-- Версия билда: угол экрана. Нижний правый — самое частое место у рефов (13 из 14 держат
+             версию мелким кеглем в углу), и единственный реф, поставивший её в центр верха, получил
+             за это отдельный пункт в «чего избегать». Текст проставляется кодом. -->
+        <ui:Label name="menu-version" class="gm-version-stamp" />
     </ui:VisualElement>
 </ui:UXML>

@@ -38,6 +38,11 @@ namespace Guildmaster.Game.Activity
             // мероприятие заказал.
             builder.RegisterInstance(_setup);
 
+            // Сколько у площадки сторон, знает она одна — а раскладывает по ним участников сеанс.
+            // Только у владельца: гость чужой состав не пересаживает.
+            if (_role == Session.SessionRole.Owner)
+                builder.RegisterEntryPoint<ActivitySideAssignment>(Lifetime.Singleton);
+
             RegisterBattleSeam(builder);
 
             // Ведение акта — обязанность владельца забега. Гость подключается к ЧУЖОМУ мероприятию:

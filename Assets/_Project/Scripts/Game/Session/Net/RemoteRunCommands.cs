@@ -49,6 +49,9 @@ namespace Guildmaster.Game.Session.Net
 
         public void AwardBattleReward() => Send(Next(RunCommandKind.AwardBattleReward));
 
+        // Клик гостя по узлу карты: та же команда, что и у хозяина, тем же каналом.
+        public void ChooseNode(string nodeId) => Send(Next(RunCommandKind.ChooseNode, text: nodeId));
+
         /// <summary>
         /// Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва.
         /// <c>false</c> здесь — не отказ, а факт, и вызывающие его уже читают.

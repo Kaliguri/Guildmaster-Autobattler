@@ -1,0 +1,196 @@
+/* ============================================================================
+ * BOOT / LOADING SCREEN (реф Ravenswatch, temp): лого-lockup по центру + тёплое свечение,
+ * ряд атрибуций внизу, «Загрузка» + вращающийся знак справа. Полноэкранный ink; ЛЮБАЯ
+ * клавиша/клик → плавный уход (переход в главное меню). Свечение — PNG (USS без radial).
+ * ========================================================================== */
+.gm-boot {
+    background-color: var(--gm-color-veil);
+    justify-content: center;
+    align-items: center;
+    transition-property: opacity;
+    transition-duration: 0.35s;
+}
+
+.gm-boot--out {
+    opacity: 0;
+}
+
+.gm-boot__glow {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 26%;
+    height: 540px;
+    -unity-background-scale-mode: scale-to-fit;
+    background-image: url("../../../Art/Brand/BootGlow.png");
+}
+
+/* Вывеска по центру кадра — единственное отличие от меню, где она прижата к левой кромке колонки.
+   Всё остальное (гарнитуры, кегли, разрядка, градиент) приходит с самого контрола: см.
+   components/wordmark.uss. Своих правил вида у бута для неё нет и быть не должно — иначе вывеска
+   снова разъедется по двум экранам, как было до 07.08.2026. */
+.gm-boot__wordmark {
+    align-items: center;
+}
+
+/* Подсказка ожидания. СЕРИФ ВРАЗРЯДКУ, а не интерфейсный гротеск: строка обращена к игроку, а не
+   подписывает поле, и рядом с дисплейной вывеской гротеск читался дефолтом движка (правка Макса
+   07.08.2026: «тоже очень плохо выглядит»). Разрядка тут за интонацию — фраза произносится тише и
+   медленнее названия над ней.
+   ПУЛЬСАЦИЯ — не украшение: экран ничего не делает и ничем не показывает, что чего-то ждёт.
+   Медленная (1.6с в каждую сторону), потому что быстрая читается тревогой; амплитуда небольшая —
+   строка не должна пропадать совсем, иначе в момент затухания экран выглядит зависшим.
+   Анимацию ведёт TitleCardScreenView: keyframes в UI Toolkit нет, а transition сам себя не
+   перезапускает. */
+.gm-boot__hint {
+    -unity-font-definition: var(--gm-font-voice);
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text-muted);
+    -unity-text-align: middle-center;
+    letter-spacing: 3px;
+    margin-top: var(--gm-space-5);
+    opacity: 0.75;
+    transition-property: opacity;
+    transition-duration: 1.6s;
+}
+
+.gm-boot__hint--dim {
+    opacity: 0.3;
+}
+
+.gm-boot__attrib {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--gm-space-4);
+    flex-direction: column;
+    align-items: center;
+}
+
+.gm-boot__attrib-row {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+/* В ряду атрибуций наш бренд идёт МОНОЛАЙН-ЗНАКОМ (алебарда в мазке косы), а не цветной печатью
+   приложения: рядом с чужими знаками, которые обязаны быть нейтральными, латунная иконка читалась
+   не «нашим брендом», а сбоем — единственным цветным пятном в служебной строке. Печать
+   CompanyLogo_Alebardium остаётся за пределами этой строки (иконка приложения, витрины). */
+.gm-boot__attrib-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: var(--gm-space-2);
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: var(--gm-color-brand-attrib);
+    background-image: url("../../../Art/Brand/Mark_Alebardium_Mono.png");
+    opacity: 0.85;
+}
+
+/* Имя студии набрано ЖИРНЫМ САНСОМ В MIXED CASE, и оба решения — из замера соседей, а не из вкуса.
+   Вес: медианная толщина штриха к высоте у fmod 0.222, у вордмарка Unity 0.121; Fira Bold даёт ровно
+   0.222, а прежняя Regular — 0.111, из-за чего наша подпись выглядела выцветшей рядом с fmod.
+   Регистр: `Unity` набран mixed case, `fmod` — строчными, поэтому капс был единственным криком в ряду.
+   Трекинг 0.5px = 2% кегля: капс требует 5–12%, строчные — почти ничего, а прежние 3px (14%!)
+   разрывали слово на отдельные литеры. Bold берётся файлом SDF, синтетический вес снят. */
+.gm-boot__attrib-item {
+    -unity-font-definition: var(--gm-font-data-strong);
+    -unity-font-style: normal;
+    font-size: var(--gm-font-sm);
+    color: var(--gm-color-brand-attrib);
+    letter-spacing: 0.5px;
+    opacity: 0.85;
+}
+
+/* Строка прав. Слова «FMOD» и «Firelight Technologies Pty Ltd.» обязаны быть В ИГРЕ по Clause 3
+   лицензии FMOD (Assets/Plugins/FMOD/LICENSE.TXT) — логотип её НЕ закрывает, поэтому удалять эту
+   строку нельзя, даже если она мешает композиции. Копирайт-нотис рядом — уже наша перестраховка.
+   Тише всего в ряду намеренно: обязана присутствовать, а не притягивать взгляд. */
+.gm-boot__legal {
+    font-size: var(--gm-font-xs);
+    color: var(--gm-color-brand-attrib);
+    margin-top: var(--gm-space-1);
+    -unity-text-align: middle-center;
+    opacity: 0.2;
+}
+
+.gm-boot__attrib-sep {
+    font-size: var(--gm-font-sm);
+    color: var(--gm-color-brand-attrib);
+    margin-left: var(--gm-space-3);
+    margin-right: var(--gm-space-3);
+    opacity: 0.5;
+}
+
+/* Чужие бренды в ряду атрибуций идут КАРТИНКОЙ, а не латунным текстом, и это юридическое, а не
+   вкусовое: trademark-гайд Unity требует брать логотип «exactly as provided, without alterations»
+   и разрешает из цветов только чёрный / тёмно-серый / светло-серый / белый — латунь была бы
+   нарушением. FMOD single-color перекраску разрешает, но держим его в том же светло-сером: ряд
+   читается как одна система, латунь остаётся признаком НАШЕГО бренда (печать + ALEBARDIUM).
+   Приглушение — тинтом и прозрачностью, форма логотипов не трогается. */
+.gm-boot__attrib-logo {
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: var(--gm-color-brand-attrib);
+    opacity: 0.85;
+}
+
+/* Размеры заданы по оптическому весу, а не по формуле: у «MADE WITH Unity» знак крупнее вордмарка,
+   у fmod вордмарк во всю высоту — при равной height fmod выглядел бы больше соседа. */
+.gm-boot__attrib-logo--unity {
+    width: 140px;
+    height: 33px;
+    background-image: url("../../../Art/Brand/Logo_MadeWithUnity_White.png");
+}
+
+.gm-boot__attrib-logo--fmod {
+    width: 104px;
+    height: 27px;
+    background-image: url("../../../Art/Brand/Logo_FMOD_White.png");
+}
+
+/* ПРАВЫЙ УГОЛ, НА ЛИНИИ САМОЙ НИЖНЕЙ НАДПИСИ. Абсолют считается от блока атрибуций (в UI Toolkit
+   любой элемент по умолчанию `position: relative`, поэтому предок-якорь искать не нужно), а низ у
+   блока — строка прав. Отсюда и выравнивание: индикатор садится на её линию сам, при любом кегле
+   и любой длине юридического текста. Прежняя привязка к низу КАДРА этого не давала — она считала
+   от кромки экрана и зависела от высоты самого блока. */
+.gm-boot__loading {
+    position: absolute;
+    right: var(--gm-space-5);
+    bottom: 0;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Кегль ТЕЛА, а не служебный мелкий (правка Макса 07.08.2026: «больший размер иконки и текста
+   загрузки»). Индикатор отвечает на «игра жива?», и на этот вопрос смотрят издалека — он вправе
+   звучать громче юридической строки под ним. Латунь атрибуции вместо приглушённого серого: низ
+   экрана обязан читаться одной системой. */
+.gm-boot__loading-label {
+    -unity-font-definition: var(--gm-font-data-strong);
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-brand-attrib);
+    letter-spacing: 0.5px;
+    opacity: 0.85;
+    margin-right: var(--gm-space-2);
+}
+
+/* Знак загрузки — КОЛЬЦО, а не иконка приложения. Крутящийся логотип читается как «бренд сломался»:
+   фирменный знак принято показывать неподвижным, и вращение превращает его в индикатор состояния,
+   которым он не является. Кольцо рисуется рамкой (картинки нет вовсе): тусклый круг + один яркий
+   сегмент сверху, который и виден как движение — вращает его TitleCardScreenView. */
+/* 32px вместо 22 и кайма толще: знак стоит рядом с подписью на кегле тела и обязан быть ей ровней.
+   ДУГА В ЧЕТВЕРТЬ, А НЕ ОДИН СЕГМЕНТ: яркими сделаны две смежные границы, поэтому на скорости
+   видно направление хода. С одной границей кольцо на быстром вращении читалось мерцанием — глаз
+   не успевал связать кадры в движение. */
+.gm-boot__spinner {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+    border-color: var(--gm-color-border-inner);
+    border-top-color: var(--gm-color-accent);
+    border-right-color: var(--gm-color-accent);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+}

@@ -7,7 +7,7 @@ namespace Guildmaster.Data.Definitions
     /// <see cref="AnimationEvent"/>, чьё <c>functionName</c> называет ВИД маркера; контакт удара —
     /// <see cref="HitFunction"/>. Всё читается в рантайме (<c>clip.events/length/frameRate</c>), без
     /// editor-API. Источник тайминга удара авто-атаки: сим берёт
-    /// <see cref="UnitVisual.AttackFrameCount"/>/<see cref="UnitVisual.AttackHitFrame"/>, которые
+    /// <see cref="AnimationArchetypeData.AttackFrameCount"/>/<see cref="AnimationArchetypeData.AttackHitFrame"/>, которые
     /// выводятся отсюда. <c>Animator.fireEvents=false</c> — маркеры никогда не колбэчат.
     /// </summary>
     /// <remarks>
@@ -39,6 +39,17 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Имя маркера КОНЦА ВЗМАХА — дальше идёт возврат, который ничего не сообщает.</summary>
         public const string StrikeEndFunction = "StrikeEnd";
+
+        /// <summary>
+        /// Имя маркера «ЩИТ ВСТАЛ»: кадр, на котором поза гвардии достигнута и дальше клип её только держит.
+        /// </summary>
+        public const string GuardUpFunction = "GuardUp";
+
+        /// <summary>
+        /// Имя маркера «ЩИТ ПОШЁЛ ВНИЗ»: кадр, с которого клип возвращает руку в стойку. Всё, что после
+        /// него, — возврат, и играть его надо тогда, когда защита кончилась, а не когда кончился клип.
+        /// </summary>
+        public const string GuardDownFunction = "GuardDown";
 
         /// <summary>Время первого контакта (сек) или <c>-1</c>, если маркера нет.</summary>
         public static float FirstHitTime(AnimationClip clip) => FirstTimeOf(clip, HitFunction);
@@ -142,6 +153,38 @@ namespace Guildmaster.Data.Definitions
             start = Mathf.Clamp01(s / clip.length);
             end   = Mathf.Clamp01(e / clip.length);
             return end > start;
+        }
+
+        /// <summary>
+        /// Окно ДЕРЖАНИЯ гвардии в нормированном времени клипа: от <see cref="GuardUpFunction"/> (щит
+        /// встал) до <see cref="GuardDownFunction"/> (щит пошёл вниз). Всё до <paramref name="up"/> —
+        /// подъём, всё после <paramref name="down"/> — возврат в стойку.
+        /// </summary>
+        /// <returns>
+        /// <c>false</c>, если клип не размечен целиком или окно вырождено. Половина разметки — это
+        /// неразмеченный клип: показу нужны обе границы, потому что он играет три куска клипа по трём
+        /// разным часам (подъём — за время подводки, держание — пока живёт барьер, возврат — за своё).
+        /// </returns>
+        /// <remarks>
+        /// Так же, как у взмаха, границы живут В КЛИПЕ, а не константой в показе. До 2026-08-04 доля
+        /// подъёма стояла числом в <c>UnitView</c> (0.2 клипа) — и совпадала с позой ровно до первой правки
+        /// клипа: автор снял промежуточный ключ на 0.117 с, подъём переехал на 0.25 с, а показ продолжил
+        /// скрабить до 0.12 с и оставлял щит поднятым на 60% вместо 84% (замер перекрытия тела, RigSweep).
+        /// Второй владелец одного факта — дефект; владельцем назначен клип.
+        /// </remarks>
+        public static bool GuardWindowNormalized(AnimationClip clip, out float up, out float down)
+        {
+            up   = 0f;
+            down = 0f;
+            if (clip == null || clip.length <= 0f) return false;
+
+            float u = FirstTimeOf(clip, GuardUpFunction);
+            float d = FirstTimeOf(clip, GuardDownFunction);
+            if (u < 0f || d < 0f || d <= u) return false;
+
+            up   = Mathf.Clamp01(u / clip.length);
+            down = Mathf.Clamp01(d / clip.length);
+            return down > up;
         }
     }
 }

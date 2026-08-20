@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
+            <gm:PanelFrame name="guilds-frame" corner="0" />
+            <ui:Label name="guilds-title" text="Гильдия" class="gm-text-title gm-panel__title" />
+            <ui:VisualElement class="gm-divider" />
+
+            <ui:ScrollView class="gm-panel__body">
+                <!-- Слоты домов. Строки строятся кодом: их число берётся из GameConfig, а не из
+                     разметки, и свободные слоты показываются наравне с занятыми — иначе список не
+                     отвечает на первый же вопрос игрока «а можно ещё?». -->
+                <ui:Label name="guilds-caption" text="Дом хранит прогресс: забег, ростер, открытия" class="gm-text-caption gm-text--muted" />
+                <ui:VisualElement name="guild-list" class="gm-guilds__slots" />
+            </ui:ScrollView>
+
+            <ui:VisualElement class="gm-divider" />
+            <gm:PlateButton name="btn-back" text="Назад" class="gm-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -22,9 +22,27 @@ namespace Guildmaster.Net.Transport
         private int _nextPeerId = NetPeer.HostPeerId;
 
         /// <summary>Создать узел. Первый созданный становится хостом.</summary>
-        public INetTransport CreateNode()
+        public INetTransport CreateNode() => CreateNode(claimHost: false);
+
+        /// <summary>
+        /// Создать узел, при <paramref name="claimHost"/> — забрав себе номер хоста, даже если его уже
+        /// кто-то занял: прежний владелец переезжает на следующий свободный.
+        /// </summary>
+        /// <remarks>
+        /// <b>Зачем переселение.</b> В петле «хост» — это номер <see cref="NetPeer.HostPeerId"/>, и
+        /// достаётся он тому, кто создал узел первым. В игре транспорт поднимается на старте, задолго
+        /// до того, как станет известно, хозяин мы в этом сеансе или гость, — то есть игра неизбежно
+        /// занимает номер хоста, даже когда играет гостем. Тогда её же «шлём хосту» уходило бы ей
+        /// самой, и проверить гостевую половину коопа было бы нечем.
+        /// <para>Настоящая сеть решает это тем же способом: номера раздаёт хост в момент подключения
+        /// (см. рукопожатие), а не сокет в момент создания. Здесь — та же логика, только выраженная
+        /// одним переездом.</para>
+        /// </remarks>
+        public INetTransport CreateNode(bool claimHost)
         {
-            int id = _nextPeerId++;
+            if (claimHost) VacateHostSlot();
+
+            int id = claimHost ? NetPeer.HostPeerId : _nextPeerId++;
             var node = new Node(this, id, isHost: id == NetPeer.HostPeerId);
             _nodes.Add(id, node);
 
@@ -41,6 +59,47 @@ namespace Guildmaster.Net.Transport
             return node;
         }
 
+        /// <summary>
+        /// Освободить номер хоста: тот, кто его занимал, переезжает на следующий свободный и узнаёт
+        /// об этом ровно так же, как узнал бы в настоящей сети — сменой состава соединений.
+        /// </summary>
+        private void VacateHostSlot()
+        {
+            if (!_nodes.TryGetValue(NetPeer.HostPeerId, out Node previous)) return;
+
+            _nodes.Remove(NetPeer.HostPeerId);
+            int moved = _nextPeerId++;
+            previous.Rebind(moved, isHost: false);
+            _nodes.Add(moved, previous);
+        }
+
+        /// <summary>Есть ли в петле узел-хозяин: к кому подключаться, если мы не он.</summary>
+        internal bool HasHost => _nodes.ContainsKey(NetPeer.HostPeerId);
+
+        /// <summary>
+        /// Вернуть в сеть узел, который до этого выключили: он снова получает номер и знакомится с
+        /// остальными.
+        /// </summary>
+        /// <remarks>
+        /// <b>Без этого петля врала о жизненном цикле.</b> У настоящего транспорта выключение закрывает
+        /// сокет, а следующее подключение открывает новый — так и делает игра, принимая приглашение
+        /// посреди своей сессии: сперва рвёт своё, потом идёт в гости. В петле же выключенный узел
+        /// оставался мёртвым навсегда, и сеанс застревал на «подключаюсь» (наход. 05.08.2026).
+        /// </remarks>
+        private void ReviveNode(Node node)
+        {
+            int id = _nextPeerId++;
+            node.Rebind(id, isHost: false);
+            _nodes.Add(id, node);
+
+            foreach (KeyValuePair<int, Node> pair in _nodes)
+            {
+                if (pair.Key == id) continue;
+                pair.Value.EnqueueConnect(id);
+                node.EnqueueConnect(pair.Key);
+            }
+        }
+
         /// <summary>Прокачать все узлы разом — типичный шаг теста «прошёл кадр у всех».</summary>
         public void PollAll()
         {
@@ -48,6 +107,18 @@ namespace Guildmaster.Net.Transport
             var snapshot = new List<Node>(_nodes.Count);
             foreach (Node node in _nodes.Values) snapshot.Add(node);
             for (int i = 0; i < snapshot.Count; i++) snapshot[i].Poll();
+        }
+
+        /// <summary>Кто в петле, кроме указанного узла. Ответ на момент вызова — буфер общий.</summary>
+        private readonly List<int> _peersBuffer = new List<int>(4);
+
+        private IReadOnlyList<int> PeersExcept(int self)
+        {
+            _peersBuffer.Clear();
+            foreach (KeyValuePair<int, Node> pair in _nodes)
+                if (pair.Key != self) _peersBuffer.Add(pair.Key);
+
+            return _peersBuffer;
         }
 
         private void Deliver(int from, int to, byte[] payload)
@@ -102,8 +173,30 @@ namespace Guildmaster.Net.Transport
             }
 
             public bool IsRunning  => _running;
-            public int  LocalPeerId { get; }
-            public bool IsHost      { get; }
+            public int  LocalPeerId { get; private set; }
+            public bool IsHost      { get; private set; }
+
+            /// <summary>
+            /// Кто в петле, кроме нас. Выключенный узел не знает никого — как закрытый сокет.
+            /// </summary>
+            /// <remarks>
+            /// Отвечаем по СОСТАВУ сети, а не по разобранной очереди: то же делает и настоящий
+            /// транспорт — соединение уже стоит, даже если событие о нём ещё не прокачано. Иначе шов
+            /// обещал бы одно, а в игре вёл себя иначе, и проверка «догнали ли мы уже подключённого»
+            /// в петле проходила бы всегда.
+            /// </remarks>
+            public IReadOnlyList<int> ConnectedPeers =>
+                _running ? _net.PeersExcept(LocalPeerId) : System.Array.Empty<int>();
+
+            /// <summary>
+            /// Переехать на другой номер: пришедший хозяин забрал наш. Так же выглядит и настоящая
+            /// сеть — номер узла назначает хост, и до подключения он не наш.
+            /// </summary>
+            internal void Rebind(int peerId, bool isHost)
+            {
+                LocalPeerId = peerId;
+                IsHost      = isHost;
+            }
 
             /// <summary>
             /// Тот же предел, что у релизного Steam-транспорта (512 КБ на надёжное сообщение). Loopback
@@ -115,6 +208,39 @@ namespace Guildmaster.Net.Transport
             public event Action<int> PeerConnected;
             public event Action<int> PeerDisconnected;
             public event Action<int, ArraySegment<byte>> MessageReceived;
+
+            /// <summary>
+            /// В петле соединения уже стоят — узлы знакомятся в момент создания. Поэтому «поднять
+            /// сессию» и «войти» здесь не действие, а ОТВЕТ на вопрос, возможно ли это: хозяином может
+            /// объявиться только тот, кто занял номер хоста, а войти — только когда хозяин есть.
+            /// </summary>
+            /// <remarks>
+            /// Ответ важен сам по себе: сеанс на нём строит своё состояние («поднимаю» / «подключаюсь»),
+            /// и соврать здесь значило бы получить сеанс, который считает себя живым в пустой сети.
+            /// </remarks>
+            public bool StartHost() => IsHost;
+
+            /// <summary>
+            /// Адрес игнорируется: в петле хозяин ровно один, выбирать не из чего. Выключенный узел
+            /// при этом ОЖИВАЕТ — как открылся бы новый сокет у настоящего транспорта.
+            /// </summary>
+            public bool Connect(ulong hostAddress)
+            {
+                if (!_running)
+                {
+                    _running = true;
+                    _net.ReviveNode(this);
+                }
+
+                return !IsHost && _net.HasHost;
+            }
+
+            /// <summary>
+            /// Номер в петле раздаёт сама сеть при создании узла, и второй раздачи не бывает — принять
+            /// назначенный сверху нам нечего. Молча ничего не делаем: рукопожатие вправе состояться и
+            /// здесь, просто его результат нам уже известен.
+            /// </summary>
+            public void SetLocalPeerId(int peerId) { }
 
             public void Send(int peerId, ArraySegment<byte> payload, NetDelivery delivery)
             {

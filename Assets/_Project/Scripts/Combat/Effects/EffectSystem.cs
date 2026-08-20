@@ -19,7 +19,6 @@ namespace Guildmaster.Combat
         // тика не ломали коллекцию (вики «6» §7: добавления/удаления вне итерации).
         private readonly List<RuntimeEffect> _tickBuffer = new List<RuntimeEffect>();
         private readonly List<RuntimeEffect> _dispatchBuffer = new List<RuntimeEffect>();
-        private readonly List<RuntimeEffect> _dispelBuffer = new List<RuntimeEffect>();
         private readonly List<RuntimeEffect> _preDamageBuffer = new List<RuntimeEffect>();
         private readonly List<RuntimeEffect> _forcedRemoveBuffer = new List<RuntimeEffect>();
         private readonly PreDamageResult     _preDamageResult = new PreDamageResult();
@@ -457,20 +456,25 @@ namespace Guildmaster.Combat
             // способности, а не обходом списка (см. DispelRequest.ConsumesOwnTrigger).
             int currentTick = req.ConsumesOwnTrigger ? int.MinValue : (combat?.CurrentTick ?? 0);
 
-            _dispelBuffer.Clear();
+            // Список локальный, а не переиспользуемый: снятие зовёт OnExpire, а тот у ледяной статуи
+            // делает СВОЙ Dispel — общий буфер чистился бы и переполнялся прямо посреди обхода. Внешний
+            // цикл тогда либо не доснимал заказанное (буфер стал короче), либо гонял Expire по чужому
+            // списку — дважды по уже снятому эффекту. Диспел редок, аллокация тут дешевле такого
+            // дефекта; тем же приёмом и по той же причине живёт ShieldBurstComponent.
+            var candidates = new List<RuntimeEffect>();
             List<RuntimeEffect> effects = target.ActiveEffects;
             for (int i = 0; i < effects.Count; i++)
             {
                 if (effects[i].AppliedTick == currentTick) continue;
-                if (MatchesDispel(effects[i].Def, in req)) _dispelBuffer.Add(effects[i]);
+                if (MatchesDispel(effects[i].Def, in req)) candidates.Add(effects[i]);
             }
 
             int removed = 0;
-            for (int i = 0; i < _dispelBuffer.Count; i++)
+            for (int i = 0; i < candidates.Count; i++)
             {
                 if (req.MaxCount > 0 && removed >= req.MaxCount) break;
 
-                RuntimeEffect eff = _dispelBuffer[i];
+                RuntimeEffect eff = candidates[i];
                 removed++;
 
                 // Цена очистки в стаках (решение 2026-07-27/5): эффект может отдать лишь часть накопленного,
@@ -516,6 +520,16 @@ namespace Guildmaster.Combat
             int ticks = Mathf.RoundToInt(seconds * mult * SimConstants.TickRate);
             return Mathf.Max(1, ticks);
         }
+
+        /// <summary>
+        /// Множитель длительности этого эффекта от статов сторон (эффективность наложения × стойкость
+        /// цели). Публичен ради эффектов, которые живут СОБСТВЕННЫМ таймером схода, а не общей
+        /// длительностью: «Угли» и «Изморозь» бессрочны намеренно (иначе истекли бы разом со всеми
+        /// стаками вместо постепенного осыпания), и стойкость проходила бы мимо них — сокращать ей
+        /// было бы нечего. Такой компонент обязан сам сжать своё окно на этот множитель.
+        /// </summary>
+        public static float DurationScale(EffectData def, RuntimeUnit source, RuntimeUnit target)
+            => def == null ? 1f : DurationMultiplier(def.Polarity, source, target);
 
         // --- Приватные ---
 

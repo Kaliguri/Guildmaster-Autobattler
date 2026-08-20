@@ -725,19 +725,68 @@ namespace Guildmaster.AnimationLab.Editor
             return true;
         }
 
+        /// <summary>
+        /// Прямоугольник вокруг СИЛУЭТА, ориентированный вдоль предмета, а не рамка спрайта.
+        ///
+        /// Рамка врёт ровно там, где рисунок лежит в кадре по диагонали: клинок Storybook нарисован
+        /// поперёк квадрата 0.585 x 0.505, и зона по рамке выходила почти вдвое шире самого клинка —
+        /// заливка съедала полкадра и «перекрытие тела щитом» считалось по площади, которой нет.
+        /// Ось берётся как самая длинная пара вершин меша (пятка и кончик), ширина — как разброс
+        /// остальных вершин поперёк неё.
+        /// </summary>
         static Vector3[] SpriteQuad(SpriteRenderer sprite)
         {
             if (sprite == null || sprite.sprite == null) return null;
-
-            Bounds local = sprite.sprite.bounds;
-            Vector3 min = local.min, max = local.max;
             Transform node = sprite.transform;
+            Vector2[] mesh = sprite.sprite.vertices;
+
+            if (mesh == null || mesh.Length < 3)
+            {
+                Bounds local = sprite.sprite.bounds;
+                Vector3 min = local.min, max = local.max;
+                return new[]
+                {
+                    node.TransformPoint(new Vector3(min.x, min.y, 0f)),
+                    node.TransformPoint(new Vector3(max.x, min.y, 0f)),
+                    node.TransformPoint(new Vector3(max.x, max.y, 0f)),
+                    node.TransformPoint(new Vector3(min.x, max.y, 0f)),
+                };
+            }
+
+            // Диаметр силуэта — ось предмета. Вершин десятки, так что перебор пар дешевле любой хитрости.
+            Vector2 a = mesh[0], b = mesh[0];
+            float longest = 0f;
+            for (int i = 0; i < mesh.Length; i++)
+            for (int j = i + 1; j < mesh.Length; j++)
+            {
+                float d = (mesh[i] - mesh[j]).sqrMagnitude;
+                if (d <= longest) continue;
+                longest = d; a = mesh[i]; b = mesh[j];
+            }
+
+            Vector2 axis = (b - a).normalized;
+            if (axis.sqrMagnitude < 1e-8f) axis = Vector2.up;
+            Vector2 side = new Vector2(-axis.y, axis.x);
+
+            float alongMin = float.MaxValue, alongMax = float.MinValue;
+            float acrossMin = float.MaxValue, acrossMax = float.MinValue;
+            foreach (var v in mesh)
+            {
+                float along = Vector2.Dot(v, axis);
+                float across = Vector2.Dot(v, side);
+                alongMin = Mathf.Min(alongMin, along); alongMax = Mathf.Max(alongMax, along);
+                acrossMin = Mathf.Min(acrossMin, across); acrossMax = Mathf.Max(acrossMax, across);
+            }
+
+            System.Func<float, float, Vector3> corner = (along, across) =>
+            {
+                Vector2 local2 = axis * along + side * across;
+                return node.TransformPoint(new Vector3(local2.x, local2.y, 0f));
+            };
             return new[]
             {
-                node.TransformPoint(new Vector3(min.x, min.y, 0f)),
-                node.TransformPoint(new Vector3(max.x, min.y, 0f)),
-                node.TransformPoint(new Vector3(max.x, max.y, 0f)),
-                node.TransformPoint(new Vector3(min.x, max.y, 0f)),
+                corner(alongMin, acrossMin), corner(alongMax, acrossMin),
+                corner(alongMax, acrossMax), corner(alongMin, acrossMax),
             };
         }
 
@@ -767,7 +816,7 @@ namespace Guildmaster.AnimationLab.Editor
             var body = new List<SpriteRenderer>();
             foreach (var r in all)
                 foreach (var name in options.CoverBodyNodes)
-                    if (RigVisualParts.BoneNameOf(r.transform) == name) { body.Add(r); break; }
+                    if (Presentation.Body.RigNaming.BoneNameOf(r.transform) == name) { body.Add(r); break; }
 
             var coverNode = root.Find(coverItem.ItemPath);
             var cover = coverNode != null ? coverNode.GetComponent<SpriteRenderer>() : null;
@@ -895,11 +944,10 @@ namespace Guildmaster.AnimationLab.Editor
             return false;
         }
 
-        static float ContactTimeOf(AnimationClip clip)
-        {
-            var events = AnimationUtility.GetAnimationEvents(clip);
-            return events != null && events.Length > 0 ? events[0].time : -1f;
-        }
+        // Контакт — это маркер КОНТАКТА, а не первое попавшееся событие. Пока маркер в клипе был один,
+        // разница не читалась; с приходом разметки взмаха (StrikeStart стоит РАНЬШЕ Hit) «первое событие»
+        // стало показывать контакт на четверть клипа раньше настоящего — и врало бы в отчёте и в гизмо.
+        static float ContactTimeOf(AnimationClip clip) => Guildmaster.Data.Definitions.ClipMarkers.FirstHitTime(clip);
 
         static Texture2D ReadBack(RenderTexture rt, int size)
         {
@@ -912,6 +960,9 @@ namespace Guildmaster.AnimationLab.Editor
             return tex;
         }
 
+        /// <summary>Профиль, по которому рисуется гизмо взмаха: боевая фигура, а не базовый скелет.</summary>
+        const string GizmoProfilePath = "Assets/_Project/Prefabs/Bones/BoneUnit_Storybook_RigProfile.asset";
+
         [MenuItem("Alebardium/Animation/Render Slash Gizmo", priority = 630)]
         static void RenderSelected()
         {
@@ -922,14 +973,17 @@ namespace Guildmaster.AnimationLab.Editor
                 return;
             }
 
-            var guids = AssetDatabase.FindAssets("t:RigProfile");
-            if (guids.Length != 1)
+            // Профиль назван ЯВНО, а не выведен из «в проекте он один» (05.08.2026). Профилей четыре
+            // — по одному на базовый скелет и каждый его вариант, — и прежнее условие означало, что
+            // гизмо не рисовалось ни разу с тех пор, как завели второй риг. Эталон — Storybook: та
+            // фигура, которая выходит в бой.
+            var profile = AssetDatabase.LoadAssetAtPath<RigProfile>(GizmoProfilePath);
+            if (profile == null)
             {
-                Debug.LogError($"Render Slash Gizmo: expected exactly one RigProfile in the project, found {guids.Length}.");
+                Debug.LogError($"Render Slash Gizmo: нет профиля рига {GizmoProfilePath}.");
                 return;
             }
 
-            var profile = AssetDatabase.LoadAssetAtPath<RigProfile>(AssetDatabase.GUIDToAssetPath(guids[0]));
             Debug.Log(Render(profile, clip).ToString());
         }
 

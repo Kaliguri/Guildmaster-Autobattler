@@ -42,7 +42,7 @@ namespace Guildmaster.Game.Flow
     {
         public RunState            RunState  { get; }
         public IRngService         Rng       { get; }
-        public IReadyGate          ReadyGate { get; }
+        public IReadyGate               ReadyGate { get; }
         public IPlayerIntentSource Intents   { get; }
 
         /// <summary>Токен отмены забега (QA #18 «В главное меню»): взводится <c>GameFlow</c>, прерывает

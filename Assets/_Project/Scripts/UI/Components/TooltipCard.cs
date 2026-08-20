@@ -41,8 +41,11 @@ namespace Guildmaster.UI.Components
             _header = new VisualElement { pickingMode = PickingMode.Ignore };
             _header.AddToClassList("gm-tooltip__header");
             _title = new Label { pickingMode = PickingMode.Ignore };
+            _title.AddToClassList("gm-text-name");
             _title.AddToClassList("gm-tooltip__title");
             _meta = new Label { pickingMode = PickingMode.Ignore };
+            _meta.AddToClassList("gm-text-label");
+            _meta.AddToClassList("gm-text--muted");
             _meta.AddToClassList("gm-tooltip__meta");
             _header.Add(_title);
             _header.Add(_meta);
@@ -54,6 +57,8 @@ namespace Guildmaster.UI.Components
 
             // --- Тело ---
             _tags = Line("gm-tooltip__tags");
+            _tags.AddToClassList("gm-text-label");
+            _tags.AddToClassList("gm-text--accent");
             _tags.style.whiteSpace = WhiteSpace.Normal;
 
             _lines = new VisualElement { pickingMode = PickingMode.Ignore };
@@ -62,6 +67,8 @@ namespace Guildmaster.UI.Components
             Add(_lines);
 
             _desc = Line("gm-tooltip__desc");
+            _desc.AddToClassList("gm-text-note");
+            _desc.AddToClassList("gm-text--muted");
             _desc.style.whiteSpace = WhiteSpace.Normal;
             _desc.enableRichText = true; // разметка терминов: [Скрытность] со ссылкой
 
@@ -96,8 +103,10 @@ namespace Guildmaster.UI.Components
             row.AddToClassList("gm-tooltip__line");
 
             var caption = new Label(label ?? string.Empty) { pickingMode = PickingMode.Ignore };
-            caption.AddToClassList("gm-tooltip__line-label");
+            caption.AddToClassList("gm-text-label");
+            caption.AddToClassList("gm-text--muted");
             var amount = new Label(value ?? string.Empty) { pickingMode = PickingMode.Ignore };
+            amount.AddToClassList("gm-text-note");
             amount.AddToClassList("gm-tooltip__line-value");
 
             row.Add(caption);
@@ -117,9 +126,12 @@ namespace Guildmaster.UI.Components
             row.AddToClassList("gm-tooltip__glossary-row");
 
             var name = new Label(term ?? string.Empty) { pickingMode = PickingMode.Ignore };
+            name.AddToClassList("gm-text-label");
+            name.AddToClassList("gm-text--accent");
             name.AddToClassList("gm-tooltip__glossary-term");
             var text = new Label(definition ?? string.Empty) { pickingMode = PickingMode.Ignore };
-            text.AddToClassList("gm-tooltip__glossary-text");
+            text.AddToClassList("gm-text-label");
+            text.AddToClassList("gm-text--muted");
             text.style.whiteSpace = WhiteSpace.Normal;
 
             row.Add(name);

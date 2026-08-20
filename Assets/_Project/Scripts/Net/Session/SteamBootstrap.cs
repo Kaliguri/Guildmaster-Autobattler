@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Steamworks;
 using UnityEngine;
 using VContainer.Unity;
@@ -21,7 +21,7 @@ namespace Guildmaster.Net.Session
     /// <para><b>Steam не запущен — это внешний отказ, и он честный:</b> говорим вслух и живём дальше
     /// одиночной игрой. Подменять его нечем, а молчание читалось бы как «кооп сломан».</para>
     /// </remarks>
-    public sealed class SteamBootstrap : IStartable, ITickable, IDisposable
+    public sealed class SteamBootstrap : Guildmaster.Core.Players.IPlatformIdentity, ITickable, IDisposable
     {
         /// <summary>
         /// Слот, под которым мы ходим в Steam. Пока это неизданная <i>Few Seconds - Many Deaths!</i>
@@ -34,12 +34,28 @@ namespace Guildmaster.Net.Session
         /// </remarks>
         public const uint AppId = 3259720;
 
+        /// <summary>Как зовут игрока за этим клиентом. Steam не поднят — безымянное «Игрок».</summary>
+        /// <remarks>
+        /// Живёт здесь, потому что здесь единственное место, где мы вообще говорим со Steam про личность.
+        /// Спрашивать <c>SteamClient.Name</c> из игрового кода значило бы завести второй вход в Steam —
+        /// и второе поведение на случай, когда Steam не запущен.
+        /// </remarks>
+        public string PlayerName => _running ? SteamClient.Name : "Игрок";
+
         private bool _running;
 
         /// <summary>Поднялся ли Steam. Спрашивают лобби и транспорт — им без него делать нечего.</summary>
         public bool IsReady => _running && SteamClient.IsValid;
 
-        public void Start()
+        /// <summary>
+        /// Поднимаем Steam В КОНСТРУКТОРЕ, а не на <c>Start</c>.
+        /// </summary>
+        /// <remarks>
+        /// Потому что от ответа «поднялся или нет» зависит СОСТАВ контейнера: транспорт выбирается по
+        /// нему (см. <c>RootLifetimeScope</c>). Фаза <c>Start</c> идёт уже после того, как все объекты
+        /// созданы, — спрашивать там значило бы выбирать транспорт до того, как ответ известен.
+        /// </remarks>
+        public SteamBootstrap()
         {
             try
             {

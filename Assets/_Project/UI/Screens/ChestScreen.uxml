@@ -1,15 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--chest">
-            <ui:Label name="chest-title" text="Сундук" class="gm-panel__title" />
+            <ui:Label name="chest-title" text="Сундук" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
             <ui:VisualElement class="gm-chest__body">
                 <!-- Фасад крышки: кликабелен; арт-плейсхолдер до PixelLab-спрайта. -->
-                <ui:VisualElement name="chest-lid" class="gm-chest__lid">
+                <ui:VisualElement name="chest-lid" class="gm-chest__lid" focusable="true">
                     <ui:Label text="◆" class="gm-chest__glyph" />
                 </ui:VisualElement>
-                <ui:Label name="chest-hint" text="Нажми, чтобы открыть" class="gm-chest__hint" />
+                <ui:Label name="chest-hint" text="Нажми, чтобы открыть" class="gm-text-body gm-text--muted gm-chest__hint" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

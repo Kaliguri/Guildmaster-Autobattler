@@ -1,0 +1,168 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2319fd0ba0cab21419bd418011f922c7, type: 3}
+  m_Name: BoneUnit_Storybook_RigProfile
+  m_EditorClassIdentifier: Guildmaster.AnimationLab.Editor::Guildmaster.AnimationLab.Editor.RigProfile
+  Rig: {fileID: 540433103849655927, guid: 7d14bc0b828863c4eb2721bb35ab478f, type: 3}
+  Joints:
+  - Id: Hips
+    Path: Hips
+    RestZ: 0
+    BoneAxisLocal: 20.949259
+    BoneLength: 0.10878529
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: Torso
+    Path: Hips/Torso
+    RestZ: 0
+    BoneAxisLocal: 20.949259
+    BoneLength: 0.10878529
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: Head
+    Path: Hips/Torso/Head
+    RestZ: 0
+    BoneAxisLocal: -90
+    BoneLength: 0.09007335
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: Shoulder_R
+    Path: Hips/Torso/Shoulder_R
+    RestZ: 3.8094301
+    BoneAxisLocal: 5.0263257
+    BoneLength: 0.009370019
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: UpperArm_R
+    Path: Hips/Torso/Shoulder_R/UpperArm_R
+    RestZ: 0
+    BoneAxisLocal: -75.87967
+    BoneLength: 0.100941524
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: LowerArm_R
+    Path: Hips/Torso/Shoulder_R/UpperArm_R/LowerArm_R
+    RestZ: -8.323334
+    BoneAxisLocal: -62.63852
+    BoneLength: 0.049283393
+    FlexSign: 1
+    FlexLimit: 120
+  - Id: Hand_R
+    Path: Hips/Torso/Shoulder_R/UpperArm_R/LowerArm_R/Hand_R
+    RestZ: 0
+    BoneAxisLocal: -90
+    BoneLength: 0.030655833
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: Weapon_R
+    Path: Hips/Torso/Shoulder_R/UpperArm_R/LowerArm_R/Hand_R/Weapon_R
+    RestZ: 0
+    BoneAxisLocal: 119.38388
+    BoneLength: 0.12305592
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: Shoulder_L
+    Path: Hips/Torso/Shoulder_L
+    RestZ: -20.519989
+    BoneAxisLocal: -90
+    BoneLength: 0.10000001
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: UpperArm_L
+    Path: Hips/Torso/Shoulder_L/UpperArm_L
+    RestZ: 0
+    BoneAxisLocal: -77.05429
+    BoneLength: 0.079008155
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: LowerArm_L
+    Path: Hips/Torso/Shoulder_L/UpperArm_L/LowerArm_L
+    RestZ: 45.279995
+    BoneAxisLocal: -151.31282
+    BoneLength: 0.036690142
+    FlexSign: 1
+    FlexLimit: 120
+  - Id: Hand_L
+    Path: Hips/Torso/Shoulder_L/UpperArm_L/LowerArm_L/Hand_L
+    RestZ: 0
+    BoneAxisLocal: 0
+    BoneLength: 0
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: Weapon_L
+    Path: Hips/Torso/Shoulder_L/UpperArm_L/LowerArm_L/Hand_L/Weapon_L
+    RestZ: 0
+    BoneAxisLocal: 65.24
+    BoneLength: 0.18699996
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: UpperLeg_R
+    Path: Hips/UpperLeg_R
+    RestZ: 22.12
+    BoneAxisLocal: -107.745514
+    BoneLength: 0.10881702
+    FlexSign: 1
+    FlexLimit: 45
+  - Id: LowerLeg_R
+    Path: Hips/UpperLeg_R/LowerLeg_R
+    RestZ: -32.450012
+    BoneAxisLocal: -77.58884
+    BoneLength: 0.074349016
+    FlexSign: -1
+    FlexLimit: 60
+  - Id: Foot_R
+    Path: Hips/UpperLeg_R/LowerLeg_R/Foot_R
+    RestZ: 10.330001
+    BoneAxisLocal: -90
+    BoneLength: 0.030000001
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: UpperLeg_L
+    Path: Hips/UpperLeg_L
+    RestZ: -6.0899963
+    BoneAxisLocal: -97.19614
+    BoneLength: 0.12227269
+    FlexSign: 1
+    FlexLimit: 45
+  - Id: LowerLeg_L
+    Path: Hips/UpperLeg_L/LowerLeg_L
+    RestZ: -10.2499695
+    BoneAxisLocal: -79.56348
+    BoneLength: 0.07389187
+    FlexSign: -1
+    FlexLimit: 60
+  - Id: Foot_L
+    Path: Hips/UpperLeg_L/LowerLeg_L/Foot_L
+    RestZ: 16.339993
+    BoneAxisLocal: -90
+    BoneLength: 0.030000001
+    FlexSign: 1
+    FlexLimit: 0
+  Held:
+  - Id: weapon
+    GripPath: Hips/Torso/Shoulder_R/UpperArm_R/LowerArm_R/Hand_R/Weapon_R
+    ItemPath: Hips/Torso/Shoulder_R/UpperArm_R/LowerArm_R/Hand_R/Weapon_R/Weapon_R_Sword_Art
+    OrientationName: blade
+    OrientationLocal: 40.091106
+    CalibrationZ: 29.38388
+    GripToButt: 0.03984368
+    GripToBoneEnd: 0.021309806
+    ItemLength: 0.35976112
+  - Id: shield
+    GripPath: Hips/Torso/Shoulder_L/UpperArm_L/LowerArm_L/Hand_L/Weapon_L
+    ItemPath: Hips/Torso/Shoulder_L/UpperArm_L/LowerArm_L/Hand_L/Weapon_L/Weapon_L_Shield_Art
+    OrientationName: top
+    OrientationLocal: 114.36773
+    CalibrationZ: -24.76001
+    GripToButt: 0.18318549
+    GripToBoneEnd: 0
+    ItemLength: 0.3877246

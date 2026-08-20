@@ -93,11 +93,12 @@ namespace Guildmaster.Presentation.Design
         }
 
         /// <summary>
-        /// Цвет тела по ступени приглушения. <c>None</c> — белый, то есть арт как нарисован; тинт
-        /// умножается на спрайт и служит ровно одному: развести тех, кто делит один арт.
+        /// Цвет тела юнита — тот же оттенок, которым светят его эффекты. Один источник на тинт и на
+        /// снаряды (05.08.2026): правило целиком живёт в <c>UnitColorRoles.Body</c>, здесь только
+        /// боевая дверь к нему.
         /// </summary>
-        public Color BodyTint(Data.Definitions.BodyShade shade) =>
-            Data.Definitions.UnitColorRoles.Shade(_palette, shade);
+        public Color BodyTint(Data.Definitions.UnitTone tone) =>
+            Data.Definitions.UnitColorRoles.Body(_palette, tone);
 
         // Яркость накручивается по КАНАЛАМ, альфа остаётся своей: альфа у нас несёт прозрачность тела
         // (стелс), и умножать её вместе с цветом значило бы делать юнита невидимым за компанию.

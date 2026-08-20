@@ -37,8 +37,21 @@ namespace Guildmaster.Net.Presence
         /// <summary>«Ни на что» — и для наведения, и для удержания.</summary>
         public const int Nothing = -1;
 
+        /// <summary>
+        /// Жест, который игрок показывает прямо сейчас: <see cref="Core.Players.PlayerGesture"/>.
+        /// </summary>
+        /// <remarks>
+        /// <b>Живёт в присутствии, а не своим каналом,</b> и это следует из его природы: жест ничего не
+        /// меняет в игре и потеря пакета стоит ровно одной незамеченной иконки. Присутствие уже
+        /// раздаётся хозяином всем своим и отбирается по сторонам — своему каналу пришлось бы повторить
+        /// и раздачу, и отбор, то есть завести второго владельца правила «кому это видно».
+        /// <para>Держится отправителем несколько пакетов подряд: канал ненадёжный, и один-единственный
+        /// пакет с жестом мог бы не доехать вовсе.</para>
+        /// </remarks>
+        public readonly Core.Players.PlayerGesture Gesture;
+
         public PresenceState(int playerId, ushort sequence, Vector2 cursor, Vector2 velocity,
-            int hoveredId = Nothing, int heldId = Nothing)
+            int hoveredId = Nothing, int heldId = Nothing, Core.Players.PlayerGesture gesture = Core.Players.PlayerGesture.None)
         {
             PlayerId  = playerId;
             Sequence  = sequence;
@@ -46,6 +59,7 @@ namespace Guildmaster.Net.Presence
             Velocity  = velocity;
             HoveredId = hoveredId;
             HeldId    = heldId;
+            Gesture   = gesture;
         }
 
         /// <summary>Держит ли игрок что-нибудь — чужое «в руках» видно всем, это и есть мягкая заявка.</summary>

@@ -18,18 +18,27 @@ MonoBehaviour:
   _baseDuration: -1
   _stacking: 0
   _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 0
   _unremovable: 0
+  _cleansePrice:
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
   _components:
   - rid: 5615026876324511841
+  _telegraphSeconds: 0
   _icon: {fileID: 0}
   _infoTags: []
   references:
     version: 2
     RefIds:
     - rid: 5615026876324511841
-      type: {class: BulwarkComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      type: {class: BlockComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _maxCharges: 2
-        _internalCooldownSeconds: 5
+        _internalCooldownSeconds: 6
         _shieldEffect: {fileID: 11400000, guid: 5e2ea10d9cc93654f81a3295b779ed87, type: 2}

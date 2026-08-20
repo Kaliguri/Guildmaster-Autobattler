@@ -120,6 +120,25 @@ namespace Guildmaster.UI
             }
         }
 
+        /// <summary>
+        /// Просит ли ВИДИМЫЙ экран задник явно (<see cref="UiScreen.RequiresBackdrop"/>) — вторая, независимая
+        /// причина показать стол помимо <see cref="HasVisiblePage"/>. Разведены намеренно: страница закрывает
+        /// мир по своему типу, а этот запрос идёт от самого экрана и сильнее живого боя за спиной.
+        /// </summary>
+        public bool HasVisibleBackdropRequest
+        {
+            get
+            {
+                for (int i = 0; i < _stack.Count; i++)
+                {
+                    UiScreen s = _stack[i];
+                    if (!s.RequiresBackdrop) continue;
+                    if (s.Root == null || s.Root.style.display.value == DisplayStyle.Flex) return true;
+                }
+                return false;
+            }
+        }
+
         /// <summary>Есть ли в стеке экран, удовлетворяющий предикату (напр. «системное меню где-то открыто»).</summary>
         public bool AnyScreen(Func<UiScreen, bool> predicate)
         {
@@ -141,6 +160,12 @@ namespace Guildmaster.UI
             if (screen == null) return;
             if (screen.Root == null) screen.Build(_context);
 
+            // Резолв мог случиться прямо в Build — главное меню, получившее готовый заказ (принятое
+            // приглашение в кооп, dev-команда Ристалища), решает всё, ещё собираясь. Снятие в тот момент
+            // прошло вхолостую: экрана в стеке не было. Положить его сюда сейчас значит оставить панель
+            // лежать поверх мира до следующего PopAll — снять её будет уже нечем.
+            if (screen.IsResolved) return;
+
             UiScreen prevTop = Top;
             _stack.Add(screen);
             LayerFor(screen)?.Add(screen.Root);
@@ -154,6 +179,11 @@ namespace Guildmaster.UI
             FocusTop();
             Changed?.Invoke();
             UiTrace.Log($"nav.Push {Desc(screen)} → [{StackDesc()}] suppress={_input?.GameplaySuppressed}");
+
+            // Токен, отменённый ДО показа, разбираем сами. Register в этом случае выполняет колбэк
+            // синхронно — экран снялся бы раньше, чем Hook положит регистрацию в словарь, и запись
+            // осталась бы там навсегда, держа ссылку на мёртвый экран.
+            if (ct.IsCancellationRequested) { RemoveScreen(screen); return; }
 
             if (ct.CanBeCanceled)
                 Hook(screen, ct.Register(() => RemoveScreen(screen))); // RemoveScreen идемпотентен (уже снят → no-op)
@@ -230,6 +260,11 @@ namespace Guildmaster.UI
             });
 
             Push(screen);
+
+            // См. Push: отменённый токен выполнил бы колбэк синхронно, до Hook, и регистрация осела бы
+            // в словаре навсегда — счётчик ActiveCancelHooks рос бы за забег, вместо того чтобы ходить
+            // за стеком.
+            if (ct.IsCancellationRequested) { screen.ResolveDefaultIfPending(); return tcs.Task; }
 
             if (ct.CanBeCanceled)
                 Hook(screen, ct.Register(() => screen.ResolveDefaultIfPending()));

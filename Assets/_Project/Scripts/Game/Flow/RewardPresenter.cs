@@ -1,8 +1,8 @@
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
-using MessagePipe;
 using UnityEngine;
 
 namespace Guildmaster.Game.Flow
@@ -16,12 +16,20 @@ namespace Guildmaster.Game.Flow
     }
 
     /// <summary>
-    /// Презентер награды (план 11 §4 A3): катит витрину через <see cref="RewardService"/>, публикует запрос в UI
-    /// (<see cref="OpenRewardRequest"/>), ждёт выбор игрока и пишет его в <see cref="RunState"/> через
-    /// <see cref="RunStateService"/> (единая точка вместимости реликов, §5.4). Вынесен из <c>GameFlow</c>, чтобы
-    /// показ награды переиспользовали и петля акта (<c>ActRunner</c>), и legacy-вход одного боя.
-    /// <para>Требует слушателя <see cref="OpenRewardRequest"/> (UiRootBootstrap в CoreScene) — иначе выбор не придёт.</para>
+    /// Презентер награды: катит витрину через <see cref="RewardService"/>, показывает её ВСЕЙ группе и
+    /// применяет к <see cref="RunState"/> то, на чём сошлись.
     /// </summary>
+    /// <remarks>
+    /// <b>Награду берут все вместе</b> (заказ Макса 07.08.2026: «должны тыкнуть все обязательно»).
+    /// Клик по карточке — голос, а не взятие; экран закрывается признаком срабатывания от общего
+    /// решения. Пока выбор был локальным, первый нажавший забирал реликвию за группу.
+    /// <para><b>Витрину катит хозяин и раздаёт результат раската</b> — гость собирает из id ту же
+    /// витрину. Второй раскат у него дал бы другие три реликвии: бросок случаен.</para>
+    /// <para><b>В соло ничего не меняется:</b> участник один, решение срабатывает в тот же кадр.</para>
+    /// <para><b>Витрину показывает не он.</b> Презентер объявляет шаг узла, а экран открывает общий для
+    /// обеих ролей потребитель (<c>SessionStageScreens</c>). Пока показ жил здесь, к витрине вело два пути
+    /// — этот и гостевой, — и во втором признак «запас полон» был зашит в <c>false</c>.</para>
+    /// </remarks>
     public sealed class RewardPresenter : IRewardPresenter
     {
         private readonly RewardService   _rewards;
@@ -29,21 +37,25 @@ namespace Guildmaster.Game.Flow
         // Сброс реликвии ради места — односторонняя запись, идёт через шину и попадает в лог. Взятие
         // награды осталось прямым: оно спрашивает «влезло ли» синхронно, то есть транзакция.
         private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
-        private readonly IPublisher<OpenRewardRequest> _openRewardPub;
+        private readonly Core.Net.ISharedDecision _decision;
+        // Объявление витрины: и гостям, у которых нет ни генератора, ни забега, и своему же показу.
+        private readonly Session.Net.HostSessionStage _stage;
 
         public RewardPresenter(RewardService rewards, RunStateService runStates,
                                Guildmaster.Guild.Commands.IRunCommands commands,
-                               IPublisher<OpenRewardRequest> openRewardPub)
+                               Core.Net.ISharedDecision decision,
+                               Session.Net.HostSessionStage stage)
         {
-            _rewards       = rewards;
-            _runStates     = runStates;
-            _commands      = commands;
-            _openRewardPub = openRewardPub;
+            _rewards   = rewards;
+            _runStates = runStates;
+            _commands  = commands;
+            _decision  = decision;
+            _stage     = stage;
         }
 
         public async UniTask PresentAsync(RewardTier tier, CancellationToken ct = default)
         {
-            var choices = _rewards.RollChoices(tier);
+            IReadOnlyList<RelicData> choices = _rewards.RollChoices(tier);
             if (choices.Count == 0)
             {
                 Debug.LogWarning("[RewardPresenter] - пул наград пуст (нет реликов в контент-БД) → без награды");
@@ -53,25 +65,70 @@ namespace Guildmaster.Game.Flow
             RunState run  = _runStates.Current;
             bool     full = _runStates.RelicInventoryFull;
 
-            var tcs = new UniTaskCompletionSource<RewardChoiceResult>();
-            _openRewardPub.Publish(new OpenRewardRequest(
-                choices, full, run.RelicInventory, r => tcs.TrySetResult(r), ct)); // ct → закрыть экран при отмене (QA #37)
+            var chosen = new UniTaskCompletionSource<string>();
 
-            RewardChoiceResult result = await tcs.Task.AttachExternalCancellation(ct);
-            if (result.Skipped)
+            // Ключ взводим ДО показа: гость получит витрину и счёт одним разом, а не «сначала карточки,
+            // потом откуда-то счёт».
+            _decision?.Bind(Core.Net.DecisionKeys.RewardPick, option => chosen.TrySetResult(option));
+
+            // Витрину не показываем сами: объявляем шаг узла, а экран открывает общий для обеих ролей
+            // потребитель (SessionStageScreens). Пока показ жил здесь, у витрины было ДВА пути — этот и
+            // гостевой, — и во втором признак «запас полон» был зашит в false (HARD «равные игроки»).
+            _stage?.Announce(Session.Net.SessionStageState.Reward(IdsOf(choices), full));
+
+            try
+            {
+                string option = await chosen.Task.AttachExternalCancellation(ct);
+                Apply(option, choices);
+            }
+            finally
+            {
+                // Снимаем и ключ, и объявление: экрана больше нет. Брошенный ключ показал бы счёт там,
+                // где выбирать нечего, а брошенное объявление — витрину подключившемуся следом.
+                _decision?.Unbind(Core.Net.DecisionKeys.RewardPick);
+                _stage?.Clear();
+            }
+        }
+
+        /// <summary>Применить то, на чём сошлись: взять, обменять или уйти ни с чем.</summary>
+        private void Apply(string option, IReadOnlyList<RelicData> choices)
+        {
+            if (!RewardOptions.TryParse(option, out string relicId, out string dropId))
             {
                 Debug.Log("[RewardPresenter] - награда пропущена");
                 return;
             }
 
-            if (full && !string.IsNullOrEmpty(result.DropRelicId))
-                _commands.RemoveRelic(result.DropRelicId);
+            // Сверяемся с ВИТРИНОЙ, а не с реестром: голос обязан указывать на то, что группе показали.
+            RelicData relic = Find(choices, relicId);
+            if (relic == null)
+            {
+                Debug.LogWarning($"[RewardPresenter] - голос за '{relicId}', которого нет в витрине → без награды");
+                return;
+            }
 
-            bool added = _runStates.TryAddRelic(result.Chosen.Id);
-            Debug.Log($"[RewardPresenter] - награда: взят '{result.Chosen.Id}'" +
-                      (result.DropRelicId != null ? $" (сброшен '{result.DropRelicId}')" : "") +
+            if (!string.IsNullOrEmpty(dropId)) _commands.RemoveRelic(dropId);
+
+            bool added = _runStates.TryAddRelic(relic.Id);
+            Debug.Log($"[RewardPresenter] - награда: взят '{relic.Id}'" +
+                      (dropId != null ? $" (сброшен '{dropId}')" : "") +
                       (added ? "" : " — НЕ добавлен (нет места?)"));
             _runStates.Autosave();
+        }
+
+        private static RelicData Find(IReadOnlyList<RelicData> choices, string id)
+        {
+            for (int i = 0; i < choices.Count; i++)
+                if (choices[i] != null && choices[i].Id == id) return choices[i];
+
+            return null;
+        }
+
+        private static string[] IdsOf(IReadOnlyList<RelicData> choices)
+        {
+            var ids = new string[choices.Count];
+            for (int i = 0; i < choices.Count; i++) ids[i] = choices[i] != null ? choices[i].Id : string.Empty;
+            return ids;
         }
     }
 }

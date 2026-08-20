@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Guildmaster.Core.Players;
 using Guildmaster.Net;
 using Guildmaster.Net.Presence;
 using Guildmaster.Net.Tape;
@@ -17,6 +18,49 @@ namespace Guildmaster.Tests.EditMode.Net
     /// </summary>
     public sealed class PresenceTests
     {
+        /// <summary>
+        /// Жест доезжает до другого конца — целиком, через упаковку.
+        /// </summary>
+        /// <remarks>
+        /// Инвариант живёт между отправителем и кодеком, и его отсутствие НЕ ВИДНО ниоткуда: жест
+        /// просто не появляется у напарника, а всё остальное работает. Так и вышло 07.08.2026 — поле
+        /// добавили в состояние, версию пакета подняли, а записать и прочитать его забыли; компилятор
+        /// и прежние тесты промолчали.
+        /// </remarks>
+        [Test]
+        public void Gesture_SurvivesThePacket()
+        {
+            var sender = new PresenceSender();
+            sender.Show(PlayerGesture.Like, now: 0f);
+
+            Assert.IsTrue(sender.TrySample(new Vector2(1f, 1f), playerId: 2, now: 0f, out PresenceState sent));
+            Assert.AreEqual(PlayerGesture.Like, sent.Gesture, "жест обязан попасть в отправляемое состояние");
+
+            var bytes = new NetByteWriter(64);
+            PresenceCodec.Write(bytes, new[] { sent });
+
+            var got = new List<PresenceState>();
+            Assert.IsTrue(PresenceCodec.TryRead(bytes.WrittenSegment, got));
+            Assert.AreEqual(1, got.Count);
+            Assert.AreEqual(PlayerGesture.Like, got[0].Gesture, "и пережить упаковку — иначе его никто не увидит");
+        }
+
+        /// <summary>
+        /// Жест гаснет сам по времени: пары «показать / убрать» нет, и второй владелец не заводится.
+        /// </summary>
+        [Test]
+        public void Gesture_FadesOnItsOwn()
+        {
+            var sender = new PresenceSender();
+            sender.Show(PlayerGesture.Like, now: 0f);
+            sender.TrySample(new Vector2(1f, 1f), playerId: 2, now: 0f, out _);
+
+            float after = PresenceSender.GestureHoldSeconds + 0.1f;
+            Assert.IsTrue(sender.TrySample(new Vector2(5f, 5f), playerId: 2, now: after, out PresenceState later));
+            Assert.AreEqual(PlayerGesture.None, later.Gesture,
+                "жест держится ограниченное время: иначе игрок остался бы с вечным лайком у курсора");
+        }
+
         // Главная причина, по которой 128 Гц вообще можно себе позволить.
         [Test]
         public void StillCursor_CostsNothing()

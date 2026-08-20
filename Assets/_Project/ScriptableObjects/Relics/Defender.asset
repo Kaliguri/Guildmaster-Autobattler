@@ -18,9 +18,11 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 0
   _resourceType: 1
-  _visual: {fileID: 11400000, guid: 8b29cc9a0f585034a8bf5ff1edd096f4, type: 2}
-  _viewPrefab: {fileID: 473228482976433472, guid: c6cd49c4c8ea4c840a0365b5d58396da, type: 3}
-  _bodyShade: 0
+  _rangeBand: 0
+  _rangeAdjustPct: 0
+  _archetype: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
+  _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
+  _outfit: {fileID: 11400000, guid: 2421d12c09b8fa74486e4a5f12afccde, type: 2}
   _vfxTone: 1
   _autoAttackShape: 0
   _autoAttackWidth: 1
@@ -55,9 +57,9 @@ MonoBehaviour:
   - Stat: 27
     Op: 3
     Value: 50
-  - Stat: 9
+  - Stat: 0
     Op: 3
-    Value: 1
+    Value: 2400
   _grantedEffects:
   - {fileID: 11400000, guid: c585ce229a24f184cbb2d0431b508603, type: 2}
   _abilities:
@@ -69,7 +71,9 @@ MonoBehaviour:
     _resourceCost: 50
     _targetMode: 1
     _damageMultiplier: 0
+    _baseDamage: 0
     _damageType: 2
+    _castRange: 0
     _areaShape: 0
     _areaRadius: 0
     _healFlat: 0
@@ -83,10 +87,12 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0.3
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _maxTriggerUniques: 0
     _castSeconds: 0
     _channelSeconds: 0
     _channelTickSeconds: 1
     _canMoveWhileCasting: 0
+    _castSource: 0
     _statScalings: []
     _summonUnit: {fileID: 0}
     _summonCount: 1

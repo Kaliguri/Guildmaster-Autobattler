@@ -250,10 +250,24 @@ namespace Guildmaster.Combat
             if (data == null || !ability.IsReady) return false;
             if (caster.CurrentResource < data.ResourceCost) return false;
 
+            // Предел живых призывов — гейт КАСТА: мана и кулдаун остаются целы, игрок видит предел
+            // глазами. Поле SummonLimit объявлено в данных и описано тестом, но до 03.08.2026 его не
+            // читала ни одна строка боевой логики — Некромант с лимитом 8 плодил скелетов, пока хватало
+            // маны. Число прошлых кастов здесь ещё НЕ увеличено (Execute зовёт ApplySummons с
+            // CastsThisBattle - 1), поэтому разгон считаем от текущего значения.
+            if (data.Summons && data.SummonLimit > 0
+                && SummonSystem.CountLiveSummons(caster, data.Id, units)
+                   + data.ResolveSummonCount(ability.CastsThisBattle) > data.SummonLimit)
+            {
+                return false;
+            }
+
             // Рекаст авто-атаки (M18): умение-удар вклинивается в ритм атак, но занесённый замах
             // ДОИГРЫВАЕТ (решение Макса по Q8) — удар без замаха читается как пропущенный кадр. Хвост
             // после удара (Recovery) умение перебивает: в этом и весь выигрыш рекаста.
-            if (data.DamageMultiplier > 0f && caster.Phase == AttackPhase.Windup) return false;
+            // «Наносит урон» теперь два слагаемых: заклинание со своей базой вклинивается в ритм
+            // атак ровно так же, как удар-умение, и занесённый замах доигрывает и перед ним.
+            if ((data.DamageMultiplier > 0f || data.BaseDamage > 0f) && caster.Phase == AttackPhase.Windup) return false;
 
             // Тот же закон для канала авто-атаки: незавершённый удар доигрывает, а перебивается только
             // хвост. Канал — это удар, идущий ПРЯМО СЕЙЧАС, и каст поверх него оборвал бы уже начатую
@@ -288,6 +302,15 @@ namespace Guildmaster.Combat
                 return false;
             }
 
+            // Дальность каста: до цели надо ДОСТАВАТЬ. Проверяется только там, где цель внешняя — у
+            // каста на себя, ауры по своим, круга вокруг себя и масс-по-тегу точки нет вовсе, и мерить
+            // до неё нечего (вердикт Макса 2026-08-04: копейщику хватает того, что вихрь задел хоть кого-то).
+            if (target != null && !ReferenceEquals(target, caster)
+                && !CombatPositioning.WithinReach(caster, target, CastReach(caster, ability), ctx.Tuning))
+            {
+                return false;
+            }
+
             // Гейт условия каста (блок D): дешёвое решение «кастовать ли» — здесь, не в мозге.
             // Паника (блок E) кастует независимо от условия.
             if (!panicSelf && !CastConditionMet(caster, target, data, ctx, units)) return false;
@@ -295,6 +318,13 @@ namespace Guildmaster.Combat
             plan = new PlannedCast(caster, ability, target, abilityIndex, PlanKind.Begin);
             return true;
         }
+
+        /// <summary>
+        /// Дистанция, с которой это умение достаёт до цели: своя ступень, разрешённая фабрикой, либо
+        /// текущая дальность авто-атаки — тогда стойка и бафы дальности доезжают до умения сами.
+        /// </summary>
+        private static float CastReach(RuntimeUnit caster, AbilityRuntime ability)
+            => ability.CastRange >= 0f ? ability.CastRange : caster.Stats.Get(StatType.AttackRange);
 
         /// <summary>
         /// Применить решённый план. Заявка (<see cref="PlanKind.Begin"/>) платит цену и либо применяет
@@ -503,11 +533,9 @@ namespace Guildmaster.Combat
 
             for (int i = 0; i < count; i++)
             {
-                // Веером за спиной хозяина: чередуем стороны, отступая на шаг. Формула чистая от
-                // состояния мира, поэтому одинакова у обеих команд.
-                int lane = (i / 2) + 1;
-                float side = (i % 2 == 0) ? -1f : 1f;
-                var offset = new Vector2(side * step * lane, -step * 0.5f);
+                // Веером за спиной хозяина — раскладку держит SummonLayout, и он же отвечает за то,
+                // чтобы у отражённых команд она была зеркальной, а не одинаковой.
+                Vector2 offset = SummonLayout.Offset(i, step, caster);
 
                 RuntimeUnit summon = ctx.Summon(
                     data.SummonUnit, caster.Team, caster.Position + offset, caster);
@@ -611,6 +639,10 @@ namespace Guildmaster.Combat
                     // Счёт по НАЧАЛУ тика, а не по живому списку: иначе чужой клинз, прошедший раньше по
                     // обходу, обкрадывает детонацию, и зеркальные стороны расходятся (см. EffectSystem).
                     int uniques = EffectSystem.CountUniqueTaggedAtTickStart(u, tag, ctx.CurrentTick);
+                    // Потолок на разнообразие порчи: без него отряд с шестью источниками яда делает
+                    // взрыв шестикратным, и сила Друида начинает зависеть не от него самого.
+                    if (data.MaxTriggerUniques > 0 && uniques > data.MaxTriggerUniques)
+                        uniques = data.MaxTriggerUniques;
                     if (uniques > 0) HealAlliesAround(caster, u, data, uniques, ctx);
                 }
 
@@ -729,6 +761,8 @@ namespace Guildmaster.Combat
                     : Vector2.right);
 
             // Порядок аргументов — (кого двигаем, кто двигает): толкаемый здесь ЦЕЛЬ, а не кастующий.
+            // Ядра нет: голый толчок только двигает. Урон на линии умеет рывок, и он же им владеет
+            // (WhirlDashLandingComponent) — поля «урон-ядра» на AbilityData сняты 2026-08-07 как мёртвые.
             ctx.Displace(new DisplaceRequest(
                 target, caster, dir, data.DisplaceDistance,
                 cannonball: false, damage: 0f, damageType: DamageType.Pure, width: 0f));
@@ -771,15 +805,31 @@ namespace Guildmaster.Combat
             return ReferenceEquals(target, caster) ? amount * data.SelfHealFraction : amount;
         }
 
-        /// <summary>Прямой урон способности = DamageMultiplier × AutoAttackDamage кастующего (0 = только эффекты).</summary>
+        /// <summary>
+        /// Прямой урон способности: СВОЯ база плюс доля автоатаки кастующего. Ноль по обоим слагаемым —
+        /// способность бьёт только эффектами.
+        /// </summary>
+        /// <remarks>
+        /// Два слагаемых, а не одно, потому что киты бьют способностями по-разному: у воина ульта —
+        /// усиленный удар и честно считается от его автоатаки, а у заклинателя залп к силе удара посохом
+        /// отношения не имеет — там своя величина, растущая от силы способностей (карточка [[the-rift]]).
+        /// Пока базы не было, магу приходилось задирать автоатаку, чтобы заклинание что-то значило, и
+        /// он становился сильным сразу в двух местах.
+        /// <para>Гейт по БАЗОВЫМ значениям обоих слагаемых: способность без прямого урона не должна
+        /// начать бить от того, что у кита высокая скорость атаки или большой AP.</para>
+        /// </remarks>
         private static float AbilityDamage(RuntimeUnit caster, AbilityData data)
         {
-            // Множитель берётся через конвертации (M4): базовый ×3 может расти от статов носителя.
-            // Гейт по БАЗОВОМУ значению: способность без прямого урона не должна начать бить от того,
-            // что у кита высокая скорость атаки.
-            if (data.DamageMultiplier <= 0f) return 0f;
+            bool hasBase = data.BaseDamage > 0f;
+            bool hasMultiplier = data.DamageMultiplier > 0f;
+            if (!hasBase && !hasMultiplier) return 0f;
 
-            return data.ResolveDamageMultiplier(caster.Stats) * caster.Stats.Get(StatType.AutoAttackDamage);
+            float damage = 0f;
+            if (hasBase) damage += data.ResolveBaseDamage(caster.Stats);
+            if (hasMultiplier)
+                damage += data.ResolveDamageMultiplier(caster.Stats) * caster.Stats.Get(StatType.AutoAttackDamage);
+
+            return damage;
         }
 
         /// <summary>

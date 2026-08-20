@@ -155,5 +155,20 @@ namespace Guildmaster.Net
             _position += length;
             return value;
         }
+
+        /// <summary>
+        /// Сырой отрезок из <paramref name="count"/> байт БЕЗ копии — вид на внутренний буфер. Нужен там,
+        /// где вложенный формат читает свой кусок сам (чанк ленты внутри файла повтора): его отдают
+        /// целиком в <c>TapeChunkReader</c>, а не разбирают здесь.
+        /// </summary>
+        public ArraySegment<byte> ReadBytes(int count)
+        {
+            if (count < 0) throw new InvalidOperationException("длина отрезка отрицательна — формат бит");
+            if (_position + count > _end) throw new InvalidOperationException("отрезок длиннее остатка");
+
+            var segment = new ArraySegment<byte>(_buffer, _position, count);
+            _position += count;
+            return segment;
+        }
     }
 }

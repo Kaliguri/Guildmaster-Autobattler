@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.nightmare
   _polarity: 1
-  _tags: 10
+  _tags: 8
   _baseDuration: 4
   _stacking: 2
   _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 1
   _unremovable: 0
-  _stacksPerApplication: 1
   _cleansePrice:
   - Flat: 0
     Pct: 0
@@ -41,8 +41,8 @@ MonoBehaviour:
       data:
         _interval: 1
         _damagePerSecond:
-          Base: 20
+          Base: 50
           Scalings: []
         _damageType: 21
         _damagePctTargetMaxHp: 0
-        _growthPerSecond: 20
+        _growthPerSecond: 50

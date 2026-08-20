@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Tape;
 using Guildmaster.Core.Random;
@@ -645,7 +645,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             EffectData shield = TestEffect.Make(
                 baseDuration: 0.4f, polarity: EffectPolarity.Buff,
-                tags: EffectTag.Buff | EffectTag.Shield, stacking: StackRule.Refresh);
+                tags: EffectTag.Shield, stacking: StackRule.Refresh);
             return shield.With("_telegraphSeconds", telegraphSeconds);
         }
 

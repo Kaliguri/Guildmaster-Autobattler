@@ -1,0 +1,16 @@
+{
+  "source": { "prefab": "UnitView_BoneStorybook", "clip": "Attack", "snapped": "2026-08-05" },
+  "unit": { "feetPoint": -0.7980, "headPoint": 0.8030, "hitPoint": 0.0000, "shotPoint": [0.5300,0.0000], "bodyMinY": -0.8727, "bodyMaxY": 1.1379, "bodyMinX": -0.6296, "bodyMaxX": 1.0527, "bodyRadiusPerSize": 0.3000 },
+  "swing": { "clipLength": 1.1667, "strikeStart": 0.3333, "strikeEnd": 0.5833, "hitTime": 0.4670, "bladeLength": 0.9830,
+    "arc": [[-0.7054,0.9028], [-0.6931,0.9239], [-0.6552,0.9835], [-0.5868,1.0737], [-0.4815,1.1834], [-0.3332,1.2981], [-0.1389,1.4003], [0.0989,1.4704], [0.3707,1.4893], [0.6598,1.4420], [0.9436,1.3198], [1.1967,1.1236], [1.3954,0.8642], [1.5213,0.5612], [1.5650,0.2398], [1.5278,-0.0736], [1.4204,-0.3558], [1.2611,-0.5901], [1.0718,-0.7686], [0.8746,-0.8915], [0.6891,-0.9663], [0.5304,-1.0044], [0.4096,-1.0190], [0.3340,-1.0220], [0.3089,-1.0220]],
+    "tipAtStrikeStart": [-0.7054,0.9028], "shoulderAtStrikeStart": [0.2665,0.3396],
+    "tipAtHit": [1.5057,0.6141], "shoulderAtHit": [0.3300,0.2956] },
+  "combat": { "attackRangeBands": [1.0000, 2.0000, 5.0000, 8.0000, 12.0000, 25.0000], "baseHp": 2000.0000, "baseDps": 110.0000 },
+  "form": { "unitHeight": 1.6000, "life": 0.5000, "sizeMin": 0.7000, "sizeMax": 1.3500, "heavyHitFrac": 0.1500, "growShare": 0.3000, "tailLag": 0.4000, "coreWidth": 0.5500,
+    "archetypes": {
+      "slash": { "lengthH": 1.4000, "arcH": [0.2000,0.2800], "halfThicknessH": [0.0300,0.0400], "roughness": 0.3000, "starRadiusH": 0.0000 },
+      "pierce": { "lengthH": 0.6000, "arcH": [0.0150,0.0350], "halfThicknessH": [0.0150,0.0200], "roughness": 0.1800, "starRadiusH": 0.0000 },
+      "blunt": { "lengthH": 1.0000, "arcH": [0.0900,0.1400], "halfThicknessH": [0.0250,0.0320], "roughness": 0.3500, "starRadiusH": 0.5000 },
+      "bolt": { "lengthH": 0.9000, "arcH": [0.0000,0.0000], "halfThicknessH": [0.0120,0.0160], "roughness": 0.1200, "starRadiusH": 0.0000 }
+    } }
+}

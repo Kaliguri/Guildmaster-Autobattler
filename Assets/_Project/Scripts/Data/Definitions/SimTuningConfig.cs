@@ -115,6 +115,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Сколько боец должен пробыть ВНЕ атакующего лупа (нет цели, оглушён, бежит вне досягаемости), чтобы Комбо порвалось и началось заново. Боевое ожидание между ударами серию не рвёт. На этом держатся цикл ударов голема и «каждая третья» Драугра: порвалось — цикл начинается с обычного удара, взведённый заряд гаснет.")]
         [SerializeField] private float _comboBreakSeconds = SimTuning.Default.ComboBreakSeconds;
 
+        [TabGroup("Tuning", "Отступление"), SuffixLabel("с", overlay: true), LabelText("Предел отступления")]
+        [Tooltip("Сколько боец может отступать подряд, прежде чем вернётся в бой независимо от здоровья. Кайтеров не касается — у них отход и есть способ драться. Без этого предела порог возврата по HP недостижим, когда лечить некому: боец уходит навсегда, и бой замирает при обеих живых сторонах, а овертайм не спасает — он умножает урон, которого нет.")]
+        [SerializeField] private float _retreatMaxSeconds = SimTuning.Default.RetreatMaxSeconds;
+
         /// <summary>Снять иммутабельный снапшот для бейка на старте боя.</summary>
         public SimTuning ToSnapshot() => new SimTuning(
             _bodyRadiusPerSize,
@@ -147,6 +151,7 @@ namespace Guildmaster.Data.Definitions
             _concealWeakRadius,
             _concealMediumRadius,
             _concealStrongRadius,
-            _comboBreakSeconds);
+            _comboBreakSeconds,
+            _retreatMaxSeconds);
     }
 }

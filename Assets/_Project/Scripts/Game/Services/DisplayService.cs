@@ -17,7 +17,12 @@ namespace Guildmaster.Game.Services
     /// этом обычно нет: прошлый запуск записал в реестр ровно то, что мы применили.</para>
     /// <para><b>В редакторе режим не применяется.</b> <c>Screen.SetResolution</c> здесь переписывал бы
     /// Game view под разрешение монитора, ломая работу; настройки при этом читаются и отдаются как есть,
-    /// чтобы UI можно было проверять в play mode.</para>
+    /// чтобы UI можно было проверять в play mode. Пасовка кадров (<see cref="FramePacing"/>) — исключение:
+    /// она применяется и в редакторе, см. <see cref="Apply"/>.</para>
+    /// <para><b>Синхронизация кадров живёт здесь, а не в уровне качества.</b> В <c>QualitySettings</c>
+    /// <c>vSyncCount</c> задан у каждого из шести уровней по-своему, и на активном (<c>Very Low</c>) он
+    /// равен нулю. Оставить владельцем уровень значило бы, что игрок, выбравший «покрасивее», молча меняет
+    /// и синхронизацию — один факт с двумя владельцами.</para>
     /// </summary>
     public sealed class DisplayService : IDisplayService, IStartable
     {
@@ -34,6 +39,7 @@ namespace Guildmaster.Game.Services
         public int         Height { get; private set; }
         public WindowMode  Mode   { get; private set; } = WindowMode.BorderlessWindow;
         public RefreshRate RefreshRate { get; private set; }
+        public FramePacing Pacing { get; private set; } = FramePacing.Resolve(null, null);
 
         public bool RefreshRateSelectable => Mode == WindowMode.ExclusiveFullscreen;
 
@@ -95,6 +101,22 @@ namespace Guildmaster.Game.Services
             Changed?.Invoke();
         }
 
+        public void SetVSync(bool enabled)
+        {
+            _settings.VSync = enabled;
+            ResolveEffective();
+            Apply();
+            Changed?.Invoke();
+        }
+
+        public void SetFrameRateCap(int framesPerSecond)
+        {
+            _settings.FrameRateCap = framesPerSecond;
+            ResolveEffective();
+            Apply();
+            Changed?.Invoke();
+        }
+
         public void ResetToNative()
         {
             _settings = new DisplaySettings();
@@ -129,6 +151,7 @@ namespace Guildmaster.Game.Services
             }
 
             RefreshRate = ResolveRefreshRate(display);
+            Pacing      = FramePacing.Resolve(_settings.VSync, _settings.FrameRateCap);
         }
 
         private RefreshRate ResolveRefreshRate(DisplayInfo display)
@@ -156,11 +179,31 @@ namespace Guildmaster.Game.Services
 
         private void Apply()
         {
+            // Пасовка кадров применяется И в редакторе, в отличие от разрешения ниже: причина не трогать
+            // редактор — перекроенный Game view, а к vSync она не относится. Наоборот, разработчик должен
+            // видеть ту же плавность, что игрок, иначе микростаттер найдётся только в релизе.
+            ApplyPacing();
+
             if (Application.isEditor) return; // иначе перекраивается Game view — см. комментарий класса
 
             // Значение вступает в силу в конце кадра: Screen.width сразу после вызова ещё старый,
             // поэтому источник правды для UI — наши поля, а не Screen.
             Screen.SetResolution(Width, Height, ToFullScreenMode(Mode), RefreshRate);
+        }
+
+        /// <summary>
+        /// Записать выбор игрока поверх <c>QualitySettings</c>. <b>Зовётся при каждом применении, а не
+        /// один раз на старте, намеренно:</b> <c>QualitySettings.SetQualityLevel</c> перезаписывает
+        /// <c>vSyncCount</c> значением уровня, и наш владелец обязан вернуть своё после любой такой смены.
+        /// </summary>
+        private void ApplyPacing()
+        {
+            QualitySettings.vSyncCount = Pacing.VSync ? 1 : 0;
+
+            // При vSyncCount > 0 движок игнорирует targetFrameRate; -1 означает «без потолка».
+            Application.targetFrameRate = Pacing.FrameRateCap == FramePacing.Unlimited
+                ? -1
+                : Pacing.FrameRateCap;
         }
 
         private bool IsSupported(int width, int height)

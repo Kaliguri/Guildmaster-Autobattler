@@ -1,0 +1,427 @@
+/* --- Кнопка (secondary по умолчанию) ---
+   ОДНА СЕМЬЯ С PRIMARY (реш. Макса, раунд 3): та же форма, та же полная латунная рамка, та же
+   латунная гамма — разница только в наполнении. Primary = сплошная латунь (зовёт), secondary =
+   тёмное поле в латунной рамке с латунной подписью (отвечает). Прежний вариант (тихий серый
+   контур + белый текст + «подставка» снизу) читался деталью из другого интерфейса. */
+/* БАЗОВАЯ кнопка — тёмное поле в латунной рамке с латунной подписью. Это ЭТАЛОН вида кнопок
+   в проекте (реш. Макса): именно она читается «нашей». Сведение её с прежней primary отменено —
+   плохой оказалась как раз primary с пиксельной заливкой Honeti, а не эта. */
+/* РЕГИСТР — СТИЛЬ, А НЕ СОДЕРЖИМОЕ СТРОКИ (решение Макса 06.08.2026: «сделать это как стиль, чтобы
+   легко и удобно его добавлять, не меняя локализацию»). `text-transform` в UI Toolkit отсутствует,
+   поэтому свойство своё, а применяет его PlateButton — см. UiTextCase. До этой строки капитель
+   набирали сами буквы в разметке, и решением она не была: в дереве одновременно жили «ОТМЕНА» и
+   «Отмена», «НАСТРОЙКИ» и «Настройки», «СОХРАНИТЬ» и «Сохранить». */
+/* ПОЛЕ КНОПКИ — СВОЯ СТУПЕНЬ, а не тот же токен, что у панели под ней (07.08.2026). Прежде здесь
+   стоял surface-panel, то есть кнопка и подложка красились одним цветом и различались только
+   каймой — «все сливается» на кадре Макса было ровно про это. Теперь raised: на восемь процентов
+   светлоты выше фона. Роль токена при этом стала честной — он и назывался «кнопки/поднятые блоки». */
+.gm-button {
+    --gm-text-case: upper;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-frame);
+    border-radius: var(--gm-radius-0);
+    color: var(--gm-color-text-interactive);
+    font-size: var(--gm-font-body);
+    padding: var(--gm-space-2) var(--gm-space-4);
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-button:hover {
+    border-color: var(--gm-color-hover-border);
+    background-color: var(--gm-color-hover-surface);
+    color: var(--gm-color-text);
+}
+
+/* Нажатие «вдавливает»: поле уходит в самый тёмный тон, рамка тускнеет. */
+.gm-button:active {
+    border-color: var(--gm-color-border-inner);
+    background-color: var(--gm-color-surface-sunken);
+    color: var(--gm-color-text-interactive-dim);
+}
+
+.gm-button:disabled {
+    border-color: var(--gm-color-border-subtle);
+    color: var(--gm-color-disabled-text);
+    opacity: 1;
+}
+
+/* СПЕЦИФИЧНОСТЬ ПРОТИВ ДЕФОЛТНОЙ ТЕМЫ. Unity красит .unity-button:hover/:active светло-серым, и по
+   порядку загрузки её правило бьёт наш одноклассовый селектор — кнопка при наведении становилась
+   бледно-серой плашкой (наход. Макса, раунд 3). Два класса в селекторе перевешивают. Тот же корень,
+   что у «белого квадрата» на ленте режимов, только там лечилось переездом на VisualElement. */
+/* border-color здесь ОБЯЗАТЕЛЕН. Раньше двухклассовое правило задавало только фон и текст, а рамку
+   на наведении дорисовывала тема Unity — своим холодным серо-синим (наход. Макса: «убери синий
+   аутлайн при наведении»). Одноклассовый .gm-button:hover тему не перебивает, поэтому цвет каймы
+   для КАЖДОГО состояния должен стоять именно в правиле с двумя классами. */
+.unity-button.gm-button:hover {
+    background-color: var(--gm-color-hover-surface);
+    background-image: none;
+    border-color: var(--gm-color-hover-border);
+    color: var(--gm-color-text);
+}
+
+.unity-button.gm-button:active {
+    background-color: var(--gm-color-surface-sunken);
+    background-image: none;
+    border-color: var(--gm-color-border-inner);
+    color: var(--gm-color-text-interactive-dim);
+}
+
+/* Primary — та же форма, та же рамка, тот же светлый текст. Разница только в том, что поле
+   НАГРЕТО: угли вместо холодного дерева. Заливка токеном, без 9-slice картинки. */
+.unity-button.gm-button--primary:hover {
+    background-image: none;
+    background-color: var(--gm-color-surface-accent-hover);
+    color: var(--gm-color-text);
+}
+
+.unity-button.gm-button--primary:active {
+    background-image: none;
+    background-color: var(--gm-color-surface-accent-active);
+    color: var(--gm-color-text);
+}
+
+/* Тот же перевес нужен и для disabled: тема Unity красит выключенную кнопку светло-серым,
+   и «Продолжить» без сейва выглядела деталью чужого интерфейса.
+   ВАЖНО: выключенному элементу UITK вешает КЛАСС `unity-disabled`, и тема красит именно по нему —
+   одного псевдокласса `:disabled` в селекторе не хватает, правило проигрывает. Перекрываем оба. */
+/* ПОЛЕ У ВЫКЛЮЧЕННОЙ ОСТАЁТСЯ (заказ Макса 06.08.2026: «фон кнопки должен оставаться.
+   Приглушенный, но оставаться. А цвет текста быть сероватым»). Прежде здесь стоял
+   surface-panel — ТОТ ЖЕ токен, которым красится подложка под кнопкой, — и выключенная кнопка
+   растворялась в фоне: оставалась одна тусклая рамка, читавшаяся как пустое место. Взята
+   соседняя ступень рампы: поле видно, но тише живого, и не спорит с нажатием, у которого своя
+   (surface-sunken). Текст был сероват и раньше — эта половина требования уже держалась. */
+.unity-button.gm-button.unity-disabled:disabled,
+.unity-button.gm-button.unity-disabled,
+.unity-button.gm-button:disabled,
+.unity-button.gm-button--primary:disabled {
+    background-color: var(--gm-color-surface-quiet);
+    background-image: none;
+    border-color: var(--gm-color-border-subtle);
+    color: var(--gm-color-disabled-text);
+    opacity: 1;
+}
+
+/* ФОКУС: дефолтная тема Unity рисует контролам ярко-синюю рамку — она не из нашей палитры и,
+   что хуже, ЗАЛИПАЕТ после клика (нажал, увёл курсор — синева осталась). Гасим её везде и даём
+   свой знак фокуса: латунная рамка, тот же язык, что у наведения. Клавиатурная навигация от
+   этого не страдает — фокус по-прежнему виден, просто нашим цветом. */
+.gm-button:focus,
+.gm-chip:focus,
+.gm-tab:focus,
+.gm-slot:focus,
+.unity-button:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
+/* ТЕ ЖЕ правила, но в ДВА класса. Одноклассовый селектор выше проигрывает теме Unity при равном
+   весе, и синяя рамка фокуса возвращалась — измерено на живой кнопке: у элемента в фокусе
+   resolvedStyle.borderTopColor = RGBA(0, 0.416, 0.651). Прошлый заход правил только .gm-button,
+   поэтому таб настроек (класс .gm-tab) остался синим — п.4 раунда 4, повтор из раунда 3. */
+.unity-button.gm-button:focus,
+.unity-button.gm-tab:focus,
+.unity-button.gm-chip:focus,
+.unity-button.gm-slot:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-button:focus,
+.gm-chip:focus,
+.gm-tab:focus,
+.gm-slot:focus,
+.unity-base-field:focus,
+.unity-button:focus {
+    --unity-colors-button-border-focus: var(--gm-color-hover-border);
+    --unity-colors-input-border-focus: var(--gm-color-hover-border);
+    --unity-colors-helpbox-border: var(--gm-color-hover-border);
+}
+
+/* --- Кнопка: primary — не более одной на экран ---
+   ЗАЛИВКА ТОКЕНОМ, НЕ КАРТИНКОЙ. Прежняя пиксельная плашка Honeti (Gold2_gm 9-slice со
+   -unity-slice-scale) выпадала из интерфейса: чужой градиент и шум растянутого пикселя рядом с
+   нашими плоскими поверхностями. Тот же диагноз, что раньше был у Honeti-РАМОК — теперь выведена
+   и заливка, у Honeti не осталось роли в кнопках.
+   Форма и рамка — общие с базовой кнопкой, разница только в наполнении: сплошная приглушённая
+   латунь зовёт, тёмное поле отвечает. */
+.gm-button--primary {
+    background-image: none;
+    background-color: var(--gm-color-surface-accent);
+    border-color: var(--gm-color-hover-border);
+    color: var(--gm-color-text);
+}
+
+.gm-button--primary:hover {
+    background-color: var(--gm-color-surface-accent-hover);
+    border-color: var(--gm-color-focus-ring);
+    color: var(--gm-color-text);
+}
+
+.gm-button--primary:active {
+    background-color: var(--gm-color-surface-accent-active);
+    border-color: var(--gm-color-hover-border);
+    color: var(--gm-color-text);
+}
+
+/* Disabled: заливка снята, остаётся тусклая деревянная плашка с тихим контуром.
+   unity-disabled — класс темы Unity; одного псевдокласса :disabled не хватает, чтобы её перебить. */
+.gm-button.unity-disabled,
+.gm-button--primary.unity-disabled,
+.gm-button:disabled,
+.gm-button--primary:disabled {
+    background-color: var(--gm-color-surface-raised);
+    background-image: none;
+    border-color: var(--gm-color-border-subtle);
+    color: var(--gm-color-disabled-text);
+    opacity: 1;
+}
+
+/* Кнопка, тянущаяся на равную долю в ряду (футер настроек и т.п.). */
+/* --- ПЛАСТИНА: вторая форма интерфейса (gm:PlateButton) ---
+   Прямоугольник со срезанными углами вместо прямоугольника с рамкой. Заведена 2026-08-02, потому
+   что форма в системе была ровно одна, и экран из шести кнопок читался списком одинаковых полос:
+   иерархию нёс только цвет заливки, а силуэт у главного действия и у «Выхода» был общий.
+   Фигуру рисует контрол вершинами, поэтому ЗДЕСЬ вид задают custom-свойства, а не background/border —
+   их builtin-рисование гасим, иначе под фигурой останется прямоугольник темы Unity.
+   Числа у --gm-plate-stroke-width / --gm-plate-chamfer идут БЕЗ единиц: CustomStyleProperty<float>
+   читает <number>, а `2px` для него не число (та же конвенция, что у --gm-slant-width). */
+.gm-plate-button {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: none;
+    border-width: 0;
+    align-items: center;
+    justify-content: center;
+    /* ПОЛАЯ, А НЕ ЗАЛИТАЯ (решение Макса 06.08.2026). До этого дня базовая пластина была залита
+       ПАТИНОЙ — то есть цветом, который по нашей же семантике значит «сюда нажать». Из-за этого
+       роль и состояние сидели на одной оси: наведение — та же патина светлее, нажатие — темнее,
+       главная — светлее наведения. Главная физически не могла не пересекаться с ховером, что Макс
+       и увидел: «Главная выглядит плохо, ибо пересекается с наведением».
+       Теперь ось роли — ЕСТЬ ЛИ ЗАЛИВКА (полая против сплошной), ось состояния — светлота. Они не
+       пересекаются в принципе. Заодно это возврат к тому, что записано выше в комментарии к
+       .gm-button как решение Макса: «тёмное поле в латунной рамке с латунной подписью». */
+    /* Перепад ступеней такой же, как у главной (правка Макса 06.08.2026: «добавь такой же градиент
+       и для обычной»). Первая версия брала соседние ступени ink (700 -> 800), и на кнопке высотой
+       78px разница читалась плоской заливкой. Взяты 600 -> 800: тот же шаг в две ступени, что у
+       патины главной, поэтому свет на обеих кнопках лежит одинаково. */
+    --gm-plate-fill: var(--gm-color-surface-raised);
+    --gm-plate-fill-far: var(--gm-color-surface-sunken);
+    --gm-plate-fill-mode: down;
+    --gm-plate-stroke: var(--gm-color-border-frame);
+    --gm-plate-stroke-width: 2;
+    --gm-plate-chamfer: 10;
+}
+
+/* Двухклассовые селекторы обязательны для КАЖДОГО состояния: одноклассовый проигрывает правилам
+   `.unity-button.gm-button:hover/:active/:disabled` выше, и тема снова принималась рисовать
+   прямоугольную плашку поверх пластины. */
+.unity-button.gm-plate-button,
+.unity-button.gm-plate-button:hover,
+.unity-button.gm-plate-button:active,
+.unity-button.gm-plate-button:focus,
+.unity-button.gm-plate-button:disabled,
+.unity-button.gm-plate-button.unity-disabled {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: none;
+    border-width: 0;
+}
+
+/* Подпись живёт в ребёнке (иначе заливка легла бы поверх текста — см. PlateButton.cs).
+   Цвет/кегль/гарнитуру она наследует от самой кнопки, поэтому ярус шрифтов и токены текста
+   продолжают работать без отдельных правил. */
+.gm-plate-button__label {
+    -unity-text-align: middle-center;
+    /* АВТО-СЖАТИЯ ПОДПИСИ ЗДЕСЬ НЕТ, и это не забывчивость. Пара `-unity-text-generator: advanced` +
+       `-unity-text-auto-size: best-fit 14px 26px` стояла тут с 04.08.2026 и не работала ни дня:
+       продвинутый генератор в проекте выключен, а без него auto-size молча игнорируется. Зато он
+       кричал — предупреждением в каждом кадре игры («Advanced Text Generator is disabled but the API
+       is still called») и ошибкой в тестах («cannot render using static font asset Cormorant
+       Garamond»), которая валила проверку перекрытий на всех шести экранах разом.
+       Включить генератор нельзя дёшево: он не умеет СТАТИЧЕСКИЕ атласы шрифтов, а у нас статические
+       все — перевод на динамические раздувает ассеты (YesevaOne уже разросся с 340 КБ до 8.9 МБ,
+       стоило шрифту один раз поработать динамическим). Длинная подпись решается шириной кнопки. */
+}
+
+/* Наведение поднимает ПОЛЕ на ступень и зажигает кайму патиной: «сюда нажать» приходит с курсором,
+   а не живёт на кнопке постоянно. */
+.gm-plate-button:hover {
+    --gm-plate-fill: var(--gm-color-hover-surface);
+    --gm-plate-fill-far: var(--gm-color-surface-panel);
+    --gm-plate-stroke: var(--gm-color-border-action-strong);
+}
+
+/* Нажатие ВДАВЛИВАЕТ: поле уходит в самый тёмный тон, а подпись сдвигается на пиксель вниз.
+   Сдвиг здесь не украшение — до него у кнопки не было никакой физики, только смена цвета, и
+   нажатие не читалось как нажатие. */
+.gm-plate-button:active {
+    /* Свет ПЕРЕВОРАЧИВАЕТСЯ: тёмное сверху, светлее снизу — так выглядит вдавленная поверхность.
+       Прежде здесь стоял режим `up` с теми же цветами, но он оставлял свет на том же месте (fill
+       уходил вниз вместе с направлением), и вдавливания не получалось — только смена оттенка. */
+    --gm-plate-fill: var(--gm-color-surface-sunken);
+    --gm-plate-fill-far: var(--gm-color-surface-panel);
+    --gm-plate-fill-mode: down;
+    --gm-plate-stroke: var(--gm-color-border-action);
+}
+
+.gm-plate-button:active > .gm-plate-button__label {
+    translate: 0 1px;
+}
+
+/* Фокус звенит той же каймой, что и наведение: с клавиатуры и мышью выделение обязано выглядеть
+   одинаково, иначе геймпадный игрок видит другое «сюда нажать», чем мышиный. */
+.gm-plate-button:focus {
+    --gm-plate-stroke: var(--gm-color-border-action-strong);
+}
+
+/* Выключенная: тихий контур и выцветшая подпись. Класс `unity-disabled` вешает сама UITK —
+   одного псевдокласса `:disabled` не хватает, чтобы перебить тему (та же готча, что у кнопок выше). */
+.gm-plate-button:disabled,
+.gm-plate-button.unity-disabled {
+    /* УТОПЛЕНА, А НЕ ВЫБЕЛЕНА (правка Макса 06.08.2026: «должны быть с сероватым текстом и с
+       каким-то всё-таки фоном»). Прежде здесь стояло surface-raised — поле СВЕТЛЕЕ покоя, и
+       выключенная кнопка выглядела ярче включённых соседей: недоступное звало громче доступного.
+       Фон остаётся (кнопка на месте, действие существует), но уходит в самый тёмный тон. */
+    --gm-plate-fill: var(--gm-color-surface-sunken);
+    --gm-plate-fill-far: var(--gm-color-surface-sunken);
+    --gm-plate-stroke: var(--gm-color-border-subtle);
+}
+
+/* Primary — та же пластина, только НАГРЕТАЯ (угли вместо холодного дерева). Форма общая: главное
+   действие отличается температурой поля, а не другим силуэтом. */
+/* ГЛАВНОЕ ДЕЙСТВИЕ отличается ТОЛЬКО КАЙМОЙ — поле у него такое же, как у соседей.
+   Так делает реф: у Guildrun выбранная кнопка держится в той же тёмной зоне, а зовёт золотой
+   оправой. Прежняя версия отличала её светом (яркая заливка), и это было моё решение, а не вывод
+   из рефа — Макс поймал: «когда у нашего рефа основная кнопка отличается лишь аутлайном - ты её
+   отличаешь светом. Кто это сказал?» */
+/* ГЛАВНАЯ — ОДНА НА ВЕСЬ ИНТЕРФЕЙС (правило Макса 06.08.2026: набор кнопок, а не список мест).
+   До этого дня главная выглядела двояко: в меню — светлой заливкой (класс gm-mainmenu__btn--primary),
+   во всех остальных одиннадцати местах — только каймой. Заливка перенесена сюда, потому что «зовёт
+   нажать» обязано выглядеть одинаково везде, иначе роль перестаёт читаться ролью. */
+/* ГЛАВНАЯ — СПЛОШНАЯ ПАТИНА при полой обычной. Роль читается наличием заливки, а состояние —
+   её светлотой; двум осям больше негде пересечься. Патина взята потому, что по семантике она и
+   значит «сюда нажать», а у обычной кнопки этот сигнал теперь приходит только каймой и только
+   под курсором. */
+.gm-plate-button.gm-button--primary {
+    --gm-plate-fill: var(--gm-color-surface-accent);
+    --gm-plate-fill-far: var(--gm-color-surface-accent-far);
+    --gm-plate-stroke: var(--gm-color-border-action-strong);
+    --gm-plate-stroke-width: 3;
+}
+
+.gm-plate-button.gm-button--primary:hover {
+    --gm-plate-fill: var(--gm-color-surface-accent-hover);
+    --gm-plate-fill-far: var(--gm-color-surface-accent-hover-far);
+    --gm-plate-stroke: var(--gm-color-border-action-strong);
+}
+
+.gm-plate-button.gm-button--primary:active {
+    --gm-plate-fill: var(--gm-color-surface-accent-active);
+    --gm-plate-fill-far: var(--gm-color-surface-accent-far);
+    --gm-plate-stroke: var(--gm-color-border-action);
+}
+
+/* Выключенная ГЛАВНАЯ гасится ОТДЕЛЬНО. Правило роли задано двумя классами и потому специфичнее
+   общего `:disabled` — без этой строки недоступная главная кнопка оставалась патиновой и звала
+   нажать себя громче включённых соседей. Поймано контактным листом сразу после разведения осей. */
+.gm-plate-button.gm-button--primary:disabled,
+.gm-plate-button.gm-button--primary.unity-disabled {
+    --gm-plate-fill: var(--gm-color-surface-sunken);
+    --gm-plate-fill-far: var(--gm-color-surface-sunken);
+    --gm-plate-stroke: var(--gm-color-border-subtle);
+}
+
+/* Ряд кнопок в подвале панели: равные доли с зазором. */
+/* Кнопки в ряду делят ширину поровну. Прежде это делал модификатор gm-button--fill на КАЖДОЙ
+   кнопке — то есть раскладка, притворявшаяся вариантом кнопки. Растягивает ряд, а не кнопка. */
+.gm-button-row > .gm-button {
+    flex-grow: 1;
+}
+
+.gm-button-row {
+    flex-direction: row;
+}
+
+.gm-button-row > .gm-button {
+    margin-left: var(--gm-space-1);
+    margin-right: var(--gm-space-1);
+}
+
+/* --- «Не по карману»: гаснет ТЕКСТ, отклик остаётся --- */
+/* Правило дизайн-системы (решение Макса 2026-07-20): недоступное действие показывается тусклой подписью,
+   но кнопка живёт — hover и нажатие отрабатывают как обычно. Именно поэтому здесь класс, а не :disabled:
+   SetEnabled(false) убил бы отклик, и экран читался бы как зависший. Клик просто ничего не делает. */
+.gm-button--unaffordable {
+    color: var(--gm-color-disabled-text);
+}
+
+/* Пункт — ПЛАСТИНА (пересмотр 04.08.2026, заявка Макса: «я бы хотел все-таки под кнопками какие-то
+   бэкграунды», ориентир Guildrun). Текстовый вариант простоял полдня и показал ровно то, что
+   обещали числа рефов: держать строку без плашки можно только кеглем, и кегль уехал в потолок
+   коридора — «UI СЛИШКОМ гигантский». У плашечных рефов наоборот: строку держит плашка, а текст
+   внутри мелкий (Guildrun капитель 1.53%, AoW4 1.25% против наших прежних 2.8%).
+   Числа: ширина 360px = 18.8% (коридор 16.6-20.5%), высота ~56px = 5.2%, шаг с отступами 6.3%
+   (Guildrun 6.7%, AoW4 5.7%), кегль 22px даёт капитель 1.4%. */
+/* ВИД крупной пластины меты — общий на все её экраны (меню, настройки, пауза). Вынесен из
+   .gm-mainmenu__btn 05.08.2026 по правилу Макса «варианты кнопок надо брать те, что с главного
+   меню»: у меты одна кнопка, а не своя на каждом экране. Здесь только ВНЕШНОСТЬ — размеры стопки,
+   отступы и поведение при наведении остаются за экраном, потому что колонка у кромки и ряд внизу
+   ведут себя по-разному. */
+.gm-button--display {
+    /* Кегль титульного яруса, а не мелкий: пункты главного меню — самая крупная интерактивная вещь
+       на экране, и на 22px они читались подписями к чему-то, а не входом в игру. Пластина при этом
+       не растёт: высоту держит padding.
+       ИСТОРИЯ ЧИСЛА: 22 -> 28 (не ступень, ради компактной стопки) -> 48 05.08.2026 по замеру рефа
+       (у Guildrun капитель подписи кнопки 4.17% высоты кадра против наших 1.67% — мы были вдвое
+       тише) -> 34 сегодня.
+       С 06.08.2026 стоит СТУПЕНЬЮ, а не числом: 34 — это ровно --gm-font-title, и литерал здесь
+       ничего не выражал, кроме следа правок. Ни пикселя не сдвинулось. */
+    font-size: var(--gm-font-title);
+    /* ФАСКА СЛЕДУЕТ ЗА РАЗМЕРОМ ПЛАСТИНЫ (правило Макса 05.08.2026). Кнопка ужалась с 360 до 320 —
+       скол уходит с 10 на 9 в той же пропорции. Оставленный крупным, он читается как более резкая
+       огранка у меньшей вещи: пропорция фигуры меняется, хотя «ничего не трогали». */
+    --gm-plate-chamfer: 9;
+    color: var(--gm-color-text-interactive);
+    /* Капс без разрядки слипается, у кириллицы сильнее: прописные там одной ширины и без просвета
+       читаются забором. Регистр задаёт САМ ТЕКСТ — text-transform в UI Toolkit нет. */
+    letter-spacing: 3px;
+    /* Пластина ужата (просьба Макса 05.08.2026: «стоит сами кнопки теперь меньше сделать, чтобы они
+       меньше места занимали»). Кегль при этом крупный — высоту съедает не текст, а воздух вокруг
+       него, поэтому режется padding, а не шрифт. */
+    padding: 2px var(--gm-space-3);
+}
+
+/* Опасное действие: красный текст и кайма, но НЕ красная заливка — залитая кнопка в нашем интерфейсе
+   означает «сюда», а сюда мы игрока как раз не зовём. */
+/* КРАСНЫЙ ДЕРЖИТСЯ ВО ВСЕХ СОСТОЯНИЯХ (правка Макса 06.08.2026: «нажатие с удалением — текст тоже
+   красный лучше»). Общие правила состояний перекрашивают подпись (наведение — в полный свет,
+   нажатие — в приглушённую латунь), и на нажатии предупреждение пропадало ровно в тот момент,
+   когда игрок нажимает необратимое. Двухклассовый селектор — против специфичности темы Unity. */
+.gm-button--danger,
+.unity-button.gm-button--danger:hover,
+.unity-button.gm-button--danger:active,
+.unity-button.gm-button--danger:focus {
+    color: var(--gm-color-danger);
+    border-color: var(--gm-color-danger);
+}
+
+/* У ПЛАСТИНЫ кайму рисует меш, а не рамка: `border-color` выше на неё не действует вовсе, и
+   предупреждение держалось одной подписью, пока наведение не перекрашивало кайму в патину.
+   Красная кайма — во всех состояниях, включая выключенное: необратимое остаётся необратимым. */
+.gm-plate-button.gm-button--danger,
+.gm-plate-button.gm-button--danger:hover,
+.gm-plate-button.gm-button--danger:active,
+.gm-plate-button.gm-button--danger:focus,
+.gm-plate-button.gm-button--danger:disabled,
+.gm-plate-button.gm-button--danger.unity-disabled {
+    --gm-plate-stroke: var(--gm-color-danger);
+}
+
+/* ЖДЁМ ДРУГИХ. Кнопка готовности в кооперативе: игрок нажал, остальные ещё нет. Класс вешался с
+   02.08.2026, а правила не имел вовсе — то есть подпись менялась на «(1/2)», и это было ЕДИНСТВЕННЫМ
+   отличием ожидания от покоя. Гасим зов: заливка уходит в утопленный тон, подпись — в приглушённую.
+   Кнопка при этом ОСТАЁТСЯ живой (нажать повторно = снять готовность), поэтому это не `:disabled`. */
+.gm-btn--pending {
+    --gm-plate-fill: var(--gm-color-surface-sunken);
+    --gm-plate-fill-far: var(--gm-color-surface-sunken);
+    color: var(--gm-color-text-muted);
+}

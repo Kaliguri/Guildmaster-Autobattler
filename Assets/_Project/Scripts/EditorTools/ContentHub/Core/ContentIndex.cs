@@ -64,15 +64,26 @@ namespace Guildmaster.ContentHub.Editor
             _entries = new List<ContentEntry>();
             _byAsset = new Dictionary<UnityEngine.Object, ContentEntry>();
 
-            _statsConfig = FindAll<StatsConfig>().FirstOrDefault();
-            _classBalanceConfig = FindAll<ClassBalanceConfig>().FirstOrDefault();
+            // Конфиги берём через GameConfig — то есть тот экземпляр, которым играет игра, а не «первый
+            // попавшийся ассет типа StatsConfig». Второй такой ассет (эксперимент, ветка баланса) увёл
+            // бы stat-context и таблицу Balance на конфиг, которым не играют, а порядок FindAssets не
+            // гарантирован — выбор менялся бы между перестройками индекса. Расхождение выглядело бы как
+            // цифра в отчёте, а не как ошибка. Ту же ловушку балансный стенд уже прошёл (BalanceAssets).
+            GameConfig gameConfig = FindAll<GameConfig>().FirstOrDefault();
+            if (gameConfig == null)
+            {
+                UnityEngine.Debug.LogError("[ContentHub] GameConfig не найден — эффективные статы считать не по чему.");
+            }
+
+            _statsConfig = gameConfig != null ? gameConfig.Stats : null;
+            _classBalanceConfig = gameConfig != null ? gameConfig.ClassBalance : null;
 
             // Контент-определения (folder-per-type) — единственный источник домена по типу.
             foreach (var cd in ContentIdUtility.FindAll())
                 AddEntry(cd, cd.Id, ContentDomains.GetDomain(cd.GetType()));
 
             // Спутники дата-слоя (не ContentDefinition). Presentation-типы (AudioCatalog, палитры) — позже (P8/P9).
-            foreach (var v in FindAll<UnitVisual>()) AddEntry(v, v.name, "Visuals");
+            foreach (var v in FindAll<AnimationArchetypeData>()) AddEntry(v, v.name, "Visuals");
             foreach (var c in FindAll<StatsConfig>()) AddEntry(c, c.name, "Configs");
             foreach (var c in FindAll<SimTuningConfig>()) AddEntry(c, c.name, "Configs");
             foreach (var c in FindAll<GameConfig>()) AddEntry(c, c.name, "Configs");

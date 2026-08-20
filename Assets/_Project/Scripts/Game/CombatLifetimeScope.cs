@@ -5,6 +5,7 @@ using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
+using Guildmaster.Net.Tape;
 using Guildmaster.Presentation;
 using Guildmaster.Presentation.Audio;
 using UnityEngine;
@@ -14,6 +15,19 @@ using VContainer.Unity;
 namespace Guildmaster.Game
 {
     /// <summary>
+    /// Как поднят боевой скоуп: обычный бой (роль владельца/гостя решает сессия) или воспроизведение
+    /// повтора с диска — без сима-водителя, сессии и джуса времени.
+    /// </summary>
+    public enum BattleScopeMode
+    {
+        /// <summary>Живой бой: владелец считает и раздаёт, гость принимает. Роль берётся у сессии.</summary>
+        Auto,
+
+        /// <summary>Повтор: лента приезжает из файла, симуляции нет. Фон меню и будущий «посмотреть бой».</summary>
+        Replay,
+    }
+
+    /// <summary>
     /// DI-скоуп боевых систем: RNG боя, системы, симуляция, презентация. Живёт в
     /// <c>CombatSystemsScene</c> и дочерний к <see cref="WorldLifetimeScope"/> — камера и арена
     /// резолвятся из предка, без дублей Main Camera/Brain (вики «Scenes», «16» §5).
@@ -21,7 +35,9 @@ namespace Guildmaster.Game
     /// <remarks>
     /// Вопреки имени, по одному бою НЕ пересоздаётся: сцена грузится один раз на буте и не выгружается,
     /// а бой начинается командой в живую симуляцию. Значит боевое состояние между узлами не чистится
-    /// сносом скоупа — за возврат отвечает <c>BattleBootstrap.ResetToWorld</c>.
+    /// сносом ЭТОГО скоупа — границей боя владеет <see cref="Flow.BattleHost"/> в мировом скоупе:
+    /// <c>Open(preset)</c> рождает дочерний <c>BattleScope</c> из префаба, <c>Close()</c> его диспозит,
+    /// и арена возвращается миру. Между боями скоупа боя попросту не существует.
     /// </remarks>
     public class CombatLifetimeScope : LifetimeScope
     {
@@ -41,8 +57,21 @@ namespace Guildmaster.Game
                  "Пусто = красная ошибка и НЕТ джуса вовсе (не «дефолты» — своих чисел потребители не держат).")]
         [SerializeField] private Presentation.Design.CombatFeelConfig _feelConfig;
 
+        [Tooltip("Как поднят скоуп. Auto — обычный бой (роль решает сессия). Replay — воспроизведение " +
+                 "повтора с диска: без сима-водителя, сессии, расстановки и джуса времени (фон меню).")]
+        [SerializeField] private BattleScopeMode _mode = BattleScopeMode.Auto;
+
         protected override void Configure(IContainerBuilder builder)
         {
+            // Повтор — иной состав скоупа, а не «бой с выключенным симом»: у него нет ни расстановки, ни
+            // сессии, ни водителя тика. Собираем отдельной веткой и выходим — так «а мы точно реплей?»
+            // не появляется внутри живой ветки ни одним ветвлением.
+            if (_mode == BattleScopeMode.Replay)
+            {
+                ConfigureReplay(builder);
+                return;
+            }
+
             RegisterArena(builder);
             RegisterRng(builder);
             RegisterCombatSystems(builder);
@@ -73,12 +102,91 @@ namespace Guildmaster.Game
             // Состава Ристалища «по умолчанию» здесь больше нет: площадка открывается ПУСТОЙ, а бойцов
             // приносит заказ (сегодня — дев-команда, позже — экран сборки боя). Ассетный расклад делал
             // вход на Ристалище готовым боем 4×4, которого игрок не заказывал (наход. Макса 02.08.2026).
-            builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped);
+            //
+            // ТОЛЬКО У ВЛАДЕЛЬЦА. У гостя расстановки нет: её поднимает пресет боя, а пресета у него не
+            // бывает — бой приезжает лентой. Пока контроллер создавался и ему, он молча ломал гостю
+            // кнопку «Начать»: на старте перехватывал и ключ гейта, и саму кнопку, а нажатие уводил в
+            // свою проверку «мы вообще в расстановке?» и тихо выходил. В кампании это не било только по
+            // счастливой очерёдности, а на Ристалище он вставал последним и кнопка умирала
+            // (разбор логов прогона вдвоём, 04.08.2026).
+            //
+            if (!IsGuestSession()) builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped);
+
+            // А РУКИ игрока — у обоих. Круги-опоры, выбор бойца под курсором, перетаскивание фигурки и
+            // приём реликвии из инвентаря есть и у гостя: он ничего не применяет сам, а публикует
+            // намерения, которые исполняет владелец арены. Пока обе роли жили в контроллере выше, у
+            // гостя не было ни кругов, ни драга — и это читалось как три отдельных бага вместо одной
+            // несделанной работы.
+            builder.RegisterEntryPoint<DeploymentInteraction>(Lifetime.Scoped);
 
             // Сборка боя, ради которого родился скоуп: отряд, враги, фаза расстановки, отчёт исхода.
             // Регистрируется ПОСЛЕ DeploymentController — чтобы его подписка на Free-расстановку встала
             // до того, как загрузчик её поднимет.
             builder.RegisterEntryPoint<Flow.BattleStartup>(Lifetime.Scoped);
+        }
+
+        /// <summary>
+        /// Реплей: показ той же ленты, но наполняет её файл, а не сим. Регистрируем показ, ленту,
+        /// плейбек и плеера — и НЕ регистрируем ничего, что тянет сессию или водит тик: расстановку
+        /// (<c>DeploymentController</c> → <c>ISharedDecision</c>/<c>IBattleSession</c>), старт боя, ввод,
+        /// петлю, кооп, режиссёра джуса времени. Именно эти зависимости и роняли фон меню, поднятый как
+        /// обычный бой: здесь их просто нет.
+        /// </summary>
+        /// <remarks>
+        /// <b>Симуляция всё же есть — простаивающая, как у гостя.</b> Её держит ссылкой
+        /// <see cref="Flow.BattlePresenterBinder"/> (дев-оверлеи читают живой сим), но тикать её некому:
+        /// <c>CombatLoopService</c> в реплее не регистрируется, а спавнить нечего — расстановки нет.
+        /// Состав приходит из файла в <see cref="Combat.Tape.BattleUnitRegistry"/> через
+        /// <c>RegisterRemote</c>. Ленту наполняет <see cref="Net.Tape.ReplayFilePlayer"/>.
+        /// </remarks>
+        private void ConfigureReplay(IContainerBuilder builder)
+        {
+            // Локальный пофрейм-фидбэк (вспышки, цифры урона) читает этот конфиг — он остаётся. А вот
+            // РЕЖИССЁРА времени (slowmo/тряска через глобальный timeScale) не регистрируем: фон меню не
+            // должен дёргать глобальное время (журнал 2026-08-04-replay-juice-acts-on-the-view-not-global-time).
+            var feel = ScopeWiring.Optional(_feelConfig, nameof(CombatLifetimeScope), nameof(_feelConfig),
+                "локального боевого фидбэка в фоне меню не будет");
+            builder.RegisterInstance(feel);
+
+            RegisterRng(builder);            // сид из BattleScopeParams — для простаивающего сима
+            RegisterCombatSystems(builder);  // системы конструирует idle-сим; сами не тикают
+            RegisterReplaySimulationCore(builder);
+
+            // Показ — те же биндеры, что у живого боя, С ОДНОЙ заменой: фокус камеры берётся из ЛЕНТЫ, а
+            // не из простаивающего сима (иначе камера в Action кадрирует пустоту). Всё остальное — как в
+            // настоящем бою: презентер, телеграфы, диспетчер работают поверх ленты, не зная её источника.
+            builder.RegisterEntryPoint<Flow.BattlePresenterBinder>(Lifetime.Scoped);
+            builder.RegisterEntryPoint<Presentation.ReplayFocusBinder>(Lifetime.Scoped);
+        }
+
+        /// <summary>Ядро реплея: простаивающий сим ради ссылок, лента без рекордера, плеер из файла.</summary>
+        private void RegisterReplaySimulationCore(IContainerBuilder builder)
+        {
+            // Простаивающий сим — те же параметры, что у живого (armorK/arena/tuning/cameraZone из
+            // конфига и арены мира), но без фабрики юнитов и загрузчика энкаунтера: спавнить нечего.
+            builder.Register<CombatSimulation>(Lifetime.Scoped)
+                   .WithParameter("armorK", Stats().ArmorConstantK)
+                   .WithParameter("arena", r => (ArenaBounds?)r.Resolve<ArenaLayoutData>().Bounds)
+                   .WithParameter("tuning", (SimTuning?)ScopeWiring.Require(_simTuningConfig, nameof(CombatLifetimeScope), nameof(_simTuningConfig)).ToSnapshot())
+                   .WithParameter("cameraZone", r => (Rect2D?)r.Resolve<ArenaLayoutData>().CameraZone);
+
+            // Лента и её показ — та же тройка, что в живом бою, минус рекордер: нам не писать, а читать.
+            builder.Register<Combat.Tape.BattleTape>(
+                       _ => new Combat.Tape.BattleTape(Combat.Tape.BattleTapeRecorder.DefaultWindowTicks),
+                       Lifetime.Scoped);
+            builder.Register<Combat.Tape.BattleTapePlayback>(Lifetime.Scoped);
+            builder.Register<Combat.Tape.BattleTapeDispatcher>(Lifetime.Scoped);
+            builder.Register<Combat.Tape.BattleUnitRegistry>(Lifetime.Scoped);
+
+            // Кадр и паспорта — показу; тела прошлого боя хоронит отсутствие в кадре.
+            builder.RegisterEntryPoint<Flow.BattleStageBinder>(Lifetime.Scoped);
+            builder.Register<Presentation.DevOverlayMode>(Lifetime.Scoped);
+
+            // Читатель чанков в ту же ленту (IContentDatabase — из корня) и плеер, что кормит её из
+            // файла по темпу показа. Байты файла приходят заказом ReplayPlaybackRequest от создателя.
+            builder.Register<Net.Tape.TapeChunkReader>(Lifetime.Scoped);
+            builder.RegisterEntryPoint<Net.Tape.ReplayFilePlayer>(Lifetime.Scoped)
+                   .WithParameter("fileBytes", r => r.Resolve<Net.Tape.ReplayPlaybackRequest>().FileBytes);
         }
 
         /// <summary>
@@ -164,6 +272,18 @@ namespace Guildmaster.Game
                    .WithParameter("arena", r => (ArenaBounds?)r.Resolve<ArenaLayoutData>().Bounds)
                    .WithParameter("tuning", (SimTuning?)ScopeWiring.Require(_simTuningConfig, nameof(CombatLifetimeScope), nameof(_simTuningConfig)).ToSnapshot())
                    .WithParameter("cameraZone", r => (Rect2D?)r.Resolve<ArenaLayoutData>().CameraZone);
+
+            // Тюнинг отдельным значением: он нужен не только симуляции. Руки игрока переводят габарит
+            // тела в радиус той же формулой, что и бой, — и обязаны делать это, не спрашивая симуляцию:
+            // у гостя её нет, а круги-опоры рисовать надо.
+            builder.RegisterInstance(ScopeWiring.Require(
+                _simTuningConfig, nameof(CombatLifetimeScope), nameof(_simTuningConfig)).ToSnapshot());
+
+            // Кто на арене — для всего, что игрок делает руками. Владельцу правду даёт живая симуляция
+            // (перетаскивание видно в тот же кадр), гостю — присланный кадр: своей симуляции у него нет
+            // вовсе. Единственное место, где эта разница вообще выражена.
+            if (IsGuestSession()) builder.Register<Combat.Tape.TapeArenaUnits>(Lifetime.Scoped).As<IArenaUnits>();
+            else                  builder.Register<SimArenaUnits>(Lifetime.Scoped).As<IArenaUnits>();
 
             StatsConfig cfg = Stats();
             ClassBalanceConfig classCfg = ScopeWiring.Require(
@@ -252,9 +372,18 @@ namespace Guildmaster.Game
 
             builder.RegisterEntryPoint<Net.Tape.BattleTapeBroadcast>(Lifetime.Scoped).AsSelf();
 
+            // Подключение посреди боя: держим общую паузу, пока напарник догружает ленту, и снимаем её
+            // через короткий отсчёт (реш. Макса 04.08.2026). Живёт у владельца, потому что паузу для
+            // всех объявляет он.
+            builder.RegisterEntryPoint<Net.Tape.MidBattleJoinHold>(Lifetime.Scoped).AsSelf();
+
             // Состав боя: в снимках его нет (за бой не меняется), а показу он нужен — кто это, какой
             // арт, чья команда.
             builder.RegisterEntryPoint<Net.Tape.BattleRosterAnnouncer>(Lifetime.Scoped);
+
+            // Руки напарника: его «поставь бойца сюда» приходит сюда и дальше идёт той же дорогой, что
+            // наш собственный клик, — к расстановке, с той же перепроверкой права и зоны.
+            builder.RegisterEntryPoint<Session.Net.DeploymentIntentIntake>(Lifetime.Scoped);
         }
 
         /// <summary>Гость: своей симуляции нет, есть присланная лента и состав к ней.</summary>
@@ -272,6 +401,10 @@ namespace Guildmaster.Game
 
             // Вместо тикового цикла — одно требование к отставанию показа.
             builder.RegisterEntryPoint<Services.GuestPlaybackLoop>(Lifetime.Scoped);
+
+            // Свои руки: применить намерение гость не может (арена не его), поэтому единственное, что
+            // он с ним делает, — отправляет владельцу.
+            builder.RegisterEntryPoint<Session.Net.DeploymentIntentSender>(Lifetime.Scoped);
         }
 
         /// <summary>
