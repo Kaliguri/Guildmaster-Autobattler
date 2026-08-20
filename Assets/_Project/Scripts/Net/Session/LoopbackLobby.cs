@@ -25,7 +25,9 @@ namespace Guildmaster.Net.Session
 
         /// <inheritdoc />
         /// <remarks>В петле приглашений не бывает: звать сюда некого, все узлы свои.</remarks>
+#pragma warning disable 67 // Событие шва: петля никого не зовёт и поднять его не может — см. remarks выше.
         public event Action<string, ulong, ulong> Invited;
+#pragma warning restore 67
         public event Action LobbyChanged;
 
         public void CreateLobby()

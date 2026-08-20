@@ -285,7 +285,9 @@ namespace Guildmaster.Tests.EditMode.Run
 
             public event System.Action<Guildmaster.Core.Net.CoopSessionState> StateChanged;
             public event System.Action<int> PeerLeft;
+#pragma warning disable 67 // Событие шва: сессии нет, звать некого — фейк его не поднимает.
             public event System.Action<string, ulong> Invited;
+#pragma warning restore 67
 
             public bool StartHost() => false;
             public void InviteFriend() { }

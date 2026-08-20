@@ -597,7 +597,7 @@ namespace Guildmaster.Presentation
             // отсутствие эффекта читалось с экрана как задумка (Макс, 03.08.2026).
             _hasStrikeWindow = ClipMarkers.StrikeWindowNormalized(attack, out _strikeFrom, out _strikeTo);
             if (!_hasStrikeWindow)
-                VisualDefects.Report($"strike-window:{attack.GetInstanceID()}",
+                VisualDefects.Report($"strike-window:{attack.GetEntityId()}",
                     $"[UnitView] клип атаки '{attack.name}' не размечен взмахом (нужны AnimationEvent " +
                     $"'{ClipMarkers.StrikeStartFunction}' и '{ClipMarkers.StrikeEndFunction}') — у этого удара " +
                     "не будет дуги за клинком, а форма удара пойдёт от ног бьющего, а не от оружия.", attack);

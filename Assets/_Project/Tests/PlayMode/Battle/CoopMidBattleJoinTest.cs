@@ -137,7 +137,7 @@ namespace Guildmaster.Tests.PlayMode.Battle
         private static T FindAnywhere<T>() where T : class
         {
             LifetimeScope[] scopes = UnityEngine.Object.FindObjectsByType<LifetimeScope>(
-                FindObjectsInactive.Include, FindObjectsSortMode.None);
+                FindObjectsInactive.Include);
 
             for (int i = 0; i < scopes.Length; i++)
             {
