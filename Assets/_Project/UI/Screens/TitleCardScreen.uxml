@@ -1,7 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement name="titlecard-root" class="gm-screen gm-boot">
-        <ui:VisualElement name="boot-glow" class="gm-boot__glow" picking-mode="Ignore" />
-
         <!-- ТА ЖЕ ВЫВЕСКА, ЧТО В МЕНЮ (07.08.2026). Прежде здесь стояли иконка приложения и голый
              Label, не задававший гарнитуру, — название игры выходило интерфейсным гротеском с
              синтетическим болдом от «заголовка панели», которым бут-экран не является. Иконка
