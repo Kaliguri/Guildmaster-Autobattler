@@ -28,6 +28,10 @@ namespace Guildmaster.Combat
         // Удары, дозревшие на этом тике: цифры сняты, но ещё никому не прилетело (см. Tick).
         private readonly List<ResolvedHit> _hits = new List<ResolvedHit>();
 
+        // Куда встанут блинкующие: считается от снимка мира ДО того, как хоть одно тело сдвинется.
+        private readonly List<(RuntimeUnit Unit, Vector2 Destination)> _blinkDestinations =
+            new List<(RuntimeUnit, Vector2)>();
+
         /// <summary>Удар, у которого замах истёк: кто, по кому и с какими цифрами бьёт.</summary>
         private readonly struct ResolvedHit
         {
@@ -230,13 +234,30 @@ namespace Guildmaster.Combat
 
             // --- Проход 2a: блинки. Телепорт двигает тело, а из тел считается геометрия ударов, поэтому
             // все перемещения происходят ДО того, как хоть один удар начнёт мерить дистанции и линии.
+            //
+            // Точки назначения считаются ВСЕ и от снимка мира, и лишь потом записываются — тем же
+            // приёмом, что CombatSimulation.ApplyPendingTeleports. Пока запись шла прямо в обходе,
+            // второй блинк целился за спину тела, которое только что уехало: двое убийц из стелса
+            // бьют друг друга в один тик, и первый по списку получал преимущество хода. У отражённых
+            // сторон порядок обхода ОДИН И ТОТ ЖЕ, а не зеркальный, поэтому зеркало разъезжалось
+            // ровно на половину радиуса атаки (BAL-014, тот же класс: чтение и запись в одном обходе).
             bool moved = false;
+            _blinkDestinations.Clear();
             for (int i = 0; i < _hits.Count; i++)
             {
                 ResolvedHit hit = _hits[i];
                 if (!hit.Blink || hit.Unit.IsDead || hit.Target.IsDead) continue;
 
-                CombatPositioning.TeleportBehind(hit.Unit, hit.Target);
+                _blinkDestinations.Add((hit.Unit, CombatPositioning.BehindPosition(hit.Unit, hit.Target)));
+            }
+
+            for (int i = 0; i < _blinkDestinations.Count; i++)
+            {
+                (RuntimeUnit unit, Vector2 destination) = _blinkDestinations[i];
+
+                // Снап без интерполяции: вид не должен «ехать» через экран за один тик.
+                unit.Position = destination;
+                unit.PreviousPosition = destination;
                 moved = true;
             }
 
