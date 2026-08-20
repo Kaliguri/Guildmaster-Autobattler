@@ -200,45 +200,5 @@
     background-color: rgba(0, 0, 0, 0); /* фон рисует Painter2D — прямоугольная заливка испортила бы скос */
 }
 
-/* === Сообщение игроку и ожидание ============================================
-   ВРЕМЕННЫЙ вид (заказ Макса 09.08.2026: «Система окон-предупреждений + ВРЕМЕННЫЙ дизайн»). Шов
-   нужен раньше, чем его облик: до него об ошибке игрок не узнавал вообще ничего.
-
-   Вид сообщения меняет ровно одно — цвет рамки. Заливку и стекло держит .gm-panel--dialog: три
-   разных фона превратили бы одно окно в три экрана, а именно этого мы и избегали. */
-.gm-panel--notice-info {
-    max-width: 520px;
-    border-left-color: var(--gm-color-info);
-    border-left-width: 3px;
-}
-
-.gm-panel--notice-warning {
-    max-width: 520px;
-    border-left-color: var(--gm-color-warning);
-    border-left-width: 3px;
-}
-
-.gm-panel--notice-error {
-    max-width: 520px;
-    border-left-color: var(--gm-color-danger);
-    border-left-width: 3px;
-}
-
-/* Ожидание: кнопок нет, и ширина у него по содержимому — окно висит ровно столько, сколько идёт
-   ожидание, и мерить его нечем. */
-.gm-panel--busy {
-    max-width: 420px;
-    align-items: center;
-}
-
-/* Ряд ответов в окне. Кнопок бывает от одной до трёх; порядок — слева направо, основной ответ
-   выделяется модификатором кнопки, а не местом в ряду. */
-.gm-notice__answers {
-    flex-direction: row;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-}
-
-.gm-notice__answers > .gm-button {
-    margin-left: var(--gm-space-1);
-}
+/* Сообщение игроку и ожидание уехали в components/notice.uss (20.08.2026): у окна свой блок,
+   а не набор исключений из панели. Раскладка темы — блок на файл. */

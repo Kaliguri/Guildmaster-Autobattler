@@ -25,18 +25,18 @@ namespace Guildmaster.UI
         {
             var root = new VisualElement();
             root.AddToClassList("gm-panel");
-            root.AddToClassList("gm-panel--dialog");
+            // НЕ .gm-panel--dialog: его габариты — мера большого экрана (1280 x 860 минимум), и
+            // сообщение в одну строку вырастало в пустой прямоугольник. Своя мера у окна в .gm-notice.
+            root.AddToClassList("gm-notice");
             root.AddToClassList(ModifierFor(request.Kind));
             root.pickingMode = PickingMode.Position;
 
-            var title = new Label(Text(localize, request.TitleKey, request.TitleFallback,
-                                       DefaultTitleFor(request.Kind)));
-            title.AddToClassList("gm-text-title");
-            title.AddToClassList("gm-panel__title");
-            root.Add(title);
+            root.Add(Badge(Text(localize, request.TitleKey, request.TitleFallback,
+                                DefaultTitleFor(request.Kind))));
 
             var body = new Label(Text(localize, request.BodyKey, request.BodyFallback, string.Empty));
             body.AddToClassList("gm-text-body");
+            body.AddToClassList("gm-notice__body");
             root.Add(body);
 
             // Последствие — отдельной строкой и только если оно есть: пустая строка оставляет зазор,
@@ -45,6 +45,7 @@ namespace Guildmaster.UI
             {
                 var consequence = new Label(request.Consequence);
                 consequence.AddToClassList("gm-text-caption");
+                consequence.AddToClassList("gm-notice__aside");
                 root.Add(consequence);
             }
 
@@ -53,6 +54,7 @@ namespace Guildmaster.UI
             {
                 var details = new Label(request.Details);
                 details.AddToClassList("gm-text-code");
+                details.AddToClassList("gm-notice__aside");
                 root.Add(details);
             }
 
@@ -79,37 +81,72 @@ namespace Guildmaster.UI
 
             if (options == null || options.Count == 0)
             {
-                var ok = new Button(() => close?.Invoke())
-                {
-                    text = Text(localize, "ui.notice.ok", "Понятно", "Понятно"),
-                };
-                ok.AddToClassList("gm-button");
-                row.Add(ok);
+                row.Add(Answer(Text(localize, "ui.notice.ok", "Понятно", "Понятно"),
+                               primary: true, act: () => close?.Invoke()));
                 return row;
             }
 
             for (int i = 0; i < options.Count; i++)
             {
                 NoticeOption option = options[i];
-                var button = new Button(() => { option.Act?.Invoke(); close?.Invoke(); })
-                {
-                    text = Text(localize, option.LocKey, option.Fallback, "…"),
-                };
-
-                button.AddToClassList("gm-button");
-                if (option.Primary) button.AddToClassList("gm-button--primary");
-                row.Add(button);
+                row.Add(Answer(Text(localize, option.LocKey, option.Fallback, "…"), option.Primary,
+                               () => { option.Act?.Invoke(); close?.Invoke(); }));
             }
 
             return row;
         }
 
-        /// <summary>Модификатор панели по виду: подача разная, устройство одно.</summary>
+        /// <summary>
+        /// Ярлык вида, висящий НАД верхней кромкой окна: облик A, принят Максом 20.08.2026.
+        /// </summary>
+        /// <remarks>
+        /// Рисуется контролом <see cref="Components.SlantedPanel"/> — тем же, что лента режимов
+        /// забега. Скос, а не скругление: радиус в дизайн-системе нулевой, и язык формы у нас один
+        /// на весь интерфейс. Своей фаски окно не заводит — иначе способов нарисовать скошенный
+        /// торец стало бы два.
+        /// <para>Капс подписи — через <see cref="Components.UiTextCase"/> (<c>--gm-text-case</c> в
+        /// USS), а не заглавными буквами в ключе локали: регистр здесь свойство роли, и та же
+        /// строка «Не получилось» в другом месте обязана остаться как написана. Голому
+        /// <see cref="Label"/> привязка нужна явно — свойство читает не он, а контрол.</para>
+        /// </remarks>
+        private static VisualElement Badge(string text)
+        {
+            var badge = new Components.SlantedPanel { name = "notice-badge", pickingMode = PickingMode.Ignore };
+            badge.AddToClassList("gm-notice__badge");
+
+            var label = new Label(text);
+            label.AddToClassList("gm-text-caption");
+            label.AddToClassList("gm-notice__badge-label");
+            Components.UiTextCase.Bind(label);
+            badge.Add(label);
+
+            return badge;
+        }
+
+        /// <summary>
+        /// Один ответ окна. Собирается КОНТРОЛОМ <see cref="Components.PlateButton"/>, а не голым
+        /// <see cref="Button"/> с классом.
+        /// </summary>
+        /// <remarks>
+        /// Разница не косметическая: пластина рисует свою форму через <c>Painter2D</c> и читает
+        /// custom-свойства темы, поэтому голая кнопка с теми же классами получала прямоугольник без
+        /// фаски и без заливки — то есть ровно ту ловушку, что уже случилась с карточкой реликвии в
+        /// гриде лоадаута: разметка одинаковая, а всё, что контрол делает НЕ разметкой, теряется молча.
+        /// </remarks>
+        private static Components.PlateButton Answer(string text, bool primary, Action act)
+        {
+            var button = new Components.PlateButton(() => act?.Invoke()) { text = text };
+            button.AddToClassList("gm-button");
+            if (primary) button.AddToClassList("gm-button--primary");
+            return button;
+        }
+
+        /// <summary>Модификатор окна по виду: подача разная, устройство одно.</summary>
         private static string ModifierFor(NoticeKind kind) => kind switch
         {
-            NoticeKind.Warning => "gm-panel--notice-warning",
-            NoticeKind.Error   => "gm-panel--notice-error",
-            _                  => "gm-panel--notice-info",
+            NoticeKind.Warning => "gm-notice--warning",
+            NoticeKind.Error   => "gm-notice--error",
+            _                  => "gm-notice--info",
         };
 
         /// <summary>
@@ -148,8 +185,9 @@ namespace Guildmaster.UI
         {
             var root = new VisualElement();
             root.AddToClassList("gm-panel");
-            root.AddToClassList("gm-panel--dialog");
-            root.AddToClassList("gm-panel--busy");
+            // Габариты — свои (см. .gm-busy), диалоговые здесь означали бы окно 1280 x 860 под одно
+            // слово «Подождите».
+            root.AddToClassList("gm-busy");
             root.pickingMode = PickingMode.Position;   // ожидание перехватывает клики: под ним жать нечего
 
             string text = null;
