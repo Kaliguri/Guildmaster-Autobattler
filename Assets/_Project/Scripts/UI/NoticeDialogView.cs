@@ -115,7 +115,9 @@ namespace Guildmaster.UI
             badge.AddToClassList("gm-notice__badge");
 
             var label = new Label(text);
-            label.AddToClassList("gm-text-caption");
+            // Роль — «основной текст», а не подпись: ярлык несёт суть события целиком, и кегль ему
+            // нужен читаемый. Кегль приходит ТОЛЬКО отсюда: в самом блоке его задавать запрещено.
+            label.AddToClassList("gm-text-body");
             label.AddToClassList("gm-notice__badge-label");
             Components.UiTextCase.Bind(label);
             badge.Add(label);
@@ -195,9 +197,11 @@ namespace Guildmaster.UI
             if (string.IsNullOrEmpty(text)) text = request.TitleFallback;
             if (string.IsNullOrEmpty(text)) text = "Подождите";
 
-            var label = new Label(text);
-            label.AddToClassList("gm-text-title");
-            root.Add(label);
+            // Кольцо и две строки — контролом, а не голой меткой: одна строка сериф-шрифтом посреди
+            // пустой панели не отвечала на вопрос «игра занята или зависла» (правка Макса 20.08.2026:
+            // «оч криво и не пойму что это»).
+            var note = new Components.WaitNote { Title = text, Detail = request.Detail };
+            root.Add(note);
 
             return root;
         }

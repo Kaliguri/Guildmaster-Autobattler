@@ -395,6 +395,8 @@ namespace Guildmaster.UI.Components
                 "gm-notice--info", "gm-notice--warning", "gm-notice--error"),
             New("Ожидание", "gm-busy", UiComponentGroup.Overlays, UiElementState.None, null,
                 "игра занята: подключение, загрузка профиля — кнопок нет намеренно"),
+            New("Кольцо ожидания", "gm-wait", UiComponentGroup.Overlays, UiElementState.None, null,
+                "контрол WaitNote: кольцо и две строки — экран ожидания, заслонка выхода, бут"),
             New("Подсказка", "gm-tooltip", UiComponentGroup.Overlays, UiElementState.None, null,
                 "наведение на что угодно с описанием: релик, стат, понятие",
                 "gm-tooltip--wide", "gm-tooltip--sticky"),

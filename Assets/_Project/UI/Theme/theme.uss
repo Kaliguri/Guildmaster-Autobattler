@@ -32,6 +32,7 @@
 @import url("components/slot.uss");
 @import url("components/tooltip.uss");
 @import url("components/notice.uss");
+@import url("components/wait.uss");
 @import url("components/sheet.uss");
 
 /* --- Экраны. Идут ПОСЛЕ компонентов: экран уточняет общий вид, а не наоборот. --- */

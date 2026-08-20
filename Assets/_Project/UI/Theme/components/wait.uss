@@ -1,0 +1,49 @@
+/* ============================================================================
+ * ОЖИДАНИЕ — кольцо и две строки. Контрол WaitNote.
+ *
+ * Заведён 20.08.2026 по правке Макса: прежний экран ожидания был панелью с одной строкой сериф-
+ * шрифтом («Подключение к игре напарника...»), и в кадре не читался вовсе — «оч криво и не пойму
+ * что это». Занятости не было видно: ни движения, ни признака, что игра чем-то занята.
+ *
+ * Форма кольца — рамка с радиусом в половину стороны: две грани цветом акцента, две тихие. Картинки
+ * здесь нет намеренно, как и у кольца бут-экрана, откуда приём и взят.
+ * ========================================================================== */
+
+.gm-wait {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.gm-wait__ring {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+    border-color: var(--gm-color-border-inner);
+    border-top-color: var(--gm-color-accent);
+    border-right-color: var(--gm-color-accent);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-right: var(--gm-space-3);
+    flex-shrink: 0;
+}
+
+.gm-wait__column {
+    flex-direction: column;
+    justify-content: center;
+}
+
+.gm-wait__title {
+    -unity-text-align: middle-left;
+    white-space: normal;
+}
+
+/* Подробность — второй строкой и тише: она объясняет, ЧЕГО ждём, и не должна спорить с первой.
+   Пустая строка не оставляет зазора: контрол прячет её целиком, а не набирает пробелом. */
+.gm-wait__detail {
+    -unity-text-align: middle-left;
+    white-space: normal;
+    margin-top: var(--gm-space-1);
+}

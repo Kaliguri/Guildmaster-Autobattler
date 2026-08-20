@@ -186,7 +186,8 @@ namespace Guildmaster.Game.Session
 
                 _waiting = new System.Threading.CancellationTokenSource();
                 _busy?.Publish(new Core.Flow.BusyRequest(
-                    "ui.coop.connecting", "Подключение к игре напарника...", _waiting.Token));
+                    "ui.coop.connecting", "Подключение к игре", _waiting.Token,
+                    "Steam ищет маршрут — это занимает несколько секунд."));
                 return;
             }
 

@@ -139,11 +139,24 @@ namespace Guildmaster.Core.Flow
         /// <summary>Ожидание кончилось: экран снимается отменой этого токена.</summary>
         public readonly CancellationToken Until;
 
-        public BusyRequest(string titleKey, string titleFallback, CancellationToken until)
+        /// <summary>
+        /// Подробность строкой ниже: ЧЕГО именно ждём. Пусто — строки не будет.
+        /// </summary>
+        /// <remarks>
+        /// Отдельно от <see cref="TitleFallback"/> по той же причине, что последствие отдельно от
+        /// тела у сообщения: заголовок отвечает «что идёт», подробность — «почему это не мгновенно».
+        /// Слитые в одну строку, они дают то, из-за чего экран и переделывали: фразу, по которой
+        /// непонятно, ждёт игра чего-то или зависла.
+        /// </remarks>
+        public readonly string Detail;
+
+        public BusyRequest(string titleKey, string titleFallback, CancellationToken until,
+                           string detail = null)
         {
             TitleKey      = titleKey;
             TitleFallback = titleFallback;
             Until         = until;
+            Detail        = detail;
         }
     }
 }
