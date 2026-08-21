@@ -193,7 +193,6 @@ namespace Guildmaster.Tests.EditMode.Content
             Assert.That(g.DefaultMusicVolume,  Is.InRange(0f, 1f));
             Assert.That(g.DefaultSfxVolume,    Is.InRange(0f, 1f));
             Assert.GreaterOrEqual(g.VesselItemSlots, 1);
-            Assert.GreaterOrEqual(g.PartyBannerSlots, 1, "Знамён на отряд — минимум одно (ГДД: два).");
             Assert.GreaterOrEqual(g.GuildSize, 1, "Гильдия не может быть пустой (ГДД: четверо).");
             Assert.IsFalse(string.IsNullOrEmpty(g.StartingRelicId), "Стартовая реликвия не задана.");
 

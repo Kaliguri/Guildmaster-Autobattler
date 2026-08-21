@@ -407,32 +407,30 @@ namespace Guildmaster.Guild
             if (list.Remove(itemId)) slot.VesselItemIds = list.ToArray();
         }
 
-        // ── Баннеры отряда (Party-скоуп, лимит GameConfig.PartyBannerSlots) ──
+        // ── Предметы отряда (Party-скоуп) ──
+        // Лимита слотов нет намеренно: Party Item копится весь забег, как реликвии в Slay the Spire
+        // (решение 2026-08-21/2, тем же решением сняты Знамёна и поле GameConfig.PartyBannerSlots).
 
-        /// <summary>Сколько баннеров можно держать активными на весь отряд.</summary>
-        public int MaxPartyBanners => _config.PartyBannerSlots;
-
-        /// <summary>Активные баннеры отряда.</summary>
-        public IReadOnlyList<string> Banners =>
+        /// <summary>Предметы отряда, набранные за забег. Порядок — в каком брали.</summary>
+        public IReadOnlyList<string> PartyItems =>
             Current != null ? Current.PartyItemIds : Array.Empty<string>();
 
-        /// <summary>Взять баннер, если есть свободный слот. false = слотов нет или нет забега.</summary>
-        public bool TryAddBanner(string bannerId)
+        /// <summary>Взять предмет отряда. false = нет забега или пустой id; лимита слотов нет.</summary>
+        public bool AddPartyItem(string itemId)
         {
-            if (Current == null || string.IsNullOrEmpty(bannerId)) return false;
-            if (Current.PartyItemIds.Length >= _config.PartyBannerSlots) return false;
+            if (Current == null || string.IsNullOrEmpty(itemId)) return false;
 
-            var list = new List<string>(Current.PartyItemIds) { bannerId };
+            var list = new List<string>(Current.PartyItemIds) { itemId };
             Current.PartyItemIds = list.ToArray();
             return true;
         }
 
-        /// <summary>Убрать баннер из активных.</summary>
-        public void RemoveBanner(string bannerId)
+        /// <summary>Убрать предмет отряда.</summary>
+        public void RemovePartyItem(string itemId)
         {
             if (Current == null) return;
             var list = new List<string>(Current.PartyItemIds);
-            if (list.Remove(bannerId)) Current.PartyItemIds = list.ToArray();
+            if (list.Remove(itemId)) Current.PartyItemIds = list.ToArray();
         }
 
         private RosterSlot SlotAt(int slotIndex)

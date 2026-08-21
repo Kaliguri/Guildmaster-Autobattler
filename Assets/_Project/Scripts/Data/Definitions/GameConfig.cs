@@ -31,9 +31,6 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Слотов предметов на персонажа (Vessel-скоуп, вики «13» §3.2 ItemData.Scope). GDD 16: 3, не 4.")]
         [SerializeField] private int _vesselItemSlots;
 
-        [Tooltip("Сколько баннеров (Party-скоуп) можно взять активными на весь отряд.")]
-        [SerializeField] private int _partyBannerSlots;
-
         [Tooltip("Стартовая вместимость коллекции реликов гильдии (запас ненадетых, план 11 §5.4).")]
         [SerializeField] private int _relicCapacityBase;
 
@@ -113,7 +110,6 @@ namespace Guildmaster.Data.Definitions
         public float  DefaultMusicVolume  => _defaultMusicVolume;
         public float  DefaultSfxVolume    => _defaultSfxVolume;
         public int    VesselItemSlots     => _vesselItemSlots;
-        public int    PartyBannerSlots    => _partyBannerSlots;
         public int    RelicCapacityBase   => _relicCapacityBase;
         public int    RelicCapacityMax    => _relicCapacityMax;
 
@@ -173,7 +169,6 @@ namespace Guildmaster.Data.Definitions
             c._defaultMusicVolume  = 0.8f;
             c._defaultSfxVolume    = 1f;
             c._vesselItemSlots     = 3;
-            c._partyBannerSlots    = 2;
             c._relicCapacityBase   = 12;
             c._relicCapacityMax    = 16;
             c._startGold           = 100;

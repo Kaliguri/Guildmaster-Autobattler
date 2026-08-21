@@ -149,23 +149,29 @@ namespace Guildmaster.Tests.EditMode.Run
             }
         }
 
+        /// <summary>
+        /// Предметы отряда копятся весь забег БЕЗ лимита слотов (решение 2026-08-21/2: Знамёна сняты,
+        /// вместе с ними ушло поле GameConfig.PartyBannerSlots). Тест держит именно отсутствие потолка —
+        /// вернуть лимит молча нельзя, это смена жанра сущности: коллекция снова станет выбором из двух.
+        /// </summary>
         [Test]
-        public void PartyBanners_RespectPartyLimit()
+        public void PartyItems_AccumulateWithoutSlotLimit()
         {
-            var config = GameConfig.CreateDefault(); // заготовка: PartyBannerSlots = 2
+            var config = GameConfig.CreateDefault();
             try
             {
                 var svc = new RunStateService(new JsonFileSaveService(), config, new FixedProfileService());
                 svc.NewRun(1L, new[] { new RosterSlot() });
 
-                for (int i = 0; i < config.PartyBannerSlots; i++)
-                    Assert.IsTrue(svc.TryAddBanner("item.banner" + i), "влезает до лимита отряда");
+                const int many = 12;
+                for (int i = 0; i < many; i++)
+                    Assert.IsTrue(svc.AddPartyItem("item.party" + i), "предмет отряда берётся без ограничения");
 
-                Assert.AreEqual(config.PartyBannerSlots, svc.Banners.Count);
-                Assert.IsFalse(svc.TryAddBanner("item.banner_overflow"), "лимит баннеров → отказ");
+                Assert.AreEqual(many, svc.PartyItems.Count, "лимита слотов у Party Item нет");
 
-                svc.RemoveBanner("item.banner0");
-                Assert.IsTrue(svc.TryAddBanner("item.banner_new"), "освободился слот баннера");
+                svc.RemovePartyItem("item.party0");
+                Assert.AreEqual(many - 1, svc.PartyItems.Count, "снятый предмет уходит из набора");
+                Assert.IsTrue(svc.AddPartyItem("item.party_new"), "после снятия можно брать дальше");
             }
             finally
             {

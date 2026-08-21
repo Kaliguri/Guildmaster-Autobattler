@@ -99,8 +99,8 @@ SORT file.name ASC
 ## 40 · Контент (`40-content/`)
 
 - [[relics-overview|Content - Relics]] — редкость, типы, боевой класс; Судьбы и перки. Карточки — [[relics/index|Relic - Catalog]].
-- [[items-banners|Content - Items & Banners]] — предметы (Vessel) и Знамёна (Party): слоты, авто-триггеры.
-  Карточки — [[gdd/40-content/items/fey-cloak|Fey Cloak]] · [[gdd/40-content/items/common-items|Common Items]] · [[banners|Content - Banners]].
+- [[items-banners|Content - Items]] — предмет «Сосуда» (Vessel, 3 слота) и предмет отряда (Party, копится без лимита): авто-триггеры, редкость.
+  Карточки — [[gdd/40-content/items/fey-cloak|Fey Cloak]] · [[gdd/40-content/items/common-items|Common Items]]. Знамёна сняты 2026-08-21 — [[banners|надгробие]], дизайн в [[gdd/00-meta/legacy|Legacy]].
 - **Методички авторинга** — [[gdd/40-content/authoring/index|Content - Authoring]]: как заводить
   [[gdd/40-content/authoring/unit|юнита]], [[gdd/40-content/authoring/unit-relic|реликвию]],
   [[gdd/40-content/authoring/unit-enemy|врага]], [[gdd/40-content/authoring/effect|эффект]],
