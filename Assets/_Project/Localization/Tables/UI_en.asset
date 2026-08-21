@@ -343,6 +343,74 @@ MonoBehaviour:
     m_Localized: Create a profile or pick a slot on the left
     m_Metadata:
       m_Items: []
+  - m_Id: 15001494158041088
+    m_Localized: Profile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372736
+    m_Localized: Switch profile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372737
+    m_Localized: Which profile you play. Time, guilds and unlocks.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372738
+    m_Localized: Customise profile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372739
+    m_Localized: 'How others see you: name, colour, cursor.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372740
+    m_Localized: Click to choose
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372741
+    m_Localized: Select
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372742
+    m_Localized: "Another profile \u2014 press Select"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372743
+    m_Localized: Time played
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372744
+    m_Localized: Last played
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372745
+    m_Localized: never yet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372746
+    m_Localized: Guilds
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372747
+    m_Localized: Runs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372748
+    m_Localized: Wins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372749
+    m_Localized: Best run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372750
+    m_Localized: '{0} nodes'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15001494208372751
+    m_Localized: Unlocks
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

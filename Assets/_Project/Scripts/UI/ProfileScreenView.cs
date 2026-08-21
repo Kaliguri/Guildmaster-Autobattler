@@ -29,11 +29,16 @@ namespace Guildmaster.UI
             public readonly string Name;
             public readonly bool   IsActive;
 
-            public SlotEntry(string id, string name, bool isActive)
+            /// <summary>Чем профиль жил: наиграно, дома, забеги, открытия. У пустого слота — ноль.</summary>
+            public readonly Core.Persistence.ProfileStats Stats;
+
+            public SlotEntry(string id, string name, bool isActive,
+                             Core.Persistence.ProfileStats stats = default)
             {
                 Id       = id;
                 Name     = name;
                 IsActive = isActive;
+                Stats    = stats;
             }
 
             /// <summary>Пустой слот: место есть, профиля нет.</summary>
@@ -49,6 +54,7 @@ namespace Guildmaster.UI
             IReadOnlyList<CursorSkinData> skins,
             int colorCount,
             bool canLeave,
+            bool customize,
             Func<string, string> localize,
             Action<string> onSelect,
             Action onCreate,
@@ -69,6 +75,10 @@ namespace Guildmaster.UI
             var title      = root.Q<Label>("profile-title");
             var slotsCap   = root.Q<Label>("slots-caption");
             var slotList   = root.Q<VisualElement>("slot-list");
+            var sideSelect = root.Q<VisualElement>("side-select");
+            var sideCustom = root.Q<VisualElement>("side-customize");
+            var statList   = root.Q<VisualElement>("stat-list");
+            var pick       = root.Q<Button>("btn-pick");
             var panelTitle = root.Q<Label>("panel-title");
             var panelMeta  = root.Q<Label>("panel-meta");
             var drop       = root.Q<Button>("btn-delete");
@@ -83,7 +93,14 @@ namespace Guildmaster.UI
             var save       = root.Q<Button>("btn-save");
             var back       = root.Q<Button>("btn-back");
 
-            if (title != null)     title.text     = L("ui.profile.title", "Профиль");
+            // Показывается РОВНО ОДНО лицо: экран один, вопросов два, и смешивать их нельзя.
+            if (sideSelect != null) sideSelect.style.display = customize ? DisplayStyle.None : DisplayStyle.Flex;
+            if (sideCustom != null) sideCustom.style.display = customize ? DisplayStyle.Flex : DisplayStyle.None;
+
+            if (title != null)
+                title.text = customize
+                    ? L("ui.profile.hub.customize.title", "Настроить профиль")
+                    : L("ui.profile.hub.select.title", "Сменить профиль");
             if (slotsCap != null)  slotsCap.text  = L("ui.profile.slots", "Слоты");
             if (identCap != null)  identCap.text  = L("ui.profile.identity", "Как меня видят");
             if (colorCap != null)  colorCap.text  = L("ui.profile.color", "Цвет");
@@ -93,44 +110,70 @@ namespace Guildmaster.UI
             if (steamToggle != null)
                 steamToggle.LabelText = L("ui.profile.name.steam", "Брать имя из Steam");
 
-            BuildSlots(slotList, slots, slotLimit, L, onSelect, onCreate);
-
-            // ── Панель выбранного ───────────────────────────────────────────
-            // Выбранный в списке и активный профиль — одно и то же: выбор слота МЕНЯЕТ активный, а
-            // не подсвечивает строку. Заводить отдельную «подсветку без применения» значило бы
-            // спрашивать игрока дважды.
-            SlotEntry active = default;
-            bool hasActive = false;
+            // ── ЛИЦО «ВЫБОР»: список, статистика подсвеченного, две кнопки ──
+            // ПОДСВЕТКА И ПРИМЕНЕНИЕ РАЗВЕДЕНЫ (заказ Макса 21.08.2026: «должны быть кнопки выбрать
+            // и удалить»). Клик по слоту показывает его статистику, играть им начинает только
+            // «Выбрать»: иначе посмотреть чужой слот нельзя, не сменив свой.
+            string highlighted = null;
             for (int i = 0; i < slots.Count; i++)
             {
-                if (!slots[i].IsActive || slots[i].IsEmpty) continue;
-                active = slots[i];
-                hasActive = true;
-                break;
+                if (slots[i].IsEmpty) continue;
+                if (slots[i].IsActive) { highlighted = slots[i].Id; break; }
+                highlighted ??= slots[i].Id;
             }
 
-            if (panelTitle != null)
-                panelTitle.text = hasActive
-                    ? active.Name
-                    : L("ui.profile.none.title", "Профиль не выбран");
+            void ShowSide(string id)
+            {
+                highlighted = id;
 
-            if (panelMeta != null)
-                panelMeta.text = hasActive
-                    ? L("ui.profile.meta.active", "Текущий профиль")
-                    : L("ui.profile.none.hint", "Создайте профиль или выберите слот слева");
+                SlotEntry shown = default;
+                bool found = false;
+                for (int i = 0; i < slots.Count; i++)
+                {
+                    if (slots[i].IsEmpty || slots[i].Id != id) continue;
+                    shown = slots[i];
+                    found = true;
+                    break;
+                }
 
-            // Удаление относится к тому, что показано СПРАВА. Без профиля кнопки нет вовсе — гасить
-            // её значило бы предлагать действие, которого не существует.
+                if (panelTitle != null)
+                    panelTitle.text = found ? shown.Name : L("ui.profile.none.title", "Профиль не выбран");
+
+                if (panelMeta != null)
+                    panelMeta.text = !found
+                        ? L("ui.profile.none.hint", "Создайте профиль или выберите слот слева")
+                        : shown.IsActive
+                            ? L("ui.profile.meta.active", "Текущий профиль")
+                            : L("ui.profile.meta.other", "Другой профиль — нажмите «Выбрать»");
+
+                BuildStats(statList, found ? shown.Stats : default, found, L);
+
+                // Кнопки относятся к ПОДСВЕЧЕННОМУ слоту. У активного «Выбрать» гасится: нажимать
+                // нечего, а исчезающая кнопка дёргала бы ряд при каждом переключении.
+                if (pick != null)
+                {
+                    pick.style.display = found ? DisplayStyle.Flex : DisplayStyle.None;
+                    pick.SetEnabled(found && !shown.IsActive);
+                }
+
+                if (drop != null) drop.style.display = found ? DisplayStyle.Flex : DisplayStyle.None;
+            }
+
+            BuildSlots(slotList, slots, slotLimit, L, ShowSide, onCreate);
+
+            if (pick != null)
+            {
+                pick.text = L("ui.profile.pick", "Выбрать");
+                pick.clicked += () => { if (highlighted != null) onSelect?.Invoke(highlighted); };
+            }
+
             if (drop != null)
             {
-                drop.text = L("ui.profile.delete", "Удалить профиль");
-                if (hasActive)
-                {
-                    string id = active.Id;
-                    drop.clicked += () => onDelete?.Invoke(id);
-                }
-                else drop.style.display = DisplayStyle.None;
+                drop.text = L("ui.profile.delete", "Удалить");
+                drop.clicked += () => { if (highlighted != null) onDelete?.Invoke(highlighted); };
             }
+
+            ShowSide(highlighted);
 
             // ── Идентичность ────────────────────────────────────────────────
             bool useSteam = identity.UseSteamName;
@@ -170,8 +213,13 @@ namespace Guildmaster.UI
 
             // ── Действия ────────────────────────────────────────────────────
             if (save != null)
+            {
+                // «Сохранить» относится к идентичности, поэтому в лице выбора его нет вовсе:
+                // сохранять там нечего, а погашенная кнопка читалась бы как поломка.
+                save.style.display = customize ? DisplayStyle.Flex : DisplayStyle.None;
                 save.clicked += () => onSave?.Invoke(
                     new ProfileIdentity(typedName, useSteam, colorIndex, skinId));
+            }
 
             // Без профиля уходить некуда — тогда «Назад» не показываем вовсе, а не гасим: погашенная
             // кнопка читается как «сломалось», отсутствующая — как «сначала выбери слот».
@@ -182,6 +230,63 @@ namespace Guildmaster.UI
             }
 
             return screen;
+        }
+
+        /// <summary>
+        /// Статистика подсвеченного профиля: строка «что» — «сколько».
+        /// </summary>
+        /// <remarks>
+        /// Порядок строк — от «сколько прожито» к «чего достигнуто»: сперва время и дата, потом
+        /// дома и забеги, потом победы и открытия. Нулевые строки НЕ прячутся: у нового профиля
+        /// пустая статистика — тоже ответ, а исчезающие строки читаются как поломка экрана.
+        /// </remarks>
+        private static void BuildStats(VisualElement list, in Core.Persistence.ProfileStats stats,
+                                       bool hasProfile, Func<string, string, string> L)
+        {
+            if (list == null) return;
+            list.Clear();
+            if (!hasProfile) return;
+
+            void Row(string caption, string value)
+            {
+                var row = new VisualElement();
+                row.AddToClassList("gm-entry__stat");
+
+                var name = new Label(caption);
+                name.AddToClassList("gm-text-caption");
+                name.AddToClassList("gm-text--muted");
+                row.Add(name);
+
+                var amount = new Label(value);
+                amount.AddToClassList("gm-text-body");
+                row.Add(amount);
+
+                list.Add(row);
+            }
+
+            Row(L("ui.profile.stat.played", "Наиграно"), Duration(stats.PlayedSeconds));
+            Row(L("ui.profile.stat.last", "Последняя игра"),
+                stats.LastPlayedUtc == default
+                    ? L("ui.profile.stat.never", "ещё ни разу")
+                    : stats.LastPlayedUtc.ToLocalTime().ToString("dd.MM.yyyy"));
+            Row(L("ui.profile.stat.guilds", "Домов"), stats.Guilds.ToString());
+            Row(L("ui.profile.stat.runs", "Забегов"), stats.RunsFinished.ToString());
+            Row(L("ui.profile.stat.wins", "Побед"), stats.RunsWon.ToString());
+            Row(L("ui.profile.stat.best", "Лучший забег"),
+                stats.BestRunNodes > 0
+                    ? string.Format(L("ui.profile.stat.best.value", "{0} узлов"), stats.BestRunNodes)
+                    : "—");
+            Row(L("ui.profile.stat.unlocks", "Открытий"), stats.Unlocks.ToString());
+        }
+
+        /// <summary>Часы и минуты. Секунды не показываем: наигранное меряется вечерами, не секундами.</summary>
+        private static string Duration(long seconds)
+        {
+            if (seconds <= 0) return "—";
+
+            long hours = seconds / 3600;
+            long minutes = (seconds % 3600) / 60;
+            return hours > 0 ? $"{hours} ч {minutes} мин" : $"{minutes} мин";
         }
 
         /// <summary>

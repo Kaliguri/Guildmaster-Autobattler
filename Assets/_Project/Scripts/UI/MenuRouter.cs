@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -928,14 +928,35 @@ namespace Guildmaster.UI
                        ScreenKind.Modal, scrimless: _mainMenuOpen);
         }
 
-        private VisualElement BuildProfileScreen(bool required, Action onClosed)
+        /// <summary>
+        /// Развилка «Профиль»: две карточки — сменить профиль или настроить его.
+        /// </summary>
+        /// <remarks>
+        /// Заказ Макса 21.08.2026 по рефу Heroes Olden Era: кнопка меню открывает не список, а две
+        /// крупные двери. Обе ведут на ОДИН экран в разных лицах — разметка у них общая, а вопрос
+        /// разный.
+        /// </remarks>
+        private VisualElement BuildProfileHub()
+        {
+            return FillRoot(ProfileHubView.Build(
+                key => _loc?.GetString(key),
+                onSelectProfile: () => PushScreen(
+                    () => BuildProfileScreen(required: false, onClosed: null, customize: false),
+                    ScreenKind.Modal, scrimless: true),
+                onCustomize: () => PushScreen(
+                    () => BuildProfileScreen(required: false, onClosed: null, customize: true),
+                    ScreenKind.Modal, scrimless: true),
+                onBack: Pop));
+        }
+
+        private VisualElement BuildProfileScreen(bool required, Action onClosed, bool customize = false)
         {
             void Rebuild()
             {
                 // Список слотов и активный профиль поменялись — экран пересобирается целиком. Точечная
                 // правка строк стоила бы своего кода ради экрана, который открывают раз в сессию.
                 Pop();
-                PushScreen(() => BuildProfileScreen(required, onClosed), ScreenKind.Modal, scrimless: _mainMenuOpen);
+                PushScreen(() => BuildProfileScreen(required, onClosed, customize), ScreenKind.Modal, scrimless: _mainMenuOpen);
             }
 
             var slots = new List<ProfileScreenView.SlotEntry>();
@@ -945,7 +966,7 @@ namespace Guildmaster.UI
                 for (int i = 0; i < _profiles.Profiles.Count; i++)
                 {
                     Core.Persistence.ProfileSummary p = _profiles.Profiles[i];
-                    slots.Add(new ProfileScreenView.SlotEntry(p.Id, p.Name, p.Id == activeId));
+                    slots.Add(new ProfileScreenView.SlotEntry(p.Id, p.Name, p.Id == activeId, p.Stats));
                 }
             }
 
@@ -960,6 +981,7 @@ namespace Guildmaster.UI
                 _cursorSkins?.Skins,
                 ProfileColorCount,
                 canLeave,
+                customize,
                 key => _loc?.GetString(key),
                 onSelect: id => { _profiles?.SelectProfile(id); Rebuild(); },
                 onCreate: () =>
@@ -1683,7 +1705,7 @@ namespace Guildmaster.UI
                         // Настройки просят стол ЯВНО: за главным меню может идти живой бой, и он гасит задник —
                         // для меню это верно (бой ради того и заведён), для настроек нет. См. RequiresBackdrop.
                         onSettings: () => OpenOverMenu(BuildSettingsScreen, requiresBackdrop: true),
-                        onProfile:  () => OpenOverMenu(() => BuildProfileScreen(required: false, onClosed: null)),
+                        onProfile:  () => OpenOverMenu(BuildProfileHub),
                         onQuit:     () => { ShowQuitVeil(); resolve(MainMenuOutcome.Quit); },
                         canJoin:    _coop?.IsSteamReady ?? false);
                 });

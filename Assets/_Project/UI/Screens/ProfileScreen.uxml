@@ -1,52 +1,54 @@
-﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <gm:PanelFrame name="profile-frame" corner="0" />
             <ui:Label name="profile-title" text="Профиль" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
-            <!-- СПИСОК СЛЕВА, ПАНЕЛЬ ВЫБРАННОГО СПРАВА — вариант В, принят Максом 05.08.2026. Тот же
-                 приём стоит на экране гильдии: два экрана входа идут подряд, и игрок учит ОДИН
-                 приём, а не два. Раскладку держат классы gm-entry__* — общий каркас обоих экранов
-                 (components/entry.uss). Блочного класса .gm-entry нет намеренно: своего вида у
-                 каркаса не было бы, а пустое правило гейт мёртвого USS считает мусором. -->
-            <ui:VisualElement class="gm-entry__body">
+            <!-- ДВА ЛИЦА ОДНОГО ЭКРАНА, и показывается ровно одно (заказ Макса 21.08.2026: кнопка
+                 «Профиль» ведёт на две карточки — «Сменить» и «Настроить»). Раньше обе задачи
+                 стояли рядом, и правая колонка отвечала сразу на два разных вопроса: «каким
+                 профилем играю» и «как меня видят». -->
 
-                <!-- Левая колонка: слоты. Пустой показывается наравне с занятыми — иначе список не
-                     отвечает на вопрос «а можно ещё?». -->
+            <!-- ЛИЦО 1 — ВЫБОР: слоты слева, статистика выбранного справа, действия под ней. -->
+            <ui:VisualElement name="side-select" class="gm-entry__body">
                 <ui:VisualElement class="gm-entry__list">
                     <ui:Label name="slots-caption" text="Слоты" class="gm-text-caption gm-text--muted" />
                     <ui:ScrollView name="slot-list" class="gm-entry__list-scroll" />
                 </ui:VisualElement>
 
-                <!-- Правая колонка: выбранный профиль целиком. Идентичность живёт ЗДЕСЬ, а не на
-                     своём экране: вопрос у игрока один — «кем я захожу», и разводить слот с ником по
-                     двум экранам значит скрыть, что они меняются вместе. -->
                 <ui:VisualElement class="gm-entry__panel">
                     <ui:Label name="panel-title" class="gm-text-subtitle gm-entry__panel-title" />
                     <ui:Label name="panel-meta" class="gm-text-caption gm-text--muted" />
-
                     <ui:VisualElement class="gm-divider" />
 
-                    <ui:ScrollView class="gm-panel__body">
-                        <ui:Label name="identity-caption" text="Как меня видят" class="gm-text-caption gm-text--muted" />
+                    <!-- Статистика: строки «что» — «сколько». Список строится кодом, потому что
+                         число строк зависит от того, что профиль успел накопить. -->
+                    <ui:ScrollView name="stat-list" class="gm-panel__body" />
 
-                        <gm:ToggleRow name="toggle-steam-name" label-text="Брать имя из Steam" value="true" />
-                        <ui:TextField name="field-name" class="gm-profile__name" />
-                        <ui:Label name="name-hint" class="gm-text-caption gm-text--muted gm-profile__hint" />
-
-                        <ui:Label name="color-caption" text="Цвет" class="gm-text-caption gm-text--muted" />
-                        <ui:VisualElement name="color-row" class="gm-profile__colors" />
-
-                        <ui:Label name="cursor-caption" text="Курсор" class="gm-text-caption gm-text--muted" />
-                        <ui:VisualElement name="cursor-row" class="gm-profile__cursors" />
-                    </ui:ScrollView>
-
-                    <!-- УДАЛЕНИЕ ЖИВЁТ ПОД ПАНЕЛЬЮ ВЫБРАННОГО, а не внутри карточки списка: так
-                         устроено у обоих рефов класса, и это не стиль, а ответ на вопрос «что именно
-                         удалится» — кнопка физически принадлежит одному профилю. -->
-                    <gm:PlateButton name="btn-delete" text="Удалить профиль" class="gm-button gm-entry__danger" />
+                    <ui:VisualElement name="select-actions" class="gm-entry__actions">
+                        <gm:PlateButton name="btn-pick" text="Выбрать" class="gm-button gm-button--primary" />
+                        <gm:PlateButton name="btn-delete" text="Удалить" class="gm-button" />
+                    </ui:VisualElement>
                 </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- ЛИЦО 2 — НАСТРОЙКА: только идентичность активного профиля. Списка слотов здесь нет
+                 намеренно: сменить профиль отсюда нельзя, для этого своя дверь. -->
+            <ui:VisualElement name="side-customize" class="gm-entry__single">
+                <ui:ScrollView class="gm-panel__body">
+                    <ui:Label name="identity-caption" text="Как меня видят" class="gm-text-caption gm-text--muted" />
+
+                    <gm:ToggleRow name="toggle-steam-name" label-text="Брать имя из Steam" value="true" />
+                    <ui:TextField name="field-name" class="gm-profile__name" />
+                    <ui:Label name="name-hint" class="gm-text-caption gm-text--muted gm-profile__hint" />
+
+                    <ui:Label name="color-caption" text="Цвет" class="gm-text-caption gm-text--muted" />
+                    <ui:VisualElement name="color-row" class="gm-profile__colors" />
+
+                    <ui:Label name="cursor-caption" text="Курсор" class="gm-text-caption gm-text--muted" />
+                    <ui:VisualElement name="cursor-row" class="gm-profile__cursors" />
+                </ui:ScrollView>
             </ui:VisualElement>
 
             <ui:VisualElement class="gm-divider" />
