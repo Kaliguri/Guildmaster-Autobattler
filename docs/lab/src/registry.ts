@@ -99,6 +99,13 @@ export const PAGES: PageDef[] = [
     load: () => import("./sections/gamefeel-effects.js")
   },
   {
+    id: "ghosts",
+    area: "gamefeel",
+    title: "Призрачные копии",
+    blurb: "Шлейф за рывком и удар по иллюзии на уклонении: пять вариаций хвоста и пять способов разрушить копию.",
+    load: () => import("./sections/gamefeel-ghosts.js")
+  },
+  {
     id: "zones",
     area: "gamefeel",
     title: "Зоны",
