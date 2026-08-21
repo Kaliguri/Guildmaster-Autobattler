@@ -144,7 +144,7 @@ MonoBehaviour:
   - Token: --gm-color-rail
     Color: {r: 0.80784315, g: 0.8862745, b: 0.8784314, a: 0.41960785}
   - Token: --gm-color-scrim
-    Color: {r: 0, g: 0, b: 0, a: 0.41960785}
+    Color: {r: 0, g: 0, b: 0, a: 0.6}
   - Token: --gm-color-surface-accent
     Color: {r: 0.0627451, g: 0.21960784, b: 0.23529412, a: 1}
   - Token: --gm-color-surface-accent-active
