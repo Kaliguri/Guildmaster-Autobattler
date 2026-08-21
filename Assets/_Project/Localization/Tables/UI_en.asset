@@ -411,6 +411,10 @@ MonoBehaviour:
     m_Localized: Unlocks
     m_Metadata:
       m_Items: []
+  - m_Id: 15031811661094912
+    m_Localized: Click to begin
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

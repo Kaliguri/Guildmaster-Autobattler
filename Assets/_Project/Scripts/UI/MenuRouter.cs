@@ -82,7 +82,6 @@ namespace Guildmaster.UI
         private VisualTreeAsset _campUxml;
         private VisualTreeAsset _outcomeUxml;
         private VisualTreeAsset _mainMenuUxml;
-        private VisualTreeAsset _newGameUxml;
         private VisualTreeAsset _guildSelectUxml;
         private VisualTreeAsset _hubUxml;
         private VisualTreeAsset _profileUxml;
@@ -249,10 +248,9 @@ namespace Guildmaster.UI
             VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null,
             VisualTreeAsset titleCardUxml = null,
             VisualTreeAsset devConsoleUxml = null, VisualTreeAsset devLogUxml = null,
-            VisualTreeAsset newGameUxml = null, VisualTreeAsset profileUxml = null,
+            VisualTreeAsset profileUxml = null,
             VisualTreeAsset guildSelectUxml = null, VisualTreeAsset hubUxml = null)
         {
-            _newGameUxml = newGameUxml;
             _guildSelectUxml = guildSelectUxml;
             _hubUxml = hubUxml;
             _profileUxml = profileUxml;
@@ -743,10 +741,7 @@ namespace Guildmaster.UI
         /// </param>
         private VisualElement BuildNewGameScreen(Action<GameStartRequest> onStart, Action<Func<VisualElement>> pushOver)
         {
-            if (CannotShow("Создать игру (_newGameScreen)", _newGameUxml)) return new VisualElement();
-
             return NewGameScreenView.Build(
-                _newGameUxml,
                 _coop?.IsSteamReady ?? false,
                 key => _loc?.GetString(key),
                 onPick: (mode, lobby) =>

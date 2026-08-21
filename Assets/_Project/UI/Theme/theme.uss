@@ -48,7 +48,6 @@
 @import url("screens/chest.uss");
 @import url("screens/outcome.uss");
 @import url("screens/mainmenu.uss");
-@import url("screens/newgame.uss");
 @import url("screens/guilds.uss");
 @import url("screens/hub.uss");
 @import url("screens/boot.uss");

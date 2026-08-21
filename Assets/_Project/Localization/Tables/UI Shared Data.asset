@@ -587,6 +587,10 @@ MonoBehaviour:
     m_Key: ui.profile.stat.unlocks
     m_Metadata:
       m_Items: []
+  - m_Id: 15031811661094912
+    m_Key: ui.newgame.hint
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

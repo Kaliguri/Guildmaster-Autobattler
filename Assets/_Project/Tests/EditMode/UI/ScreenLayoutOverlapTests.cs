@@ -70,7 +70,6 @@ namespace Guildmaster.Tests.EditMode.UI
         {
             rootVisualElement.Clear();
             rootVisualElement.Add(Guildmaster.UI.NewGameScreenView.Build(
-                Uxml("Assets/_Project/UI/Screens/NewGameScreen.uxml"),
                 steamReady: false,   // худший случай: под галочкой лобби ещё и строка «Steam не запущен»
                 localize: null, onPick: null, onBack: null));
             AssertNoOverlap("NewGameScreen");
