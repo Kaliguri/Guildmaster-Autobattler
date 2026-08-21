@@ -70,6 +70,7 @@ namespace Guildmaster.UI.Components
         private static readonly CustomStyleProperty<float> StrokeWidthProp = new("--gm-plate-stroke-width");
         private static readonly CustomStyleProperty<string> StrokeModeProp = new("--gm-plate-stroke-mode");
         private static readonly CustomStyleProperty<float> ChamferProp = new("--gm-plate-chamfer");
+        private static readonly CustomStyleProperty<float> CapProp = new("--gm-plate-cap");
 
         private readonly Label _label;
 
@@ -90,6 +91,12 @@ namespace Guildmaster.UI.Components
         private float _strokeWidth = 2f;
         private PlateStroke _strokeMode = PlateStroke.Full;
         private float _chamfer = 10f;
+
+        // Размер КОНЦА пластины в пикселях; 0 — концов нет. Заведено 21.08.2026 по разбору Heroes
+        // Olden Era: там каждая кнопка меню кончается шевроном с обеих сторон, и именно эта мелочь
+        // отличает «сделанный» интерфейс от набора прямоугольников. Своего цвета у конца нет — он
+        // берёт цвет обводки, потому что это её продолжение, а не отдельная деталь.
+        private float _cap;
 
         /// <summary>
         /// Подпись кнопки. Перенаправлена в дочерний <see cref="Label"/> — база остаётся с пустым
@@ -153,6 +160,7 @@ namespace Guildmaster.UI.Components
             if (style.TryGetValue(StrokeProp, out Color stroke)) _stroke = stroke;
             if (style.TryGetValue(StrokeWidthProp, out float width)) _strokeWidth = width;
             if (style.TryGetValue(ChamferProp, out float chamfer)) _chamfer = Mathf.Max(0f, chamfer);
+            if (style.TryGetValue(CapProp, out float cap)) _cap = Mathf.Max(0f, cap);
 
             // Второй цвет сбрасывается ЯВНО, когда правило его не задаёт: без этого пластина,
             // унаследовавшая градиент от одного состояния, тащила бы его в состояние со сплошной
@@ -247,6 +255,54 @@ namespace Guildmaster.UI.Components
                     p.Stroke();
                 }
             }
+
+            if (_cap > 0f && _stroke.a > 0f) DrawCaps(ctx, w, h);
+        }
+
+        /// <summary>
+        /// Концы пластины: по шеврону у левой и правой кромки, остриями внутрь.
+        /// </summary>
+        /// <remarks>
+        /// <b>Зачем.</b> Разбор Heroes Olden Era 21.08.2026: у него каждая кнопка меню кончается
+        /// такой парой, и это единственное отличие его кнопки от нашей при равных размерах и
+        /// одинаковой фаске. Приём дешёвый — три отрезка на конец, — а видно его на каждом экране,
+        /// где есть кнопки.
+        /// <para><b>Остриями ВНУТРЬ, а не наружу</b>: наружу они читаются стрелками «сюда», то есть
+        /// обещают перемещение, которого кнопка не делает. Внутрь — это обрамление подписи, взгляд
+        /// сходится к центру пластины.</para>
+        /// <para>Размер приходит из USS (<c>--gm-plate-cap</c>) и по умолчанию НУЛЕВОЙ: концы — не
+        /// повадка всякой кнопки, а решение темы для тех мест, где кнопка крупная и одна в ряду.
+        /// На мелкой кнопке шеврон съедает подпись.</para>
+        /// </remarks>
+        private void DrawCaps(MeshGenerationContext ctx, float w, float h)
+        {
+            float size = Mathf.Min(_cap, h * 0.30f);
+            if (size <= 0.5f) return;
+
+            // Отступ от кромки — фаска плюс половина размера: иначе шеврон садится на скос угла и
+            // ломает силуэт, ради которого фаска и заведена.
+            float pad = Mathf.Min(_chamfer, Mathf.Min(w, h) * 0.5f) + size * 0.5f;
+            float midY = h * 0.5f;
+
+            Painter2D p = ctx.painter2D;
+            p.strokeColor = new Color(_stroke.r, _stroke.g, _stroke.b, _stroke.a * 0.85f);
+            p.lineWidth = Mathf.Max(1f, _strokeWidth * 0.75f);
+            p.lineJoin = LineJoin.Miter;
+            p.lineCap = LineCap.Butt;
+
+            // Левый: остриё смотрит вправо, к подписи.
+            p.BeginPath();
+            p.MoveTo(new Vector2(pad, midY - size));
+            p.LineTo(new Vector2(pad + size * 0.7f, midY));
+            p.LineTo(new Vector2(pad, midY + size));
+            p.Stroke();
+
+            // Правый — зеркально.
+            p.BeginPath();
+            p.MoveTo(new Vector2(w - pad, midY - size));
+            p.LineTo(new Vector2(w - pad - size * 0.7f, midY));
+            p.LineTo(new Vector2(w - pad, midY + size));
+            p.Stroke();
         }
 
         /// <summary>
