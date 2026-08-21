@@ -48,44 +48,46 @@ namespace Guildmaster.Balance.Editor
         /// <summary>База сидов. Маршрут и каждый бой получают свой производный сид — детерминированно.</summary>
         private const ulong SeedBase = 1UL;
 
-        // Ёмкости слотов ран (ГДД, `proposed` до этого самого замера).
-        private const int BruiseSlots = 3;
-        private const int WoundSlots  = 2;
-        private const int MaimSlots   = 1;
-
-        /// <summary>Ступень раны. Порядок значим: переполнение поднимает на следующую.</summary>
-        private enum WoundGrade { Bruise, Wound, Maim, RetiredFromRun }
-
         /// <summary>
-        /// Лист ран одного бойца — модель ГДД, воспроизведённая ДЛЯ ЗАМЕРА.
+        /// Лист ран одного бойца — тонкая обёртка над ИГРОВЫМ каскадом <see cref="InjuryCascade"/>.
         /// </summary>
         /// <remarks>
-        /// Игрового кода ран пока нет, поэтому владельцем правила здесь временно выступает бенч.
-        /// Когда раны появятся в движке, владельцем станет он, а это место обязано начать звать его —
-        /// иначе у каскада станет два владельца и они разойдутся.
+        /// Своей модели правила здесь нет намеренно. Первая версия бенча несла собственную копию
+        /// каскада (игрового кода ран тогда ещё не было), и это ровно тот случай, когда две копии
+        /// расходятся молча: стенд продолжал бы показывать числа игры, в которую мы не играем.
+        /// Ёмкости слотов тоже спрашиваются у каскада, а не объявляются рядом.
         /// </remarks>
         private struct WoundSheet
         {
-            public int Bruises;
-            public int Wounds;
-            public int Maims;
+            private InjurySlots _slots;
+
+            /// <summary>Слоты кончились: боец выбыл из забега и ран больше не принимает.</summary>
             public bool Retired;
 
+            public int Bruises => _slots.Bruises;
+            public int Wounds  => _slots.Wounds;
+            public int Maims   => _slots.Maimings;
+
+            /// <summary>Есть ли ещё место под мелкую — по нему бенч выбирает, кому отдать рану.</summary>
+            public bool HasFreeBruiseSlot => !Retired && _slots.Free(InjuryGrade.Bruise) > 0;
+
             /// <summary>
-            /// Положить мелкую рану. Переполнение НЕ теряется, а поднимает ступень: мелкая при полных
-            /// мелких становится средней, средняя при полных средних — тяжёлой, тяжёлая при занятом
-            /// слоте уводит бойца из забега. В этом весь смысл системы: цена растёт скачком.
+            /// Положить мелкую рану и вернуть ступень, которая легла на самом деле; <c>null</c> —
+            /// класть было некуда и боец выбыл из забега.
             /// </summary>
-            public WoundGrade Add()
+            public InjuryGrade? Add()
             {
-                if (Retired) return WoundGrade.RetiredFromRun;
+                if (Retired) return null;
 
-                if (Bruises < BruiseSlots) { Bruises++; return WoundGrade.Bruise; }
-                if (Wounds  < WoundSlots)  { Wounds++;  return WoundGrade.Wound; }
-                if (Maims   < MaimSlots)   { Maims++;   return WoundGrade.Maim; }
+                InjuryOutcome outcome = InjuryCascade.Resolve(_slots, InjuryGrade.Bruise);
+                if (outcome.Retired)
+                {
+                    Retired = true;
+                    return null;
+                }
 
-                Retired = true;
-                return WoundGrade.RetiredFromRun;
+                _slots = _slots.With(outcome.Grade);
+                return outcome.Grade;
             }
         }
 
@@ -276,16 +278,16 @@ namespace Guildmaster.Balance.Editor
                     int target = PickWoundTarget(sheets, d);
                     if (target < 0) break;
 
-                    WoundGrade grade = sheets[target].Add();
+                    InjuryGrade? grade = sheets[target].Add();
                     switch (grade)
                     {
-                        case WoundGrade.Bruise: tally.Bruises++; break;
-                        case WoundGrade.Wound:  tally.Wounds++;  break;
-                        case WoundGrade.Maim:   tally.Maims++;   break;
-                        case WoundGrade.RetiredFromRun: tally.Retired++; break;
+                        case InjuryGrade.Bruise:  tally.Bruises++; break;
+                        case InjuryGrade.Wound:   tally.Wounds++;  break;
+                        case InjuryGrade.Maiming: tally.Maims++;   break;
+                        case null:                tally.Retired++; break;
                     }
 
-                    if (grade != WoundGrade.Bruise && firstOverflowAt < 0) firstOverflowAt = i + 1;
+                    if (grade != InjuryGrade.Bruise && firstOverflowAt < 0) firstOverflowAt = i + 1;
                 }
             }
 
@@ -309,7 +311,7 @@ namespace Guildmaster.Balance.Editor
             for (int s = 0; s < sheets.Length; s++)
             {
                 int idx = (nth + s) % sheets.Length;
-                if (!sheets[idx].Retired && sheets[idx].Bruises < BruiseSlots) return idx;
+                if (sheets[idx].HasFreeBruiseSlot) return idx;
             }
 
             for (int s = 0; s < sheets.Length; s++)
@@ -546,7 +548,8 @@ namespace Guildmaster.Balance.Editor
                           "`gdd/30-run-meta/injuries-mettle`.");
             sb.AppendLine();
             sb.AppendLine($"Маршрутов: **{Routes}**, каждый пройден тремя отрядами. Слоты ран — " +
-                          $"**{BruiseSlots}** мелких, **{WoundSlots}** средних, **{MaimSlots}** тяжёлая; " +
+                          $"**{InjuryCascade.BruiseSlots}** мелких, **{InjuryCascade.WoundSlots}** средних, " +
+                          $"**{InjuryCascade.MaimingSlots}** тяжёлая; " +
                           "переполнение поднимает ступень, переполнение тяжёлой уводит бойца из забега.");
             sb.AppendLine();
             sb.AppendLine("**Как читать.** Норма (решение Макса 2026-08-21): смертность должна приходить от " +

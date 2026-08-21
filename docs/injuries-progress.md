@@ -67,7 +67,7 @@
 | сборка юнита | `Combat/Units/RuntimeUnitFactory.cs` → `Create(...)` | сюда же придут раны Сосуда |
 | durable-состояние | `Guild/RunState.cs` → `RosterSlot` (VesselId, RelicId, AiPresetId, VesselItemIds, SavedPosition) | добавить `InjuryIds` |
 | модификаторы | `Data/Stats/ModifierOp.cs` — `Flat` / `PercentAdd` / `PercentMult` | раны — **`PercentMult`**, иначе три ушиба скорости дадут −90% |
-| модель каскада (временная) | `Balance/Editor/Benches/RunBench.cs` → `WoundSheet` | **ДОЛГ фазы 3:** игровая появилась (`InjuryCascade`), бенч всё ещё на своей копии — два владельца |
+| модель каскада | `Balance/Editor/Benches/RunBench.cs` → `WoundSheet` | долг закрыт 21.08: обёртка над `InjuryCascade`, своей копии правила больше нет |
 
 ---
 
