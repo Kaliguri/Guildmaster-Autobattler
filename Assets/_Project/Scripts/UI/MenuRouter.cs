@@ -83,6 +83,9 @@ namespace Guildmaster.UI
         private VisualTreeAsset _outcomeUxml;
         private VisualTreeAsset _mainMenuUxml;
         private VisualTreeAsset _guildSelectUxml;
+
+        /// <summary>Строки показанного ожидания — их правит <see cref="SetBusyStage"/>. Нет ожидания — null.</summary>
+        private Components.WaitNote _busyNote;
         private VisualTreeAsset _hubUxml;
         private VisualTreeAsset _profileUxml;
 
@@ -870,13 +873,42 @@ namespace Guildmaster.UI
 
             Core.Flow.BusyRequest captured = request;
             var screen = new RouterScreen(ScreenKind.Modal,
-                () => BusyOverlayView.Build(in captured, key => _loc?.GetString(key)));
+                () =>
+                {
+                    VisualElement built = BusyOverlayView.Build(in captured, key => _loc?.GetString(key),
+                                                                out Components.WaitNote note);
+                    _busyNote = note;
+                    return built;
+                });
 
             _nav.Push(screen);
 
             // Регистрация переживает сам показ: токен может отмениться в любой момент, в том числе
             // прямо сейчас — тогда экран снимется следующим кадром, не успев моргнуть.
-            captured.Until.Register(() => _nav.Remove(screen));
+            captured.Until.Register(() =>
+            {
+                _busyNote = null;
+                _nav.Remove(screen);
+            });
+        }
+
+        /// <summary>
+        /// Ожидание продвинулось: сменить строку этапа, не пересобирая экран.
+        /// </summary>
+        /// <remarks>
+        /// Ожидания нет на экране — сообщение молча тонет, и это верно: этап относится к показанному
+        /// ожиданию, а показывать его самому по себе негде. Кричать в лог тут было бы шумом на ровном
+        /// месте — гонка «этап пришёл на кадр раньше снятия экрана» законна и ничего не ломает.
+        /// </remarks>
+        public void SetBusyStage(in Core.Flow.BusyStageChanged stage)
+        {
+            if (_busyNote == null) return;
+
+            string text = null;
+            if (!string.IsNullOrEmpty(stage.StageKey)) text = _loc?.GetString(stage.StageKey);
+            if (string.IsNullOrEmpty(text)) text = stage.StageFallback;
+
+            _busyNote.Detail = text;
         }
 
         /// <summary>

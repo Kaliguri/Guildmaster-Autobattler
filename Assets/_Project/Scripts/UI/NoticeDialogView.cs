@@ -187,22 +187,42 @@ namespace Guildmaster.UI
     /// Экран ожидания: игра занята, и это видно.
     /// </summary>
     /// <remarks>
-    /// Кнопки нет намеренно — снимается он отменой того, кто ждёт (см. <see cref="BusyRequest.Until"/>).
+    /// Кнопки нет намеренно — снимается он отменой того, кто ждёт (см. <see cref="BusyRequest.Until"/>);
+    /// исключение — <see cref="BusyRequest.Cancel"/> там, где ждать можно долго и по чужой вине.
     /// Собирается кодом по той же причине, что и <see cref="NoticeDialogView"/>: временный вид.
+    ///
+    /// <para><b>Два облика, одно устройство.</b> Обычное ожидание — окно посередине поверх затемнения.
+    /// Ожидание с <see cref="BusyRequest.TakesOver"/> — заслонка на весь кадр: та же пара «кольцо и
+    /// две строки», та же кнопка, но без панели и без видимого за ней экрана. Второго вида здесь не
+    /// заведено намеренно — разошлись бы на первой правке, как это уже было с диалогами.</para>
     /// </remarks>
     public static class BusyOverlayView
     {
-        public static VisualElement Build(in BusyRequest request, Func<string, string> localize)
+        /// <summary>
+        /// Строка этапа у показанного ожидания — её меняет <see cref="Core.Flow.BusyStageChanged"/>.
+        /// </summary>
+        /// <remarks>
+        /// Возвращается наружу, потому что заказчику нужно менять ИМЕННО эту строку, а не пересобирать
+        /// экран: повторная сборка сбросила бы кольцо в начало, и продвижение читалось бы как мигание.
+        /// </remarks>
+        public static VisualElement Build(in BusyRequest request, Func<string, string> localize,
+                                          out Components.WaitNote note)
         {
             // Та же обёртка-экран, что у сообщения: затемнение и центрирование живут на .gm-screen.
             var screen = new VisualElement { name = "busy-screen" };
             screen.AddToClassList("gm-screen");
+            // Полноэкранное ожидание закрывает кадр насовсем: под ним ничего не показывают, поэтому
+            // и полупрозрачного затемнения ему мало — заслонка тем же токеном, что у экрана запуска.
+            if (request.TakesOver) screen.AddToClassList("gm-screen--veil");
 
             var root = new VisualElement();
-            root.AddToClassList("gm-panel");
+            // Панель есть только у окна. У заслонки её нет: рамка посреди пустого кадра читалась бы
+            // тем же окном, только большего размера, — а фокус даёт как раз отсутствие всего лишнего.
+            if (!request.TakesOver) root.AddToClassList("gm-panel");
             // Габариты — свои (см. .gm-busy), диалоговые здесь означали бы окно 1280 x 860 под одно
             // слово «Подождите».
             root.AddToClassList("gm-busy");
+            if (request.TakesOver) root.AddToClassList("gm-busy--takeover");
             screen.Add(root);
             root.pickingMode = PickingMode.Position;   // ожидание перехватывает клики: под ним жать нечего
 
@@ -214,7 +234,7 @@ namespace Guildmaster.UI
             // Кольцо и две строки — контролом, а не голой меткой: одна строка сериф-шрифтом посреди
             // пустой панели не отвечала на вопрос «игра занята или зависла» (правка Макса 20.08.2026:
             // «оч криво и не пойму что это»).
-            var note = new Components.WaitNote { Title = text, Detail = request.Detail };
+            note = new Components.WaitNote { Title = text, Detail = request.Detail };
             root.Add(note);
 
             // Кнопка прерывания — только если заказчику есть что прервать. Ожидание без неё

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Net;
 using Guildmaster.Core.Players;
@@ -33,22 +33,31 @@ namespace Guildmaster.Game.Session
         private readonly Core.Flow.IRunControl _runControl;
         private readonly IPublisher<Core.Flow.NoticeRequest> _notice;
         private readonly IPublisher<Core.Flow.BusyRequest>   _busy;
+        private readonly IPublisher<Core.Flow.BusyStageChanged> _busyStage;
+        private readonly ISubscriber<Guildmaster.Game.Flow.RunPartyReadyEvent> _partyReady;
 
         private CoopSessionState _lastState;
 
         /// <summary>Живёт, пока идёт подключение: его отмена и снимает экран ожидания.</summary>
         private System.Threading.CancellationTokenSource _waiting;
 
+        /// <summary>Подписка на «состояние доехало» — живёт столько же, сколько сам презентер.</summary>
+        private IDisposable _partyReadySubscription;
+
         public CoopSessionPresenter(ICoopSessionControl coop, ISessionRoster roster,
                                        Core.Flow.IRunControl runControl,
                                        IPublisher<Core.Flow.NoticeRequest> notice,
-                                       IPublisher<Core.Flow.BusyRequest> busy)
+                                       IPublisher<Core.Flow.BusyRequest> busy,
+                                       IPublisher<Core.Flow.BusyStageChanged> busyStage,
+                                       ISubscriber<Guildmaster.Game.Flow.RunPartyReadyEvent> partyReady)
         {
             _coop       = coop;
             _roster     = roster;
             _runControl = runControl;
             _notice     = notice;
             _busy       = busy;
+            _busyStage  = busyStage;
+            _partyReady = partyReady;
         }
 
         public void Start()
@@ -59,6 +68,10 @@ namespace Guildmaster.Game.Session
             _coop.StateChanged += OnStateChanged;
             _coop.PeerLeft     += OnPeerLeft;
             _coop.Invited      += OnInvited;
+
+            // Первый снимок забега — момент, когда гостю есть что показать. До него экран у него
+            // пустой, поэтому ожидание держится до этого сигнала, а не до рукопожатия.
+            _partyReadySubscription = _partyReady?.Subscribe(_ => StopWaiting());
         }
 
         public void Dispose()
@@ -67,6 +80,8 @@ namespace Guildmaster.Game.Session
             _waiting?.Cancel();
             _waiting?.Dispose();
             _waiting = null;
+            _partyReadySubscription?.Dispose();
+            _partyReadySubscription = null;
 
             if (_coop == null) return;
 
@@ -190,14 +205,39 @@ namespace Guildmaster.Game.Session
                 // через несколько секунд после «отмены».
                 var cancel = new Core.Flow.NoticeOption(
                     "ui.common.cancel", "Отмена",
-                    () => { _coop?.Leave(); ShowWaitingWhileConnecting(CoopSessionState.Offline); });
+                    () => { _coop?.Leave(); StopWaiting(); });
 
                 _busy?.Publish(new Core.Flow.BusyRequest(
                     "ui.coop.connecting", "Подключение к игре", _waiting.Token,
-                    "Steam ищет маршрут — это занимает несколько секунд.", cancel));
+                    "Steam ищет маршрут — это занимает несколько секунд.", cancel,
+                    takesOver: true));
                 return;
             }
 
+            // РУКОПОЖАТИЕ — ЕЩЁ НЕ ВХОД. Здесь ожидание снималось, и следующие секунды гость сидел на
+            // пустом экране: сеанс открывается уже после Connected, и только потом гость просит у
+            // хозяина состояние забега. Теперь экран остаётся, а строка этапа говорит, чего ждём;
+            // снимет его первый доехавший снимок (см. подписку в Start).
+            if (state == CoopSessionState.Connected)
+            {
+                if (_waiting == null) return;
+
+                _busyStage?.Publish(new Core.Flow.BusyStageChanged(
+                    "ui.coop.connecting.state", "Соединились. Получаем состояние игры."));
+                return;
+            }
+
+            StopWaiting();
+        }
+
+        /// <summary>Снять экран ожидания, если он показан.</summary>
+        /// <remarks>
+        /// Отдельным методом, потому что поводов три: игрок нажал «Отмена», подключение сорвалось,
+        /// состояние доехало. Раньше все они звали показ ожидания с выдуманным состоянием
+        /// (<c>Offline</c>), и код читался как «покажи ожидание, которого нет».
+        /// </remarks>
+        private void StopWaiting()
+        {
             if (_waiting == null) return;
 
             _waiting.Cancel();

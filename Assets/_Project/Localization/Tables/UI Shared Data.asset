@@ -583,6 +583,10 @@ MonoBehaviour:
     m_Key: ui.profile.stat.unlocks
     m_Metadata:
       m_Items: []
+  - m_Id: 15045021638320128
+    m_Key: ui.coop.connecting.state
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

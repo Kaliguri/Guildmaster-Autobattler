@@ -407,6 +407,10 @@ MonoBehaviour:
     m_Localized: Unlocks
     m_Metadata:
       m_Items: []
+  - m_Id: 15045021638320128
+    m_Localized: Connected. Fetching the game state.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

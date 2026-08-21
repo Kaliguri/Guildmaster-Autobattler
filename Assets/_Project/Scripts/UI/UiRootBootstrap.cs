@@ -129,6 +129,8 @@ namespace Guildmaster.UI
         private IDisposable _noticeSubscription;
         private ISubscriber<Core.Flow.BusyRequest> _busySub;
         private IDisposable _busySubscription;
+        private ISubscriber<Core.Flow.BusyStageChanged> _busyStageSub;
+        private IDisposable _busyStageSubscription;
         private ISubscriber<OpenTitleCardRequest> _openTitleCardSub;
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
@@ -212,6 +214,7 @@ namespace Guildmaster.UI
             ISubscriber<OpenHubRequest> openHubSub,
             ISubscriber<Core.Flow.NoticeRequest> noticeSub,
             ISubscriber<Core.Flow.BusyRequest> busySub,
+            ISubscriber<Core.Flow.BusyStageChanged> busyStageSub,
             ISubscriber<Core.Flow.OpenProvingGroundsRequest> openProvingGroundsSub,
             IPublisher<RelicDragEvent> relicDragPub,
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
@@ -266,6 +269,7 @@ namespace Guildmaster.UI
             _openHubSub      = openHubSub;
             _noticeSub       = noticeSub;
             _busySub         = busySub;
+            _busyStageSub    = busyStageSub;
             _openProvingGroundsSub = openProvingGroundsSub;
         }
 
@@ -362,6 +366,9 @@ namespace Guildmaster.UI
                 _router.ShowNotice(in req);
             });
             _busySubscription   = _busySub?.Subscribe(req => _router.ShowBusy(in req));
+            // Этап меняет СТРОКУ показанного ожидания, а не заказывает новое: повторный заказ
+            // пересобрал бы экран, и кольцо дёрнулось бы с начала.
+            _busyStageSubscription = _busyStageSub?.Subscribe(stage => _router.SetBusyStage(in stage));
 
             // Запрос Ристалища закрывает главное меню тем же путём, что кнопка: резолв экрана через
             // навигатор гасит и панель, и стол под ней. Если меню не показано — здесь no-op, решение
@@ -846,6 +853,7 @@ namespace Guildmaster.UI
             _openHubSubscription?.Dispose();
             _noticeSubscription?.Dispose();
             _busySubscription?.Dispose();
+            _busyStageSubscription?.Dispose();
             _openProvingGroundsSubscription?.Dispose();
             _openTitleCardSubscription?.Dispose();
 

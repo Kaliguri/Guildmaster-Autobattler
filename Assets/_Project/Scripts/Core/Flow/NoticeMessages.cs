@@ -1,4 +1,4 @@
-using System.Threading;
+﻿using System.Threading;
 
 namespace Guildmaster.Core.Flow
 {
@@ -164,14 +164,59 @@ namespace Guildmaster.Core.Flow
         /// </remarks>
         public readonly NoticeOption? Cancel;
 
+        /// <summary>
+        /// Ожидание забирает экран целиком: заслонка на весь кадр вместо окна посередине.
+        /// </summary>
+        /// <remarks>
+        /// <b>Делит ожидания не длительность, а то, МОЖЕТ ЛИ игрок продолжать жить</b> (решение Макса
+        /// 21.08.2026). Фоновое ожидание («хозяин ещё собирается») управления не отбирает и живёт
+        /// лентой в углу. Ожидание, за которым следует смена всего — подключение к чужой игре, — по
+        /// существу отбирает его само: через несколько секунд эта игра кончится и начнётся чужая, и
+        /// делать в это время нечего.
+        /// <para>Маленькая модалка посередине признана худшей из трёх: кадр загораживает, а фокуса не
+        /// даёт. У полноэкранного есть и то, чего нет у остальных, — место сказать, на каком мы этапе,
+        /// вместо одной строки, по которой не понять, движется ли что-то.</para>
+        /// </remarks>
+        public readonly bool TakesOver;
+
         public BusyRequest(string titleKey, string titleFallback, CancellationToken until,
-                           string detail = null, NoticeOption? cancel = null)
+                           string detail = null, NoticeOption? cancel = null, bool takesOver = false)
         {
             TitleKey      = titleKey;
             TitleFallback = titleFallback;
             Until         = until;
             Detail        = detail;
             Cancel        = cancel;
+            TakesOver     = takesOver;
+        }
+    }
+
+    /// <summary>
+    /// Ожидание продвинулось: сменить строку этапа у показанного экрана.
+    /// </summary>
+    /// <remarks>
+    /// <b>Отдельное сообщение, а не второй <see cref="BusyRequest"/>.</b> Повторный заказ пересобрал бы
+    /// экран целиком — кольцо дёрнулось бы с начала, и вместо продвижения игрок увидел бы мигание.
+    /// Здесь меняется только строка, всё остальное на месте.
+    /// <para><b>Адресата у сообщения нет намеренно:</b> ожидание в игре всегда одно (второе поверх
+    /// первого — это мигание, о чём знает и заказчик, и роутер), поэтому этап адресуется тому, что
+    /// сейчас показано. Появится второе одновременное ожидание — здесь появится и его имя.</para>
+    /// <para><b>Этап называет то, что ДЕЙСТВИТЕЛЬНО наступило,</b> а не отсчёт по таймеру: строка
+    /// меняется от события сети (соединились, пришло состояние), иначе это анимация прогресса, которая
+    /// врёт — и врёт заметнее всего там, где связь встала.</para>
+    /// </remarks>
+    public readonly struct BusyStageChanged
+    {
+        /// <summary>Ключ строки этапа.</summary>
+        public readonly string StageKey;
+
+        /// <summary>Строка, пока ключа нет в таблице.</summary>
+        public readonly string StageFallback;
+
+        public BusyStageChanged(string stageKey, string stageFallback)
+        {
+            StageKey      = stageKey;
+            StageFallback = stageFallback;
         }
     }
 }

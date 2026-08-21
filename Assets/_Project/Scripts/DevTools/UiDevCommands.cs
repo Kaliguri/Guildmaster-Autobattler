@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Core.DevConsole;
 using Guildmaster.Core.Flow;
 using MessagePipe;
@@ -41,8 +41,9 @@ namespace Guildmaster.DevTools
                 new DevParam("answers", DevParamType.Int, true));
 
             set.Add("gm_ui_busy",
-                $"Экран ожидания на {BusySeconds} с (повтор снимает): подключение к чужой игре",
-                _ => Busy());
+                $"Экран ожидания на {BusySeconds} с (повтор снимает): gm_ui_busy <1 — на весь экран>",
+                a => Busy(a.GetInt(0) != 0),
+                new DevParam("fullscreen", DevParamType.Int, true));
 
             set.Add("gm_ui_toast",
                 "Лента: gm_ui_toast <сколько строк 1..3> — короткие сообщения без ответов",
@@ -84,8 +85,15 @@ namespace Guildmaster.DevTools
                    "Закрыть можно только кнопкой — так и задумано.";
         }
 
-        /// <summary>Поднять экран ожидания. Повторный вызов снимает его досрочно.</summary>
-        public static string Busy()
+        /// <summary>
+        /// Поднять экран ожидания. Повторный вызов снимает его досрочно.
+        /// </summary>
+        /// <param name="fullscreen">
+        /// Полноэкранная заслонка вместо окна посередине — тот облик, в котором игрок видит
+        /// подключение к чужой игре. Через несколько секунд после показа приходит следующий этап:
+        /// смотреть надо и на смену строки, а не только на первый кадр.
+        /// </param>
+        public static string Busy(bool fullscreen = false)
         {
             IPublisher<BusyRequest> bus = Publisher<BusyRequest>();
             if (bus == null) return "Канал ожидания не поднят — игра ещё не собрана.";
@@ -111,9 +119,27 @@ namespace Guildmaster.DevTools
             });
 
             bus.Publish(new BusyRequest("ui.coop.connecting", "Подключение к игре", _busy.Token,
-                "Steam ищет маршрут — это занимает несколько секунд.", cancel));
+                "Steam ищет маршрут — это занимает несколько секунд.", cancel, takesOver: fullscreen));
 
-            return $"Ожидание поднято на {BusySeconds} с. Повтор команды снимет его раньше.";
+            // Этап приходит вторым сообщением, как в игре: строка меняется у показанного экрана, а
+            // кольцо продолжает свой ход с того же места.
+            IPublisher<BusyStageChanged> stages = Publisher<BusyStageChanged>();
+            if (stages != null)
+            {
+                System.Threading.CancellationToken token = _busy.Token;
+                Cysharp.Threading.Tasks.UniTask.Void(async () =>
+                {
+                    await Cysharp.Threading.Tasks.UniTask.Delay(
+                        System.TimeSpan.FromSeconds(2.5), cancellationToken: token,
+                        cancelImmediately: true).SuppressCancellationThrow();
+                    if (token.IsCancellationRequested) return;
+                    stages.Publish(new BusyStageChanged(
+                        "ui.coop.connecting.state", "Соединились. Получаем состояние игры."));
+                });
+            }
+
+            return $"Ожидание{(fullscreen ? " (на весь экран)" : "")} поднято на {BusySeconds} с. " +
+                   "Повтор команды снимет его раньше.";
         }
 
         /// <summary>Показать одну-три ленты подряд, чтобы увидеть стопку.</summary>
