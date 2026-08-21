@@ -213,7 +213,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData gust = Gust(after: null);
             ctx.ApplyEffect(mage, Aura(gust), mage);
 
-            es.Tick(mage, 1f, ctx);
+            TickAura(es, ctx, mage);
             Assert.AreEqual(1, near.ActiveEffects.Count, "Ближнему союзнику «Порыв» выдан");
             Assert.AreEqual(0, far.ActiveEffects.Count, "Дальнему — нет, он вне радиуса");
             Assert.AreEqual(1, mage.ActiveEffects.Count, "На маге только сама аура: себе он не раздаёт");
@@ -238,13 +238,13 @@ namespace Guildmaster.Tests.EditMode.Combat
             brawler.Position = new Vector2(4f, 0f);
 
             ctx.ApplyEffect(mage, Aura(Gust(after: null)), mage);
-            es.Tick(mage, 1f, ctx);
+            TickAura(es, ctx, mage);
 
             Assert.IsTrue(es.RunPreDamage(ally, Ranged(brawler, 80f), ctx), "Первый удар перехвачен");
             Assert.IsFalse(es.RunPreDamage(ally, Ranged(brawler, 80f), ctx), "Второй проходит — заряд потрачен");
 
             // Аура тикает снова: если бы она перевешивала эффект, заряд взвёлся бы заново.
-            es.Tick(mage, 1f, ctx);
+            TickAura(es, ctx, mage);
             Assert.IsFalse(es.RunPreDamage(ally, Ranged(brawler, 80f), ctx),
                 "Аура не перевзвела заряд: перезарядка идёт своим ходом");
         }
@@ -279,6 +279,17 @@ namespace Guildmaster.Tests.EditMode.Combat
             return TestEffect.Make(baseDuration: 4f, polarity: EffectPolarity.Buff,
                 stacking: maxStacks > 1 ? StackRule.StackAndRefresh : StackRule.Refresh,
                 maxStacks: maxStacks, components: evasion);
+        }
+
+        /// <summary>
+        /// Прогнать ауру ровно на один её период. Периодика считает ТИКИ симуляции, а не переданный dt:
+        /// интервал в секунду — это тридцать вызовов <c>Tick</c>, сколько бы ни стояло в аргументе.
+        /// </summary>
+        private static void TickAura(EffectSystem es, MockCombatContext ctx, RuntimeUnit carrier)
+        {
+            var units = new[] { carrier };
+            for (int i = 0; i < Guildmaster.Core.Simulation.SimConstants.TickRate; i++)
+                es.Tick(units, ctx, 1f / Guildmaster.Core.Simulation.SimConstants.TickRate);
         }
 
         private static EffectData Aura(EffectData carried)
