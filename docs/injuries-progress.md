@@ -67,22 +67,24 @@
 | сборка юнита | `Combat/Units/RuntimeUnitFactory.cs` → `Create(...)` | сюда же придут раны Сосуда |
 | durable-состояние | `Guild/RunState.cs` → `RosterSlot` (VesselId, RelicId, AiPresetId, VesselItemIds, SavedPosition) | добавить `InjuryIds` |
 | модификаторы | `Data/Stats/ModifierOp.cs` — `Flat` / `PercentAdd` / `PercentMult` | раны — **`PercentMult`**, иначе три ушиба скорости дадут −90% |
-| модель каскада (временная) | `Balance/Editor/Benches/RunBench.cs` → `WoundSheet` | **когда появится игровая — бенч обязан звать её**, иначе два владельца |
+| модель каскада (временная) | `Balance/Editor/Benches/RunBench.cs` → `WoundSheet` | **ДОЛГ фазы 3:** игровая появилась (`InjuryCascade`), бенч всё ещё на своей копии — два владельца |
 
 ---
 
 ## Фазы
 
-### Фаза 1 — данные и каскад (код, тесты; редактор не нужен)
+### Фаза 1 — данные и каскад (код, тесты; редактор не нужен) — СДЕЛАНА
 
-- [ ] `StatType.StartHp` — **дописать в КОНЕЦ enum** (порядок существующих не менять — сериализация).
-- [ ] `InjuryGrade` enum: `Bruise` / `Wound` / `Maiming`.
-- [ ] `InjuryData : ContentDefinition` — SO: ступень, `StatModifier[]`, срок истечения в узлах
-      (0 = не истекает), иконка, лок-ключи. Домен id — `injury.*`, дописать в `ContentDomains`.
-- [ ] `RosterSlot.InjuryIds` (string[]) — раны живут строковыми id, как весь `RunState`.
-- [ ] Каскад: сервис, который кладёт рану с переполнением ступени и сообщает исход
-      (`Bruise` / `Wound` / `Maiming` / `RetiredFromRun`). Чистая логика, без Unity.
-- [ ] Тесты каскада: переполнение мелких → средняя, средних → тяжёлая, тяжёлой → выбывание.
+- [x] `StatType.StartHpPct = 33` — доля, не абсолют (журнал `start-hp-is-a-fraction-not-an-amount`).
+      Дефолт `1.0` в `StatsConfig.NaturalDefault`, показ процентом в `StatKinds`.
+- [x] `InjuryGrade` enum: `Bruise` / `Wound` / `Maiming` — в `ContentEnums.cs`.
+- [x] ~~`InjuryData`~~ → достроен **существующий `ConsequenceData`** (журнал
+      `injuries-reuse-the-consequence-type`): `Grade` вместо `Severity`, `ExpiresAfterNodes`, `Icon`.
+      Домен id — `consequence.*`, он уже был зарегистрирован.
+- [x] `RosterSlot.InjuryIds` (string[]).
+- [x] Каскад — `Guild/InjuryCascade.cs`: `InjurySlots` (занятость) + `InjuryOutcome` (исход).
+      Чистая логика, гоняется быстрым прогоном.
+- [x] Тесты каскада — `InjuryCascadeTests`, 10 штук, все прошли вне редактора.
 
 ### Фаза 2 — раны в бою
 

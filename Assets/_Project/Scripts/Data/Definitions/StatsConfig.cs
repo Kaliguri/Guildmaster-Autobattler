@@ -87,6 +87,8 @@ namespace Guildmaster.Data.Definitions
                 case StatType.SummonHealthEff:
                 case StatType.SummonDamageEff:
                 case StatType.Size:
+                // Доля стартового HP: без ран боец входит в бой с полным запасом.
+                case StatType.StartHpPct:
                     return 1f;
                 default:
                     return 0f;

@@ -17,6 +17,7 @@ namespace Guildmaster.Data.Stats
                 case StatType.PhysPenPct:
                 case StatType.MagicPenPct:
                 case StatType.Lifesteal:
+                case StatType.StartHpPct:
                     return ValueKind.Percent;
 
                 // Множители вокруг 1.0 — эффективности.

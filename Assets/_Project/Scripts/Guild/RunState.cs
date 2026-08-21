@@ -82,6 +82,17 @@ namespace Guildmaster.Guild
         public string   AiPresetId = string.Empty;
         public string[] VesselItemIds = Array.Empty<string>();
         public Vector2  SavedPosition;
+
+        /// <summary>
+        /// Последствия боёв на этом «Сосуде» — по строковым id (<c>consequence.*</c>), в порядке
+        /// получения. Здесь лежат и травмы, и закалки: ступень и полярность знает сам ассет
+        /// (<c>ConsequenceData</c>), а второй список рядом умел бы с первым разойтись.
+        /// <para>Свободные слоты не хранятся: они считаются из этого списка каскадом
+        /// (<see cref="InjuryCascade"/>). Счётчик рядом был бы вторым владельцем того же факта и
+        /// разъехался бы на первом же снятии раны.</para>
+        /// <para>Поле необязательное: старый сейв читается как «ран нет», версию схемы это не двигает.</para>
+        /// </summary>
+        public string[] InjuryIds = Array.Empty<string>();
     }
 
     /// <summary>
