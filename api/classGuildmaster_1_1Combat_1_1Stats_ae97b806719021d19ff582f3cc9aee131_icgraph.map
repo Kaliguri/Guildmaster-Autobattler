@@ -12,7 +12,7 @@
 <area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="1161,214,1114,236,1062,252,947,271,829,283,710,289,595,290,384,280,220,264,221,259,384,274,595,284,710,284,828,278,946,266,1061,247,1112,231,1159,209"/>
 <area shape="rect" id="Node000011" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TitheComponent.html#af25e9ac24555531eb23de6d9771d0e4e" title=" " alt="" coords="796,312,1061,352"/>
 <area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="1176,217,1125,257,1063,296,1015,314,1013,309,1060,291,1122,253,1173,213"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1EffectiveStats.html#af6a8ee1a614abbf360dab44edc68d555" title="Тот же каскад плюс два слоя, которые есть у собранного игроком кита: Судьба сосуда и статовые моды на..." alt="" coords="531,69,748,109"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1EffectiveStats.html#aaf13a66925358d4d9d53a137662d565b" title="Тот же каскад плюс три слоя, которые есть у собранного игроком кита: Судьба сосуда,..." alt="" coords="531,69,748,109"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="825,51,731,72,730,67,823,46"/>
 <area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="817,92,748,92,748,87,817,87"/>
 <area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="823,133,730,112,731,107,825,128"/>
@@ -20,7 +20,7 @@
 <area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="816,220,738,220,738,215,816,215"/>
 <area shape="rect" id="Node000008" href="$classGuildmaster_1_1Combat_1_1EffectSystem.html#a876e8cfca2bf82b25b68759d9ed0aa20" title="ЗАКОН ВИДИМОСТИ ЭФФЕКТОВ: проявить всё, что эффекты наложили или сняли за этот тик — статы и маску те..." alt="" coords="270,133,481,173"/>
 <area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="542,197,458,176,459,171,544,191"/>
-<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a70e9cf5d31e2c828b5913df2b51f7b5a" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="268,197,483,237"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a3efcb1c3b14d28064433d425f223cbeb" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="268,197,483,237"/>
 <area shape="poly" id="edge10_Node000007_Node000009" title=" " alt="" coords="527,220,483,220,483,215,527,215"/>
 <area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="255,233,221,237,220,232,254,228"/>
 </map>

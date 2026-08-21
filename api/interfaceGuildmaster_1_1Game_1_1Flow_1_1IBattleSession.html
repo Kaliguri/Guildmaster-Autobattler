@@ -110,7 +110,7 @@ Inheritance diagram for Guildmaster.Game.Flow.IBattleSession:</div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Flow.IBattleSession:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession__coll__graph.svg" width="228" height="424"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession__coll__graph.svg" width="228" height="444"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -136,9 +136,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afb46c9ea489e6d01e860c989df278ab5" id="r_afb46c9ea489e6d01e860c989df278ab5"><td class="memItemLeft" align="right" valign="top">UniTask&lt; <a class="el" href="structGuildmaster_1_1Combat_1_1BattleOutcome.html">BattleOutcome</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#afb46c9ea489e6d01e860c989df278ab5">WaitOutcomeAsync</a> (CancellationToken ct)</td></tr>
 <tr class="memdesc:afb46c9ea489e6d01e860c989df278ab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">root: дождаться исхода текущего боя (следующий ReportOutcome после взвода).  <br /></td></tr>
 <tr class="separator:afb46c9ea489e6d01e860c989df278ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56c49df7bba0c8f122afa0f6b768550b" id="r_a56c49df7bba0c8f122afa0f6b768550b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a56c49df7bba0c8f122afa0f6b768550b">ReportOutcome</a> (<a class="el" href="structGuildmaster_1_1Combat_1_1BattleOutcome.html">BattleOutcome</a> outcome)</td></tr>
-<tr class="memdesc:a56c49df7bba0c8f122afa0f6b768550b"><td class="mdescLeft">&#160;</td><td class="mdescRight">child → session: сообщить исход (из <code>BattleEndedEvent</code>).  <br /></td></tr>
-<tr class="separator:a56c49df7bba0c8f122afa0f6b768550b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a173e8b400e4a6e18507c07ba46d1e4" id="r_a7a173e8b400e4a6e18507c07ba46d1e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a7a173e8b400e4a6e18507c07ba46d1e4">ReportOutcome</a> (<a class="el" href="structGuildmaster_1_1Combat_1_1BattleOutcome.html">BattleOutcome</a> outcome, IReadOnlyList&lt; int &gt; fallenGuildIndices=null)</td></tr>
+<tr class="memdesc:a7a173e8b400e4a6e18507c07ba46d1e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">child → session: сообщить исход (из <code>BattleEndedEvent</code>).  <br /></td></tr>
+<tr class="separator:a7a173e8b400e4a6e18507c07ba46d1e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5c25e16d06afcb7bb5702c5f59c9bd2" id="r_ad5c25e16d06afcb7bb5702c5f59c9bd2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#ad5c25e16d06afcb7bb5702c5f59c9bd2">BindRestart</a> (Action restart)</td></tr>
 <tr class="memdesc:ad5c25e16d06afcb7bb5702c5f59c9bd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">child → session: как перезапустить текущий бой на месте (без перезагрузки сцены; для ретрая).  <br /></td></tr>
 <tr class="separator:ad5c25e16d06afcb7bb5702c5f59c9bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,6 +173,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:af8dc7f114eec42f79351dc55a81e29a7" id="r_af8dc7f114eec42f79351dc55a81e29a7"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#af8dc7f114eec42f79351dc55a81e29a7">LastFallen</a><code> [get]</code></td></tr>
+<tr class="memdesc:af8dc7f114eec42f79351dc55a81e29a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кто лёг в последнем законченном бою — индексы слотов гильдии.  <br /></td></tr>
+<tr class="separator:af8dc7f114eec42f79351dc55a81e29a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ea73ca6c7f59e94d31ff89c20d0abf6" id="r_a4ea73ca6c7f59e94d31ff89c20d0abf6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a4ea73ca6c7f59e94d31ff89c20d0abf6">CanRestart</a><code> [get]</code></td></tr>
 <tr class="memdesc:a4ea73ca6c7f59e94d31ff89c20d0abf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Есть ли кому исполнить перезапуск (делегат привязан живым боевым скоупом).  <br /></td></tr>
 <tr class="separator:a4ea73ca6c7f59e94d31ff89c20d0abf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -308,8 +311,8 @@ Events</h2></td></tr>
 
 </div>
 </div>
-<a id="a56c49df7bba0c8f122afa0f6b768550b" name="a56c49df7bba0c8f122afa0f6b768550b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56c49df7bba0c8f122afa0f6b768550b">&#9670;&#160;</a></span>ReportOutcome()</h2>
+<a id="a7a173e8b400e4a6e18507c07ba46d1e4" name="a7a173e8b400e4a6e18507c07ba46d1e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a173e8b400e4a6e18507c07ba46d1e4">&#9670;&#160;</a></span>ReportOutcome()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -318,15 +321,31 @@ Events</h2></td></tr>
           <td class="memname">void Guildmaster.Game.Flow.IBattleSession.ReportOutcome </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structGuildmaster_1_1Combat_1_1BattleOutcome.html">BattleOutcome</a>&#160;</td>
-          <td class="paramname"><em>outcome</em></td><td>)</td>
+          <td class="paramname"><em>outcome</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">IReadOnlyList&lt; int &gt;&#160;</td>
+          <td class="paramname"><em>fallenGuildIndices</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>child → session: сообщить исход (из <code>BattleEndedEvent</code>). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fallenGuildIndices</td><td>Кто из отряда лёг — индексы слотов гильдии, в порядке ростера. Нужны узлу забега, чтобы выдать раны за смерти (ГДД <code>injuries-mettle</code>). null / пусто = обошлось без потерь. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#af73e48c5a75e0baf40c998ae9553f831">Guildmaster.Game.Flow.BattleSession</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a28bedecc0eb62ae7220eb524135f32b2">Guildmaster.Game.Flow.BattleSession</a>.</p>
 
 </div>
 </div>
@@ -592,6 +611,34 @@ Events</h2></td></tr>
 <p>Спрашивается ДО списания попытки из пула акта: RequestRestart отвечает тем же «нет» уже после того, как попытка потрачена, и игрок терял бы её без единого перезапуска. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a62a81040e474c25f468cc087b2ca9fd0">Guildmaster.Game.Flow.BattleSession</a>.</p>
+
+</div>
+</div>
+<a id="af8dc7f114eec42f79351dc55a81e29a7" name="af8dc7f114eec42f79351dc55a81e29a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8dc7f114eec42f79351dc55a81e29a7">&#9670;&#160;</a></span>LastFallen</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IReadOnlyList&lt;int&gt; Guildmaster.Game.Flow.IBattleSession.LastFallen</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Кто лёг в последнем законченном бою — индексы слотов гильдии. </p>
+<p>Читает владелец узла, когда исход уже получен.</p>
+<p>Едет отдельно от BattleOutcome, а не полем внутри него: исход — это ответ «чем кончилось», его читают показ, звук и статистика, и список павших им не нужен. Расширив исход, мы бы протащили состав отряда через каждого его читателя. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#aaeebdd54c6397c4803df56c31f285561">Guildmaster.Game.Flow.BattleSession</a>.</p>
 
 </div>
 </div>

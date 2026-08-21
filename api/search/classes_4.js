@@ -19,10 +19,11 @@ var searchData=
   ['enemyscalers_16',['EnemyScalers',['../classGuildmaster_1_1Combat_1_1EnemyScalers.html',1,'Guildmaster::Combat']]],
   ['entry_17',['entry',['../structGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette_1_1Entry.html',1,'Guildmaster.Data.Definitions.GuildmasterPalette.Entry'],['../classGuildmaster_1_1Data_1_1Definitions_1_1MenuBattleConfig_1_1Entry.html',1,'Guildmaster.Data.Definitions.MenuBattleConfig.Entry'],['../structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1Entry.html',1,'Guildmaster.Presentation.Audio.AudioCatalog.Entry'],['../classGuildmaster_1_1Presentation_1_1Effects_1_1VisualToggles_1_1Entry.html',1,'Guildmaster.Presentation.Effects.VisualToggles.Entry']]],
   ['equiprelicrequest_18',['EquipRelicRequest',['../structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html',1,'Guildmaster::Data::Definitions']]],
-  ['eventchoice_19',['EventChoice',['../classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice.html',1,'Guildmaster::Data::Definitions']]],
-  ['eventeffect_20',['EventEffect',['../classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html',1,'Guildmaster::Data::Definitions']]],
-  ['eventeffectapplier_21',['EventEffectApplier',['../classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html',1,'Guildmaster::Game::Flow']]],
-  ['eventresult_22',['EventResult',['../structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html',1,'Guildmaster::Game::Flow']]],
-  ['eventscreenview_23',['EventScreenView',['../classGuildmaster_1_1UI_1_1EventScreenView.html',1,'Guildmaster::UI']]],
-  ['everynthattackcomponent_24',['EveryNthAttackComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EveryNthAttackComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
+  ['evasioncomponent_19',['EvasionComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EvasionComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
+  ['eventchoice_20',['EventChoice',['../classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice.html',1,'Guildmaster::Data::Definitions']]],
+  ['eventeffect_21',['EventEffect',['../classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html',1,'Guildmaster::Data::Definitions']]],
+  ['eventeffectapplier_22',['EventEffectApplier',['../classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html',1,'Guildmaster::Game::Flow']]],
+  ['eventresult_23',['EventResult',['../structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html',1,'Guildmaster::Game::Flow']]],
+  ['eventscreenview_24',['EventScreenView',['../classGuildmaster_1_1UI_1_1EventScreenView.html',1,'Guildmaster::UI']]],
+  ['everynthattackcomponent_25',['EveryNthAttackComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EveryNthAttackComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
 ];

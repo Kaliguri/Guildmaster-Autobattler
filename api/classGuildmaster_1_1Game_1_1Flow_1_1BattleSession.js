@@ -5,7 +5,7 @@ var classGuildmaster_1_1Game_1_1Flow_1_1BattleSession =
     [ "BindReset", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a0ef2edea137d8d5e332fb17c0290fca3", null ],
     [ "BindRestart", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a054dd7c705f05a93f9388b2731305bd8", null ],
     [ "BindStart", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a6654eb48b0725e752a7288fdf95aa37b", null ],
-    [ "ReportOutcome", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#af73e48c5a75e0baf40c998ae9553f831", null ],
+    [ "ReportOutcome", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a28bedecc0eb62ae7220eb524135f32b2", null ],
     [ "RequestLaunch", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a9cd1b525a7cf7c4fc16ac0e0a3209553", null ],
     [ "RequestReset", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ab0cbde88e9ff03c8a64380d600000f88", null ],
     [ "RequestRestart", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a4cddca68c4be4f1284b6af1355290f43", null ],
@@ -20,6 +20,7 @@ var classGuildmaster_1_1Game_1_1Flow_1_1BattleSession =
     [ "WaitOutcomeAsync", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ad0456076745fc3021a62a197eaab929e", null ],
     [ "CanRestart", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a62a81040e474c25f468cc087b2ca9fd0", null ],
     [ "ElapsedSeconds", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ab29f51f9bcfd9d2343e8eb852e474f8c", null ],
+    [ "LastFallen", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#aaeebdd54c6397c4803df56c31f285561", null ],
     [ "Phase", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a38d9ff1853a968e168b7de6008644f9c", null ],
     [ "PhaseChanged", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#ab2c46f27b2584fcb0766e30596e93bba", null ],
     [ "ReplayRequested", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a8e49805d3f815852d757da2906af5c0a", null ]

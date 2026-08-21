@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Effects.GhostImage.Play" name="Guildmaster.Presentation.Effects.GhostImage.Play">
+<area shape="rect" id="Node000001" title="Оставить копию тела в точке feet &#160;(мировые координаты ног)." alt="" coords="263,5,453,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts.html#a4967e0d37e526b6dd915c66820f8ed81" title="Оставить копию тела." alt="" coords="5,5,215,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="249,28,215,28,215,23,249,23"/>
+</map>

@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effectiv
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.EffectiveStats:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectiveStats__coll__graph.svg" width="220" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectiveStats__coll__graph.svg" width="220" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -111,9 +111,12 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a286b2033607a4e2cd4121ef74fe6f125" id="r_a286b2033607a4e2cd4121ef74fe6f125"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGuildmaster_1_1Combat_1_1Stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectiveStats.html#a286b2033607a4e2cd4121ef74fe6f125">Build</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> data, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a> config, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html">ClassBalanceConfig</a> classConfig)</td></tr>
 <tr class="memdesc:a286b2033607a4e2cd4121ef74fe6f125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать стат-блок юнита поверх дефолтов конфига.  <br /></td></tr>
 <tr class="separator:a286b2033607a4e2cd4121ef74fe6f125"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6a8ee1a614abbf360dab44edc68d555" id="r_af6a8ee1a614abbf360dab44edc68d555"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGuildmaster_1_1Combat_1_1Stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectiveStats.html#af6a8ee1a614abbf360dab44edc68d555">Build</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> data, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a> vessel, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a> &gt; items, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a> config, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html">ClassBalanceConfig</a> classConfig)</td></tr>
-<tr class="memdesc:af6a8ee1a614abbf360dab44edc68d555"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тот же каскад плюс два слоя, которые есть у собранного игроком кита: Судьба сосуда и статовые моды надетых предметов (включая баннеры команды).  <br /></td></tr>
-<tr class="separator:af6a8ee1a614abbf360dab44edc68d555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf13a66925358d4d9d53a137662d565b" id="r_aaf13a66925358d4d9d53a137662d565b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGuildmaster_1_1Combat_1_1Stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectiveStats.html#aaf13a66925358d4d9d53a137662d565b">Build</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> data, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a> vessel, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a> &gt; items, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html">ConsequenceData</a> &gt; consequences, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a> config, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html">ClassBalanceConfig</a> classConfig)</td></tr>
+<tr class="memdesc:aaf13a66925358d4d9d53a137662d565b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тот же каскад плюс три слоя, которые есть у собранного игроком кита: Судьба сосуда, статовые моды надетых предметов (включая баннеры команды) и последствия боёв — травмы и закалки, накопленные «Сосудом» за забег.  <br /></td></tr>
+<tr class="separator:aaf13a66925358d4d9d53a137662d565b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9137ce659a3f796b9854858dcc3e962d" id="r_a9137ce659a3f796b9854858dcc3e962d"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectiveStats.html#a9137ce659a3f796b9854858dcc3e962d">StartingHp</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1Stats.html">Stats</a> stats)</td></tr>
+<tr class="memdesc:a9137ce659a3f796b9854858dcc3e962d"><td class="mdescLeft">&#160;</td><td class="mdescRight">С каким запасом здоровья юнит выходит на арену: <code>MaxHP</code>, срезанный долей StatType.StartHpPct.  <br /></td></tr>
+<tr class="separator:a9137ce659a3f796b9854858dcc3e962d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Эффективные статы юнита — один путь для боя и для всех инструментов, которые показывают числа. </p>
@@ -175,8 +178,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="af6a8ee1a614abbf360dab44edc68d555" name="af6a8ee1a614abbf360dab44edc68d555"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6a8ee1a614abbf360dab44edc68d555">&#9670;&#160;</a></span>Build() <span class="overload">[2/2]</span></h2>
+<a id="aaf13a66925358d4d9d53a137662d565b" name="aaf13a66925358d4d9d53a137662d565b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf13a66925358d4d9d53a137662d565b">&#9670;&#160;</a></span>Build() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -205,6 +208,12 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html">ConsequenceData</a> &gt;&#160;</td>
+          <td class="paramname"><em>consequences</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a>&#160;</td>
           <td class="paramname"><em>config</em>, </td>
         </tr>
@@ -227,12 +236,53 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Тот же каскад плюс два слоя, которые есть у собранного игроком кита: Судьба сосуда и статовые моды надетых предметов (включая баннеры команды). </p>
-<p>Порядок групп значим и повторяет боевую сборку: класс и вид ложатся первыми, затем персона, затем Судьба, затем предметы. Перестановка меняет результат — <code>Override</code> побеждает последний, а <code>PercentMult</code> множит уже накопленное. </p>
+<p>Тот же каскад плюс три слоя, которые есть у собранного игроком кита: Судьба сосуда, статовые моды надетых предметов (включая баннеры команды) и последствия боёв — травмы и закалки, накопленные «Сосудом» за забег. </p>
+<p>Порядок групп значим и повторяет боевую сборку: класс и вид ложатся первыми, затем персона, затем Судьба, затем предметы, и последними — последствия. Перестановка меняет результат: <code>Override</code> побеждает последний, а <code>PercentMult</code> множит уже накопленное. </p>
+<p>Последствия идут ПОСЛЕДНИМИ намеренно. Рана обещает «−30% скорости» от того, чем боец стал со всем своим снаряжением, а не от голой базы: положи её раньше предметов — и сапоги скорости отыгрывали бы травму сильнее, чем показано в карточке. Слой последний ещё и потому, что он единственный, который снимают посреди забега.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectiveStats_af6a8ee1a614abbf360dab44edc68d555_cgraph.svg" width="100%" height="458"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectiveStats_aaf13a66925358d4d9d53a137662d565b_cgraph.svg" width="100%" height="458"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a9137ce659a3f796b9854858dcc3e962d" name="a9137ce659a3f796b9854858dcc3e962d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9137ce659a3f796b9854858dcc3e962d">&#9670;&#160;</a></span>StartingHp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Guildmaster.Combat.EffectiveStats.StartingHp </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1Stats.html">Stats</a>&#160;</td>
+          <td class="paramname"><em>stats</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>С каким запасом здоровья юнит выходит на арену: <code>MaxHP</code>, срезанный долей StatType.StartHpPct. </p>
+<p>Формула живёт здесь, а не по месту чтения, потому что читают её двое — боевая фабрика и строитель тел мира, — и разойтись им нельзя: «сколько HP у бойца во дворе» и «сколько у него на входе в бой» обязаны отвечать одному правилу. </p>
+<p>Доля клампится сверху единицей: стартовать выше собственного потолка нельзя, и закалка «+10% стартового HP» на здоровом бойце просто ничего не делает — она отыгрывает травму, а не переливает через край.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectiveStats_a9137ce659a3f796b9854858dcc3e962d_cgraph.svg" width="496" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectiveStats_a9137ce659a3f796b9854858dcc3e962d_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

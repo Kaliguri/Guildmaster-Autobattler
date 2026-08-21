@@ -97,7 +97,7 @@ var sectionId = 'dynsection-0';
 <text text-anchor="start" x="35" y="-219" font-family="Helvetica,sans-Serif" font-size="10.00">MaxResource</text>
 <text text-anchor="start" x="13" y="-204" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="35" y="-204" font-family="Helvetica,sans-Serif" font-size="10.00">Size</text>
-<text text-anchor="start" x="35" y="-189" font-family="Helvetica,sans-Serif" font-size="10.00">and 17 more...</text>
+<text text-anchor="start" x="35" y="-189" font-family="Helvetica,sans-Serif" font-size="10.00">and 18 more...</text>
 <text text-anchor="start" x="13" y="-174" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="35" y="-174" font-family="Helvetica,sans-Serif" font-size="10.00">IsSprinting</text>
 <text text-anchor="start" x="13" y="-159" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>

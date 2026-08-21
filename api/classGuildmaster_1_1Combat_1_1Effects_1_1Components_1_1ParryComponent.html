@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ParryComponent-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.Effects.Components.ParryComponent Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -129,11 +130,18 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aeeac2e505ee01572ed0aa565d8dfd2e2" id="r_aeeac2e505ee01572ed0aa565d8dfd2e2"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ParryComponent.html#aeeac2e505ee01572ed0aa565d8dfd2e2">IsParryable</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a> incoming)</td></tr>
 <tr class="memdesc:aeeac2e505ee01572ed0aa565d8dfd2e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удар, который парирование вообще способно встретить: прямое попадание (авто-атака или способность) от источника, бьющего в ближнем бою.  <br /></td></tr>
 <tr class="separator:aeeac2e505ee01572ed0aa565d8dfd2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a5fdedb3d762043fe8f3cfd730d1a3351" id="r_a5fdedb3d762043fe8f3cfd730d1a3351"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ParryComponent.html#a5fdedb3d762043fe8f3cfd730d1a3351">Priority</a><code> [get]</code></td></tr>
+<tr class="memdesc:a5fdedb3d762043fe8f3cfd730d1a3351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Парирование встречает удар и платит за это.  <br /></td></tr>
+<tr class="separator:a5fdedb3d762043fe8f3cfd730d1a3351"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html">Guildmaster.Combat.Effects.IPreDamageComponent</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><b>Парирование — общий примитив ответа</b> (дизайн Макса 2026-07-30, триггер уточнён 2026-07-31): носителя бьют в ближнем бою — он отбивает удар, открывает короткое окно защиты, фиксирует микро-станом всех, кто целился в него спереди, и отвечает своим уникальным ударом вне очереди. </p>
 <p><b>Числа:</b> <code>_maxCharges</code> — сколько парирований подряд; <code>_cooldownSeconds</code> — перезарядка ОДНОГО заряда (обычно 6); <code>_parryWindow</code> — эффект окна, его длительность живёт там; <code>_microStun</code> — общий микро-стан игры; <code>_stunRangeFactor</code> — во сколько своих дальностей ловит стан; <code>_frontalDegrees</code> — ширина фронтального сектора; <code>_riposteCharge</code> — заряд ответного удара (множитель и эффекты живут в нём); <code>_outrangedHaste</code> — разгон, если парировал того, кто длиннее.</p>
-<p><b>Триггер — прилетевший удар, как у Блока</b> (вердикт Макса 2026-07-31). Альтернатива — намерение атакующего («кто выбрал парирующего целью») — позволяла бы отбивать до попадания, но требовала бы нового шва «кто в кого целится» в pre-damage; выбран прилетевший удар, и тогда парирование целиком живёт на уже написанном pre-damage-шве вместе с Блоком и «Изворотливостью». </p>
+<p><b>Триггер — прилетевший удар, как у Блока</b> (вердикт Макса 2026-07-31). Альтернатива — намерение атакующего («кто выбрал парирующего целью») — позволяла бы отбивать до попадания, но требовала бы нового шва «кто в кого целится» в pre-damage; выбран прилетевший удар, и тогда парирование целиком живёт на уже написанном pre-damage-шве вместе с Блоком и «Отходом». </p>
 <p><b>Ответ — это рекаст, а не свой путь урона.</b> Уникальный удар выходит той же дорогой, что «Решительный удар»: заряд _riposteCharge плюс RuntimeUnit.RecastAttack. Поэтому ответ можно сбить контролем, от него можно уклониться, и он уходит в промах по ушедшей цели — контригра работает та же, что у всех ударов.</p>
 <p><b>Требует дееспособности</b> (IRequiresAgencyComponent): парирование — это действие, оглушённый его не совершает. Уже открытое окно станом не гасится — см. ParryWindowComponent.</p>
 <p><b>Пока окно висит, второй заряд не тратится:</b> иначе серия из трёх Ударов сожгла бы все заряды разом, хотя первое же парирование их и так отбило.</p>
@@ -315,6 +323,33 @@ Here is the call graph for this function:</div>
 <p><em>previousStacks</em>  — до изменения, <code>ctx.Stacks</code> — после. Компонент правит вклад на дельту (обычно <code>ctx.Stacks − previousStacks</code>). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html#a96151b1f6e1ad199981cac9c86242021">Guildmaster.Combat.Effects.IStackableComponent</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a5fdedb3d762043fe8f3cfd730d1a3351" name="a5fdedb3d762043fe8f3cfd730d1a3351"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fdedb3d762043fe8f3cfd730d1a3351">&#9670;&#160;</a></span>Priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.Components.ParryComponent.Priority</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Парирование встречает удар и платит за это. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html#aeb84a55002d51320c02f7cce093236ed">Guildmaster.Combat.Effects.IPreDamageComponent</a>.</p>
 
 </div>
 </div>

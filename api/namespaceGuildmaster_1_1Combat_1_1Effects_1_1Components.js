@@ -1,5 +1,7 @@
 var namespaceGuildmaster_1_1Combat_1_1Effects_1_1Components =
 [
+    [ "AllyAuraComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AllyAuraComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AllyAuraComponent" ],
+    [ "AllyGustComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AllyGustComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AllyGustComponent" ],
     [ "AllyMendComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AllyMendComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AllyMendComponent" ],
     [ "AllyProximityDamageBonusComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AllyProximityDamageBonusComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AllyProximityDamageBonusComponent" ],
     [ "ArmorThornsComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent" ],
@@ -23,6 +25,7 @@ var namespaceGuildmaster_1_1Combat_1_1Effects_1_1Components =
     [ "EmberIgniterComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberIgniterComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberIgniterComponent" ],
     [ "EmberWardenComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberWardenComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberWardenComponent" ],
     [ "EmpowerNextAttackComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmpowerNextAttackComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmpowerNextAttackComponent" ],
+    [ "EvasionComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EvasionComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EvasionComponent" ],
     [ "EveryNthAttackComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EveryNthAttackComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EveryNthAttackComponent" ],
     [ "FeedOnDamageComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FeedOnDamageComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FeedOnDamageComponent" ],
     [ "FireOrbsComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FireOrbsComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FireOrbsComponent" ],
@@ -39,6 +42,7 @@ var namespaceGuildmaster_1_1Combat_1_1Effects_1_1Components =
     [ "PeriodicEmpowerComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicEmpowerComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicEmpowerComponent" ],
     [ "PeriodicHealComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent" ],
     [ "PhaseShiftComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PhaseShiftComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PhaseShiftComponent" ],
+    [ "RangedWardComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RangedWardComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RangedWardComponent" ],
     [ "RearDamageBonusComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RearDamageBonusComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RearDamageBonusComponent" ],
     [ "RearStrikeEffectComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RearStrikeEffectComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RearStrikeEffectComponent" ],
     [ "SchoolDamageResistComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolDamageResistComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolDamageResistComponent" ],

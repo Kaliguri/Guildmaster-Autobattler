@@ -1,3 +1,12 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html" title="Профиль в списке выбора: то, что нужно показать, без загрузки его содержимого." alt="" coords="5,5,224,45"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html" title="Шов персистентности (ТЗ [[save&#45;system]]): сохранение/загрузка сериализуемых DTO по строковому ключу." alt="" coords="5,37,224,77"/>
+<area shape="rect" id="Node000001" href="$interfaceGuildmaster_1_1Core_1_1Persistence_1_1ILocalSaveService.html" title="Хранилище машинно&#45;локальных данных: тот же контракт, что у ISaveService, но другой каталог — вне Save..." alt="" coords="272,5,491,45"/>
+<area shape="poly" id="edge66_Node000000_Node000001" title=" " alt="" coords="237,40,271,36,272,41,238,45"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveServiceBase.html" title="Общая механика файлового ISaveService: конверт со версией схемы, атомарная запись,..." alt="" coords="278,69,485,109"/>
+<area shape="poly" id="edge68_Node000000_Node000003" title=" " alt="" coords="238,69,278,74,278,80,237,75"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html" title="Бэкенд ILocalSaveService — данные КОМПЬЮТЕРА, а не игрока: каталог Local под Core...." alt="" coords="539,5,745,45"/>
+<area shape="poly" id="edge67_Node000001_Node000002" title=" " alt="" coords="504,23,538,23,538,28,504,28"/>
+<area shape="poly" id="edge70_Node000003_Node000002" title=" " alt="" coords="476,63,559,43,561,48,477,69"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html" title="Бэкенд ISaveService для данных ИГРОКА — наш собственный и единственный: JSON&#45;файлы под GameDataPath...." alt="" coords="539,69,745,109"/>
+<area shape="poly" id="edge69_Node000003_Node000004" title=" " alt="" coords="499,87,538,87,538,92,499,92"/>
 </map>

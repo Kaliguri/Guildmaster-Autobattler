@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort.html" target="_top" xlink:title="Агрегаты статов по когорте юнитов (одного концертного типа) — для stat&#45;context «среднее/разброс рядом...">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1ContentHub_1_1Editor_1_1NavHistory.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="170,-30 0,-30 0,0 170,0 170,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.ContentHub.Editor.</text>
-<text text-anchor="middle" x="85" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">StatCohort</text>
+<text text-anchor="middle" x="85" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">NavHistory&lt; NavAddress &gt;</text>
 </a>
 </g>
 </g>

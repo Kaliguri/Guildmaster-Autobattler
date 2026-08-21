@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Combat_1_1ClassBaseline.html" target="_top" xlink:title="Применение классовой стат&#45;базы (2&#45;й уровень каскада) к Stats — ЕДИНСТВЕННОЕ место,...">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Combat_1_1BrainSystem.html" target="_top" xlink:title="Тик AI (вики «13» §3.2, §4.1).">
 <polygon fill="white" stroke="#666666" points="146,-30 0,-30 0,0 146,0 146,-30"/>
-<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Class</text>
-<text text-anchor="middle" x="73" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Baseline</text>
+<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Brain</text>
+<text text-anchor="middle" x="73" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">System</text>
 </a>
 </g>
 </g>

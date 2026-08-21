@@ -6,5 +6,6 @@ var dir_779d45bb6b17da5ef87df72129400af4 =
     [ "EffectContext.cs", "EffectContext_8cs.html", "EffectContext_8cs" ],
     [ "EffectSystem.cs", "EffectSystem_8cs.html", "EffectSystem_8cs" ],
     [ "IRuntimeEffectComponent.cs", "IRuntimeEffectComponent_8cs.html", "IRuntimeEffectComponent_8cs" ],
+    [ "ReactionPriority.cs", "ReactionPriority_8cs.html", "ReactionPriority_8cs" ],
     [ "RuntimeEffect.cs", "RuntimeEffect_8cs.html", "RuntimeEffect_8cs" ]
 ];

@@ -234,6 +234,11 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
       [ "GrantItem", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a77f110cb08935b14a4b3742c4dc83b80aa5b8f311297ef640de3368f2c0ceee8c", null ],
       [ "Custom", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a77f110cb08935b14a4b3742c4dc83b80a90589c47f06eb971d548591f23c285af", null ]
     ] ],
+    [ "InjuryGrade", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abbb4ad2cc8d5f3e88cffbf97554a5753", [
+      [ "Bruise", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abbb4ad2cc8d5f3e88cffbf97554a5753afc1071643fa7db924a0689e9c8563faa", null ],
+      [ "Wound", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abbb4ad2cc8d5f3e88cffbf97554a5753a5518086aebc9159ba7424be0073ce5c9", null ],
+      [ "Maiming", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abbb4ad2cc8d5f3e88cffbf97554a5753a9535a0f986d224b7cb40a207d6565e1f", null ]
+    ] ],
     [ "ItemScope", "namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590", [
       [ "Vessel", "namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590add85641c28bfd5bae3047879853d4a33", null ],
       [ "Party", "namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590a094a173d3b32f44f5b5c996e8710ae28", null ]

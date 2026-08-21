@@ -15,7 +15,8 @@
 <polygon fill="#999999" stroke="transparent" points="282.5,-120 126.5,-120 126.5,0 282.5,0 282.5,-120"/>
 <text text-anchor="start" x="131.5" y="-108" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
 <text text-anchor="start" x="131.5" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">Components.ParryComponent</text>
-<text text-anchor="start" x="202.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="140" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="162.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">Priority</text>
 <text text-anchor="start" x="140" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="162.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
 <text text-anchor="start" x="140" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
@@ -27,7 +28,8 @@
 <text text-anchor="start" x="140" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="162.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">IsParryable()</text>
 <polygon fill="#666666" stroke="#666666" points="126.5,-92 126.5,-92 282.5,-92 282.5,-92 126.5,-92"/>
-<polygon fill="#666666" stroke="#666666" points="126.5,-77 126.5,-77 282.5,-77 282.5,-77 126.5,-77"/>
+<polygon fill="#666666" stroke="#666666" points="126.5,-77 126.5,-77 160.5,-77 160.5,-77 126.5,-77"/>
+<polygon fill="#666666" stroke="#666666" points="160.5,-77 160.5,-77 282.5,-77 282.5,-77 160.5,-77"/>
 <polygon fill="none" stroke="#666666" points="126.5,0 126.5,-120 282.5,-120 282.5,0 126.5,0"/>
 </a>
 </g>
@@ -38,11 +40,13 @@
 <g id="a_Node000002"><a xlink:href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html" target="_top" xlink:title="Синхронный перехват ДО вычета HP (§9.3): вызывается из EffectSystem.RunPreDamage перед DamagePipeline...">
 <polygon fill="white" stroke="transparent" points="127,-205 0,-205 0,-156 127,-156 127,-205"/>
 <text text-anchor="start" x="5.5" y="-192.5" font-family="Helvetica,sans-Serif" font-size="10.00">IPreDamageComponent</text>
-<text text-anchor="start" x="62" y="-177.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="11" y="-177.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="30.5" y="-177.5" font-family="Helvetica,sans-Serif" font-size="10.00">Priority</text>
 <text text-anchor="start" x="11" y="-162.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="30.5" y="-162.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnPreDamage()</text>
 <polygon fill="#666666" stroke="#666666" points="0.5,-187.5 0.5,-187.5 127.5,-187.5 127.5,-187.5 0.5,-187.5"/>
-<polygon fill="#666666" stroke="#666666" points="0.5,-172.5 0.5,-172.5 127.5,-172.5 127.5,-172.5 0.5,-172.5"/>
+<polygon fill="#666666" stroke="#666666" points="0.5,-172.5 0.5,-172.5 28.5,-172.5 28.5,-172.5 0.5,-172.5"/>
+<polygon fill="#666666" stroke="#666666" points="28.5,-172.5 28.5,-172.5 127.5,-172.5 127.5,-172.5 28.5,-172.5"/>
 <polygon fill="none" stroke="#666666" points="0,-156 0,-205 127,-205 127,-156 0,-156"/>
 </a>
 </g>

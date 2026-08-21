@@ -6,7 +6,9 @@
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="472,67,560,46,561,51,473,72"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив." alt="" coords="551,69,767,109"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="499,87,537,87,537,92,499,92"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#aa69f17b857f358b92bfeeb3a00bcefc3" title="Строковые id предметов → массив ItemData (null, если ничего не разрешилось)." alt="" coords="820,99,1036,139"/>
-<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="472,107,547,119,681,125,806,123,806,129,681,131,546,124,471,112"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="768,98,807,103,806,108,767,104"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#aa69f17b857f358b92bfeeb3a00bcefc3" title="Строковые id предметов → массив ItemData (null, если ничего не разрешилось)." alt="" coords="820,127,1036,167"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="477,107,547,119,681,132,806,140,806,145,680,138,546,124,476,112"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#abd070000227bd4574344e0e01c468ca6" title="Строковые id последствий → массив ConsequenceData (null, если ничего не разрешилось)." alt="" coords="820,63,1036,103"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="768,84,806,83,807,88,768,89"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="754,107,821,121,820,126,753,112"/>
 </map>

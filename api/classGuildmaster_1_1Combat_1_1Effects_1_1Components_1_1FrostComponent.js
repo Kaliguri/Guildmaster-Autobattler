@@ -5,5 +5,6 @@ var classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FrostComponent =
     [ "OnPreDamage", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FrostComponent.html#a6bca59369db7aa4d91c511175c16e9f9", null ],
     [ "OnStacksChanged", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FrostComponent.html#a81c99f192359a2e1f1a1e217a4893ad4", null ],
     [ "OnTick", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FrostComponent.html#a5a7a0e69429647ce1fe3dbb87828a4c4", null ],
-    [ "Interval", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FrostComponent.html#ae216c2f57f8fa204776b621b87388b12", null ]
+    [ "Interval", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FrostComponent.html#ae216c2f57f8fa204776b621b87388b12", null ],
+    [ "Priority", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FrostComponent.html#a8db5935416d6e2f6c3b72cf3221a4ca8", null ]
 ];

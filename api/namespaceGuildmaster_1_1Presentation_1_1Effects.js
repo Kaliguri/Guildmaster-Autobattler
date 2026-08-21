@@ -1,5 +1,7 @@
 var namespaceGuildmaster_1_1Presentation_1_1Effects =
 [
+    [ "CombatGhosts", "classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts.html", "classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts" ],
+    [ "GhostImage", "classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html", "classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage" ],
     [ "HitFormFactory", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory.html", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory" ],
     [ "HitFormParams", "structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html", "structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams" ],
     [ "HitFormVfx", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormVfx.html", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormVfx" ],

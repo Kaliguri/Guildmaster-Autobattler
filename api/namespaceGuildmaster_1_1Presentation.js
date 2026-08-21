@@ -38,6 +38,7 @@ var namespaceGuildmaster_1_1Presentation =
     [ "ReplayFocusBinder", "classGuildmaster_1_1Presentation_1_1ReplayFocusBinder.html", "classGuildmaster_1_1Presentation_1_1ReplayFocusBinder" ],
     [ "ScreenShake", "classGuildmaster_1_1Presentation_1_1ScreenShake.html", "classGuildmaster_1_1Presentation_1_1ScreenShake" ],
     [ "ShatterMesh", "classGuildmaster_1_1Presentation_1_1ShatterMesh.html", "classGuildmaster_1_1Presentation_1_1ShatterMesh" ],
+    [ "SilhouetteDraw", "classGuildmaster_1_1Presentation_1_1SilhouetteDraw.html", "classGuildmaster_1_1Presentation_1_1SilhouetteDraw" ],
     [ "SilhouettePart", "structGuildmaster_1_1Presentation_1_1SilhouettePart.html", "structGuildmaster_1_1Presentation_1_1SilhouettePart" ],
     [ "TapeFocusPointSource", "classGuildmaster_1_1Presentation_1_1TapeFocusPointSource.html", "classGuildmaster_1_1Presentation_1_1TapeFocusPointSource" ],
     [ "UnitAnimationSelector", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector" ],

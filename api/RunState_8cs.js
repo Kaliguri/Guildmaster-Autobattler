@@ -3,6 +3,7 @@ var RunState_8cs =
     [ "Guildmaster.Guild.MapNode", "classGuildmaster_1_1Guild_1_1MapNode.html", "classGuildmaster_1_1Guild_1_1MapNode" ],
     [ "Guildmaster.Guild.MapState", "classGuildmaster_1_1Guild_1_1MapState.html", "classGuildmaster_1_1Guild_1_1MapState" ],
     [ "Guildmaster.Guild.RosterSlot", "classGuildmaster_1_1Guild_1_1RosterSlot.html", "classGuildmaster_1_1Guild_1_1RosterSlot" ],
+    [ "Guildmaster.Guild.Injury", "classGuildmaster_1_1Guild_1_1Injury.html", "classGuildmaster_1_1Guild_1_1Injury" ],
     [ "Guildmaster.Guild.RunState", "classGuildmaster_1_1Guild_1_1RunState.html", "classGuildmaster_1_1Guild_1_1RunState" ],
     [ "MapNodeType", "RunState_8cs.html#a8140c69a5f32631737e488f345f16625", [
       [ "Start", "RunState_8cs.html#a8140c69a5f32631737e488f345f16625aa6122a65eaa676f700ae68d393054a37", null ],

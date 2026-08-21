@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Effects.Components.ConcealmentComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ConcealmentComponent__inherit__graph.svg" width="272" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ConcealmentComponent__inherit__graph.svg" width="272" height="511"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Effects.Components.ConcealmentComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ConcealmentComponent__coll__graph.svg" width="272" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ConcealmentComponent__coll__graph.svg" width="272" height="511"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -126,6 +126,10 @@ Properties</h2></td></tr>
 <tr class="memitem:a68c6f2d80242173347f0da50b8274065" id="r_a68c6f2d80242173347f0da50b8274065"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a97708c7660ca7173822cc063f469c397">ConcealmentTier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ConcealmentComponent.html#a68c6f2d80242173347f0da50b8274065">Tier</a><code> [get]</code></td></tr>
 <tr class="memdesc:a68c6f2d80242173347f0da50b8274065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ступень этого источника. Читает <code>ConcealmentSystem</code>, собирая сильнейшую из активных.  <br /></td></tr>
 <tr class="separator:a68c6f2d80242173347f0da50b8274065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5cb504a3da0626234844092718ba6b0" id="r_aa5cb504a3da0626234844092718ba6b0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ConcealmentComponent.html#aa5cb504a3da0626234844092718ba6b0">Priority</a><code> [get]</code></td></tr>
+<tr class="memdesc:aa5cb504a3da0626234844092718ba6b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выше отхода намеренно: маскировка НИЧЕГО не тратит, и спрашивать её надо прежде платных негейтов — иначе заряд отхода сгорит на ударе, который и так не нашёл бы цель.  <br /></td></tr>
+<tr class="separator:aa5cb504a3da0626234844092718ba6b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html">Guildmaster.Combat.Effects.IPreDamageComponent</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><b>Маскировка</b> (дизайн Макса 2026-07-30, числа и правила 2026-07-31): пока эффект висит, носитель скрыт от вражеского выбора цели — до тех пор, пока враг не подойдёт ближе радиуса его ступени. </p>
@@ -242,6 +246,32 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="aa5cb504a3da0626234844092718ba6b0" name="aa5cb504a3da0626234844092718ba6b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5cb504a3da0626234844092718ba6b0">&#9670;&#160;</a></span>Priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.Components.ConcealmentComponent.Priority</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Выше отхода намеренно: маскировка НИЧЕГО не тратит, и спрашивать её надо прежде платных негейтов — иначе заряд отхода сгорит на ударе, который и так не нашёл бы цель. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html#aeb84a55002d51320c02f7cce093236ed">Guildmaster.Combat.Effects.IPreDamageComponent</a>.</p>
+
+</div>
+</div>
 <a id="a68c6f2d80242173347f0da50b8274065" name="a68c6f2d80242173347f0da50b8274065"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a68c6f2d80242173347f0da50b8274065">&#9670;&#160;</a></span>Tier</h2>
 

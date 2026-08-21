@@ -1,5 +1,11 @@
 <map id="Guildmaster.Presentation.SilhouettePart.Decompose" name="Guildmaster.Presentation.SilhouettePart.Decompose">
-<area shape="rect" id="Node000001" title="Разложить позу в трансформ (позиция / поворот вокруг Z / масштаб со знаком)." alt="" coords="249,5,444,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1DeploymentView.html#a5bddd571ce3643d276bf263398efbede" title="Ghost&#45;призрак при drag (QA #9): полупрозрачная копия силуэта юнита, поставленная ногами в feet ." alt="" coords="5,5,201,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,28,201,28,201,23,236,23"/>
+<area shape="rect" id="Node000001" title="Разложить позу в трансформ (позиция / поворот вокруг Z / масштаб со знаком)." alt="" coords="745,37,940,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1SilhouetteDraw.html#a6be574eda10002ef6d4f36c7d3bcddda" title="Разложить силуэт по рендерерам parts , дополняя список фабрикой make &#160;и гася лишние." alt="" coords="504,5,695,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="731,45,694,40,695,35,732,40"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Presentation_1_1DeploymentView.html#a5bddd571ce3643d276bf263398efbede" title="Ghost&#45;призрак при drag (QA #9): полупрозрачная копия силуэта юнита, поставленная ногами в feet ." alt="" coords="501,69,697,109"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="732,75,698,79,697,74,731,69"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html#a3b678bd2057e04d46e2dfd628a86e079" title="Оставить копию тела в точке feet &#160;(мировые координаты ног)." alt="" coords="263,5,453,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="490,28,453,28,453,23,490,23"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts.html#a4967e0d37e526b6dd915c66820f8ed81" title="Оставить копию тела." alt="" coords="5,5,215,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="249,28,215,28,215,23,249,23"/>
 </map>

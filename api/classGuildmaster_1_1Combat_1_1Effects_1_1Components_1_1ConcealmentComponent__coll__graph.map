@@ -1,5 +1,5 @@
 <map id="Guildmaster.Combat.Effects.Components.ConcealmentComponent" name="Guildmaster.Combat.Effects.Components.ConcealmentComponent">
-<area shape="rect" id="Node000001" title="Маскировка (дизайн Макса 2026&#45;07&#45;30, числа и правила 2026&#45;07&#45;31): пока эффект висит,..." alt="" coords="5,365,267,485"/>
+<area shape="rect" id="Node000001" title="Маскировка (дизайн Макса 2026&#45;07&#45;30, числа и правила 2026&#45;07&#45;31): пока эффект висит,..." alt="" coords="5,365,267,505"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html" title="Синхронный перехват ДО вычета HP (§9.3): вызывается из EffectSystem.RunPreDamage перед DamagePipeline..." alt="" coords="51,252,221,317"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,331,139,365,133,365,133,331"/>
 <area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="43,119,229,204"/>

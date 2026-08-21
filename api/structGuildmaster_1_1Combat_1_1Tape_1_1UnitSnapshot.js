@@ -1,6 +1,6 @@
 var structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot =
 [
-    [ "UnitSnapshot", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#ac1fb34bbc1e21f1c8710470fd17b7624", null ],
+    [ "UnitSnapshot", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#ac500cc840cd942dadb81adb013e63fe7", null ],
     [ "From", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#a485356d77b895e011470412b625c38d1", null ],
     [ "AttackChannelTickPeriod", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#ac6a57870536a2180557527f22529f88f", null ],
     [ "AttackChannelTickRemaining", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#a4c2e44412e610f9806e0b6bef9d95c64", null ],
@@ -16,6 +16,7 @@ var structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot =
     [ "IsDead", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#af7dff790a2ee3657ea9ae8c1daf49fc6", null ],
     [ "IsDisplaced", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#ab43948269dce48fc1743ac1ec172cafa", null ],
     [ "IsEmpowered", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#a910dfbc88ab6fa43c06190345ebad748", null ],
+    [ "IsSelfDisplaced", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#ab325fffb9fc97ebe22a66907f42c5314", null ],
     [ "MaxHP", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#af2e2e545f56788ff283c1d7f28499eff", null ],
     [ "MaxResource", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#aa1e9d8528de5dbe0f33628b0a93e767d", null ],
     [ "Phase", "structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#a58205603f5bc672e6d20af16873a69c1", null ],

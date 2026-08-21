@@ -8,6 +8,7 @@ var RunCommand_8cs =
       [ "AddGold", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5a71d4cd6945abc629c44293687be56d24", null ],
       [ "RemoveRelic", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5a101391afc2c0d5f640162e9f03f0cd04", null ],
       [ "AwardBattleReward", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5a6a9fe08d4fc1b26177ddcee4cf1452b0", null ],
-      [ "ChooseNode", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5a976b009c4e0b979a2f6f7b04fcd9f752", null ]
+      [ "ChooseNode", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5a976b009c4e0b979a2f6f7b04fcd9f752", null ],
+      [ "InflictInjury", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5a52ac064880d6ff7f3eb3fa466bca0f01", null ]
     ] ]
 ];

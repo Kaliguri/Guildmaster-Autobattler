@@ -121,16 +121,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1212c2238665fd49832412ae424e6410" id="r_a1212c2238665fd49832412ae424e6410"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a1212c2238665fd49832412ae424e6410">AdvanceIdsPast</a> (int lastUsedId)</td></tr>
 <tr class="memdesc:a1212c2238665fd49832412ae424e6410"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сдвинуть счётчик так, чтобы следующие Id шли ПОСЛЕ <em>lastUsedId</em> .  <br /></td></tr>
 <tr class="separator:a1212c2238665fd49832412ae424e6410"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70e9cf5d31e2c828b5913df2b51f7b5a" id="r_a70e9cf5d31e2c828b5913df2b51f7b5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a70e9cf5d31e2c828b5913df2b51f7b5a">Create</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> data, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a> vessel, int team, Vector2 spawnPosition, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a> &gt; items=null)</td></tr>
-<tr class="memdesc:a70e9cf5d31e2c828b5913df2b51f7b5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создать RuntimeUnit из SO-данных.  <br /></td></tr>
-<tr class="separator:a70e9cf5d31e2c828b5913df2b51f7b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3efcb1c3b14d28064433d425f223cbeb" id="r_a3efcb1c3b14d28064433d425f223cbeb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a3efcb1c3b14d28064433d425f223cbeb">Create</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> data, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a> vessel, int team, Vector2 spawnPosition, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a> &gt; items=null, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html">ConsequenceData</a> &gt; consequences=null)</td></tr>
+<tr class="memdesc:a3efcb1c3b14d28064433d425f223cbeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создать RuntimeUnit из SO-данных.  <br /></td></tr>
+<tr class="separator:a3efcb1c3b14d28064433d425f223cbeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50f5fe5c50d54b6d2c1fdbcabd79bc09" id="r_a50f5fe5c50d54b6d2c1fdbcabd79bc09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a50f5fe5c50d54b6d2c1fdbcabd79bc09">CreateSummon</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> data, int team, Vector2 position, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> summoner)</td></tr>
 <tr class="memdesc:a50f5fe5c50d54b6d2c1fdbcabd79bc09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать призванного юнита (M10): та же сборка, что у всех, плюс множители силы призывов от призывателя.  <br /></td></tr>
 <tr class="separator:a50f5fe5c50d54b6d2c1fdbcabd79bc09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Единственная точка сборки RuntimeUnit из SO-данных. </p>
-<p>Шаги сборки (вики «10» §5.2, «6» §3): дефолты из StatsConfig → классовая база (ClassBalanceConfig) → видовые скейлы врага (SpeciesData) → моды реликвии → перки сосуда → пассивки (RelicData.GrantedEffects с постоянной длительностью) → активки (AbilityRuntime) → ресурс (StatType.StartResource) → <code>CurrentHP = Get(MaxHP)</code>.</p>
+<p>Шаги сборки (вики «10» §5.2, «6» §3): дефолты из StatsConfig → классовая база (ClassBalanceConfig) → видовые скейлы врага (SpeciesData) → моды реликвии → перки сосуда → предметы → последствия боёв (ConsequenceData) → пассивки (RelicData.GrantedEffects с постоянной длительностью) → активки (AbilityRuntime) → ресурс (StatType.StartResource) → <code>CurrentHP = EffectiveStats.StartingHp(...)</code>.</p>
 <p>Пассивки применяются <b>до</b> инициализации <code>CurrentHP</code>: пассив на +MaxHP должен поднять и стартовое здоровье. Поэтому фабрике нужны EffectSystem и боевой контекст — наложение пассивки зовёт <code>OnApply</code> компонентов (вики «12» §6, шаг 9). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa1cab31ae75230b58adb9270cc5d057d" name="aa1cab31ae75230b58adb9270cc5d057d"></a>
@@ -211,8 +211,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a70e9cf5d31e2c828b5913df2b51f7b5a" name="a70e9cf5d31e2c828b5913df2b51f7b5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70e9cf5d31e2c828b5913df2b51f7b5a">&#9670;&#160;</a></span>Create()</h2>
+<a id="a3efcb1c3b14d28064433d425f223cbeb" name="a3efcb1c3b14d28064433d425f223cbeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3efcb1c3b14d28064433d425f223cbeb">&#9670;&#160;</a></span>Create()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -248,7 +248,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a> &gt;&#160;</td>
-          <td class="paramname"><em>items</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>items</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html">ConsequenceData</a> &gt;&#160;</td>
+          <td class="paramname"><em>consequences</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -272,18 +278,19 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">team</td><td>Команда: 0 = союзники, 1 = враги.</td></tr>
     <tr><td class="paramname">spawnPosition</td><td>Начальная позиция на поле боя.</td></tr>
     <tr><td class="paramname">items</td><td>Предметы юнита (Vessel-скоуп) и баннеры команды (Party-скоуп) — их статовые моды и пассивки (план 11 §5.5, D1). Применяются как перки: моды до инициализации HP (чтобы +MaxHP поднял старт). null = без предметов. Активки предметов пока не реализованы (только статы/эффекты). </td></tr>
+    <tr><td class="paramname">consequences</td><td>Последствия боёв на «Сосуде» — травмы и закалки забега (ГДД <code>injuries-mettle</code>). Их моды ложатся последним слоем каскада, а травма по StatType.StartHpPct вдобавок срезает запас, с которым боец выходит на арену. null = «Сосуд» цел. </td></tr>
   </table>
   </dd>
 </dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_a70e9cf5d31e2c828b5913df2b51f7b5a_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_a3efcb1c3b14d28064433d425f223cbeb_cgraph.svg" width="100%" height="490"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_a70e9cf5d31e2c828b5913df2b51f7b5a_icgraph.svg" width="488" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_a3efcb1c3b14d28064433d425f223cbeb_icgraph.svg" width="488" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -342,7 +349,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_a50f5fe5c50d54b6d2c1fdbcabd79bc09_cgraph.svg" width="100%" height="458"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_a50f5fe5c50d54b6d2c1fdbcabd79bc09_cgraph.svg" width="100%" height="529"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

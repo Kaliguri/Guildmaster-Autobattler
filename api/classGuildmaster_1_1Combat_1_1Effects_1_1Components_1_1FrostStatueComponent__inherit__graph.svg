@@ -25,7 +25,8 @@
 <polygon fill="#999999" stroke="transparent" points="187,-90 0,-90 0,0 187,0 187,-90"/>
 <text text-anchor="start" x="5.5" y="-78" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
 <text text-anchor="start" x="5.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">Components.FrostStatueComponent</text>
-<text text-anchor="start" x="92" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="26" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="60.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">Priority</text>
 <text text-anchor="start" x="26" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="60.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
 <text text-anchor="start" x="26" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
@@ -33,7 +34,8 @@
 <text text-anchor="start" x="26" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="60.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">OnPreDamage()</text>
 <polygon fill="#666666" stroke="#666666" points="0.5,-62 0.5,-62 187.5,-62 187.5,-62 0.5,-62"/>
-<polygon fill="#666666" stroke="#666666" points="0.5,-47 0.5,-47 187.5,-47 187.5,-47 0.5,-47"/>
+<polygon fill="#666666" stroke="#666666" points="0.5,-47 0.5,-47 58.5,-47 58.5,-47 0.5,-47"/>
+<polygon fill="#666666" stroke="#666666" points="58.5,-47 58.5,-47 187.5,-47 187.5,-47 58.5,-47"/>
 <polygon fill="none" stroke="#666666" points="0,0 0,-90 187,-90 187,0 0,0"/>
 </a>
 </g>
@@ -44,11 +46,13 @@
 <g id="a_Node000002"><a xlink:href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html" target="_top" xlink:title="Синхронный перехват ДО вычета HP (§9.3): вызывается из EffectSystem.RunPreDamage перед DamagePipeline...">
 <polygon fill="white" stroke="transparent" points="157,-175 30,-175 30,-126 157,-126 157,-175"/>
 <text text-anchor="start" x="35.5" y="-162.5" font-family="Helvetica,sans-Serif" font-size="10.00">IPreDamageComponent</text>
-<text text-anchor="start" x="92" y="-147.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="41" y="-147.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="60.5" y="-147.5" font-family="Helvetica,sans-Serif" font-size="10.00">Priority</text>
 <text text-anchor="start" x="41" y="-132.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="60.5" y="-132.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnPreDamage()</text>
 <polygon fill="#666666" stroke="#666666" points="30.5,-157.5 30.5,-157.5 157.5,-157.5 157.5,-157.5 30.5,-157.5"/>
-<polygon fill="#666666" stroke="#666666" points="30.5,-142.5 30.5,-142.5 157.5,-142.5 157.5,-142.5 30.5,-142.5"/>
+<polygon fill="#666666" stroke="#666666" points="30.5,-142.5 30.5,-142.5 58.5,-142.5 58.5,-142.5 30.5,-142.5"/>
+<polygon fill="#666666" stroke="#666666" points="58.5,-142.5 58.5,-142.5 157.5,-142.5 157.5,-142.5 58.5,-142.5"/>
 <polygon fill="none" stroke="#666666" points="30,-126 30,-175 157,-175 157,-126 30,-126"/>
 </a>
 </g>

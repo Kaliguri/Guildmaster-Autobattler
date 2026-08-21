@@ -58,7 +58,8 @@ var namespaceGuildmaster_1_1Data_1_1Stats =
       [ "ResourceGainEff", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a143f98d287cb622e9f790376ba67377d", null ],
       [ "SummonHealthEff", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a8de1dce4a01b7df86880284797514d83", null ],
       [ "SummonDamageEff", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab39aedf70f89324e3d7533599d3fdab0", null ],
-      [ "ResourceRegenFlat", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab08c69f0634666c90d66606b35a39e5c", null ]
+      [ "ResourceRegenFlat", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab08c69f0634666c90d66606b35a39e5c", null ],
+      [ "StartHpPct", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a8a0c98f22151aeb13e507b4398df35b5", null ]
     ] ],
     [ "UnitClass", "namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6", [
       [ "Bruiser", "namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6a8be80102e06b904744ba56c822c70a4b", null ],

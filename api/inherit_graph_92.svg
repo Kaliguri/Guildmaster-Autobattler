@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaSwapShape.html" target="_top" xlink:title="Форма перехода арены «А → Б» в цифровом стиле: три акта и разнобой клеток внутри них.">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html" target="_top" xlink:title="Неизменяемый снапшот арены на один бой: границы поля + зоны расстановки.">
 <polygon fill="white" stroke="#666666" points="164,-30 0,-30 0,0 164,0 164,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Core.Arena.Arena</text>
-<text text-anchor="middle" x="82" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">SwapShape</text>
+<text text-anchor="middle" x="82" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">LayoutData</text>
 </a>
 </g>
 </g>

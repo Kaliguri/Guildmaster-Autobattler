@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Effects.GhostImage.Stop" name="Guildmaster.Presentation.Effects.GhostImage.Stop">
+<area shape="rect" id="Node000001" title="Погасить копию досрочно (сброс боя) — без колбэка: возврат в пул делает вызывающий." alt="" coords="300,5,491,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts.html#aa14bc6c06c6f5cf6717bc7ba9946c2f6" title="Погасить все копии и вернуть их в пул (сброс боя, уход арены)." alt="" coords="5,5,252,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="286,28,252,28,252,23,286,23"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.InjuryLedger.SlotsOf" name="Guildmaster.Guild.InjuryLedger.SlotsOf">
+<area shape="rect" id="Node000001" title="Занятые слоты «Сосуда»: ступени берутся у ассетов по id." alt="" coords="233,5,413,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1InjuryLedger.html#a5fcac78473e09b300cae4670c4ef8d09" title="Положить на «Сосуд» последствие ступени requested : ступень уточняет каскад, конкретную рану выбирает..." alt="" coords="5,5,185,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,28,185,28,185,23,219,23"/>
+</map>

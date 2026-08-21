@@ -1,7 +1,7 @@
 <map id="Guildmaster.Combat.EffectiveStats.Build" name="Guildmaster.Combat.EffectiveStats.Build">
 <area shape="rect" id="Node000001" title="Собрать стат&#45;блок юнита поверх дефолтов конфига." alt="" coords="531,29,748,69"/>
 <area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="684,18,669,11,639,8,614,10,598,15,593,21,595,28,590,30,587,20,595,10,613,5,639,3,670,5,687,13"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a70e9cf5d31e2c828b5913df2b51f7b5a" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="268,29,483,69"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a3efcb1c3b14d28064433d425f223cbeb" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="268,29,483,69"/>
 <area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="517,52,483,52,483,47,517,47"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a50f5fe5c50d54b6d2c1fdbcabd79bc09" title="Собрать призванного юнита (M10): та же сборка, что у всех, плюс множители силы призывов от призывател..." alt="" coords="5,29,220,69"/>
 <area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="255,52,220,52,220,47,255,47"/>

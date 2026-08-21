@@ -10,6 +10,8 @@ var dir_850724288b2f6c2c8b66549c5631cfce =
     [ "GameStartRequest.cs", "GameStartRequest_8cs.html", "GameStartRequest_8cs" ],
     [ "GuildBook.cs", "GuildBook_8cs.html", "GuildBook_8cs" ],
     [ "HubMessages.cs", "HubMessages_8cs.html", "HubMessages_8cs" ],
+    [ "InjuryCascade.cs", "InjuryCascade_8cs.html", "InjuryCascade_8cs" ],
+    [ "InjuryLedger.cs", "InjuryLedger_8cs.html", "InjuryLedger_8cs" ],
     [ "IRunStateView.cs", "IRunStateView_8cs.html", "IRunStateView_8cs" ],
     [ "ISessionRunState.cs", "ISessionRunState_8cs.html", "ISessionRunState_8cs" ],
     [ "MainMenuMessages.cs", "MainMenuMessages_8cs.html", "MainMenuMessages_8cs" ],

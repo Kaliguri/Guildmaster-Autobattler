@@ -154,6 +154,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html">PreDamageResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар или изменить его величину.  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1ReactionPriority.html">ReactionPriority</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Стартовые приоритеты pre-damage реакций: чем больше число, тем раньше реакцию спросят (решение Макса 2026-08-21/3).  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1ReactionPriority.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html">RuntimeEffect</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Экземпляр эффекта на конкретном юните (POCO, живёт один бой).  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,6 +181,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:acbd5655c92bc3943fed6be07e5127066"><td class="mdescLeft">&#160;</td><td class="mdescRight">Внутренние боевые события для реактивных компонентов эффектов (вампиризм/шипы и т.  <a href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066">More...</a><br /></td></tr>
 <tr class="separator:acbd5655c92bc3943fed6be07e5127066"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b8d4b33324ab531635a90da9a10e600" id="r_a0b8d4b33324ab531635a90da9a10e600"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#a0b8d4b33324ab531635a90da9a10e600">ReactionOrigin</a> { <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#a0b8d4b33324ab531635a90da9a10e600a5345d9ed3e4f5d70f842d45fd2356a34">SelfCast</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#a0b8d4b33324ab531635a90da9a10e600ac1abfa51e0dbe6e48219ad0ca50c127d">FromAlly</a> = 2
+ }</td></tr>
+<tr class="memdesc:a0b8d4b33324ab531635a90da9a10e600"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тай-брейк при равных ReactionPriority: чья это реакция (решение Макса 2026-08-21/3).  <a href="namespaceGuildmaster_1_1Combat_1_1Effects.html#a0b8d4b33324ab531635a90da9a10e600">More...</a><br /></td></tr>
+<tr class="separator:a0b8d4b33324ab531635a90da9a10e600"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="acbd5655c92bc3943fed6be07e5127066" name="acbd5655c92bc3943fed6be07e5127066"></a>
@@ -215,6 +223,31 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="acbd5655c92bc3943fed6be07e5127066a676f582752529cf3b8f4652aff72ae7d" name="acbd5655c92bc3943fed6be07e5127066a676f582752529cf3b8f4652aff72ae7d"></a>ComboBroken&#160;</td><td class="fielddoc"><p>Комбо носителя порвалось: он пробыл вне атакующего лупа дольше <code>SimTuning.ComboBreakSeconds</code> (ГДД: глоссарий, 2026-07-30/11). </p>
 <p>Счётчик серии уже обнулён; событие нужно тем, у кого от серии остался ВЗВЕДЁННЫЙ заряд — его гасит владелец, а не общий диспел. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a0b8d4b33324ab531635a90da9a10e600" name="a0b8d4b33324ab531635a90da9a10e600"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b8d4b33324ab531635a90da9a10e600">&#9670;&#160;</a></span>ReactionOrigin</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#a0b8d4b33324ab531635a90da9a10e600">Guildmaster.Combat.Effects.ReactionOrigin</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Тай-брейк при равных ReactionPriority: чья это реакция (решение Макса 2026-08-21/3). </p>
+<p>Меньше значение — раньше спросят. </p>
+<p><b>Почему своё раньше чужого:</b> собственный заряд восстанавливается сам и дёшев, а реакция союзника — редкий ресурс на всю команду. Сжечь чужую поддержку на удар, который боец пережил бы своим отходом, расточительно.</p>
+<p><b>Ступени «от предмета» здесь нет намеренно.</b> Предметы сегодня дают только статы (<code>EffectiveStats.Build</code>) и ни одной реакции не вешают — признака «эффект пришёл из предмета» в RuntimeEffect не существует. Заводить ступень под несуществующего носителя значит выдумать поле, которое некому заполнять; место под неё — между SelfCast и FromAlly.</p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a0b8d4b33324ab531635a90da9a10e600a5345d9ed3e4f5d70f842d45fd2356a34" name="a0b8d4b33324ab531635a90da9a10e600a5345d9ed3e4f5d70f842d45fd2356a34"></a>SelfCast&#160;</td><td class="fielddoc"><p>Эффект наложен самим носителем (или у него нет источника) — своя реакция. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0b8d4b33324ab531635a90da9a10e600ac1abfa51e0dbe6e48219ad0ca50c127d" name="a0b8d4b33324ab531635a90da9a10e600ac1abfa51e0dbe6e48219ad0ca50c127d"></a>FromAlly&#160;</td><td class="fielddoc"><p>Эффект наложен другим юнитом — чужая реакция на носителе. </p>
 </td></tr>
 </table>
 

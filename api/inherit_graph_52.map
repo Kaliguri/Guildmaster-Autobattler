@@ -1,5 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html" title="Главный шов AI (вики «13» §3.1): единственная точка, где принимается «дорогое» решение «кого/где»." alt="" coords="5,5,196,45"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Combat_1_1ProfileBrain.html" title="v1&#45;мозг (вики «13» §3.1, §4.2): интерпретирует AIProfile." alt="" coords="244,5,445,45"/>
-<area shape="poly" id="edge15_Node000000_Node000001" title=" " alt="" coords="210,23,244,23,244,28,210,28"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Combat_1_1IBattleView.html" title="Read&#45;only срез боя для мозга (вики «13» §3.1)." alt="" coords="5,5,240,31"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html" title="Детерминированная тиковая симуляция боя." alt="" coords="288,55,499,95"/>
+<area shape="poly" id="edge11_Node000000_Node000001" title=" " alt="" coords="197,31,299,53,298,58,196,36"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1ICombatContext.html" title="Шов «логика эффектов/способностей ↔ боевой мир»." alt="" coords="15,55,230,95"/>
+<area shape="poly" id="edge12_Node000002_Node000001" title=" " alt="" coords="244,73,288,73,288,78,244,78"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1ITickLedgerSink.html" title="Куда реестр отдаёт разрешённые изменения: события наружу и внутренние события для реактивов." alt="" coords="27,119,218,159"/>
+<area shape="poly" id="edge13_Node000003_Node000001" title=" " alt="" coords="221,113,308,93,309,98,222,119"/>
 </map>

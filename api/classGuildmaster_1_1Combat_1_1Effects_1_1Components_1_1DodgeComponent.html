@@ -93,12 +93,13 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.Effects.Components.DodgeComponent Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>«Изворотливость» (§9.3, §9.4, §10.5): pre-damage реактив с зарядами.  
+<p>«Отход» (§9.3, §9.4, §10.5): pre-damage реактив с зарядами.  
  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Effects.Components.DodgeComponent:</div>
@@ -122,15 +123,22 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a857366c017151536df324210d7013cc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15dd5ffcde7236bff5d55abce8a7046f" id="r_a15dd5ffcde7236bff5d55abce8a7046f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html#a15dd5ffcde7236bff5d55abce8a7046f">OnPreDamage</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a> incoming, <a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html">PreDamageResult</a> result, in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html">EffectContext</a> ctx)</td></tr>
 <tr class="separator:a15dd5ffcde7236bff5d55abce8a7046f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a9ef508bb82d4a6beb3db519a3f79715f" id="r_a9ef508bb82d4a6beb3db519a3f79715f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html#a9ef508bb82d4a6beb3db519a3f79715f">Priority</a><code> [get]</code></td></tr>
+<tr class="memdesc:a9ef508bb82d4a6beb3db519a3f79715f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отход уносит носителя с места удара — спрашивается раньше щитов, чтобы те не тратили запас впустую.  <br /></td></tr>
+<tr class="separator:a9ef508bb82d4a6beb3db519a3f79715f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html">Guildmaster.Combat.Effects.IPreDamageComponent</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>«Изворотливость» (§9.3, §9.4, §10.5): pre-damage реактив с зарядами. </p>
+<div class="textblock"><p>«Отход» (§9.3, §9.4, §10.5): pre-damage реактив с зарядами. </p>
 <p>Полностью отменяет входящую АВТОАТАКУ (DamageRequest.IsAutoAttack) — любую, даже слабую; урон способностей/DoT/шипов не гасит. Дополнительно фильтруется триггером блока F (из <code>self.Unit.Ai.PassiveTrigger</code>) и тратит один заряд; заряды восстанавливаются независимо. Состояние зарядов — per-effect в RuntimeEffect.TryConsumeCharge. </p>
 <p><b>Трата заряда — это КУВЫРОК</b> (решение 2026-07-26): носитель уходит с места на _rollDistance и получает _hasteBuff — ускорение после переката. Уклонение не просто гасит урон, а даёт занять позицию: оторваться, дойти, зайти в спину.</p>
 <p><b>Направление = направление собственного намерения.</b> Двигался этим тиком — кувырок по ходу движения (к цели, в обход, отступая); стоял и бил — кувырок ОТ атакующего. Уклонение никогда не сбивает план юнита, а ускоряет его, поэтому отдельного «отскока назад» нет.</p>
 <p><b>Числа:</b> <code>_maxCharges</code> — сколько автоатак подряд можно отменить; <code>_rechargeSeconds</code> — за сколько восстанавливается ОДИН заряд; <code>_rollDistance</code> — на сколько единиц уносит перекат; <code>_rollSpeedPerSecond</code> — как быстро (вместе с дистанцией задаёт длительность переката); <code>_hasteBuff</code> — баф ускорения, его величины живут в нём. Величины урона здесь нет намеренно: уклонение не смягчает удар, а отменяет его целиком.</p>
 <p><b>Когда срабатывает:</b> в pre-damage, до расчёта урона — отменённый удар не наносит ничего и не будит реактивы «на удар» (шипы об уклонившегося не колются).</p>
-<p>Требует дееспособности (IRequiresAgencyComponent): «Изворотливость» — это кувырок с уходом с места, то есть ДЕЙСТВИЕ. Оглушённый ассасин уклоняться не может (решение Макса 2026-07-29). </p>
+<p>Требует дееспособности (IRequiresAgencyComponent): «Отход» — это кувырок с уходом с места, то есть ДЕЙСТВИЕ. Оглушённый ассасин уклоняться не может (решение Макса 2026-07-29). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5d3b26a7cd26098b8f26e8d38cb8bf56" name="a5d3b26a7cd26098b8f26e8d38cb8bf56"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5d3b26a7cd26098b8f26e8d38cb8bf56">&#9670;&#160;</a></span>OnApply()</h2>
@@ -270,6 +278,33 @@ Public Member Functions</h2></td></tr>
 <p><em>previousStacks</em>  — до изменения, <code>ctx.Stacks</code> — после. Компонент правит вклад на дельту (обычно <code>ctx.Stacks − previousStacks</code>). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html#a96151b1f6e1ad199981cac9c86242021">Guildmaster.Combat.Effects.IStackableComponent</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a9ef508bb82d4a6beb3db519a3f79715f" name="a9ef508bb82d4a6beb3db519a3f79715f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ef508bb82d4a6beb3db519a3f79715f">&#9670;&#160;</a></span>Priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.Components.DodgeComponent.Priority</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Отход уносит носителя с места удара — спрашивается раньше щитов, чтобы те не тратили запас впустую. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html#aeb84a55002d51320c02f7cce093236ed">Guildmaster.Combat.Effects.IPreDamageComponent</a>.</p>
 
 </div>
 </div>

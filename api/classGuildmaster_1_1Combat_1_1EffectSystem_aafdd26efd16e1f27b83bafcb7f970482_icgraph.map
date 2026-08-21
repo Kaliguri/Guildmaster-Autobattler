@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Проявить отложенное на одном юните." alt="" coords="531,37,728,77"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1EffectSystem.html#a876e8cfca2bf82b25b68759d9ed0aa20" title="ЗАКОН ВИДИМОСТИ ЭФФЕКТОВ: проявить всё, что эффекты наложили или сняли за этот тик — статы и маску те..." alt="" coords="270,5,481,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="517,46,480,41,481,36,517,41"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a70e9cf5d31e2c828b5913df2b51f7b5a" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="268,69,483,109"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a3efcb1c3b14d28064433d425f223cbeb" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="268,69,483,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="518,74,483,78,483,73,517,69"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a50f5fe5c50d54b6d2c1fdbcabd79bc09" title="Собрать призванного юнита (M10): та же сборка, что у всех, плюс множители силы призывов от призывател..." alt="" coords="5,69,220,109"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="255,92,220,92,220,87,255,87"/>

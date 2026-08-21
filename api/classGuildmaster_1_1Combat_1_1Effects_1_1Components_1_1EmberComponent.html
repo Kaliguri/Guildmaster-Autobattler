@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Effects.Components.EmberComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent__inherit__graph.svg" width="532" height="531"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent__inherit__graph.svg" width="532" height="551"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Effects.Components.EmberComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent__coll__graph.svg" width="532" height="531"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent__coll__graph.svg" width="532" height="551"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -131,6 +131,10 @@ Properties</h2></td></tr>
 <tr class="memitem:a8f5fa51459ff276588f38ec25406ebcc" id="r_a8f5fa51459ff276588f38ec25406ebcc"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent.html#a8f5fa51459ff276588f38ec25406ebcc">Interval</a><code> [get]</code></td></tr>
 <tr class="memdesc:a8f5fa51459ff276588f38ec25406ebcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тикаем часто: сход управляется собственным таймером, период — лишь разрешение опроса.  <br /></td></tr>
 <tr class="separator:a8f5fa51459ff276588f38ec25406ebcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22c26037c423c55e4c6575acfd7d5f79" id="r_a22c26037c423c55e4c6575acfd7d5f79"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent.html#a22c26037c423c55e4c6575acfd7d5f79">Priority</a><code> [get]</code></td></tr>
+<tr class="memdesc:a22c26037c423c55e4c6575acfd7d5f79"><td class="mdescLeft">&#160;</td><td class="mdescRight">«Угли» только меняют число урона и ничего не тратят.  <br /></td></tr>
+<tr class="separator:a22c26037c423c55e4c6575acfd7d5f79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html">Guildmaster.Combat.Effects.IPreDamageComponent</a></td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html">Guildmaster.Combat.Effects.IPeriodicComponent</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -326,6 +330,32 @@ Here is the call graph for this function:</div>
 <p>Тикаем часто: сход управляется собственным таймером, период — лишь разрешение опроса. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html#a2e8339e75cfc253e88fe9add7ba98bda">Guildmaster.Combat.Effects.IPeriodicComponent</a>.</p>
+
+</div>
+</div>
+<a id="a22c26037c423c55e4c6575acfd7d5f79" name="a22c26037c423c55e4c6575acfd7d5f79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22c26037c423c55e4c6575acfd7d5f79">&#9670;&#160;</a></span>Priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.Components.EmberComponent.Priority</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>«Угли» только меняют число урона и ничего не тратят. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html#aeb84a55002d51320c02f7cce093236ed">Guildmaster.Combat.Effects.IPreDamageComponent</a>.</p>
 
 </div>
 </div>

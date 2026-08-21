@@ -111,8 +111,8 @@ Collaboration diagram for Guildmaster.Combat.Tape.UnitSnapshot:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac1fb34bbc1e21f1c8710470fd17b7624" id="r_ac1fb34bbc1e21f1c8710470fd17b7624"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#ac1fb34bbc1e21f1c8710470fd17b7624">UnitSnapshot</a> (int id, int team, Vector2 position, Vector2 previousPosition, float currentHp, float maxHp, float currentShield, float currentResource, float maxResource, float size, <a class="el" href="namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676f">AttackPhase</a> phase, int windupTicks, int windupRemaining, int attackCooldownTicks, int targetId, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> effectTagMask, bool isDead, float attackRange=0f, bool canAct=true, bool isDisplaced=false, bool isEmpowered=false, float sprintRamp=0f, bool chargedSwing=false, int recoveryTicks=0, int recoveryRemaining=0, int attackChannelTickPeriod=0, int attackChannelTickRemaining=0)</td></tr>
-<tr class="separator:ac1fb34bbc1e21f1c8710470fd17b7624"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac500cc840cd942dadb81adb013e63fe7" id="r_ac500cc840cd942dadb81adb013e63fe7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#ac500cc840cd942dadb81adb013e63fe7">UnitSnapshot</a> (int id, int team, Vector2 position, Vector2 previousPosition, float currentHp, float maxHp, float currentShield, float currentResource, float maxResource, float size, <a class="el" href="namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676f">AttackPhase</a> phase, int windupTicks, int windupRemaining, int attackCooldownTicks, int targetId, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> effectTagMask, bool isDead, float attackRange=0f, bool canAct=true, bool isDisplaced=false, bool isEmpowered=false, float sprintRamp=0f, bool chargedSwing=false, int recoveryTicks=0, int recoveryRemaining=0, int attackChannelTickPeriod=0, int attackChannelTickRemaining=0, bool isSelfDisplaced=false)</td></tr>
+<tr class="separator:ac500cc840cd942dadb81adb013e63fe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -187,6 +187,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ab43948269dce48fc1743ac1ec172cafa" id="r_ab43948269dce48fc1743ac1ec172cafa"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#ab43948269dce48fc1743ac1ec172cafa">IsDisplaced</a></td></tr>
 <tr class="memdesc:ab43948269dce48fc1743ac1ec172cafa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Юнит в полёте от отбрасывания — вторая половина «стана» в понимании оверлея.  <br /></td></tr>
 <tr class="separator:ab43948269dce48fc1743ac1ec172cafa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab325fffb9fc97ebe22a66907f42c5314" id="r_ab325fffb9fc97ebe22a66907f42c5314"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#ab325fffb9fc97ebe22a66907f42c5314">IsSelfDisplaced</a></td></tr>
+<tr class="memdesc:ab325fffb9fc97ebe22a66907f42c5314"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полёт юнит начал САМ — кувырок, телепорт, рывок способности.  <br /></td></tr>
+<tr class="separator:ab325fffb9fc97ebe22a66907f42c5314"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a910dfbc88ab6fa43c06190345ebad748" id="r_a910dfbc88ab6fa43c06190345ebad748"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#a910dfbc88ab6fa43c06190345ebad748">IsEmpowered</a></td></tr>
 <tr class="memdesc:a910dfbc88ab6fa43c06190345ebad748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Взведено усиление следующего удара (<code>EmpowerDamageMult</code> живого юнита).  <br /></td></tr>
 <tr class="separator:a910dfbc88ab6fa43c06190345ebad748"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,8 +217,8 @@ Properties</h2></td></tr>
 <p>Сим уходит вперёд на окно опережения, поэтому живой юнит уже «в будущем»: читать из него — не задержка, а рассинхрон. </p>
 <p><b>Состав не произвольный:</b> ровно те поля, которые сегодня читает презентация (<code>UnitView</code>, полоски HP/маны, силуэт). Что читается один раз при привязке вида — <code>UnitData</code>, палитра, префаб — здесь не дублируется: это не состояние, а определение.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac1fb34bbc1e21f1c8710470fd17b7624" name="ac1fb34bbc1e21f1c8710470fd17b7624"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1fb34bbc1e21f1c8710470fd17b7624">&#9670;&#160;</a></span>UnitSnapshot()</h2>
+<a id="ac500cc840cd942dadb81adb013e63fe7" name="ac500cc840cd942dadb81adb013e63fe7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac500cc840cd942dadb81adb013e63fe7">&#9670;&#160;</a></span>UnitSnapshot()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -383,7 +386,13 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>attackChannelTickRemaining</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>attackChannelTickRemaining</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isSelfDisplaced</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -656,6 +665,23 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Взведено усиление следующего удара (<code>EmpowerDamageMult</code> живого юнита). </p>
+
+</div>
+</div>
+<a id="ab325fffb9fc97ebe22a66907f42c5314" name="ab325fffb9fc97ebe22a66907f42c5314"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab325fffb9fc97ebe22a66907f42c5314">&#9670;&#160;</a></span>IsSelfDisplaced</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly bool Guildmaster.Combat.Tape.UnitSnapshot.IsSelfDisplaced</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Полёт юнит начал САМ — кувырок, телепорт, рывок способности. </p>
+<p>Показ тянет за таким движением шлейф из призрачных копий; за телом, которое унесло чужим ударом, — не тянет. </p>
 
 </div>
 </div>

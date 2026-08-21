@@ -1,15 +1,17 @@
 <map id="Guildmaster.Combat.Effects.PreDamageResult.AddMultiplier" name="Guildmaster.Combat.Effects.PreDamageResult.AddMultiplier">
-<area shape="rect" id="Node000001" title="Домножить множитель входящего урона (уязвимости копятся, а не перетирают друг друга)." alt="" coords="379,210,609,250"/>
+<area shape="rect" id="Node000001" title="Домножить множитель входящего урона (уязвимости копятся, а не перетирают друг друга)." alt="" coords="379,249,609,289"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent.html#a3cc09cb406114e3c138b09d17193c572" title=" " alt="" coords="34,5,302,60"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="468,201,410,136,371,102,329,74,301,61,303,56,332,69,375,98,413,132,472,197"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="473,238,449,199,416,154,376,110,329,74,301,59,303,55,332,69,380,107,420,151,453,196,477,235"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FrostComponent.html#a6bca59369db7aa4d91c511175c16e9f9" title=" " alt="" coords="39,84,297,139"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="444,206,390,178,330,152,295,141,296,136,332,148,392,173,447,201"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="459,241,401,195,366,172,330,152,297,140,299,135,332,148,369,168,404,191,462,237"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FrostStatueComponent.html#aa2a308f49f189dcf0fe78512567b2871" title=" " alt="" coords="37,163,299,217"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="365,217,299,209,299,203,365,212"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolDamageResistComponent.html#a4a3ceecffdb0c4cd9f1199c0c4b6ec8c" title=" " alt="" coords="5,241,331,296"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="365,248,332,252,331,247,365,243"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolShieldComponent.html#a52ce09a2c1073b8e50ceb02c3d18cc25" title=" " alt="" coords="33,320,303,375"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="445,259,391,285,332,310,292,322,290,317,330,305,389,280,443,254"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SleepComponent.html#a918d77aeb65427d35403f08d83522872" title=" " alt="" coords="37,399,299,453"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="471,263,413,327,374,360,332,388,300,403,298,398,329,384,371,356,409,323,467,259"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="398,248,330,231,283,220,285,215,331,226,400,243"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RangedWardComponent.html#a5da6eeb0bd7f15db0a577c6270b74346" title=" " alt="" coords="33,241,303,296"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="364,271,303,271,303,266,364,266"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolDamageResistComponent.html#a4a3ceecffdb0c4cd9f1199c0c4b6ec8c" title=" " alt="" coords="5,320,331,375"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="398,294,283,322,281,317,397,289"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolShieldComponent.html#a52ce09a2c1073b8e50ceb02c3d18cc25" title=" " alt="" coords="33,399,303,453"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="462,300,404,345,369,369,332,388,300,401,298,396,330,384,366,364,401,341,459,296"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SleepComponent.html#a918d77aeb65427d35403f08d83522872" title=" " alt="" coords="37,477,299,532"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="477,302,453,341,420,385,379,430,332,467,301,483,298,478,329,462,376,426,416,382,449,338,473,299"/>
 </map>

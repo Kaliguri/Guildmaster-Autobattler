@@ -27,10 +27,11 @@ var searchData=
   ['fornode_24',['ForNode',['../classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html#a827f0c84032fa6df9419ac34dd72721c',1,'Guildmaster::Game::Flow::RunContext']]],
   ['forward_25',['Forward',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1NavHistory.html#a1fc1f8f77b509bbaa9ad4a207f41fa7c',1,'Guildmaster::ContentHub::Editor::NavHistory']]],
   ['framecount_26',['FrameCount',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#ab255586b4c589e0205e880d5196f1909',1,'Guildmaster::Data::Definitions::ClipMarkers']]],
-  ['from_27',['from',['../structGuildmaster_1_1Combat_1_1Tape_1_1ProjectileSnapshot.html#a169b0848ad0983e310aecfb4474303e4',1,'Guildmaster.Combat.Tape.ProjectileSnapshot.From()'],['../structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#a485356d77b895e011470412b625c38d1',1,'Guildmaster.Combat.Tape.UnitSnapshot.From()']]],
-  ['frombody_28',['FromBody',['../classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#a12736fd9d5a9305241142fd104832812',1,'Guildmaster::Presentation::Body::UnitPartRegistry']]],
-  ['fromprefab_29',['FromPrefab',['../structGuildmaster_1_1Presentation_1_1UnitSilhouette.html#ad0c802d9275ad64e18314f43caff6237',1,'Guildmaster::Presentation::UnitSilhouette']]],
-  ['fromview_30',['FromView',['../structGuildmaster_1_1Presentation_1_1UnitSilhouette.html#ace9c711ee6c1cce9d4ab805f775e0c32',1,'Guildmaster::Presentation::UnitSilhouette']]],
-  ['fulldesckey_31',['FullDescKey',['../classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#a800cb94228e497b86dce4e8ece488659',1,'Guildmaster::Data::Definitions::ContentKeys']]],
-  ['fullid_32',['FullId',['../classGuildmaster_1_1Data_1_1Descriptions_1_1KeywordMarkup.html#a1c52c271a122523ecfacb07b7669e0e7',1,'Guildmaster::Data::Descriptions::KeywordMarkup']]]
+  ['free_27',['Free',['../structGuildmaster_1_1Guild_1_1InjurySlots.html#ad990b686bbeb48b96058cb92e8979e1c',1,'Guildmaster::Guild::InjurySlots']]],
+  ['from_28',['from',['../structGuildmaster_1_1Combat_1_1Tape_1_1ProjectileSnapshot.html#a169b0848ad0983e310aecfb4474303e4',1,'Guildmaster.Combat.Tape.ProjectileSnapshot.From()'],['../structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#a485356d77b895e011470412b625c38d1',1,'Guildmaster.Combat.Tape.UnitSnapshot.From()']]],
+  ['frombody_29',['FromBody',['../classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html#a12736fd9d5a9305241142fd104832812',1,'Guildmaster::Presentation::Body::UnitPartRegistry']]],
+  ['fromprefab_30',['FromPrefab',['../structGuildmaster_1_1Presentation_1_1UnitSilhouette.html#ad0c802d9275ad64e18314f43caff6237',1,'Guildmaster::Presentation::UnitSilhouette']]],
+  ['fromview_31',['FromView',['../structGuildmaster_1_1Presentation_1_1UnitSilhouette.html#ace9c711ee6c1cce9d4ab805f775e0c32',1,'Guildmaster::Presentation::UnitSilhouette']]],
+  ['fulldesckey_32',['FullDescKey',['../classGuildmaster_1_1Data_1_1Definitions_1_1ContentKeys.html#a800cb94228e497b86dce4e8ece488659',1,'Guildmaster::Data::Definitions::ContentKeys']]],
+  ['fullid_33',['FullId',['../classGuildmaster_1_1Data_1_1Descriptions_1_1KeywordMarkup.html#a1c52c271a122523ecfacb07b7669e0e7',1,'Guildmaster::Data::Descriptions::KeywordMarkup']]]
 ];

@@ -142,6 +142,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3b15046b9f18095b5ef6bb045f9cbc59" id="r_a3b15046b9f18095b5ef6bb045f9cbc59"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a3b15046b9f18095b5ef6bb045f9cbc59">DeleteGuild</a> (string guildId)</td></tr>
 <tr class="memdesc:a3b15046b9f18095b5ef6bb045f9cbc59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить гильдию вместе с её забегом. Необратимо: это месяцы Летописи.  <br /></td></tr>
 <tr class="separator:a3b15046b9f18095b5ef6bb045f9cbc59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47a848a686a72bb33f5e3ac2e9dc95e9" id="r_a47a848a686a72bb33f5e3ac2e9dc95e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a47a848a686a72bb33f5e3ac2e9dc95e9">AddPlayedTime</a> (long seconds)</td></tr>
+<tr class="memdesc:a47a848a686a72bb33f5e3ac2e9dc95e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прибавить наигранное и отметить дату.  <br /></td></tr>
+<tr class="separator:a47a848a686a72bb33f5e3ac2e9dc95e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d42aae57166df9f91acf391efc802d9" id="r_a5d42aae57166df9f91acf391efc802d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a5d42aae57166df9f91acf391efc802d9">RecordRunFinished</a> (bool victory, int nodesPassed)</td></tr>
+<tr class="memdesc:a5d42aae57166df9f91acf391efc802d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отметить завершённый забег и обновить лучший результат.  <br /></td></tr>
+<tr class="separator:a5d42aae57166df9f91acf391efc802d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -226,6 +232,38 @@ Events</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a47a848a686a72bb33f5e3ac2e9dc95e9" name="a47a848a686a72bb33f5e3ac2e9dc95e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47a848a686a72bb33f5e3ac2e9dc95e9">&#9670;&#160;</a></span>AddPlayedTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Services.ProfileService.AddPlayedTime </td>
+          <td>(</td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>seconds</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Прибавить наигранное и отметить дату. </p>
+<p>Пишем на диск не чаще раза в минуту.</p>
+<p>Секунды копятся в самом состоянии профиля (оно в памяти), а файл трогается редко: писать сейв каждую секунду ради счётчика значит устраивать дисковую активность на ровном месте и ловить порчу файла на каждом падении. Всё несохранённое теряется только при аварийном завершении, и цена этого — минута наигранного. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#ac79af8faaa3ad8d1c0a934836aaeca44">Guildmaster.Core.Persistence.IProfileService</a>.</p>
+
+</div>
+</div>
 <a id="ad309387449e8ac3a361c248528ca8469" name="ad309387449e8ac3a361c248528ca8469"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad309387449e8ac3a361c248528ca8469">&#9670;&#160;</a></span>CreateGuild()</h2>
 
@@ -397,6 +435,46 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1ProfileService_a9691b45c86b777b0da8c6880967b14a6_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<a id="a5d42aae57166df9f91acf391efc802d9" name="a5d42aae57166df9f91acf391efc802d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d42aae57166df9f91acf391efc802d9">&#9670;&#160;</a></span>RecordRunFinished()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Services.ProfileService.RecordRunFinished </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>victory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nodesPassed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Отметить завершённый забег и обновить лучший результат. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#ad40b52054ed4eac95c36b4323322149b">Guildmaster.Core.Persistence.IProfileService</a>.</p>
 
 </div>
 </div>

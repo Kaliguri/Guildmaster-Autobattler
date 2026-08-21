@@ -5,7 +5,7 @@ var interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession =
     [ "BindReset", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a86ee2a891c0b338b66e7d49ad2f5f431", null ],
     [ "BindRestart", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#ad5c25e16d06afcb7bb5702c5f59c9bd2", null ],
     [ "BindStart", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a3e2240a9c7e71eb443836ef4f8a5816b", null ],
-    [ "ReportOutcome", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a56c49df7bba0c8f122afa0f6b768550b", null ],
+    [ "ReportOutcome", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a7a173e8b400e4a6e18507c07ba46d1e4", null ],
     [ "RequestLaunch", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#aecd4c25939ea3775685139f54eaff43e", null ],
     [ "RequestReset", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#abb36c926b067010534878874b92967d7", null ],
     [ "RequestRestart", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#ac5e46b02d162646511d1bf36c9e942c5", null ],
@@ -18,5 +18,6 @@ var interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession =
     [ "UnbindStart", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a77406222d7b94d67391a8af37afc63f7", null ],
     [ "WaitOutcomeAsync", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#afb46c9ea489e6d01e860c989df278ab5", null ],
     [ "CanRestart", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a4ea73ca6c7f59e94d31ff89c20d0abf6", null ],
+    [ "LastFallen", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#af8dc7f114eec42f79351dc55a81e29a7", null ],
     [ "ReplayRequested", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a962990482543b0048748293ff840c802", null ]
 ];

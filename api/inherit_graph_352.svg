@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Presentation_1_1DevOverlayMode.html" target="_top" xlink:title="Режим dev&#45;оверлеев боя (CombatDebugDraw, CombatStatusOverlay) — один владелец на бой,...">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Presentation_1_1Body_1_1CastGlowMask.html" target="_top" xlink:title="Переводит «чем исполнен приём» (CastSource из данных навыка) в конкретные части ЭТОГО юнита.">
 <polygon fill="white" stroke="#666666" points="143,-30 0,-30 0,0 143,0 143,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
-<text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">DevOverlayMode</text>
+<text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Body.CastGlowMask</text>
 </a>
 </g>
 </g>

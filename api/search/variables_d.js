@@ -7,10 +7,11 @@ var searchData=
   ['negativetraitid_4',['NegativeTraitId',['../classGuildmaster_1_1Guild_1_1VesselState.html#ac6e84f3e4ca24b4bac3e8f0e14bf87f6',1,'Guildmaster::Guild::VesselState']]],
   ['nextwindupmult_5',['NextWindupMult',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a8cbdf95c4589c3125d23c3a288feb7b6',1,'Guildmaster::Combat::RuntimeUnit']]],
   ['nodes_6',['Nodes',['../classGuildmaster_1_1Guild_1_1MapState.html#a0e1ce97ab11403f4e6a0113ed962cbb8',1,'Guildmaster::Guild::MapState']]],
-  ['none_7',['none',['../classGuildmaster_1_1Core_1_1Net_1_1DecisionOptions.html#a5224d55b1e323ef38202d6692b41b60c',1,'Guildmaster.Core.Net.DecisionOptions.None'],['../structGuildmaster_1_1Presentation_1_1UnitSilhouette.html#a91e1e7f2c664997eee9d13f9c922e8e8',1,'Guildmaster.Presentation.UnitSilhouette.None']]],
-  ['nopeer_8',['NoPeer',['../classGuildmaster_1_1Net_1_1Transport_1_1NetPeer.html#abf9dee42e812c87bec8167c0754e2883',1,'Guildmaster::Net::Transport::NetPeer']]],
-  ['note_9',['Note',['../structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html#a47afcd54e9ca1996b9f3c6eb886fe17c',1,'Guildmaster::Data::Editor::ContentEditService::Change']]],
-  ['noteam_10',['NoTeam',['../structGuildmaster_1_1Combat_1_1BattleOutcome.html#ada3b1e4caeca866c6b2d73943ffe60f8',1,'Guildmaster::Combat::BattleOutcome']]],
-  ['nothing_11',['nothing',['../structGuildmaster_1_1Core_1_1Players_1_1RemoteCursor.html#a0cb363dbd79ef48b31aab0a5414deb14',1,'Guildmaster.Core.Players.RemoteCursor.Nothing'],['../structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a5b8ed898cf51fb247621c4527d61ddd6',1,'Guildmaster.Net.Presence.PresenceState.Nothing']]],
-  ['notick_12',['NoTick',['../classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a0af8d8683c704a19687698acd0c59238',1,'Guildmaster::Combat::Tape::BattleTape']]]
+  ['nodessurvived_7',['NodesSurvived',['../classGuildmaster_1_1Guild_1_1Injury.html#ab76f80309e3e805e31775d3593cf9164',1,'Guildmaster::Guild::Injury']]],
+  ['none_8',['none',['../classGuildmaster_1_1Core_1_1Net_1_1DecisionOptions.html#a5224d55b1e323ef38202d6692b41b60c',1,'Guildmaster.Core.Net.DecisionOptions.None'],['../structGuildmaster_1_1Presentation_1_1UnitSilhouette.html#a91e1e7f2c664997eee9d13f9c922e8e8',1,'Guildmaster.Presentation.UnitSilhouette.None']]],
+  ['nopeer_9',['NoPeer',['../classGuildmaster_1_1Net_1_1Transport_1_1NetPeer.html#abf9dee42e812c87bec8167c0754e2883',1,'Guildmaster::Net::Transport::NetPeer']]],
+  ['note_10',['Note',['../structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html#a47afcd54e9ca1996b9f3c6eb886fe17c',1,'Guildmaster::Data::Editor::ContentEditService::Change']]],
+  ['noteam_11',['NoTeam',['../structGuildmaster_1_1Combat_1_1BattleOutcome.html#ada3b1e4caeca866c6b2d73943ffe60f8',1,'Guildmaster::Combat::BattleOutcome']]],
+  ['nothing_12',['nothing',['../structGuildmaster_1_1Core_1_1Players_1_1RemoteCursor.html#a0cb363dbd79ef48b31aab0a5414deb14',1,'Guildmaster.Core.Players.RemoteCursor.Nothing'],['../structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html#a5b8ed898cf51fb247621c4527d61ddd6',1,'Guildmaster.Net.Presence.PresenceState.Nothing']]],
+  ['notick_13',['NoTick',['../classGuildmaster_1_1Combat_1_1Tape_1_1BattleTape.html#a0af8d8683c704a19687698acd0c59238',1,'Guildmaster::Combat::Tape::BattleTape']]]
 ];

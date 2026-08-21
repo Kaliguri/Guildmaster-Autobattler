@@ -1,5 +1,5 @@
 <map id="Guildmaster.Guild.RunStateService" name="Guildmaster.Guild.RunStateService">
-<area shape="rect" id="Node000001" title="Владелец durable&#45;состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости к..." alt="" coords="5,232,200,792"/>
+<area shape="rect" id="Node000001" title="Владелец durable&#45;состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости к..." alt="" coords="5,232,200,832"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1ISessionRunState.html" title="Состояние забега ТЕКУЩЕГО СЕАНСА: то, что регистрирует в своём составе Сессия." alt="" coords="39,119,166,184"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,198,105,232,100,232,100,198"/>
 <area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Guild_1_1IRunStateView.html" title="Чтение durable&#45;состояния забега для тех, кто живёт ДОЛЬШЕ него: корневого интерфейса,..." alt="" coords="48,5,157,71"/>

@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.AllyGustComponent" name="Guildmaster.Combat.Effects.Components.AllyGustComponent">
+<area shape="rect" id="Node000001" title="«Порыв» (пассивка мага ветра, [[the&#45;zephyr]]): когда по носителю проходит прямой удар,..." alt="" coords="5,365,236,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html" title="Синхронный перехват ДО вычета HP (§9.3): вызывается из EffectSystem.RunPreDamage перед DamagePipeline..." alt="" coords="36,252,205,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,331,123,365,118,365,118,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="28,119,213,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="123,218,123,252,118,252,118,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="55,5,186,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="123,85,123,119,118,119,118,85"/>
+</map>

@@ -103,12 +103,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Session_1_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Session.SessionCommandRouter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter__inherit__graph.svg" width="210" height="464"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter__inherit__graph.svg" width="210" height="504"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Session.SessionCommandRouter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter__coll__graph.svg" width="210" height="464"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter__coll__graph.svg" width="210" height="504"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -132,6 +132,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aecb1dc35062978c6672154736d49e000" id="r_aecb1dc35062978c6672154736d49e000"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#aecb1dc35062978c6672154736d49e000">ChooseNode</a> (string nodeId)</td></tr>
 <tr class="memdesc:aecb1dc35062978c6672154736d49e000"><td class="mdescLeft">&#160;</td><td class="mdescRight">Войти в узел карты.  <br /></td></tr>
 <tr class="separator:aecb1dc35062978c6672154736d49e000"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fee654a59100e9af73fb3cfadefcf86" id="r_a3fee654a59100e9af73fb3cfadefcf86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a3fee654a59100e9af73fb3cfadefcf86">InflictInjury</a> (int slotIndex, int rollSeed)</td></tr>
+<tr class="memdesc:a3fee654a59100e9af73fb3cfadefcf86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Положить последствие боя на «Сосуд» слота: ступень уточнит каскад, конкретную рану выберет ролл от <em>rollSeed</em> .  <br /></td></tr>
+<tr class="separator:a3fee654a59100e9af73fb3cfadefcf86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1913ed03359e7dc05ca2cc3b5d70321" id="r_ac1913ed03359e7dc05ca2cc3b5d70321"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#ac1913ed03359e7dc05ca2cc3b5d70321">RequestSave</a> ()</td></tr>
 <tr class="memdesc:ac1913ed03359e7dc05ca2cc3b5d70321"><td class="mdescLeft">&#160;</td><td class="mdescRight">Попросить владельца зафиксировать состояние на диск (точка автосейва).  <br /></td></tr>
 <tr class="separator:ac1913ed03359e7dc05ca2cc3b5d70321"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -228,6 +231,39 @@ Public Member Functions</h2></td></tr>
 <p>Достижимость проверяет применитель — по СВОЕЙ копии состояния, а не по той, что видел нажавший: у напарника карта могла отстать на снимок. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ab6732bfb2439b78bc09fd74c361e2b82">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
+
+</div>
+</div>
+<a id="a3fee654a59100e9af73fb3cfadefcf86" name="a3fee654a59100e9af73fb3cfadefcf86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fee654a59100e9af73fb3cfadefcf86">&#9670;&#160;</a></span>InflictInjury()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Session.SessionCommandRouter.InflictInjury </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slotIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>rollSeed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Положить последствие боя на «Сосуд» слота: ступень уточнит каскад, конкретную рану выберет ролл от <em>rollSeed</em> . </p>
+<p>Зовётся по одному разу на каждого павшего в бою. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a9349745919db7f77106f86ced67e4a98">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
 
 </div>
 </div>

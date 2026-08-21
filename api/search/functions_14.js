@@ -18,7 +18,7 @@ var searchData=
   ['unitmoveintent_15',['UnitMoveIntent',['../structGuildmaster_1_1Core_1_1Arena_1_1UnitMoveIntent.html#a36f872245cd652508d828e84c3ad003d',1,'Guildmaster::Core::Arena::UnitMoveIntent']]],
   ['unitpart_16',['UnitPart',['../structGuildmaster_1_1Presentation_1_1Body_1_1UnitPart.html#a9e6407f737eaf96e89402a99a120c689',1,'Guildmaster::Presentation::Body::UnitPart']]],
   ['unitsilhouette_17',['UnitSilhouette',['../structGuildmaster_1_1Presentation_1_1UnitSilhouette.html#aa5cddf2e9af4b77654b69d94ce002bd4',1,'Guildmaster::Presentation::UnitSilhouette']]],
-  ['unitsnapshot_18',['UnitSnapshot',['../structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#ac1fb34bbc1e21f1c8710470fd17b7624',1,'Guildmaster::Combat::Tape::UnitSnapshot']]],
+  ['unitsnapshot_18',['UnitSnapshot',['../structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#ac500cc840cd942dadb81adb013e63fe7',1,'Guildmaster::Combat::Tape::UnitSnapshot']]],
   ['unitspread_19',['UnitSpread',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html#ae9a16c6e0868ad8da16ab6abbeeeb5c0',1,'Guildmaster::Presentation::Design::CombatColorPalette']]],
   ['unitstatline_20',['UnitStatLine',['../structGuildmaster_1_1Data_1_1Stats_1_1UnitStatLine.html#ae2e732d1caafa8035947588be5e6fa9c',1,'Guildmaster::Data::Stats::UnitStatLine']]],
   ['unitstatpreview_21',['UnitStatPreview',['../classGuildmaster_1_1Combat_1_1UnitStatPreview.html#a292b7ec1302beeef87b946babbc313ab',1,'Guildmaster::Combat::UnitStatPreview']]],

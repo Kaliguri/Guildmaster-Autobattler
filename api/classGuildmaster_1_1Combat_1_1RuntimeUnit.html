@@ -206,6 +206,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a568a226a9ef8971ceb899405df46c66e" id="r_a568a226a9ef8971ceb899405df46c66e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a568a226a9ef8971ceb899405df46c66e">HitsMade</a></td></tr>
 <tr class="memdesc:a568a226a9ef8971ceb899405df46c66e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько УДАРОВ юнит уже нанёс за бой (считается на снятии цифр, промах тоже считается).  <br /></td></tr>
 <tr class="separator:a568a226a9ef8971ceb899405df46c66e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affd09f100f320cd6ae59c9d03614d18d" id="r_affd09f100f320cd6ae59c9d03614d18d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#affd09f100f320cd6ae59c9d03614d18d">HitsTaken</a></td></tr>
+<tr class="memdesc:affd09f100f320cd6ae59c9d03614d18d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько Ударов авто-атаки ПРИНЯЛ юнит за бой.  <br /></td></tr>
+<tr class="separator:affd09f100f320cd6ae59c9d03614d18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a787a4b17a158608f303e6c2e55130956" id="r_a787a4b17a158608f303e6c2e55130956"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a787a4b17a158608f303e6c2e55130956">ComboAttacks</a></td></tr>
 <tr class="memdesc:a787a4b17a158608f303e6c2e55130956"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько Атак юнит завершил в ТЕКУЩЕМ Комбо — серии Атак (ГДД: глоссарий, 2026-07-30/6).  <br /></td></tr>
 <tr class="separator:a787a4b17a158608f303e6c2e55130956"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -245,6 +248,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ac63ecffafc04c27573fb6c8f5bbca0c2" id="r_ac63ecffafc04c27573fb6c8f5bbca0c2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ac63ecffafc04c27573fb6c8f5bbca0c2">DisplacedTicksRemaining</a></td></tr>
 <tr class="memdesc:ac63ecffafc04c27573fb6c8f5bbca0c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тиков принудительного смещения осталось (§9.9, «Шквальный толчок»): &gt; 0 — юнит в полёте.  <br /></td></tr>
 <tr class="separator:ac63ecffafc04c27573fb6c8f5bbca0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fe9cd50e487ef7f53c9cb8f7658b422" id="r_a9fe9cd50e487ef7f53c9cb8f7658b422"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a9fe9cd50e487ef7f53c9cb8f7658b422">SelfDisplaced</a></td></tr>
+<tr class="memdesc:a9fe9cd50e487ef7f53c9cb8f7658b422"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущее смещение юнит начал САМ (кувырок «Отхода», телепорт «Смещения», рывок способности), а не получил толчком со стороны.  <br /></td></tr>
+<tr class="separator:a9fe9cd50e487ef7f53c9cb8f7658b422"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11fa1f8683761b538eed81934693ab4b" id="r_a11fa1f8683761b538eed81934693ab4b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a11fa1f8683761b538eed81934693ab4b">AttackCooldownTicks</a></td></tr>
 <tr class="memdesc:a11fa1f8683761b538eed81934693ab4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кулдаун автоатаки в сим-тиках. 0 = готов к атаке. Рестартится в начале замаха (якорь).  <br /></td></tr>
 <tr class="separator:a11fa1f8683761b538eed81934693ab4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1478,6 +1484,25 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="affd09f100f320cd6ae59c9d03614d18d" name="affd09f100f320cd6ae59c9d03614d18d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affd09f100f320cd6ae59c9d03614d18d">&#9670;&#160;</a></span>HitsTaken</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.RuntimeUnit.HitsTaken</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Сколько Ударов авто-атаки ПРИНЯЛ юнит за бой. </p>
+<p>Зеркало HitsMade: тот считает взмахи носителя для Слепоты, этот — входящие удары для Уклонения (Effects.Components.EvasionComponent).</p>
+<p><b>Считается ДО опроса реакций и независимо от их исхода</b> — как и HitsMade. Иначе уклонение, отняв удар, сдвигало бы собственный счёт, и «каждая четвёртая» поехала бы: первый уход мимо отодвигал бы следующий на четыре ДОШЕДШИХ удара. </p>
+<p>Двигается в единственном месте — <code>CombatSimulation.ResolveIncoming</code>, там же, где тратятся все защиты цели. Считать его в <code>EffectSystem.RunPreDamage</code> было бы неверно: тот выходит сразу, если на цели нет ни одного эффекта, и период поехал бы у бойца, с которого уклонение сняли и повесили заново.</p>
+
+</div>
+</div>
 <a id="a09b0794faa1054a9796334e18a0f557c" name="a09b0794faa1054a9796334e18a0f557c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a09b0794faa1054a9796334e18a0f557c">&#9670;&#160;</a></span>Id</h2>
 
@@ -1707,6 +1732,24 @@ Here is the caller graph for this function:</div>
 
 <p>Замаскированного заметили: враг подошёл ближе радиуса его ступени. </p>
 <p>Обнаружение <b>командное</b> (решение Макса 2026-07-31) — увидел один, видит вся команда; отошли все, и юнит снова пропал. </p>
+
+</div>
+</div>
+<a id="a9fe9cd50e487ef7f53c9cb8f7658b422" name="a9fe9cd50e487ef7f53c9cb8f7658b422"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fe9cd50e487ef7f53c9cb8f7658b422">&#9670;&#160;</a></span>SelfDisplaced</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.RuntimeUnit.SelfDisplaced</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Текущее смещение юнит начал САМ (кувырок «Отхода», телепорт «Смещения», рывок способности), а не получил толчком со стороны. </p>
+<p>Смысл имеет только при DisplacedTicksRemaining &gt; 0; владелец — <code>DisplacementSystem</code>, как и у самого полёта.</p>
+<p>Признак существует РАДИ ПОКАЗА и на расчёт боя не влияет: шлейф из призрачных копий тянется за намеренным рывком, а не за телом, которое унесло ударом. Различить это по одной позиции показ не может — движение выглядит одинаково, — а источник смещения дальше <code>DisplacementSystem</code> не уезжал. Чужой толчок ПЕРЕБИВАЕТ свой рывок (см. <code>DisplacementSystem.Add</code>): когда по летящему бьют «ядром», он уже не рвётся, а летит. </p>
 
 </div>
 </div>

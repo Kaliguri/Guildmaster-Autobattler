@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PhaseShiftComponent-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.Effects.Components.PhaseShiftComponent Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -122,6 +123,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa8fb48828fb1b74327b37a590e1160e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99be104f018a1ad3447c68a073302b02" id="r_a99be104f018a1ad3447c68a073302b02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PhaseShiftComponent.html#a99be104f018a1ad3447c68a073302b02">OnPreDamage</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a> incoming, <a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html">PreDamageResult</a> result, in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html">EffectContext</a> ctx)</td></tr>
 <tr class="separator:a99be104f018a1ad3447c68a073302b02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:aa7ed2f39afe4dda341b6b5e547b5d33c" id="r_aa7ed2f39afe4dda341b6b5e547b5d33c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PhaseShiftComponent.html#aa7ed2f39afe4dda341b6b5e547b5d33c">Priority</a><code> [get]</code></td></tr>
+<tr class="memdesc:aa7ed2f39afe4dda341b6b5e547b5d33c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Смещение выводит цель из точки удара: то же семейство, что и отход.  <br /></td></tr>
+<tr class="separator:aa7ed2f39afe4dda341b6b5e547b5d33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html">Guildmaster.Combat.Effects.IPreDamageComponent</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>«Смещение» Арканиста (карточка [[the-rift]]): pre-damage реактив с периодом. </p>
@@ -272,6 +280,33 @@ Public Member Functions</h2></td></tr>
 <p><em>previousStacks</em>  — до изменения, <code>ctx.Stacks</code> — после. Компонент правит вклад на дельту (обычно <code>ctx.Stacks − previousStacks</code>). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html#a96151b1f6e1ad199981cac9c86242021">Guildmaster.Combat.Effects.IStackableComponent</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="aa7ed2f39afe4dda341b6b5e547b5d33c" name="aa7ed2f39afe4dda341b6b5e547b5d33c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7ed2f39afe4dda341b6b5e547b5d33c">&#9670;&#160;</a></span>Priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.Components.PhaseShiftComponent.Priority</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Смещение выводит цель из точки удара: то же семейство, что и отход. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html#aeb84a55002d51320c02f7cce093236ed">Guildmaster.Combat.Effects.IPreDamageComponent</a>.</p>
 
 </div>
 </div>

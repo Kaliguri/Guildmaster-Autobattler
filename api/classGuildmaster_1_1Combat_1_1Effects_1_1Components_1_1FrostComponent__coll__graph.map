@@ -1,7 +1,7 @@
 <map id="Guildmaster.Combat.Effects.Components.FrostComponent" name="Guildmaster.Combat.Effects.Components.FrostComponent">
-<area shape="rect" id="Node000001" title="«Изморозь» — холодная линия целиком (карточка [[frost]])." alt="" coords="157,365,363,525"/>
+<area shape="rect" id="Node000001" title="«Изморозь» — холодная линия целиком (карточка [[frost]])." alt="" coords="157,365,363,545"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html" title="Опциональный шов рестака (07 §3.8 B1–B3): компонент с накопленным ВНЕШНИМ состоянием (пул щита,..." alt="" coords="5,252,163,317"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,325,174,363,170,367,128,329"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,325,169,363,165,367,125,329"/>
 <area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="167,119,353,204"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="190,214,132,254,129,249,187,210"/>
 <area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html" title="Периодический компонент: OnTick каждые Interval секунд (DoT/HoT/реген)." alt="" coords="187,252,333,317"/>
@@ -11,5 +11,5 @@
 <area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="195,5,325,71"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="263,85,263,119,257,119,257,85"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="263,331,263,365,257,365,257,331"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="396,329,352,367,349,363,393,325"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="399,329,358,367,354,363,395,325"/>
 </map>

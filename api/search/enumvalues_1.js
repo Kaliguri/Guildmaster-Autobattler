@@ -25,8 +25,9 @@ var searchData=
   ['boundless_22',['boundless',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46d15226b8b51f5b785efccd01e4e3faaeeceb2a17e84d36e5112ea1ed5ddad2',1,'Guildmaster.Data.Definitions.Boundless'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a2d59e10dc41951fd26f7290ecd8868fdaaeeceb2a17e84d36e5112ea1ed5ddad2',1,'Guildmaster.Data.Definitions.Boundless']]],
   ['brass_23',['Brass',['../namespaceGuildmaster_1_1UI_1_1Components.html#aa0cf15f52c3f3de92879aaba96cdd4cdaff60395b07a0d85c9ccdd153dfe4ec0e',1,'Guildmaster::UI::Components']]],
   ['browser_24',['Browser',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentHubWindow.html#ab5f6ccad24d3b892d9ec5ad8e0b82010aef15fd2f45e6bb5ce57587895ba64f93',1,'Guildmaster::ContentHub::Editor::ContentHubWindow']]],
-  ['bruiser_25',['Bruiser',['../namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6a8be80102e06b904744ba56c822c70a4b',1,'Guildmaster::Data::Stats']]],
-  ['buff_26',['buff',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff']]],
-  ['burn_27',['Burn',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a11635778f116ce6922f6068638a39028',1,'Guildmaster::Data::Definitions']]],
-  ['buttons_28',['Buttons',['../namespaceGuildmaster_1_1UI_1_1Components.html#a40024d8e3e6267abfe69e1a3863108a7a5b3ec15499a125805b5bbf8e4afcec8c',1,'Guildmaster::UI::Components']]]
+  ['bruise_25',['Bruise',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#abbb4ad2cc8d5f3e88cffbf97554a5753afc1071643fa7db924a0689e9c8563faa',1,'Guildmaster::Data::Definitions']]],
+  ['bruiser_26',['Bruiser',['../namespaceGuildmaster_1_1Data_1_1Stats.html#ad1f914f4acb777be5bab6ffa86f03ca6a8be80102e06b904744ba56c822c70a4b',1,'Guildmaster::Data::Stats']]],
+  ['buff_27',['buff',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff']]],
+  ['burn_28',['Burn',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a11635778f116ce6922f6068638a39028',1,'Guildmaster::Data::Definitions']]],
+  ['buttons_29',['Buttons',['../namespaceGuildmaster_1_1UI_1_1Components.html#a40024d8e3e6267abfe69e1a3863108a7a5b3ec15499a125805b5bbf8e4afcec8c',1,'Guildmaster::UI::Components']]]
 ];

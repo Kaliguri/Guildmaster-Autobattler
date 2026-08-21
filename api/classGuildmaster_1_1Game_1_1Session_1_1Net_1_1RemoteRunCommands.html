@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Session_1_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Session.Net.RemoteRunCommands:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands__inherit__graph.svg" width="206" height="578"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Session.Net.RemoteRunCommands:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands__coll__graph.svg" width="206" height="578"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -133,6 +133,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a73fba3ac639c61c58c00278ca84b4557" id="r_a73fba3ac639c61c58c00278ca84b4557"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#a73fba3ac639c61c58c00278ca84b4557">ChooseNode</a> (string nodeId)</td></tr>
 <tr class="memdesc:a73fba3ac639c61c58c00278ca84b4557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Войти в узел карты.  <br /></td></tr>
 <tr class="separator:a73fba3ac639c61c58c00278ca84b4557"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9f008044ee291c7febf40755410e5d0" id="r_aa9f008044ee291c7febf40755410e5d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#aa9f008044ee291c7febf40755410e5d0">InflictInjury</a> (int slotIndex, int rollSeed)</td></tr>
+<tr class="memdesc:aa9f008044ee291c7febf40755410e5d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Положить последствие боя на «Сосуд» слота: ступень уточнит каскад, конкретную рану выберет ролл от <em>rollSeed</em> .  <br /></td></tr>
+<tr class="separator:aa9f008044ee291c7febf40755410e5d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0c3a3a856db765ea7b749267c4946bc" id="r_ad0c3a3a856db765ea7b749267c4946bc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc">RequestSave</a> ()</td></tr>
 <tr class="memdesc:ad0c3a3a856db765ea7b749267c4946bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва.  <br /></td></tr>
 <tr class="separator:ad0c3a3a856db765ea7b749267c4946bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -236,6 +239,39 @@ Properties</h2></td></tr>
 <p>Достижимость проверяет применитель — по СВОЕЙ копии состояния, а не по той, что видел нажавший: у напарника карта могла отстать на снимок. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ab6732bfb2439b78bc09fd74c361e2b82">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
+
+</div>
+</div>
+<a id="aa9f008044ee291c7febf40755410e5d0" name="aa9f008044ee291c7febf40755410e5d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9f008044ee291c7febf40755410e5d0">&#9670;&#160;</a></span>InflictInjury()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Session.Net.RemoteRunCommands.InflictInjury </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slotIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>rollSeed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Положить последствие боя на «Сосуд» слота: ступень уточнит каскад, конкретную рану выберет ролл от <em>rollSeed</em> . </p>
+<p>Зовётся по одному разу на каждого павшего в бою. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a9349745919db7f77106f86ced67e4a98">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
 
 </div>
 </div>

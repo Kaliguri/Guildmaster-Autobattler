@@ -135,7 +135,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Combat_1_1EffectiveStats.html#af6a8ee1a614abbf360dab44edc68d555" target="_top" xlink:title="Тот же каскад плюс два слоя, которые есть у собранного игроком кита: Судьба сосуда и статовые моды на...">
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Combat_1_1EffectiveStats.html#aaf13a66925358d4d9d53a137662d565b" target="_top" xlink:title="Тот же каскад плюс три слоя, которые есть у собранного игроком кита: Судьба сосуда,...">
 <polygon fill="white" stroke="#666666" points="557,-212 394,-212 394,-182 557,-182 557,-212"/>
 <text text-anchor="start" x="402" y="-200" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effective</text>
 <text text-anchor="middle" x="475.5" y="-189" font-family="Helvetica,sans-Serif" font-size="10.00">Stats.Build</text>
@@ -210,7 +210,7 @@
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a70e9cf5d31e2c828b5913df2b51f7b5a" target="_top" xlink:title="Создать RuntimeUnit из SO&#45;данных.">
+<g id="a_Node000009"><a xlink:href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a3efcb1c3b14d28064433d425f223cbeb" target="_top" xlink:title="Создать RuntimeUnit из SO&#45;данных.">
 <polygon fill="white" stroke="#666666" points="358,-116 197,-116 197,-86 358,-86 358,-116"/>
 <text text-anchor="start" x="205" y="-104" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Runtime</text>
 <text text-anchor="middle" x="277.5" y="-93" font-family="Helvetica,sans-Serif" font-size="10.00">UnitFactory.Create</text>

@@ -115,8 +115,8 @@ Collaboration diagram for Guildmaster.Guild.RunStateService:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aef2c9beed6ac9037fc00f347c8240c2d" id="r_aef2c9beed6ac9037fc00f347c8240c2d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#aef2c9beed6ac9037fc00f347c8240c2d">RunStateService</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html">ISaveService</a> save, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html">GameConfig</a> config, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a> profiles, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html">Core.Audio.IAudioService</a> audio=null)</td></tr>
-<tr class="separator:aef2c9beed6ac9037fc00f347c8240c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ed28047544e30cbc74d61f02b523dab" id="r_a6ed28047544e30cbc74d61f02b523dab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a6ed28047544e30cbc74d61f02b523dab">RunStateService</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html">ISaveService</a> save, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html">GameConfig</a> config, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a> profiles, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html">Core.Audio.IAudioService</a> audio=null)</td></tr>
+<tr class="separator:a6ed28047544e30cbc74d61f02b523dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42b5f7b8c98688812518b9d22b64c89f" id="r_a42b5f7b8c98688812518b9d22b64c89f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html">RunState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a42b5f7b8c98688812518b9d22b64c89f">NewRun</a> (long seed, <a class="el" href="classGuildmaster_1_1Guild_1_1RosterSlot.html">RosterSlot</a>[] guild)</td></tr>
 <tr class="memdesc:a42b5f7b8c98688812518b9d22b64c89f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Начать новый забег: свежий RunState с базовой вместимостью реликов из конфига.  <br /></td></tr>
 <tr class="separator:a42b5f7b8c98688812518b9d22b64c89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,6 +153,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a574be55aa19e4794b9041e42e56cbc6b" id="r_a574be55aa19e4794b9041e42e56cbc6b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a574be55aa19e4794b9041e42e56cbc6b">UnequipRelic</a> (int slotIndex)</td></tr>
 <tr class="memdesc:a574be55aa19e4794b9041e42e56cbc6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять релик со слота обратно в запас; слот возвращается к базовому киту.  <br /></td></tr>
 <tr class="separator:a574be55aa19e4794b9041e42e56cbc6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a577cbceb2c828c2457793c163bf9f356" id="r_a577cbceb2c828c2457793c163bf9f356"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a577cbceb2c828c2457793c163bf9f356">AdvanceInjuries</a> ()</td></tr>
+<tr class="memdesc:a577cbceb2c828c2457793c163bf9f356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узел маршрута пройден: состарить раны и снять те, что проходят сами.  <br /></td></tr>
+<tr class="separator:a577cbceb2c828c2457793c163bf9f356"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab17de7003e09f7779d188fd7c6f35fc8" id="r_ab17de7003e09f7779d188fd7c6f35fc8"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#ab17de7003e09f7779d188fd7c6f35fc8">VesselItems</a> (int slotIndex)</td></tr>
 <tr class="memdesc:ab17de7003e09f7779d188fd7c6f35fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Предметы, надетые на сосуд слота (пустой массив, если слот вне ростера).  <br /></td></tr>
 <tr class="separator:ab17de7003e09f7779d188fd7c6f35fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -205,8 +208,8 @@ Events</h2></td></tr>
 <p>Три точки автосейва (вики «7» §5) зовут Autosave на переходах флоу.</p>
 <p><b>Живёт в скоупе Сессии и только у владельца сейва.</b> Гость играет в чужом состоянии — этого сервиса у него нет вовсе, поэтому «случайно записать чужой забег» ему нечем (см. <code>SessionInstaller</code>). Тем, кто переживает сеанс, видна только читающая половина — IRunStateView через роутер. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aef2c9beed6ac9037fc00f347c8240c2d" name="aef2c9beed6ac9037fc00f347c8240c2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef2c9beed6ac9037fc00f347c8240c2d">&#9670;&#160;</a></span>RunStateService()</h2>
+<a id="a6ed28047544e30cbc74d61f02b523dab" name="a6ed28047544e30cbc74d61f02b523dab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ed28047544e30cbc74d61f02b523dab">&#9670;&#160;</a></span>RunStateService()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -231,6 +234,12 @@ Events</h2></td></tr>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a>&#160;</td>
           <td class="paramname"><em>profiles</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a>&#160;</td>
+          <td class="paramname"><em>content</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -279,6 +288,28 @@ Events</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Взять предмет отряда. false = нет забега или пустой id; лимита слотов нет. </p>
+
+</div>
+</div>
+<a id="a577cbceb2c828c2457793c163bf9f356" name="a577cbceb2c828c2457793c163bf9f356"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a577cbceb2c828c2457793c163bf9f356">&#9670;&#160;</a></span>AdvanceInjuries()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Guild.RunStateService.AdvanceInjuries </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Узел маршрута пройден: состарить раны и снять те, что проходят сами. </p>
+<p>Возвращает, сколько снялось.</p>
+<p>Зовётся ровно там, где узел помечается пройденным, — иначе «сколько узлов прожила рана» и «сколько узлов прошёл отряд» разъедутся, а расхождения этого не увидит никто: рана просто проживёт не столько, сколько обещано в карточке. </p>
+<p><b>public, в отличие от прочих мутаторов:</b> это не действие игрока, а следствие уже совершённого хода — как и Autosave. Зовёт его тот, кто двигает карту.</p>
 
 </div>
 </div>

@@ -272,6 +272,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a93a9e5b56083c42f1ae8ae4ac2993c41" id="r_a93a9e5b56083c42f1ae8ae4ac2993c41"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#a93a9e5b56083c42f1ae8ae4ac2993c41">BodySortingOrder</a><code> [get]</code></td></tr>
 <tr class="memdesc:a93a9e5b56083c42f1ae8ae4ac2993c41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущий ордер сортировки тела (Y-sort) — VFX ставим со смещением от него.  <br /></td></tr>
 <tr class="separator:a93a9e5b56083c42f1ae8ae4ac2993c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf4babe5f71dbc2109c95d4246816c29" id="r_adf4babe5f71dbc2109c95d4246816c29"><td class="memItemLeft" align="right" valign="top">Material&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html#adf4babe5f71dbc2109c95d4246816c29">BodyMaterial</a><code> [get]</code></td></tr>
+<tr class="memdesc:adf4babe5f71dbc2109c95d4246816c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Материал тела — им же рисуется его призрачная копия (шлейф рывка, иллюзия уклонения): копия обязана светиться и сканироваться тем же шейдером, что оригинал, иначе она читается как чужой объект рядом с юнитом, а не как его след.  <br /></td></tr>
+<tr class="separator:adf4babe5f71dbc2109c95d4246816c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>World-space визуальное представление RuntimeUnit. </p>
@@ -1749,6 +1752,31 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Мировой центр зоны верха ног; фолбэк — бёдра эталонного габарита. </p>
+
+</div>
+</div>
+<a id="adf4babe5f71dbc2109c95d4246816c29" name="adf4babe5f71dbc2109c95d4246816c29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf4babe5f71dbc2109c95d4246816c29">&#9670;&#160;</a></span>BodyMaterial</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Material Guildmaster.Presentation.UnitView.BodyMaterial</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Материал тела — им же рисуется его призрачная копия (шлейф рывка, иллюзия уклонения): копия обязана светиться и сканироваться тем же шейдером, что оригинал, иначе она читается как чужой объект рядом с юнитом, а не как его след. </p>
+<p>Берётся с ПЕРВОЙ живой части: материал у частей одного тела общий (он же несёт вспышку удара, и её обязана уметь каждая часть). Тела нет — <code>null</code>, и копия рисуется дефолтным материалом спрайта: без голограммы, но видимая. </p>
 
 </div>
 </div>

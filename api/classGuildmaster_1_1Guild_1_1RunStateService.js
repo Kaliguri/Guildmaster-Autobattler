@@ -1,7 +1,8 @@
 var classGuildmaster_1_1Guild_1_1RunStateService =
 [
-    [ "RunStateService", "classGuildmaster_1_1Guild_1_1RunStateService.html#aef2c9beed6ac9037fc00f347c8240c2d", null ],
+    [ "RunStateService", "classGuildmaster_1_1Guild_1_1RunStateService.html#a6ed28047544e30cbc74d61f02b523dab", null ],
     [ "AddPartyItem", "classGuildmaster_1_1Guild_1_1RunStateService.html#ac2780a291147a3a28e73bcc8514dcaab", null ],
+    [ "AdvanceInjuries", "classGuildmaster_1_1Guild_1_1RunStateService.html#a577cbceb2c828c2457793c163bf9f356", null ],
     [ "Autosave", "classGuildmaster_1_1Guild_1_1RunStateService.html#a6b735b72a2c9f42774c7c55876833639", null ],
     [ "BeginAct", "classGuildmaster_1_1Guild_1_1RunStateService.html#ade85486b137b5ce32d7773fc078ac12a", null ],
     [ "DeleteSave", "classGuildmaster_1_1Guild_1_1RunStateService.html#ae03f4a2a1736095f55fdf6b8fc053c19", null ],

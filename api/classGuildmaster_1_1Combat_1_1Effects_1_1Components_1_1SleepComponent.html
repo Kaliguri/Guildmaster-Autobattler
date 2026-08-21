@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SleepComponent-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.Effects.Components.SleepComponent Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -119,6 +120,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae080968bccc8fc3a27f13be58a5ffa66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a918d77aeb65427d35403f08d83522872" id="r_a918d77aeb65427d35403f08d83522872"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SleepComponent.html#a918d77aeb65427d35403f08d83522872">OnPreDamage</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a> incoming, <a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html">PreDamageResult</a> result, in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html">EffectContext</a> ctx)</td></tr>
 <tr class="separator:a918d77aeb65427d35403f08d83522872"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a887c3a85e0bdfc6f47dae0b3094bd6de" id="r_a887c3a85e0bdfc6f47dae0b3094bd6de"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SleepComponent.html#a887c3a85e0bdfc6f47dae0b3094bd6de">Priority</a><code> [get]</code></td></tr>
+<tr class="memdesc:a887c3a85e0bdfc6f47dae0b3094bd6de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пробуждение усиливает удар и рвёт сон, но самого удара не отменяет.  <br /></td></tr>
+<tr class="separator:a887c3a85e0bdfc6f47dae0b3094bd6de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html">Guildmaster.Combat.Effects.IPreDamageComponent</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Пробуждение Сна (карточка [[the-lull]]): ЧУЖОЙ прямой удар снимает сон и получает за это _wakeMultiplier, а урон того, кто сон наложил, спящего НЕ будит. </p>
@@ -230,6 +238,33 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SleepComponent_a918d77aeb65427d35403f08d83522872_cgraph.svg" width="552" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a887c3a85e0bdfc6f47dae0b3094bd6de" name="a887c3a85e0bdfc6f47dae0b3094bd6de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a887c3a85e0bdfc6f47dae0b3094bd6de">&#9670;&#160;</a></span>Priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.Components.SleepComponent.Priority</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Пробуждение усиливает удар и рвёт сон, но самого удара не отменяет. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html#aeb84a55002d51320c02f7cce093236ed">Guildmaster.Combat.Effects.IPreDamageComponent</a>.</p>
 
 </div>
 </div>

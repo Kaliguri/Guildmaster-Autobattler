@@ -33,6 +33,7 @@ var StatType_8cs =
       [ "ResourceGainEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a143f98d287cb622e9f790376ba67377d", null ],
       [ "SummonHealthEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a8de1dce4a01b7df86880284797514d83", null ],
       [ "SummonDamageEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284ab39aedf70f89324e3d7533599d3fdab0", null ],
-      [ "ResourceRegenFlat", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284ab08c69f0634666c90d66606b35a39e5c", null ]
+      [ "ResourceRegenFlat", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284ab08c69f0634666c90d66606b35a39e5c", null ],
+      [ "StartHpPct", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a8a0c98f22151aeb13e507b4398df35b5", null ]
     ] ]
 ];

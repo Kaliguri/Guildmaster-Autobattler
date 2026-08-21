@@ -93,28 +93,34 @@
 <g id="Node000005" class="node">
 <title>Node5</title>
 <g id="a_Node000005"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html" target="_top" xlink:title="Последствие боя: травма или закалка (объединяет бывш.">
-<polygon fill="white" stroke="transparent" points="501,-373.5 346,-373.5 346,-223.5 501,-223.5 501,-373.5"/>
-<text text-anchor="start" x="351.5" y="-361.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="start" x="379.5" y="-350.5" font-family="Helvetica,sans-Serif" font-size="10.00">ConsequenceData</text>
-<text text-anchor="start" x="365.5" y="-335.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="393.5" y="-335.5" font-family="Helvetica,sans-Serif" font-size="10.00">Polarity</text>
-<text text-anchor="start" x="365.5" y="-320.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="393.5" y="-320.5" font-family="Helvetica,sans-Serif" font-size="10.00">Mods</text>
-<text text-anchor="start" x="365.5" y="-305.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="393.5" y="-305.5" font-family="Helvetica,sans-Serif" font-size="10.00">GrantedEffects</text>
-<text text-anchor="start" x="365.5" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="393.5" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">Severity</text>
-<text text-anchor="start" x="365.5" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="393.5" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">HealCostGold</text>
-<text text-anchor="start" x="365.5" y="-260.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="393.5" y="-260.5" font-family="Helvetica,sans-Serif" font-size="10.00">Weight</text>
-<text text-anchor="start" x="365.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="393.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">InfoTags</text>
-<text text-anchor="start" x="422" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<polygon fill="#666666" stroke="#666666" points="346.5,-345.5 346.5,-345.5 501.5,-345.5 501.5,-345.5 346.5,-345.5"/>
-<polygon fill="#666666" stroke="#666666" points="346.5,-240.5 346.5,-240.5 391.5,-240.5 391.5,-240.5 346.5,-240.5"/>
-<polygon fill="#666666" stroke="#666666" points="391.5,-240.5 391.5,-240.5 501.5,-240.5 501.5,-240.5 391.5,-240.5"/>
-<polygon fill="none" stroke="#666666" points="346,-223.5 346,-373.5 501,-373.5 501,-223.5 346,-223.5"/>
+<polygon fill="white" stroke="transparent" points="501,-396 346,-396 346,-201 501,-201 501,-396"/>
+<text text-anchor="start" x="351.5" y="-383.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
+<text text-anchor="start" x="379.5" y="-372.5" font-family="Helvetica,sans-Serif" font-size="10.00">ConsequenceData</text>
+<text text-anchor="start" x="361" y="-357.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="384.5" y="-357.5" font-family="Helvetica,sans-Serif" font-size="10.00">Polarity</text>
+<text text-anchor="start" x="361" y="-342.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="384.5" y="-342.5" font-family="Helvetica,sans-Serif" font-size="10.00">Grade</text>
+<text text-anchor="start" x="361" y="-327.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="384.5" y="-327.5" font-family="Helvetica,sans-Serif" font-size="10.00">Mods</text>
+<text text-anchor="start" x="361" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="384.5" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00">GrantedEffects</text>
+<text text-anchor="start" x="361" y="-297.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="384.5" y="-297.5" font-family="Helvetica,sans-Serif" font-size="10.00">ExpiresAfterNodes</text>
+<text text-anchor="start" x="361" y="-282.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="384.5" y="-282.5" font-family="Helvetica,sans-Serif" font-size="10.00">HealCostGold</text>
+<text text-anchor="start" x="361" y="-267.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="384.5" y="-267.5" font-family="Helvetica,sans-Serif" font-size="10.00">Weight</text>
+<text text-anchor="start" x="361" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="384.5" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">Icon</text>
+<text text-anchor="start" x="361" y="-237.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="384.5" y="-237.5" font-family="Helvetica,sans-Serif" font-size="10.00">InfoTags</text>
+<text text-anchor="start" x="361" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="384.5" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">IsInjury</text>
+<text text-anchor="start" x="422" y="-207.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<polygon fill="#666666" stroke="#666666" points="346.5,-367.5 346.5,-367.5 501.5,-367.5 501.5,-367.5 346.5,-367.5"/>
+<polygon fill="#666666" stroke="#666666" points="346.5,-217.5 346.5,-217.5 382.5,-217.5 382.5,-217.5 346.5,-217.5"/>
+<polygon fill="#666666" stroke="#666666" points="382.5,-217.5 382.5,-217.5 501.5,-217.5 501.5,-217.5 382.5,-217.5"/>
+<polygon fill="none" stroke="#666666" points="346,-201 346,-396 501,-396 501,-201 346,-201"/>
 </a>
 </g>
 </g>
@@ -122,7 +128,7 @@
 <g id="edge4_Node000001_Node000005" class="edge">
 <title>Node1&#45;&gt;Node5</title>
 <g id="a_edge4_Node000001_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1459.58,-489.89C1224.03,-486.32 590.98,-472.45 509.5,-426 488.16,-413.83 471.01,-393.94 457.82,-373.5"/>
+<path fill="none" stroke="#63b8ff" d="M1459.58,-489.89C1224.03,-486.32 590.98,-472.45 509.5,-426 496.23,-418.44 484.59,-407.89 474.51,-396.08"/>
 <polygon fill="none" stroke="#63b8ff" points="1459.77,-493.4 1469.82,-490.05 1459.88,-486.4 1459.77,-493.4"/>
 </a>
 </g>

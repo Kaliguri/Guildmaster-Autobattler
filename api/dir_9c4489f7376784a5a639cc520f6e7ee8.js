@@ -30,6 +30,7 @@ var dir_9c4489f7376784a5a639cc520f6e7ee8 =
     [ "ProjectileView.cs", "ProjectileView_8cs.html", "ProjectileView_8cs" ],
     [ "ReplayFocusBinder.cs", "ReplayFocusBinder_8cs.html", "ReplayFocusBinder_8cs" ],
     [ "ShatterMesh.cs", "ShatterMesh_8cs.html", "ShatterMesh_8cs" ],
+    [ "SilhouetteDraw.cs", "SilhouetteDraw_8cs.html", "SilhouetteDraw_8cs" ],
     [ "TapeFocusPointSource.cs", "TapeFocusPointSource_8cs.html", "TapeFocusPointSource_8cs" ],
     [ "UnitAnimation.cs", "UnitAnimation_8cs.html", "UnitAnimation_8cs" ],
     [ "UnitSilhouette.cs", "UnitSilhouette_8cs.html", "UnitSilhouette_8cs" ],

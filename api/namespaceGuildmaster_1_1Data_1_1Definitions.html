@@ -502,6 +502,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a9ee0ec1813ac8fb109f708dc45051fe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вид последствия боя (GDD 9): травма снимается лечением, закалка постоянна (вики «13» §3.2).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4">More...</a><br /></td></tr>
 <tr class="separator:a9ee0ec1813ac8fb109f708dc45051fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbb4ad2cc8d5f3e88cffbf97554a5753" id="r_abbb4ad2cc8d5f3e88cffbf97554a5753"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abbb4ad2cc8d5f3e88cffbf97554a5753">InjuryGrade</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abbb4ad2cc8d5f3e88cffbf97554a5753afc1071643fa7db924a0689e9c8563faa">Bruise</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abbb4ad2cc8d5f3e88cffbf97554a5753a5518086aebc9159ba7424be0073ce5c9">Wound</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abbb4ad2cc8d5f3e88cffbf97554a5753a9535a0f986d224b7cb40a207d6565e1f">Maiming</a> = 2
+ }</td></tr>
+<tr class="memdesc:abbb4ad2cc8d5f3e88cffbf97554a5753"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ступень травмы (решение Макса 2026-08-21, ГДД <code>injuries-mettle</code> §Травма).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abbb4ad2cc8d5f3e88cffbf97554a5753">More...</a><br /></td></tr>
+<tr class="separator:abbb4ad2cc8d5f3e88cffbf97554a5753"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb3246db7673b2da9a0a4d4f4ffdd590" id="r_adb3246db7673b2da9a0a4d4f4ffdd590"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590">ItemScope</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590add85641c28bfd5bae3047879853d4a33">Vessel</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590a094a173d3b32f44f5b5c996e8710ae28">Party</a> = 1
  }</td></tr>
@@ -1330,6 +1336,30 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a77f110cb08935b14a4b3742c4dc83b80a59bfa581cee5f82ea58c4ffc2073385f" name="a77f110cb08935b14a4b3742c4dc83b80a59bfa581cee5f82ea58c4ffc2073385f"></a>GainRelicCapacity&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a77f110cb08935b14a4b3742c4dc83b80aa5b8f311297ef640de3368f2c0ceee8c" name="a77f110cb08935b14a4b3742c4dc83b80aa5b8f311297ef640de3368f2c0ceee8c"></a>GrantItem&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a77f110cb08935b14a4b3742c4dc83b80a90589c47f06eb971d548591f23c285af" name="a77f110cb08935b14a4b3742c4dc83b80a90589c47f06eb971d548591f23c285af"></a>Custom&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="abbb4ad2cc8d5f3e88cffbf97554a5753" name="abbb4ad2cc8d5f3e88cffbf97554a5753"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbb4ad2cc8d5f3e88cffbf97554a5753">&#9670;&#160;</a></span>InjuryGrade</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abbb4ad2cc8d5f3e88cffbf97554a5753">Guildmaster.Data.Definitions.InjuryGrade</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ступень травмы (решение Макса 2026-08-21, ГДД <code>injuries-mettle</code> §Травма). </p>
+<p>Ступеней ровно три, и у каждой своё число слотов на «Сосуде»: 3 / 2 / 1. Переполнение поднимает ступень — мелкая, которой некуда лечь, становится средней; переполнение тяжёлой выводит «Сосуд» из забега. </p>
+<p>Ступень — не число тяжести: она отвечает не «насколько больно», а «в какой ряд слотов кладётся». Прежнее поле <code>Severity</code> типа <code>int</code> отвечало на первый вопрос и по нему каскад было не написать, не додумав, где границы рядов.</p>
+<p>У закалки (ConsequencePolarity.Mettle) ступени нет — слотов она не занимает, и поле у неё не читается.</p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="abbb4ad2cc8d5f3e88cffbf97554a5753afc1071643fa7db924a0689e9c8563faa" name="abbb4ad2cc8d5f3e88cffbf97554a5753afc1071643fa7db924a0689e9c8563faa"></a>Bruise&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abbb4ad2cc8d5f3e88cffbf97554a5753a5518086aebc9159ba7424be0073ce5c9" name="abbb4ad2cc8d5f3e88cffbf97554a5753a5518086aebc9159ba7424be0073ce5c9"></a>Wound&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abbb4ad2cc8d5f3e88cffbf97554a5753a9535a0f986d224b7cb40a207d6565e1f" name="abbb4ad2cc8d5f3e88cffbf97554a5753a9535a0f986d224b7cb40a207d6565e1f"></a>Maiming&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>

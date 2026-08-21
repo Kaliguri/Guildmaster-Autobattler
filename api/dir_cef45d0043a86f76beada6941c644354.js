@@ -1,5 +1,7 @@
 var dir_cef45d0043a86f76beada6941c644354 =
 [
+    [ "AllyAuraComponent.cs", "AllyAuraComponent_8cs.html", "AllyAuraComponent_8cs" ],
+    [ "AllyGustComponent.cs", "AllyGustComponent_8cs.html", "AllyGustComponent_8cs" ],
     [ "AllyMendComponent.cs", "AllyMendComponent_8cs.html", "AllyMendComponent_8cs" ],
     [ "AllyProximityDamageBonusComponent.cs", "AllyProximityDamageBonusComponent_8cs.html", "AllyProximityDamageBonusComponent_8cs" ],
     [ "ArmorThornsComponent.cs", "ArmorThornsComponent_8cs.html", "ArmorThornsComponent_8cs" ],
@@ -23,6 +25,7 @@ var dir_cef45d0043a86f76beada6941c644354 =
     [ "EmberIgniterComponent.cs", "EmberIgniterComponent_8cs.html", "EmberIgniterComponent_8cs" ],
     [ "EmberWardenComponent.cs", "EmberWardenComponent_8cs.html", "EmberWardenComponent_8cs" ],
     [ "EmpowerNextAttackComponent.cs", "EmpowerNextAttackComponent_8cs.html", "EmpowerNextAttackComponent_8cs" ],
+    [ "EvasionComponent.cs", "EvasionComponent_8cs.html", "EvasionComponent_8cs" ],
     [ "EveryNthAttackComponent.cs", "EveryNthAttackComponent_8cs.html", "EveryNthAttackComponent_8cs" ],
     [ "FeedOnDamageComponent.cs", "FeedOnDamageComponent_8cs.html", "FeedOnDamageComponent_8cs" ],
     [ "FireOrbsComponent.cs", "FireOrbsComponent_8cs.html", "FireOrbsComponent_8cs" ],
@@ -39,6 +42,7 @@ var dir_cef45d0043a86f76beada6941c644354 =
     [ "PeriodicEmpowerComponent.cs", "PeriodicEmpowerComponent_8cs.html", "PeriodicEmpowerComponent_8cs" ],
     [ "PeriodicHealComponent.cs", "PeriodicHealComponent_8cs.html", "PeriodicHealComponent_8cs" ],
     [ "PhaseShiftComponent.cs", "PhaseShiftComponent_8cs.html", "PhaseShiftComponent_8cs" ],
+    [ "RangedWardComponent.cs", "RangedWardComponent_8cs.html", "RangedWardComponent_8cs" ],
     [ "RearDamageBonusComponent.cs", "RearDamageBonusComponent_8cs.html", "RearDamageBonusComponent_8cs" ],
     [ "RearStrikeEffectComponent.cs", "RearStrikeEffectComponent_8cs.html", "RearStrikeEffectComponent_8cs" ],
     [ "SchoolDamageResistComponent.cs", "SchoolDamageResistComponent_8cs.html", "SchoolDamageResistComponent_8cs" ],

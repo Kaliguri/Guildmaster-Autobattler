@@ -117,7 +117,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Эффективные статы юнита ТЕМ ЖЕ путём, что и бой (контракт «таблица не врёт»): переиспользует Stats из сим-кода, а не переписывает формулу. </p>
-<p><code><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a70e9cf5d31e2c828b5913df2b51f7b5a" title="Создать RuntimeUnit из SO-данных.">RuntimeUnitFactory.Create</a></code> делает ровно то же — <code>new Stats(config)</code> + <code>AddModifiersFrom(data, data.Stats)</code> — поэтому значения совпадают по построению. </p>
+<p><code><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a3efcb1c3b14d28064433d425f223cbeb" title="Создать RuntimeUnit из SO-данных.">RuntimeUnitFactory.Create</a></code> делает ровно то же — <code>new Stats(config)</code> + <code>AddModifiersFrom(data, data.Stats)</code> — поэтому значения совпадают по построению. </p>
 <p>НЕ включает статы от пассивных <code>GrantedEffects</code> (те применяются через EffectSystem в бою) — хаб показывает SO-слой модификаторов, достаточный для сравнения баланса.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a18912a608f1c5a8f5603310031093828" name="a18912a608f1c5a8f5603310031093828"></a>

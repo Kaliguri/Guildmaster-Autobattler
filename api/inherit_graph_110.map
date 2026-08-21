@@ -1,3 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classGuildmaster_1_1Core_1_1DevConsole_1_1DevParam.html" title="Объявленный параметр команды." alt="" coords="5,5,227,45"/>
+<area shape="rect" id="Node000000" href="$classGuildmaster_1_1Core_1_1DevConsole_1_1DevConsoleLog.html" title="Хвост вывода консоли: кольцевой буфер последних строк плюс подписка на лог Unity, чтобы Debug...." alt="" coords="5,5,227,45"/>
 </map>

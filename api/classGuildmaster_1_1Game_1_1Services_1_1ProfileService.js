@@ -1,11 +1,13 @@
 var classGuildmaster_1_1Game_1_1Services_1_1ProfileService =
 [
     [ "ProfileService", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#adf495d50f3d2df78a30b47c16e2d49a6", null ],
+    [ "AddPlayedTime", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a47a848a686a72bb33f5e3ac2e9dc95e9", null ],
     [ "CreateGuild", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#ad309387449e8ac3a361c248528ca8469", null ],
     [ "CreateProfile", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a1ed9736804f98cee9f5a4f79cd25ba22", null ],
     [ "DeleteGuild", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a3b15046b9f18095b5ef6bb045f9cbc59", null ],
     [ "DeleteProfile", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a7f84f0d344102b43ce971e9f4eb33b00", null ],
     [ "Initialize", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a9691b45c86b777b0da8c6880967b14a6", null ],
+    [ "RecordRunFinished", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a5d42aae57166df9f91acf391efc802d9", null ],
     [ "SaveIdentity", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a42f68d65b4aa7d1d9b6098e247403c53", null ],
     [ "SelectGuild", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a34e8b2b06d4a9d2e28f8e449269ab5ba", null ],
     [ "SelectProfile", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#af8d0749776e9b8af49f870decf6c4240", null ],

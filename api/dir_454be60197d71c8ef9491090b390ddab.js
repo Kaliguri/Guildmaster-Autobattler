@@ -1,5 +1,7 @@
 var dir_454be60197d71c8ef9491090b390ddab =
 [
+    [ "CombatGhosts.cs", "CombatGhosts_8cs.html", "CombatGhosts_8cs" ],
+    [ "GhostImage.cs", "GhostImage_8cs.html", "GhostImage_8cs" ],
     [ "HitFormFactory.cs", "HitFormFactory_8cs.html", "HitFormFactory_8cs" ],
     [ "HitFormVfx.cs", "HitFormVfx_8cs.html", "HitFormVfx_8cs" ],
     [ "ImpactReach.cs", "ImpactReach_8cs.html", "ImpactReach_8cs" ],

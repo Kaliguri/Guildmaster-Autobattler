@@ -17,6 +17,7 @@ var namespaceGuildmaster_1_1Combat_1_1Effects =
     [ "IScalablePotency", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency" ],
     [ "IStackableComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent" ],
     [ "PreDamageResult", "classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html", "classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult" ],
+    [ "ReactionPriority", "classGuildmaster_1_1Combat_1_1Effects_1_1ReactionPriority.html", "classGuildmaster_1_1Combat_1_1Effects_1_1ReactionPriority" ],
     [ "RuntimeEffect", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect" ],
     [ "CombatEvent", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066", [
       [ "None", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a6adf97f83acf6453d4a6a4b1070f3754", null ],
@@ -30,5 +31,9 @@ var namespaceGuildmaster_1_1Combat_1_1Effects =
       [ "AbilityCast", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066afb70d9705c2930ef40b1173ab1b2094d", null ],
       [ "AttackCompleted", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a72d4a0b0cc011d98f0b8fc13a5c5729c", null ],
       [ "ComboBroken", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a676f582752529cf3b8f4652aff72ae7d", null ]
+    ] ],
+    [ "ReactionOrigin", "namespaceGuildmaster_1_1Combat_1_1Effects.html#a0b8d4b33324ab531635a90da9a10e600", [
+      [ "SelfCast", "namespaceGuildmaster_1_1Combat_1_1Effects.html#a0b8d4b33324ab531635a90da9a10e600a5345d9ed3e4f5d70f842d45fd2356a34", null ],
+      [ "FromAlly", "namespaceGuildmaster_1_1Combat_1_1Effects.html#a0b8d4b33324ab531635a90da9a10e600ac1abfa51e0dbe6e48219ad0ca50c127d", null ]
     ] ]
 ];

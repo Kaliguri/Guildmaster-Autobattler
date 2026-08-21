@@ -9,6 +9,11 @@ var ContentEnums_8cs =
       [ "Common", "ContentEnums_8cs.html#a925db2d2a0c45c6708446a8c78dce0a6ad13bc5b68b2bd9e18f29777db17cc563", null ],
       [ "Unique", "ContentEnums_8cs.html#a925db2d2a0c45c6708446a8c78dce0a6ad019979a29c88c8d69bab3a63388da97", null ]
     ] ],
+    [ "InjuryGrade", "ContentEnums_8cs.html#abbb4ad2cc8d5f3e88cffbf97554a5753", [
+      [ "Bruise", "ContentEnums_8cs.html#abbb4ad2cc8d5f3e88cffbf97554a5753afc1071643fa7db924a0689e9c8563faa", null ],
+      [ "Wound", "ContentEnums_8cs.html#abbb4ad2cc8d5f3e88cffbf97554a5753a5518086aebc9159ba7424be0073ce5c9", null ],
+      [ "Maiming", "ContentEnums_8cs.html#abbb4ad2cc8d5f3e88cffbf97554a5753a9535a0f986d224b7cb40a207d6565e1f", null ]
+    ] ],
     [ "ItemScope", "ContentEnums_8cs.html#adb3246db7673b2da9a0a4d4f4ffdd590", [
       [ "Vessel", "ContentEnums_8cs.html#adb3246db7673b2da9a0a4d4f4ffdd590add85641c28bfd5bae3047879853d4a33", null ],
       [ "Party", "ContentEnums_8cs.html#adb3246db7673b2da9a0a4d4f4ffdd590a094a173d3b32f44f5b5c996e8710ae28", null ]

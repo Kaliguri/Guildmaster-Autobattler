@@ -333,6 +333,7 @@ var hierarchy =
           [ "Guildmaster.Combat.Effects.Components.TaggedTargetDamageBonusComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TaggedTargetDamageBonusComponent.html", null ]
         ] ],
         [ "Guildmaster.Combat.Effects.IPeriodicComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html", [
+          [ "Guildmaster.Combat.Effects.Components.AllyAuraComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AllyAuraComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.AttackStanceComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AttackStanceComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.ChargeThroughOnBattleStartComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ChargeThroughOnBattleStartComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.DecayingStatModifierComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DecayingStatModifierComponent.html", null ],
@@ -349,15 +350,18 @@ var hierarchy =
           [ "Guildmaster.Combat.Effects.Components.TitheComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TitheComponent.html", null ]
         ] ],
         [ "Guildmaster.Combat.Effects.IPreDamageComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html", [
+          [ "Guildmaster.Combat.Effects.Components.AllyGustComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1AllyGustComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.BlockComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BlockComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.ConcealmentComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ConcealmentComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.DodgeComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.EmberComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent.html", null ],
+          [ "Guildmaster.Combat.Effects.Components.EvasionComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EvasionComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.FrostComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FrostComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.FrostStatueComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FrostStatueComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.ParryComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ParryComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.ParryWindowComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ParryWindowComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.PhaseShiftComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PhaseShiftComponent.html", null ],
+          [ "Guildmaster.Combat.Effects.Components.RangedWardComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RangedWardComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.SchoolDamageResistComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolDamageResistComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.SchoolShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolShieldComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.SleepComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SleepComponent.html", null ]
@@ -399,9 +403,11 @@ var hierarchy =
           [ "Guildmaster.Combat.Effects.Components.BlockComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BlockComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.DodgeComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.EmberComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EmberComponent.html", null ],
+          [ "Guildmaster.Combat.Effects.Components.EvasionComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EvasionComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.FrostComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1FrostComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.ParryComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ParryComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.PhaseShiftComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PhaseShiftComponent.html", null ],
+          [ "Guildmaster.Combat.Effects.Components.RangedWardComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RangedWardComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.SchoolShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolShieldComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.ShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html", null ]
         ] ]
@@ -474,6 +480,11 @@ var hierarchy =
       [ "Guildmaster.Net.Transport.ChaosTransport", "classGuildmaster_1_1Net_1_1Transport_1_1ChaosTransport.html", null ],
       [ "Guildmaster.Net.Transport.SteamNetTransport", "classGuildmaster_1_1Net_1_1Transport_1_1SteamNetTransport.html", null ]
     ] ],
+    [ "Guildmaster.Guild.Injury", "classGuildmaster_1_1Guild_1_1Injury.html", null ],
+    [ "Guildmaster.Guild.InjuryCascade", "classGuildmaster_1_1Guild_1_1InjuryCascade.html", null ],
+    [ "Guildmaster.Guild.InjuryLedger", "classGuildmaster_1_1Guild_1_1InjuryLedger.html", null ],
+    [ "Guildmaster.Guild.InjuryOutcome", "structGuildmaster_1_1Guild_1_1InjuryOutcome.html", null ],
+    [ "Guildmaster.Guild.InjurySlots", "structGuildmaster_1_1Guild_1_1InjurySlots.html", null ],
     [ "Guildmaster.Game.Flow.INodeResolver", "interfaceGuildmaster_1_1Game_1_1Flow_1_1INodeResolver.html", [
       [ "Guildmaster.Game.Flow.NodeResolver", "classGuildmaster_1_1Game_1_1Flow_1_1NodeResolver.html", null ]
     ] ],
@@ -546,6 +557,7 @@ var hierarchy =
     [ "Guildmaster.Combat.Effects.IScalablePotency", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html", [
       [ "Guildmaster.Combat.Effects.Components.PeriodicDamageComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html", null ],
       [ "Guildmaster.Combat.Effects.Components.PeriodicHealComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html", null ],
+      [ "Guildmaster.Combat.Effects.Components.RangedWardComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1RangedWardComponent.html", null ],
       [ "Guildmaster.Combat.Effects.Components.SchoolShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolShieldComponent.html", null ],
       [ "Guildmaster.Combat.Effects.Components.ShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html", null ]
     ] ],
@@ -754,6 +766,8 @@ var hierarchy =
       [ "Guildmaster.Presentation.ConstantScreenScale", "classGuildmaster_1_1Presentation_1_1ConstantScreenScale.html", null ],
       [ "Guildmaster.Presentation.DeathShatter", "classGuildmaster_1_1Presentation_1_1DeathShatter.html", null ],
       [ "Guildmaster.Presentation.DeploymentView", "classGuildmaster_1_1Presentation_1_1DeploymentView.html", null ],
+      [ "Guildmaster.Presentation.Effects.CombatGhosts", "classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts.html", null ],
+      [ "Guildmaster.Presentation.Effects.GhostImage", "classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html", null ],
       [ "Guildmaster.Presentation.Effects.HitFormVfx", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormVfx.html", null ],
       [ "Guildmaster.Presentation.Effects.SwingArcVfx", "classGuildmaster_1_1Presentation_1_1Effects_1_1SwingArcVfx.html", null ],
       [ "Guildmaster.Presentation.Effects.VolumeVisualToggle", "classGuildmaster_1_1Presentation_1_1Effects_1_1VolumeVisualToggle.html", null ],
@@ -816,9 +830,11 @@ var hierarchy =
     [ "Guildmaster.Net.Presence.PresenceInterpolator", "classGuildmaster_1_1Net_1_1Presence_1_1PresenceInterpolator.html", null ],
     [ "Guildmaster.Net.Presence.PresenceSender", "classGuildmaster_1_1Net_1_1Presence_1_1PresenceSender.html", null ],
     [ "Guildmaster.Net.Presence.PresenceState", "structGuildmaster_1_1Net_1_1Presence_1_1PresenceState.html", null ],
+    [ "Guildmaster.UI.ProfileHubView", "classGuildmaster_1_1UI_1_1ProfileHubView.html", null ],
     [ "Guildmaster.Core.Persistence.ProfileIdentity", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html", null ],
     [ "Guildmaster.UI.ProfileScreenView", "classGuildmaster_1_1UI_1_1ProfileScreenView.html", null ],
     [ "Guildmaster.Guild.ProfileState", "classGuildmaster_1_1Guild_1_1ProfileState.html", null ],
+    [ "Guildmaster.Core.Persistence.ProfileStats", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileStats.html", null ],
     [ "Guildmaster.Core.Persistence.ProfileSummary", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html", null ],
     [ "Guildmaster.Combat.Projectile", "classGuildmaster_1_1Combat_1_1Projectile.html", null ],
     [ "Guildmaster.Combat.Tape.ProjectileSnapshot", "structGuildmaster_1_1Combat_1_1Tape_1_1ProjectileSnapshot.html", null ],
@@ -827,6 +843,7 @@ var hierarchy =
     [ "Guildmaster.Data.Definitions.ProvingGroundsSetupRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1ProvingGroundsSetupRequest.html", null ],
     [ "Guildmaster.Data.Definitions.ProvingGroundsSpawn", "structGuildmaster_1_1Data_1_1Definitions_1_1ProvingGroundsSpawn.html", null ],
     [ "Guildmaster.Combat.RangeBaseline", "classGuildmaster_1_1Combat_1_1RangeBaseline.html", null ],
+    [ "Guildmaster.Combat.Effects.ReactionPriority", "classGuildmaster_1_1Combat_1_1Effects_1_1ReactionPriority.html", null ],
     [ "Guildmaster.Net.Tape.ReplayFile.Record", "classGuildmaster_1_1Net_1_1Tape_1_1ReplayFile_1_1Record.html", null ],
     [ "Guildmaster.Core.Arena.Rect2D", "structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html", null ],
     [ "Guildmaster.Combat.RegenSystem", "classGuildmaster_1_1Combat_1_1RegenSystem.html", null ],
@@ -848,6 +865,7 @@ var hierarchy =
     [ "Guildmaster.ContentHub.Editor.ConfigDiff.Row", "structGuildmaster_1_1ContentHub_1_1Editor_1_1ConfigDiff_1_1Row.html", null ],
     [ "Guildmaster.Combat.Effects.Components.TaggedTargetDamageBonusComponent.Rule", "structGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1TaggedTargetDamageBonusComponent_1_1Rule.html", null ],
     [ "Guildmaster.Core.Net.RunAfterOptions", "classGuildmaster_1_1Core_1_1Net_1_1RunAfterOptions.html", null ],
+    [ "Guildmaster.Balance.Editor.RunBench", "classGuildmaster_1_1Balance_1_1Editor_1_1RunBench.html", null ],
     [ "Guildmaster.Guild.Commands.RunCommand", "structGuildmaster_1_1Guild_1_1Commands_1_1RunCommand.html", null ],
     [ "Guildmaster.Guild.Commands.RunCommandApplier", "classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandApplier.html", null ],
     [ "Guildmaster.Game.Session.Net.RunCommandCodec", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunCommandCodec.html", null ],
@@ -928,6 +946,7 @@ var hierarchy =
     [ "Guildmaster.UI.ShopScreenView", "classGuildmaster_1_1UI_1_1ShopScreenView.html", null ],
     [ "Guildmaster.Guild.ShopStashItem", "classGuildmaster_1_1Guild_1_1ShopStashItem.html", null ],
     [ "Guildmaster.Balance.BalanceScenarioData.SideEntry", "structGuildmaster_1_1Balance_1_1BalanceScenarioData_1_1SideEntry.html", null ],
+    [ "Guildmaster.Presentation.SilhouetteDraw", "classGuildmaster_1_1Presentation_1_1SilhouetteDraw.html", null ],
     [ "Guildmaster.Presentation.SilhouettePart", "structGuildmaster_1_1Presentation_1_1SilhouettePart.html", null ],
     [ "Guildmaster.Core.Simulation.SimConstants", "classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html", null ],
     [ "Guildmaster.Core.Simulation.SimTuning", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html", null ],

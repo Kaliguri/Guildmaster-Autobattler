@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolDamageResistComponent-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.Effects.Components.SchoolDamageResistComponent Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -119,6 +120,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4a3ea117463ed7cfdb9cd1cac08808bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a3ceecffdb0c4cd9f1199c0c4b6ec8c" id="r_a4a3ceecffdb0c4cd9f1199c0c4b6ec8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolDamageResistComponent.html#a4a3ceecffdb0c4cd9f1199c0c4b6ec8c">OnPreDamage</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a> incoming, <a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html">PreDamageResult</a> result, in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html">EffectContext</a> ctx)</td></tr>
 <tr class="separator:a4a3ceecffdb0c4cd9f1199c0c4b6ec8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a2e5ddc40b51a0f4e773f862f028f6182" id="r_a2e5ddc40b51a0f4e773f862f028f6182"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolDamageResistComponent.html#a2e5ddc40b51a0f4e773f862f028f6182">Priority</a><code> [get]</code></td></tr>
+<tr class="memdesc:a2e5ddc40b51a0f4e773f862f028f6182"><td class="mdescLeft">&#160;</td><td class="mdescRight">Стойкость работает с уже состоявшимся попаданием.  <br /></td></tr>
+<tr class="separator:a2e5ddc40b51a0f4e773f862f028f6182"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html">Guildmaster.Combat.Effects.IPreDamageComponent</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Сопротивление урону ОДНОЙ школы (и, если задан, одной стихии): пока эффект висит, подходящий входящий урон умножается на <code>1 − _resistPct</code>. </p>
@@ -230,6 +238,33 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1SchoolDamageResistComponent_a4a3ceecffdb0c4cd9f1199c0c4b6ec8c_cgraph.svg" width="615" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a2e5ddc40b51a0f4e773f862f028f6182" name="a2e5ddc40b51a0f4e773f862f028f6182"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e5ddc40b51a0f4e773f862f028f6182">&#9670;&#160;</a></span>Priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.Components.SchoolDamageResistComponent.Priority</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Стойкость работает с уже состоявшимся попаданием. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html#aeb84a55002d51320c02f7cce093236ed">Guildmaster.Combat.Effects.IPreDamageComponent</a>.</p>
 
 </div>
 </div>

@@ -8,5 +8,6 @@ var searchData=
   ['wholebody_5',['WholeBody',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ab39acdcb0147f727f4254c23e2bc404dadfa1d269ed0f9df8ae150bdc45b58fe9',1,'Guildmaster::Data::Definitions']]],
   ['wind_6',['Wind',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ae6f84ac35804ce5b1502093c30f520d3a52258b9eda406898436077f22a2ed11f',1,'Guildmaster::Data::Definitions']]],
   ['windowed_7',['Windowed',['../namespaceGuildmaster_1_1Core_1_1Settings.html#a210a92564d24219483ed8e3f8b6ae355ab13311ab51c4c34757f67f26580018dd',1,'Guildmaster::Core::Settings']]],
-  ['windup_8',['Windup',['../namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fa3d501c93b1c2ecdb8ca9ffc8ef9c7055',1,'Guildmaster::Combat']]]
+  ['windup_8',['Windup',['../namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fa3d501c93b1c2ecdb8ca9ffc8ef9c7055',1,'Guildmaster::Combat']]],
+  ['wound_9',['Wound',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#abbb4ad2cc8d5f3e88cffbf97554a5753a5518086aebc9159ba7424be0073ce5c9',1,'Guildmaster::Data::Definitions']]]
 ];

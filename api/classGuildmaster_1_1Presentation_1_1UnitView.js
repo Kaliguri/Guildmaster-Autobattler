@@ -43,6 +43,7 @@ var classGuildmaster_1_1Presentation_1_1UnitView =
     [ "AimBodyPoint", "classGuildmaster_1_1Presentation_1_1UnitView.html#ad1a0df6f6c29ef4b93a7ccdb604589e5", null ],
     [ "AimHeadPoint", "classGuildmaster_1_1Presentation_1_1UnitView.html#a8803dd7c730375af5abd120df3640c29", null ],
     [ "AimLegsPoint", "classGuildmaster_1_1Presentation_1_1UnitView.html#a272227e076b69f077f6e177dc92f0593", null ],
+    [ "BodyMaterial", "classGuildmaster_1_1Presentation_1_1UnitView.html#adf4babe5f71dbc2109c95d4246816c29", null ],
     [ "BodySortingLayerId", "classGuildmaster_1_1Presentation_1_1UnitView.html#a6c2a38c9137a0fea7037b84660e95a81", null ],
     [ "BodySortingOrder", "classGuildmaster_1_1Presentation_1_1UnitView.html#a93a9e5b56083c42f1ae8ae4ac2993c41", null ],
     [ "FeetPoint", "classGuildmaster_1_1Presentation_1_1UnitView.html#a419e6e5695f338bbfbc00ea673332d73", null ],

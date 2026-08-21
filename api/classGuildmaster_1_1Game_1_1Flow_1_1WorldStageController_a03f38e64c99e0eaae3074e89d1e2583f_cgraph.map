@@ -1,8 +1,10 @@
 <map id="Guildmaster.Game.Flow.WorldStageController.PlaceParty" name="Guildmaster.Game.Flow.WorldStageController.PlaceParty">
-<area shape="rect" id="Node000001" title="Поставить отряд забега на арену заново — из durable&#45;состояния гильдии (полный HP, сохранённое построе..." alt="" coords="5,35,224,75"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив." alt="" coords="272,5,488,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,40,258,36,259,41,225,45"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#aa69f17b857f358b92bfeeb3a00bcefc3" title="Строковые id предметов → массив ItemData (null, если ничего не разрешилось)." alt="" coords="536,35,752,75"/>
-<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="224,54,272,55,488,55,522,54,522,60,488,60,272,60,224,59"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="488,35,523,39,522,44,488,40"/>
+<area shape="rect" id="Node000001" title="Поставить отряд забега на арену заново — из durable&#45;состояния гильдии (полный HP, сохранённое построе..." alt="" coords="5,41,224,81"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив." alt="" coords="272,12,488,52"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,47,258,43,259,48,225,52"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#aa69f17b857f358b92bfeeb3a00bcefc3" title="Строковые id предметов → массив ItemData (null, если ничего не разрешилось)." alt="" coords="536,69,752,109"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="225,64,522,80,522,86,224,70"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#abd070000227bd4574344e0e01c468ca6" title="Строковые id последствий → массив ConsequenceData (null, если ничего не разрешилось)." alt="" coords="536,5,752,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="488,27,522,26,523,31,488,32"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="473,49,539,64,537,69,472,55"/>
 </map>

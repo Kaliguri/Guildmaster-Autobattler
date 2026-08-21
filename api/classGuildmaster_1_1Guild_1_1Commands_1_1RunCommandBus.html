@@ -141,6 +141,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ab880f2805b7334d47e87387ebb2731" id="r_a6ab880f2805b7334d47e87387ebb2731"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html#a6ab880f2805b7334d47e87387ebb2731">ChooseNode</a> (string nodeId)</td></tr>
 <tr class="memdesc:a6ab880f2805b7334d47e87387ebb2731"><td class="mdescLeft">&#160;</td><td class="mdescRight">Войти в узел карты.  <br /></td></tr>
 <tr class="separator:a6ab880f2805b7334d47e87387ebb2731"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64a35ef9972920673a332cc7536c5ffa" id="r_a64a35ef9972920673a332cc7536c5ffa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html#a64a35ef9972920673a332cc7536c5ffa">InflictInjury</a> (int slotIndex, int rollSeed)</td></tr>
+<tr class="memdesc:a64a35ef9972920673a332cc7536c5ffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Положить последствие боя на «Сосуд» слота: ступень уточнит каскад, конкретную рану выберет ролл от <em>rollSeed</em> .  <br /></td></tr>
+<tr class="separator:a64a35ef9972920673a332cc7536c5ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ffb8b2d456e9a10ee20b5af5e63c013" id="r_a5ffb8b2d456e9a10ee20b5af5e63c013"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html#a5ffb8b2d456e9a10ee20b5af5e63c013">RequestSave</a> ()</td></tr>
 <tr class="memdesc:a5ffb8b2d456e9a10ee20b5af5e63c013"><td class="mdescLeft">&#160;</td><td class="mdescRight">Попросить владельца зафиксировать состояние на диск (точка автосейва).  <br /></td></tr>
 <tr class="separator:a5ffb8b2d456e9a10ee20b5af5e63c013"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -263,6 +266,39 @@ Events</h2></td></tr>
 <p>Достижимость проверяет применитель — по СВОЕЙ копии состояния, а не по той, что видел нажавший: у напарника карта могла отстать на снимок. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ab6732bfb2439b78bc09fd74c361e2b82">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
+
+</div>
+</div>
+<a id="a64a35ef9972920673a332cc7536c5ffa" name="a64a35ef9972920673a332cc7536c5ffa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64a35ef9972920673a332cc7536c5ffa">&#9670;&#160;</a></span>InflictInjury()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Guild.Commands.RunCommandBus.InflictInjury </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slotIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>rollSeed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Положить последствие боя на «Сосуд» слота: ступень уточнит каскад, конкретную рану выберет ролл от <em>rollSeed</em> . </p>
+<p>Зовётся по одному разу на каждого павшего в бою. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a9349745919db7f77106f86ced67e4a98">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
 
 </div>
 </div>

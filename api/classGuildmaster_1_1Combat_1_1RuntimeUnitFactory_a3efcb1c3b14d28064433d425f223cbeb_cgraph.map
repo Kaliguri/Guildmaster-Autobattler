@@ -1,0 +1,19 @@
+<map id="Guildmaster.Combat.RuntimeUnitFactory.Create" name="Guildmaster.Combat.RuntimeUnitFactory.Create">
+<area shape="rect" id="Node000001" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="5,123,220,163"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1EffectiveStats.html#a286b2033607a4e2cd4121ef74fe6f125" title="Собрать стат&#45;блок юнита поверх дефолтов конфига." alt="" coords="268,29,485,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,120,267,79,290,71,292,76,269,84,162,125"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1EffectSystem.html#aafdd26efd16e1f27b83bafcb7f970482" title="Проявить отложенное на одном юните." alt="" coords="278,93,475,133"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="220,128,264,123,265,128,221,133"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="533,186,753,211"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="220,151,520,183,519,188,220,157"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Combat_1_1EffectiveStats.html#a9137ce659a3f796b9854858dcc3e962d" title="С каким запасом здоровья юнит выходит на арену: MaxHP, срезанный долей StatType.StartHpPct." alt="" coords="268,208,485,248"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="176,160,302,201,300,206,174,165"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="328,30,325,20,333,10,350,5,377,3,407,5,424,13,422,18,406,11,377,8,351,10,336,15,330,21,333,28"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Stats.html#a2ba9f65756d1aaa68f725852d6bb0ac5" title="Проявить отложенные изменения: снятия, затем наложения." alt="" coords="545,93,742,133"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="476,111,531,111,531,116,476,116"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Stats.html#ae97b806719021d19ff582f3cc9aee131" title="Добавить группу модификаторов от source ." alt="" coords="801,61,999,101"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="742,98,787,93,788,98,742,104"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Combat_1_1Stats.html#a573ab919e615e636374c98fd43666be6" title="Удалить все модификаторы, добавленные от source ." alt="" coords="801,125,999,165"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="742,123,788,129,787,134,742,128"/>
+<area shape="poly" id="edge9_Node000008_Node000007" title=" " alt="" coords="485,213,519,210,520,215,486,219"/>
+</map>

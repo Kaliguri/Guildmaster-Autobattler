@@ -134,9 +134,6 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a8f98c130ef9f2ccee5f5dddc12e52fd4" id="r_a8f98c130ef9f2ccee5f5dddc12e52fd4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html">MapState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#a8f98c130ef9f2ccee5f5dddc12e52fd4">Map</a> = new <a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html">MapState</a>()</td></tr>
 <tr class="memdesc:a8f98c130ef9f2ccee5f5dddc12e52fd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Карта текущего акта.  <br /></td></tr>
 <tr class="separator:a8f98c130ef9f2ccee5f5dddc12e52fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af86fe0c497067ce59075da8fcd1b794e" id="r_af86fe0c497067ce59075da8fcd1b794e"><td class="memItemLeft" align="right" valign="top">int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#af86fe0c497067ce59075da8fcd1b794e">SlotOwner</a> = Array.Empty&lt;int&gt;()</td></tr>
-<tr class="memdesc:af86fe0c497067ce59075da8fcd1b794e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кооп-шов: <b>кто ведёт</b> каждый слот ростера — индекс игрока (соло — все нули).  <br /></td></tr>
-<tr class="separator:af86fe0c497067ce59075da8fcd1b794e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Durable-состояние забега (план 11 §3.1, вики «7» §4): единственный источник истины забега, всё по строковым content id. </p>
@@ -292,23 +289,6 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="af86fe0c497067ce59075da8fcd1b794e" name="af86fe0c497067ce59075da8fcd1b794e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af86fe0c497067ce59075da8fcd1b794e">&#9670;&#160;</a></span>SlotOwner</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int [] Guildmaster.Guild.RunState.SlotOwner = Array.Empty&lt;int&gt;()</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Кооп-шов: <b>кто ведёт</b> каждый слот ростера — индекс игрока (соло — все нули). </p>
-<p><b>Это управление, а не собственность.</b> Сосуды, казна, ростер, реликвии и предметы в коопе ОБЩИЕ; хост раздаёт не имущество, а кого кто ведёт, и раздача меняется в любой момент (HARD-правило ГДД, <code>50-modes-ux/coop/index</code>). Поэтому «владелец слота» — неверные слова, и поле не даёт никаких прав: гость правит любой слот общего отряда, просто через хоста. </p>
 
 </div>
 </div>
