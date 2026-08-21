@@ -58,12 +58,13 @@ namespace Guildmaster.Balance.Editor
             foreach (RelicData relic in relics)
             {
                 UnitClass role = Lineups.SlotRole(relic.CombatClass);
-                squadByRole.TryGetValue(role, out RelicData incumbent);
+                if (!squadByRole.TryGetValue(role, out RelicData incumbent))
+                    squadByRole.TryGetValue(StandInRole(role), out incumbent);
 
                 var challenger = new List<RelicData>(squad);
                 int at = incumbent != null ? challenger.IndexOf(incumbent) : -1;
                 if (at >= 0) challenger[at] = relic;
-                else challenger.Add(relic);   // роли нет в строю — кит просто входит в отряд
+                else challenger.Add(relic);   // замену найти не удалось — кит входит в отряд как есть
 
                 SwapResult r = RunSwap(config, classes, challenger, squad, lineup, cap);
                 rows.Add(new object[]
@@ -93,7 +94,10 @@ namespace Guildmaster.Balance.Editor
                 "означает, что с этим китом отряд крепче штатного, минус — слабее. У самого штатного бойца " +
                 "дельта нулевая по построению (он дерётся сам с собой). " +
                 "Оговорка: медиана считается вкладом в отряд из манекенов, поэтому роли, где кит один, " +
-                "попадают в состав без выбора.";
+                "попадают в состав без выбора. " +
+                "**Роли, которой в строю нет** (убийца), кит подвигает соседа по линии боя — фронтовой " +
+                "встаёт вместо Брузера. Сравнивать дельты можно только ВНУТРИ роли: хилер и дальник " +
+                "полезны отряду по-разному, и разница между ними — про ценность ролей, а не про силу китов.";
 
             string csv = ReportWriter.WriteCsv("squad_swap", headers, rows);
             string md = ReportWriter.WriteMarkdown("squad_swap", "SimBench — замена в живом отряде (4v4)",
@@ -101,6 +105,23 @@ namespace Guildmaster.Balance.Editor
             ReportWriter.WriteJson("squad_swap", "SimBench — замена в живом отряде (4v4)", headers, rows, notes);
             return (csv, md);
         }
+
+        /// <summary>
+        /// Кого подвинуть киту, чьей роли в строю нет: фронтовой встаёт вместо Брузера, тыловой — вместо
+        /// дальника.
+        /// </summary>
+        /// <remarks>
+        /// Без этого убийцы не мерились ВООБЩЕ. Штатный строй объявляет Танка, Брузера, дальника и
+        /// поддержку — слота убийцы в нём нет, кит дописывался в отряд пятым, а <c>SpawnTeam</c> пятого на
+        /// арену не выпускает: бой шёл отрядом против его точной копии и давал ровную нулевую дельту.
+        /// В отчёте это выглядело не как дыра, а как «замена ничего не меняет» — четыре кита подряд с
+        /// честным нулём (найдено 21.08.2026, тем же днём, что и немая роль целителя в <c>SlotRole</c>).
+        /// <para>Правило подстановки повторяет вытеснение из <see cref="Lineups"/>: место занимает тот, кто
+        /// стоит на той же линии боя, потому что заменять дальника убийцей значит менять сразу и роль, и
+        /// геометрию — дельта тогда меряла бы не кита.</para>
+        /// </remarks>
+        private static UnitClass StandInRole(UnitClass role)
+            => Lineups.IsFrontline(role) ? UnitClass.Bruiser : UnitClass.Ranged;
 
         private readonly struct SwapResult
         {
