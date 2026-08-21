@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Evasion
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.evasion
-  _polarity: 1
+  _polarity: 0
   _tags: 0
   _baseDuration: 4
-  _stacking: 1
+  _stacking: 3
   _maxStacks: 4
   _stacksPerApplication: 1
   _cleanseTier: 0

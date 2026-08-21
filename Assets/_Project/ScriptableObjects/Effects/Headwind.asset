@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Headwind
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.headwind
-  _polarity: 1
+  _polarity: 0
   _tags: 0
   _baseDuration: 4
   _stacking: 2

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WindwardenAura
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.windwarden_aura
-  _polarity: 0
+  _polarity: 2
   _tags: 0
   _baseDuration: -1
   _stacking: 0

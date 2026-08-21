@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Gust
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.gust
-  _polarity: 0
+  _polarity: 2
   _tags: 0
   _baseDuration: -1
   _stacking: 0
