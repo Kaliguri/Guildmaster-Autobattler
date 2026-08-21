@@ -1663,6 +1663,118 @@ MonoBehaviour:
     m_Key: effect.windwarden_aura.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 15060191446032384
+    m_Key: consequence.sprained_leg.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861504
+    m_Key: consequence.sprained_leg.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861505
+    m_Key: consequence.bruised_shoulder.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861506
+    m_Key: consequence.bruised_shoulder.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861507
+    m_Key: consequence.cracked_rib.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861508
+    m_Key: consequence.cracked_rib.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861509
+    m_Key: consequence.split_brow.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861510
+    m_Key: consequence.split_brow.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861511
+    m_Key: consequence.dented_armor.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861512
+    m_Key: consequence.dented_armor.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861513
+    m_Key: consequence.shaking_hands.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861514
+    m_Key: consequence.shaking_hands.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861515
+    m_Key: consequence.torn_tendon.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861516
+    m_Key: consequence.torn_tendon.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861517
+    m_Key: consequence.broken_arm.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861518
+    m_Key: consequence.broken_arm.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861519
+    m_Key: consequence.pierced_side.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861520
+    m_Key: consequence.pierced_side.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861521
+    m_Key: consequence.festering_wound.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861522
+    m_Key: consequence.festering_wound.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861523
+    m_Key: consequence.blinded_eye.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861524
+    m_Key: consequence.blinded_eye.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861525
+    m_Key: consequence.shattered_leg.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861526
+    m_Key: consequence.shattered_leg.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861527
+    m_Key: consequence.severed_arm.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861528
+    m_Key: consequence.severed_arm.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861529
+    m_Key: consequence.pierced_lung.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15060191571861530
+    m_Key: consequence.pierced_lung.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
