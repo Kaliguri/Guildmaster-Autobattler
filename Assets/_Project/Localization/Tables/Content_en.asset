@@ -824,6 +824,24 @@ MonoBehaviour:
       Evasion behind.
     m_Metadata:
       m_Items: []
+  - m_Id: 15003640123351040
+    m_Localized: Windwarden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15003640148516864
+    m_Localized: A wind mage who heals no one - he simply makes the blows land on
+      empty ground.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15004801001840640
+    m_Localized: Tailwind
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15004801085726720
+    m_Localized: While the wind mage lives, allies nearby walk under his watch -
+      each one ready to be pulled from a blow.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

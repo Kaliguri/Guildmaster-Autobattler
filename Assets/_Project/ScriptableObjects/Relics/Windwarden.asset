@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7cba09029dfbf4fb4a5fa3399a44f1, type: 3}
+  m_Name: Windwarden
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
+  _id: relic.windwarden
+  _combatClass: 4
+  _autoAttackDamageType: 22
+  _creatureType: 0
+  _attackType: 1
+  _resourceType: 1
+  _rangeBand: 3
+  _rangeAdjustPct: 0
+  _archetype: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
+  _outfit: {fileID: 11400000, guid: 924228f4836e68148ae3acf9cb94802c, type: 2}
+  _vfxTone: 5
+  _autoAttackShape: 0
+  _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
+  _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _attackRecoverySeconds: 0
+  _attackSwingTicks: 0
+  _chargeAttackWindupMult: 1
+  _hitDamageShares: []
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
+  _stats:
+  - Stat: 3
+    Op: 3
+    Value: 10
+  - Stat: 4
+    Op: 3
+    Value: 10
+  - Stat: 7
+    Op: 3
+    Value: 50
+  - Stat: 8
+    Op: 3
+    Value: 1.2
+  - Stat: 27
+    Op: 3
+    Value: 60
+  _grantedEffects:
+  - {fileID: 11400000, guid: 951cb3709ad077941b0cc35f46fd9d50, type: 2}
+  _abilities:
+  - _id: headwind
+    _effects:
+    - {fileID: 11400000, guid: 2021504263ae37b49b046ccd0398ac84, type: 2}
+    _selfEffects: []
+    _baseCooldown: 0
+    _resourceCost: 60
+    _targetMode: 3
+    _damageMultiplier: 0
+    _baseDamage: 0
+    _damageType: 0
+    _castRange: 0
+    _areaShape: 0
+    _areaRadius: 0
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 0
+    _castCondition: 0
+    _castConditionCount: 0
+    _castConditionRadius: 0
+    _castConditionHpPct: 0
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _maxTriggerUniques: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 0
+    _canMoveWhileCasting: 0
+    _castSource: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 0
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 0
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 0
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
+    _displaces: 0
+    _displaceDistance: 0
+    _visualSlot: 0
+    _infoTags: []
+  _aiPreset: {fileID: 0}
+  _ai:
+    _autoAttackTargeting: 0
+    _autoAttackMode: 0
+    _targetTag: 0
+    _retreat:
+      Enabled: 0
+      FleeAtHpPct: 0.25
+      ReturnAtHpPct: 0.5
+    _kite:
+      Enabled: 0
+      FleeDist: 1.5
+      FallbackDist: 3
+    _passiveTrigger: 0
+    _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags:
+  - {fileID: 11400000, guid: 4f21162e570d3ef4c804d0055c113bc3, type: 2}
+  _tags: []
+  _kitPower: 0
+  _dropRarity: 1
+  _runEffects: []
+  _altAiPresets: []
+  _canUseExtendedDeployment: 0
