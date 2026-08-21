@@ -49,6 +49,19 @@ namespace Guildmaster.Balance.Editor
         private const ulong SeedBase = 1UL;
 
         /// <summary>
+        /// Сколько РАЗНЫХ четвёрок гоняется в каждом режиме: вариант <c>k</c> берёт k-ю по счёту
+        /// реликвию каждой роли.
+        /// </summary>
+        /// <remarks>
+        /// Одна четвёрка отвечает на вопрос «каково этим четверым», а не «каково этим ролям», и разница
+        /// между режимами тогда может целиком объясняться китами, а не строем. Замер 21.08.2026 на одной
+        /// точке дал «отряд под квест проходит акт вдвое дешевле штатного» (BAL-029) — вывод, который по
+        /// одной четвёрке проверить нечем. Отсюда срез: в отчёте рядом со средним стоит разброс, и
+        /// видно, режим это или конкретный кит.
+        /// </remarks>
+        private const int Variants = 4;
+
+        /// <summary>
         /// Лист ран одного бойца — тонкая обёртка над ИГРОВЫМ каскадом <see cref="InjuryCascade"/>.
         /// </summary>
         /// <remarks>
@@ -159,6 +172,17 @@ namespace Guildmaster.Balance.Editor
                 DeathsByIndex[index] += deaths;
                 BattlesByIndex[index]++;
             }
+
+            /// <summary>Влить в себя покадровые счётчики другого итога (склейка вариантов состава).</summary>
+            public void AddByIndex(ModeTally other)
+            {
+                for (int i = 0; i < other.DeathsByIndex.Count; i++)
+                {
+                    while (DeathsByIndex.Count <= i) { DeathsByIndex.Add(0); BattlesByIndex.Add(0); }
+                    DeathsByIndex[i]  += other.DeathsByIndex[i];
+                    BattlesByIndex[i] += other.BattlesByIndex[i];
+                }
+            }
         }
 
         public static (string csv, string md) Run()
@@ -185,30 +209,40 @@ namespace Guildmaster.Balance.Editor
                 ? act.ToGenConfig()
                 : new MapGenConfig().Validated();
 
-            var tallies = new Dictionary<string, ModeTally>();
+            // Считается ТОЛЬКО по вариантам; строка режима собирается сложением при отчёте. Прогонять
+            // те же бои второй раз ради агрегата — двойная цена за число, которое и так выводится.
+            var byVariant = new Dictionary<string, ModeTally>();
             var heroesByMode = new Dictionary<string, RelicData[]>();
             List<RelicData> relics = BalanceAssets.LoadRelics();
             var thinRoles = new List<string>();
 
             foreach (Mode m in Modes)
-            {
-                tallies[m.Key] = new ModeTally();
-                heroesByMode[m.Key] = PickHeroes(m.Lineup, relics, thinRoles);
-            }
+                for (int v = 0; v < Variants; v++)
+                {
+                    byVariant[VariantKey(m.Key, v)] = new ModeTally();
+                    heroesByMode[VariantKey(m.Key, v)] = PickHeroes(m.Lineup, relics, thinRoles, v);
+                }
 
             for (int r = 0; r < Routes; r++)
             {
-                // Маршрут один и тот же для всех трёх режимов — иначе сравнивались бы разные акты,
-                // а не разные отряды.
+                // Маршрут один и тот же для всех режимов и вариантов — иначе сравнивались бы разные
+                // акты, а не разные отряды.
                 List<MapNodeType> route = BuildRoute(mapConfig, SeedBase + (ulong)r);
 
                 foreach (Mode mode in Modes)
-                    WalkRoute(config, classes, enemiesById, pools, cap, mode, route,
-                        tallies[mode.Key], (ulong)r, heroesByMode[mode.Key]);
+                    for (int v = 0; v < Variants; v++)
+                    {
+                        string key = VariantKey(mode.Key, v);
+                        WalkRoute(config, classes, enemiesById, pools, cap, mode, route,
+                            byVariant[key], (ulong)r, heroesByMode[key]);
+                    }
             }
 
-            return WriteReports(tallies, pools, missing, thinRoles, heroesByMode);
+            return WriteReports(byVariant, pools, missing, thinRoles, heroesByMode);
         }
+
+        /// <summary>Ключ «режим + номер варианта состава».</summary>
+        private static string VariantKey(string modeKey, int variant) => modeKey + "#" + variant;
 
         // --- Маршрут ---
 
@@ -367,23 +401,32 @@ namespace Guildmaster.Balance.Editor
         /// закрывается манекеном по-прежнему — и такие роли перечисляются в отчёте, потому что молчаливый
         /// манекен в строю снова сделал бы замер ложным.</para>
         /// </remarks>
-        private static RelicData[] PickHeroes(Slot[] lineup, List<RelicData> relics, List<string> thinRoles)
+        private static RelicData[] PickHeroes(Slot[] lineup, List<RelicData> relics, List<string> thinRoles,
+                                              int variant)
         {
             var picked = new List<RelicData>(lineup.Length);
             var used = new HashSet<string>();
 
             for (int s = 0; s < lineup.Length; s++)
             {
-                RelicData found = null;
+                // Сперва ВСЕ киты этой роли, потом выбор со сдвигом: вариант 0 берёт первого и
+                // повторяет прежнее поведение бенча, вариант k — k-го по кругу.
+                var candidates = new List<RelicData>();
                 for (int r = 0; r < relics.Count; r++)
                 {
                     RelicData relic = relics[r];
                     if (relic == null || string.IsNullOrEmpty(relic.Id)) continue;
                     if (relic.Id == ContentIds.BaseRelic) continue;
-                    if (used.Contains(relic.Id)) continue;
                     if (Lineups.SlotRole(relic.CombatClass) != lineup[s].Role) continue;
+                    candidates.Add(relic);
+                }
 
-                    found = relic;
+                RelicData found = null;
+                for (int step = 0; step < candidates.Count; step++)
+                {
+                    RelicData c = candidates[(variant + step) % candidates.Count];
+                    if (used.Contains(c.Id)) continue;
+                    found = c;
                     break;
                 }
 
@@ -461,10 +504,13 @@ namespace Guildmaster.Balance.Editor
         /// <c>run_curve</c> — как смертность идёт по ходу маршрута. Возвращает пути (контракт шага круга:
         /// бенч пишет файлы сам, наружу отдаёт, куда написал).
         /// </summary>
-        private static (string csv, string md) WriteReports(Dictionary<string, ModeTally> tallies,
+        private static (string csv, string md) WriteReports(Dictionary<string, ModeTally> byVariant,
             Dictionary<EncounterTier, List<EncounterData>> pools, List<string> missing,
             List<string> thinRoles, Dictionary<string, RelicData[]> heroesByMode)
         {
+            var tallies = new Dictionary<string, ModeTally>();
+            foreach (Mode m in Modes) tallies[m.Key] = Merge(byVariant, m.Key);
+
             string[] headers =
             {
                 "Отряд", "Боёв", "Прошёл%", "СмертейНаБой", "ЦенаБоя%HP",
@@ -485,7 +531,7 @@ namespace Guildmaster.Balance.Editor
                     t.Deaths / (double)t.Battles,
                     t.HpCostSum * 100.0 / t.Battles,
                     t.Bruises, t.Wounds, t.Maims, t.Retired,
-                    t.RoutesIntact * 100.0 / Routes,
+                    t.RoutesIntact * 100.0 / (Routes * Variants),
                     t.FirstOverflowRoutes > 0 ? (object)(t.FirstOverflowSum / (double)t.FirstOverflowRoutes) : "—",
                 });
             }
@@ -496,8 +542,88 @@ namespace Guildmaster.Balance.Editor
                 headers, rows, notes);
             ReportWriter.WriteJson("run_act", "Забег по акту: сколько ран стоит проход", headers, rows, notes);
 
+            WriteRosterSpread(byVariant, heroesByMode);
             WriteCurve(tallies);
             return (csv, md);
+        }
+
+        /// <summary>Сложить варианты одного режима в общую строку отчёта.</summary>
+        private static ModeTally Merge(Dictionary<string, ModeTally> byVariant, string modeKey)
+        {
+            var sum = new ModeTally();
+            for (int v = 0; v < Variants; v++)
+            {
+                if (!byVariant.TryGetValue(VariantKey(modeKey, v), out ModeTally t)) continue;
+
+                sum.Battles   += t.Battles;
+                sum.Cleared   += t.Cleared;
+                sum.Deaths    += t.Deaths;
+                sum.HpCostSum += t.HpCostSum;
+                sum.TimedOut  += t.TimedOut;
+                sum.Bruises   += t.Bruises;
+                sum.Wounds    += t.Wounds;
+                sum.Maims     += t.Maims;
+                sum.Retired   += t.Retired;
+                sum.RoutesIntact        += t.RoutesIntact;
+                sum.FirstOverflowSum    += t.FirstOverflowSum;
+                sum.FirstOverflowRoutes += t.FirstOverflowRoutes;
+
+                sum.AddByIndex(t);
+            }
+            return sum;
+        }
+
+        /// <summary>
+        /// Срез по ростеру: та же тройка режимов, но каждым составом порознь.
+        /// </summary>
+        /// <remarks>
+        /// Отвечает на вопрос, который средним не задать: разница между режимами — свойство СТРОЯ или
+        /// конкретных китов? Если варианты внутри режима расходятся сильнее, чем режимы между собой,
+        /// сравнивать режимы рано.
+        /// </remarks>
+        private static void WriteRosterSpread(Dictionary<string, ModeTally> byVariant,
+            Dictionary<string, RelicData[]> heroesByMode)
+        {
+            string[] headers = { "Отряд", "Состав", "Кто", "Боёв", "Прошёл%", "СмертейНаБой", "ЦенаБоя%HP" };
+            var rows = new List<IReadOnlyList<object>>();
+
+            foreach (Mode m in Modes)
+                for (int v = 0; v < Variants; v++)
+                {
+                    string key = VariantKey(m.Key, v);
+                    if (!byVariant.TryGetValue(key, out ModeTally t) || t.Battles == 0) continue;
+
+                    var names = new List<string>();
+                    if (heroesByMode.TryGetValue(key, out RelicData[] heroes) && heroes != null)
+                        foreach (RelicData h in heroes) names.Add(h != null ? h.name : "-");
+
+                    rows.Add(new object[]
+                    {
+                        m.Title,
+                        v + 1,
+                        string.Join(", ", names),
+                        t.Battles,
+                        t.Cleared * 100.0 / t.Battles,
+                        t.Deaths / (double)t.Battles,
+                        t.HpCostSum * 100.0 / t.Battles,
+                    });
+                }
+
+            if (rows.Count == 0) return;
+
+            const string notes =
+                "**Зачем эта таблица.** Строка режима в главном отчёте - среднее по нескольким составам, " +
+                "и одно среднее не отличает «этот СТРОЙ тяжелее» от «этому отряду достались киты получше». " +
+                "Здесь каждый состав стоит отдельно.\n\n" +
+                "**Как читать.** Смотреть надо на РАЗБРОС внутри режима. Если варианты одного режима " +
+                "расходятся между собой сильнее, чем режимы расходятся в среднем, - сравнивать режимы " +
+                "рано: результат решают конкретные киты, а не строй.\n\n" +
+                "Составы собираются по кругу: вариант k берёт k-ю по счёту реликвию каждой роли. Роль с " +
+                "малым числом китов от этого страдает сильнее всех - там варианты повторяются.";
+
+            ReportWriter.WriteCsv("run_roster", headers, rows);
+            ReportWriter.WriteMarkdown("run_roster", "Забег: срез по ростеру", headers, rows, notes);
+            ReportWriter.WriteJson("run_roster", "Забег: срез по ростеру", headers, rows, notes);
         }
 
         /// <summary>Кривая смертности по позиции боя в маршруте — растёт акт или стоит на месте.</summary>
@@ -547,7 +673,8 @@ namespace Guildmaster.Balance.Editor
                           "не упрощение стенда) — истощение держат **раны за смерти**, " +
                           "`gdd/30-run-meta/injuries-mettle`.");
             sb.AppendLine();
-            sb.AppendLine($"Маршрутов: **{Routes}**, каждый пройден тремя отрядами. Слоты ран — " +
+            sb.AppendLine($"Маршрутов: **{Routes}**, каждый пройден тремя строями по **{Variants}** " +
+                          "состава в каждом (срез по ростеру — отдельная таблица `run_roster`). Слоты ран — " +
                           $"**{InjuryCascade.BruiseSlots}** мелких, **{InjuryCascade.WoundSlots}** средних, " +
                           $"**{InjuryCascade.MaimingSlots}** тяжёлая; " +
                           "переполнение поднимает ступень, переполнение тяжёлой уводит бойца из забега.");
@@ -569,10 +696,16 @@ namespace Guildmaster.Balance.Editor
 
             foreach (Mode m in Modes)
             {
-                RelicData[] hs = heroesByMode[m.Key];
-                var names = new List<string>(hs.Length);
-                for (int i = 0; i < hs.Length; i++) names.Add(hs[i].name);
-                sb.AppendLine($"- **{m.Title}:** {(names.Count > 0 ? string.Join(", ", names) : "—")}");
+                sb.AppendLine($"- **{m.Title}:**");
+                for (int v = 0; v < Variants; v++)
+                {
+                    if (!heroesByMode.TryGetValue(VariantKey(m.Key, v), out RelicData[] hs) || hs == null)
+                        continue;
+
+                    var names = new List<string>(hs.Length);
+                    for (int i = 0; i < hs.Length; i++) names.Add(hs[i] != null ? hs[i].name : "—");
+                    sb.AppendLine($"  - состав {v + 1}: {(names.Count > 0 ? string.Join(", ", names) : "—")}");
+                }
             }
             sb.AppendLine();
 
@@ -585,10 +718,10 @@ namespace Guildmaster.Balance.Editor
 
             sb.AppendLine("**Слепые пятна.** Раны не влияют на бой — их эффектов в движке нет, так что " +
                           "настоящий акт будет тяжелее замеренного. «?»-узлы считаются небоевыми, а в игре " +
-                          "бой выпадает из них примерно в пятой части случаев. Состав фиксированный (по " +
-                          "первой реликвии на роль) — это одна точка, а не срез по ростеру. Кто именно " +
-                          "лёг, бенч не знает: раны раздаются по кругу, начиная с тех, у кого свободны " +
-                          "мелкие слоты.");
+                          "бой выпадает из них примерно в пятой части случаев. Кто именно лёг, бенч не " +
+                          "знает: раны раздаются по кругу, начиная с тех, у кого свободны мелкие слоты. " +
+                          "Строка режима — среднее по составам; чтобы понять, строй это или киты, " +
+                          "смотреть надо разброс в `run_roster`.");
             sb.AppendLine();
 
             if (missing.Count > 0)
