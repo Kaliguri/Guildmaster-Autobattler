@@ -539,10 +539,6 @@ MonoBehaviour:
     m_Key: ui.profile.hub.customize.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 15001494208372740
-    m_Key: ui.profile.hub.hint
-    m_Metadata:
-      m_Items: []
   - m_Id: 15001494208372741
     m_Key: ui.profile.pick
     m_Metadata:
@@ -585,10 +581,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 15001494208372751
     m_Key: ui.profile.stat.unlocks
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15031811661094912
-    m_Key: ui.newgame.hint
     m_Metadata:
       m_Items: []
   m_Metadata:

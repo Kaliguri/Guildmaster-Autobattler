@@ -363,10 +363,6 @@ MonoBehaviour:
     m_Localized: 'How others see you: name, colour, cursor.'
     m_Metadata:
       m_Items: []
-  - m_Id: 15001494208372740
-    m_Localized: Click to choose
-    m_Metadata:
-      m_Items: []
   - m_Id: 15001494208372741
     m_Localized: Select
     m_Metadata:
@@ -409,10 +405,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 15001494208372751
     m_Localized: Unlocks
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15031811661094912
-    m_Localized: Click to begin
     m_Metadata:
       m_Items: []
   references:

@@ -18,6 +18,10 @@ namespace Guildmaster.UI
     /// Рамка вокруг них отняла бы половину кадра, и крупные двери превратились бы в марки; доли
     /// карточек считались бы от панели, а не от экрана.</para>
     ///
+    /// <para><b>Подсказки «нажмите, чтобы выбрать» здесь нет</b> (снята по слову Макса 21.08.2026:
+    /// «мы игроков за дурочков не держим»). Ряд крупных дверей и так читается как выбор — подпись
+    /// объясняла бы жест, который экран показывает собой.</para>
+    ///
     /// <para><b>Карточка — это кнопка</b> (<see cref="Components.PlateButton"/>): фаска, состояния
     /// наведения и фокус клавиатуры приходят от контрола, а не пишутся заново.</para>
     /// </remarks>
@@ -58,7 +62,6 @@ namespace Guildmaster.UI
         public static VisualElement Build(
             string name,
             string title,
-            string hint,
             IReadOnlyList<Card> cards,
             string backText,
             Action onBack,
@@ -84,15 +87,6 @@ namespace Guildmaster.UI
             row.AddToClassList(cards.Count >= 3 ? "gm-mode-cards--many" : "gm-mode-cards--pair");
             for (int i = 0; i < cards.Count; i++) row.Add(BuildCard(cards[i]));
             body.Add(row);
-
-            if (!string.IsNullOrEmpty(hint))
-            {
-                var hintLabel = new Label(hint);
-                hintLabel.AddToClassList("gm-text-caption");
-                hintLabel.AddToClassList("gm-text--muted");
-                hintLabel.AddToClassList("gm-mode-hint");
-                body.Add(hintLabel);
-            }
 
             var footer = new VisualElement();
             footer.AddToClassList("gm-mode-screen__footer");

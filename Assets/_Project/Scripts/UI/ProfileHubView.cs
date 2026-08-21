@@ -47,7 +47,6 @@ namespace Guildmaster.UI
             return ModeChoiceView.Build(
                 "profile-hub",
                 L("ui.profile.hub.title", "Профиль"),
-                L("ui.profile.hub.hint", "Нажмите, чтобы выбрать"),
                 cards,
                 L("ui.profile.back", "Назад"),
                 onBack);

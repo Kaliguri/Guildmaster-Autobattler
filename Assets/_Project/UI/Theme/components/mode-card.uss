@@ -161,12 +161,3 @@
     -unity-text-align: middle-center;
     white-space: normal;
 }
-
-/* Подсказка действия внизу экрана — приём рефа: он не подписывает каждую карточку «нажми», а
-   говорит это один раз для всего ряда. */
-.gm-mode-hint {
-    -unity-text-align: middle-center;
-    letter-spacing: 2px;
-    --gm-text-case: upper;
-    margin-top: var(--gm-space-3);
-}

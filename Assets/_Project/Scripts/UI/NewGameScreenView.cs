@@ -91,7 +91,6 @@ namespace Guildmaster.UI
             return ModeChoiceView.Build(
                 "newgame",
                 L("ui.newgame.title", "Создать игру"),
-                L("ui.newgame.hint", "Нажмите, чтобы начать"),
                 cards,
                 L("ui.newgame.back", "Назад"),
                 onBack,
