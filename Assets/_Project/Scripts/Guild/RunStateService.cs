@@ -77,7 +77,6 @@ namespace Guildmaster.Guild
                 Gold          = _config.StartGold,
                 RelicCapacity = _config.RelicCapacityBase,
                 Guild         = guild,
-                SlotOwner     = new int[guild.Length], // соло: все 0
             };
             Committed?.Invoke(Current);
             return Current;
