@@ -44,7 +44,7 @@ namespace Guildmaster.Game.Services
         public IReadOnlyList<ProfileSummary> Guilds   => _guilds;
 
         public ProfileSummary ActiveProfile => _activeProfile != null
-            ? new ProfileSummary(_activeProfile.Id, _activeProfile.Name)
+            ? new ProfileSummary(_activeProfile.Id, _activeProfile.Name, StatsOf(_activeProfile))
             : default;
 
         public ProfileSummary ActiveGuild { get; private set; }
@@ -117,7 +117,7 @@ namespace Guildmaster.Game.Services
             if (_guilds.Count == 0) CreateGuild("Гильдия 1");
 
             Changed?.Invoke();
-            return new ProfileSummary(profile.Id, profile.Name);
+            return new ProfileSummary(profile.Id, profile.Name, StatsOf(profile));
         }
 
         public bool SaveIdentity(in ProfileIdentity identity)
@@ -256,6 +256,75 @@ namespace Guildmaster.Game.Services
             return true;
         }
 
+        /// <summary>
+        /// Прибавить наигранное и отметить дату. Пишем на диск не чаще раза в минуту.
+        /// </summary>
+        /// <remarks>
+        /// Секунды копятся в самом состоянии профиля (оно в памяти), а файл трогается редко: писать
+        /// сейв каждую секунду ради счётчика значит устраивать дисковую активность на ровном месте и
+        /// ловить порчу файла на каждом падении. Всё несохранённое теряется только при аварийном
+        /// завершении, и цена этого — минута наигранного.
+        /// </remarks>
+        public void AddPlayedTime(long seconds)
+        {
+            if (_activeProfile == null || seconds <= 0) return;
+
+            _activeProfile.PlayedSeconds += seconds;
+            _activeProfile.LastPlayedUtc = DateTime.UtcNow.ToString("O");
+
+            _unsavedPlaySeconds += seconds;
+            if (_unsavedPlaySeconds < PlayTimeFlushSeconds) return;
+
+            _unsavedPlaySeconds = 0;
+            _save.Save(ProfileKey(_activeProfile.Id), _activeProfile);
+        }
+
+        /// <summary>Отметить завершённый забег и обновить лучший результат.</summary>
+        public void RecordRunFinished(bool victory, int nodesPassed)
+        {
+            if (_activeProfile == null) return;
+
+            _activeProfile.RunsFinished++;
+            if (victory) _activeProfile.RunsWon++;
+            if (nodesPassed > _activeProfile.BestRunNodes) _activeProfile.BestRunNodes = nodesPassed;
+
+            // Итог забега пишем сразу: это событие редкое и дорогое для игрока — потерять его
+            // из-за отложенной записи значит обесценить час игры.
+            _activeProfile.LastPlayedUtc = DateTime.UtcNow.ToString("O");
+            _save.Save(ProfileKey(_activeProfile.Id), _activeProfile);
+            Changed?.Invoke();
+        }
+
+        /// <summary>
+        /// Собрать статистику профиля. Дома и открытия СЧИТАЮТСЯ, а не хранятся: у этих чисел уже
+        /// есть владелец, и второй счётчик разошёлся бы с ним при первом удалении дома.
+        /// </summary>
+        private ProfileStats StatsOf(ProfileState profile)
+        {
+            if (profile == null) return default;
+
+            int guilds = 0;
+            foreach (string _ in _save.List(GuildsRoot(profile.Id))) guilds++;
+
+            int unlocks = (profile.UnlockedPregenIds?.Count ?? 0)
+                        + (profile.UnlockedFateIds?.Count ?? 0)
+                        + (profile.UnlockedCaptainIds?.Count ?? 0)
+                        + (profile.UnlockedDevNoteIds?.Count ?? 0);
+
+            DateTime played = default;
+            if (!string.IsNullOrEmpty(profile.LastPlayedUtc))
+                DateTime.TryParse(profile.LastPlayedUtc, System.Globalization.CultureInfo.InvariantCulture,
+                                  System.Globalization.DateTimeStyles.RoundtripKind, out played);
+
+            return new ProfileStats(profile.PlayedSeconds, played, guilds,
+                                    profile.RunsFinished, profile.RunsWon, profile.BestRunNodes, unlocks);
+        }
+
+        /// <summary>Сколько наигранного копим в памяти, прежде чем тронуть файл.</summary>
+        private const long PlayTimeFlushSeconds = 60;
+
+        private long _unsavedPlaySeconds;
+
         // ── Внутреннее ───────────────────────────────────────────────────────
 
         private void RefreshProfiles()
@@ -264,7 +333,8 @@ namespace Guildmaster.Game.Services
             foreach (string id in _save.List(ProfilesRoot))
             {
                 SaveLoadResult<ProfileState> loaded = _save.TryLoad<ProfileState>(ProfileKey(id));
-                if (loaded.IsOk) _profiles.Add(new ProfileSummary(loaded.Value.Id, loaded.Value.Name));
+                if (loaded.IsOk) _profiles.Add(new ProfileSummary(loaded.Value.Id, loaded.Value.Name,
+                                                                  StatsOf(loaded.Value)));
             }
         }
 

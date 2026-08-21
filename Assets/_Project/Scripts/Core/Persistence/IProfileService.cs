@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Guildmaster.Core.Persistence
@@ -9,10 +9,59 @@ namespace Guildmaster.Core.Persistence
         public string Id   { get; }
         public string Name { get; }
 
-        public ProfileSummary(string id, string name)
+        /// <summary>Чем этот профиль жил: наиграно, забеги, открытия. Для гильдий — пустая.</summary>
+        public ProfileStats Stats { get; }
+
+        public ProfileSummary(string id, string name, ProfileStats stats = default)
         {
-            Id   = id;
-            Name = name;
+            Id    = id;
+            Name  = name;
+            Stats = stats;
+        }
+    }
+
+    /// <summary>
+    /// Статистика профиля — то, что экран выбора показывает справа (заказ Макса 21.08.2026).
+    /// </summary>
+    /// <remarks>
+    /// <b>Половина полей НЕ хранится, а считается.</b> Число гильдий и открытий выводится из уже
+    /// существующих данных профиля; хранить их вторым числом значило бы завести факт с двумя
+    /// владельцами, который разойдётся при первом же удалении дома мимо счётчика. Хранится только
+    /// то, чего иначе не узнать: наигранное время и итоги забегов.
+    /// </remarks>
+    public readonly struct ProfileStats
+    {
+        /// <summary>Наиграно всего, в секундах.</summary>
+        public long PlayedSeconds { get; }
+
+        /// <summary>Когда играли в последний раз (UTC). <c>default</c> — ещё ни разу.</summary>
+        public System.DateTime LastPlayedUtc { get; }
+
+        /// <summary>Сколько домов заведено в этом профиле.</summary>
+        public int Guilds { get; }
+
+        /// <summary>Завершённых забегов (победа или поражение, брошенные не в счёт).</summary>
+        public int RunsFinished { get; }
+
+        /// <summary>Из них выигранных.</summary>
+        public int RunsWon { get; }
+
+        /// <summary>Лучший забег: наибольшее число пройденных узлов.</summary>
+        public int BestRunNodes { get; }
+
+        /// <summary>Сколько всего открыто: прегены, Судьбы, Капитаны, записки мастерской.</summary>
+        public int Unlocks { get; }
+
+        public ProfileStats(long playedSeconds, System.DateTime lastPlayedUtc, int guilds,
+                            int runsFinished, int runsWon, int bestRunNodes, int unlocks)
+        {
+            PlayedSeconds = playedSeconds;
+            LastPlayedUtc = lastPlayedUtc;
+            Guilds        = guilds;
+            RunsFinished  = runsFinished;
+            RunsWon       = runsWon;
+            BestRunNodes  = bestRunNodes;
+            Unlocks       = unlocks;
         }
     }
 
@@ -107,6 +156,21 @@ namespace Guildmaster.Core.Persistence
 
         /// <summary>Записать идентичность в активный профиль. false — профиля нет.</summary>
         bool SaveIdentity(in ProfileIdentity identity);
+
+        /// <summary>
+        /// Прибавить активному профилю наигранное время и отметить дату. Пишет на диск не чаще
+        /// раза в минуту — остальное копится в памяти.
+        /// </summary>
+        void AddPlayedTime(long seconds);
+
+        /// <summary>
+        /// Отметить ЗАВЕРШЁННЫЙ забег: победа или поражение, и сколько узлов пройдено.
+        /// </summary>
+        /// <remarks>
+        /// Брошенный на середине забег сюда не приходит: «завершено» и «начато» — разные числа, и
+        /// смешивать их значит показывать игроку статистику, которой он не поверит.
+        /// </remarks>
+        void RecordRunFinished(bool victory, int nodesPassed);
 
         /// <summary>Переключиться на профиль. false = профиля нет.</summary>
         bool SelectProfile(string profileId);

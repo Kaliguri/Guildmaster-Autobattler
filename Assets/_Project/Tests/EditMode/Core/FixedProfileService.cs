@@ -50,6 +50,12 @@ namespace Guildmaster.Tests.EditMode
             return true;
         }
 
+        /// <summary>Заглушка: статистика профиля в этих тестах не проверяется.</summary>
+        public void AddPlayedTime(long seconds) { }
+
+        /// <summary>Заглушка: итоги забегов в этих тестах не проверяются.</summary>
+        public void RecordRunFinished(bool victory, int nodesPassed) { }
+
         public bool SelectProfile(string profileId) => false;
         public bool DeleteProfile(string profileId) => false;
         public ProfileSummary? CreateGuild(string name) => null;
