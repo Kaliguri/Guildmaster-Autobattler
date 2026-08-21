@@ -86,12 +86,16 @@
       Чистая логика, гоняется быстрым прогоном.
 - [x] Тесты каскада — `InjuryCascadeTests`, 10 штук, все прошли вне редактора.
 
-### Фаза 2 — раны в бою
+### Фаза 2 — раны в бою — СДЕЛАНА
 
-- [ ] `EffectiveStats.Build` принимает раны и применяет их слоем **после предметов**.
-- [ ] `RuntimeUnitFactory.Create` прокидывает раны Сосуда.
-- [ ] `StartHp` читается при сборке юнита (стартовый запас ниже максимума).
-- [ ] Тест: боец с раной входит в бой с изменённым статом.
+- [x] `EffectiveStats.Build` принимает последствия и кладёт их слоем **после предметов**.
+- [x] `RuntimeUnitFactory.Create` прокидывает их; путь целиком —
+      `RunState.InjuryIds` → `GuildRoster.ResolveConsequences` → `PlayerSlot.Consequences` →
+      `PlayerSpawn` → фабрика. `WorldBodyBuilder` (тела двора) читает тот же `PlayerSlot`.
+- [x] `StartHpPct` читается при сборке — `EffectiveStats.StartingHp(stats)`, один владелец формулы
+      на боевую фабрику и строителя тел мира. Тело МИРА стоит целым: доля срезается на входе в бой.
+- [x] Тесты — `InjuriesInBattleTests` (8), плюс задетые `RuntimeUnitFactoryTests`,
+      `WorldBodyBuilderTests`, `GuildRosterTests`. Все зелёные в теневом (25 тестов).
 
 ### Фаза 3 — выдача и истечение
 

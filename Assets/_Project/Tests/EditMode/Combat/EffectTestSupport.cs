@@ -189,6 +189,27 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
     }
 
+    /// <summary>Билдер <see cref="ConsequenceData"/> для тестов травм и закалки (поля через рефлексию).</summary>
+    internal static class TestConsequence
+    {
+        public static ConsequenceData Make(
+            InjuryGrade grade = InjuryGrade.Bruise,
+            StatModifier[] mods = null,
+            ConsequencePolarity polarity = ConsequencePolarity.Injury,
+            int expiresAfterNodes = 0,
+            int healCostGold = 0)
+        {
+            var c = ScriptableObject.CreateInstance<ConsequenceData>();
+            const BindingFlags F = BindingFlags.Instance | BindingFlags.NonPublic;
+            typeof(ConsequenceData).GetField("_grade", F).SetValue(c, grade);
+            typeof(ConsequenceData).GetField("_polarity", F).SetValue(c, polarity);
+            typeof(ConsequenceData).GetField("_mods", F).SetValue(c, mods ?? Array.Empty<StatModifier>());
+            typeof(ConsequenceData).GetField("_expiresAfterNodes", F).SetValue(c, expiresAfterNodes);
+            typeof(ConsequenceData).GetField("_healCostGold", F).SetValue(c, healCostGold);
+            return c;
+        }
+    }
+
     /// <summary>
     /// Билдер <see cref="AnimationArchetypeData"/> для тестов windup: собирает Attack-<see cref="AnimationClip"/> с
     /// заданным числом кадров (длина = frameCount/fps) и маркером контакта на hitFrame — сим выводит

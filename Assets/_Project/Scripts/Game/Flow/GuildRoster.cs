@@ -49,7 +49,9 @@ namespace Guildmaster.Game.Flow
                 VesselData vessel = null;
                 if (!string.IsNullOrEmpty(rs.VesselId)) content.TryGet(rs.VesselId, out vessel);
 
-                slots.Add(new PlayerSlot(relic, vessel, rs.SavedPosition, ResolveItems(rs.VesselItemIds, content)));
+                slots.Add(new PlayerSlot(relic, vessel, rs.SavedPosition,
+                                         ResolveItems(rs.VesselItemIds, content),
+                                         ResolveConsequences(rs.InjuryIds, content)));
             }
             return slots.ToArray();
         }
@@ -63,6 +65,26 @@ namespace Guildmaster.Game.Flow
             foreach (string id in ids)
                 if (!string.IsNullOrEmpty(id) && content.TryGet(id, out ItemData item)) items.Add(item);
             return items.Count == 0 ? null : items.ToArray();
+        }
+
+        /// <summary>
+        /// Строковые id последствий → массив <see cref="ConsequenceData"/> (null, если ничего не
+        /// разрешилось). Ненайденный id кричит в лог: молча потерянная травма — это боец, вошедший в
+        /// бой здоровым после того, как игрок за него заплатил слотом.
+        /// </summary>
+        public static ConsequenceData[] ResolveConsequences(IReadOnlyList<string> ids, IContentDatabase content)
+        {
+            if (ids == null || ids.Count == 0 || content == null) return null;
+
+            var list = new List<ConsequenceData>(ids.Count);
+            foreach (string id in ids)
+            {
+                if (string.IsNullOrEmpty(id)) continue;
+                if (content.TryGet(id, out ConsequenceData consequence)) list.Add(consequence);
+                else Debug.LogWarning($"[GuildRoster] - последствие '{id}' не найдено в контент-БД → "
+                                      + "боец выйдет в бой без него");
+            }
+            return list.Count == 0 ? null : list.ToArray();
         }
     }
 }

@@ -22,18 +22,24 @@ namespace Guildmaster.Combat
         /// надо подавать, иначе они разойдутся с боем.
         /// </summary>
         public static Stats Build(UnitData data, StatsConfig config, ClassBalanceConfig classConfig)
-            => Build(data, vessel: null, items: null, config, classConfig);
+            => Build(data, vessel: null, items: null, consequences: null, config, classConfig);
 
         /// <summary>
-        /// Тот же каскад плюс два слоя, которые есть у собранного игроком кита: Судьба сосуда и
-        /// статовые моды надетых предметов (включая баннеры команды).
+        /// Тот же каскад плюс три слоя, которые есть у собранного игроком кита: Судьба сосуда,
+        /// статовые моды надетых предметов (включая баннеры команды) и последствия боёв — травмы и
+        /// закалки, накопленные «Сосудом» за забег.
         /// </summary>
         /// <remarks>
         /// Порядок групп значим и повторяет боевую сборку: класс и вид ложатся первыми, затем персона,
-        /// затем Судьба, затем предметы. Перестановка меняет результат — <c>Override</c> побеждает
-        /// последний, а <c>PercentMult</c> множит уже накопленное.
+        /// затем Судьба, затем предметы, и последними — последствия. Перестановка меняет результат:
+        /// <c>Override</c> побеждает последний, а <c>PercentMult</c> множит уже накопленное.
+        /// <para>Последствия идут ПОСЛЕДНИМИ намеренно. Рана обещает «−30% скорости» от того, чем боец
+        /// стал со всем своим снаряжением, а не от голой базы: положи её раньше предметов — и сапоги
+        /// скорости отыгрывали бы травму сильнее, чем показано в карточке. Слой последний ещё и потому,
+        /// что он единственный, который снимают посреди забега.</para>
         /// </remarks>
         public static Stats Build(UnitData data, VesselData vessel, IReadOnlyList<ItemData> items,
+                                  IReadOnlyList<ConsequenceData> consequences,
                                   StatsConfig config, ClassBalanceConfig classConfig)
         {
             var stats = new Stats(config);
@@ -57,7 +63,36 @@ namespace Guildmaster.Combat
                         stats.AddModifiersFrom(item, item.Mods);
                 }
 
+            if (consequences != null)
+                for (int i = 0; i < consequences.Count; i++)
+                {
+                    ConsequenceData consequence = consequences[i];
+                    if (consequence != null && consequence.Mods != null && consequence.Mods.Length > 0)
+                        stats.AddModifiersFrom(consequence, consequence.Mods);
+                }
+
             return stats;
+        }
+
+        /// <summary>
+        /// С каким запасом здоровья юнит выходит на арену: <c>MaxHP</c>, срезанный долей
+        /// <see cref="StatType.StartHpPct"/>.
+        /// </summary>
+        /// <remarks>
+        /// Формула живёт здесь, а не по месту чтения, потому что читают её двое — боевая фабрика и
+        /// строитель тел мира, — и разойтись им нельзя: «сколько HP у бойца во дворе» и «сколько у него
+        /// на входе в бой» обязаны отвечать одному правилу.
+        /// <para>Доля клампится сверху единицей: стартовать выше собственного потолка нельзя, и
+        /// закалка «+10% стартового HP» на здоровом бойце просто ничего не делает — она отыгрывает
+        /// травму, а не переливает через край.</para>
+        /// </remarks>
+        public static float StartingHp(Stats stats)
+        {
+            if (stats == null) return 0f;
+
+            float maxHp = stats.Get(StatType.MaxHP);
+            float fraction = UnityEngine.Mathf.Clamp01(stats.Get(StatType.StartHpPct));
+            return maxHp * fraction;
         }
     }
 }

@@ -18,12 +18,18 @@ namespace Guildmaster.Combat
         /// <summary>Предметы (Vessel) + баннеры (Party) юнита — статовые моды/пассивки (D1). null = без предметов.</summary>
         public readonly IReadOnlyList<ItemData> Items;
 
-        public PlayerSpawn(UnitData unit, VesselData vessel, Vector2 position, IReadOnlyList<ItemData> items = null)
+        /// <summary>Последствия забега на «Сосуде» — травмы и закалки. null = «Сосуд» цел.</summary>
+        public readonly IReadOnlyList<ConsequenceData> Consequences;
+
+        public PlayerSpawn(UnitData unit, VesselData vessel, Vector2 position,
+                           IReadOnlyList<ItemData> items = null,
+                           IReadOnlyList<ConsequenceData> consequences = null)
         {
-            Unit     = unit;
-            Vessel   = vessel;
-            Position = position;
-            Items    = items;
+            Unit         = unit;
+            Vessel       = vessel;
+            Position     = position;
+            Items        = items;
+            Consequences = consequences;
         }
     }
 
@@ -91,7 +97,7 @@ namespace Guildmaster.Combat
                 PlayerSlot slot = roster[i];
                 if (slot.Relic == null) continue; // слот релика должен быть заполнен (relic.base у «пустого» сосуда)
                 IReadOnlyList<ItemData> items = CombineItems(slot.Items, partyItems);
-                side.Add(new PlayerSpawn(slot.Relic, slot.Vessel, slot.Position, items));
+                side.Add(new PlayerSpawn(slot.Relic, slot.Vessel, slot.Position, items, slot.Consequences));
             }
             return side;
         }
@@ -174,7 +180,8 @@ namespace Guildmaster.Combat
             {
                 PlayerSpawn p = side[i];
                 if (p.Unit == null) continue;
-                _simulation.EnqueueUnitSpawn(_factory.Create(p.Unit, p.Vessel, team, p.Position, p.Items));
+                _simulation.EnqueueUnitSpawn(
+                    _factory.Create(p.Unit, p.Vessel, team, p.Position, p.Items, p.Consequences));
             }
         }
 

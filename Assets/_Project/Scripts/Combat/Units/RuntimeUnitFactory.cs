@@ -11,10 +11,10 @@ namespace Guildmaster.Combat
     /// Единственная точка сборки <see cref="RuntimeUnit"/> из SO-данных.
     /// Шаги сборки (вики «10» §5.2, «6» §3): дефолты из <see cref="StatsConfig"/> → классовая база
     /// (<see cref="ClassBalanceConfig"/>) → видовые скейлы врага (<see cref="SpeciesData"/>) → моды
-    /// реликвии → перки сосуда → пассивки
+    /// реликвии → перки сосуда → предметы → последствия боёв (<see cref="ConsequenceData"/>) → пассивки
     /// (<see cref="RelicData.GrantedEffects"/> с постоянной длительностью)
     /// → активки (<see cref="AbilityRuntime"/>) → ресурс (<see cref="StatType.StartResource"/>)
-    /// → <c>CurrentHP = Get(MaxHP)</c>.
+    /// → <c>CurrentHP = EffectiveStats.StartingHp(...)</c>.
     /// </summary>
     /// <remarks>
     /// Пассивки применяются <b>до</b> инициализации <c>CurrentHP</c>: пассив на +MaxHP должен поднять
@@ -80,14 +80,20 @@ namespace Guildmaster.Combat
         /// (план 11 §5.5, D1). Применяются как перки: моды до инициализации HP (чтобы +MaxHP поднял старт).
         /// null = без предметов. Активки предметов пока не реализованы (только статы/эффекты).
         /// </param>
+        /// <param name="consequences">
+        /// Последствия боёв на «Сосуде» — травмы и закалки забега (ГДД <c>injuries-mettle</c>). Их моды
+        /// ложатся последним слоем каскада, а травма по <see cref="StatType.StartHpPct"/> вдобавок
+        /// срезает запас, с которым боец выходит на арену. null = «Сосуд» цел.
+        /// </param>
         public RuntimeUnit Create(UnitData data, VesselData vessel, int team, Vector2 spawnPosition,
-                                  IReadOnlyList<ItemData> items = null)
+                                  IReadOnlyList<ItemData> items = null,
+                                  IReadOnlyList<ConsequenceData> consequences = null)
         {
             // Каскад целиком — у EffectiveStats: дефолты конфига → класс → вид → персона → Судьба
             // сосуда → предметы. Своей копии здесь нет намеренно: она уже расходилась с показанными
             // игроку числами (аудит 2026-07-26), а теперь по тому же каскаду собираются ещё и тела
             // мира вне боя — три переписи одного порядка разъехались бы молча.
-            Stats stats = EffectiveStats.Build(data, vessel, items, _config, _classBalance);
+            Stats stats = EffectiveStats.Build(data, vessel, items, consequences, _config, _classBalance);
 
             int id = _nextId++;
 
@@ -125,7 +131,9 @@ namespace Guildmaster.Combat
             EffectSystem.CommitPending(unit);
 
             // CurrentHP — после пассивок: они могли поднять MaxHP, юнит должен стартовать с полным.
-            unit.CurrentHP = stats.Get(StatType.MaxHP);
+            // «Полный» — это MaxHP, срезанный долей StartHpPct: раненый выходит на арену уже неполным,
+            // и отыграть это можно только лечением в бою (в отличие от травмы по самому MaxHP).
+            unit.CurrentHP = EffectiveStats.StartingHp(stats);
 
             return unit;
         }

@@ -30,18 +30,27 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Предметы юнита (Vessel-скоуп): статовые моды/пассивки, до VesselItemSlots штук (D1). Опц.")]
         [SerializeField] private ItemData[] _items;
 
+        [Tooltip("Последствия забега на «Сосуде» — травмы и закалки. В забеге приходят из RunState; " +
+                 "здесь задаются, чтобы дев-бой можно было прогнать раненым отрядом. Опц.")]
+        [SerializeField] private ConsequenceData[] _consequences;
+
         public RelicData  Relic    => _relic;
         public VesselData Vessel   => _vessel;
         public Vector2    Position => _position;
         public IReadOnlyList<ItemData> Items => _items;
 
+        /// <summary>Травмы и закалки «Сосуда» (ГДД <c>injuries-mettle</c>). Пусто = цел.</summary>
+        public IReadOnlyList<ConsequenceData> Consequences => _consequences;
+
         /// <summary>Рантайм-слот (бридж гильдии игрока в бой): собирается из <c>RunState</c>, не из инспектора.</summary>
-        public PlayerSlot(RelicData relic, VesselData vessel, Vector2 position, ItemData[] items = null)
+        public PlayerSlot(RelicData relic, VesselData vessel, Vector2 position, ItemData[] items = null,
+                          ConsequenceData[] consequences = null)
         {
-            _relic    = relic;
-            _vessel   = vessel;
-            _position = position;
-            _items    = items;
+            _relic        = relic;
+            _vessel       = vessel;
+            _position     = position;
+            _items        = items;
+            _consequences = consequences;
         }
     }
 

@@ -51,17 +51,22 @@ namespace Guildmaster.Combat
                 if (slot.Relic == null) continue; // слот без кита нечем ставить (см. GuildRoster)
 
                 bodies.Add(BuildOne(slot.Relic, slot.Vessel, slot.Position,
-                                    EncounterLoader.CombineItems(slot.Items, partyItems), id: i));
+                                    EncounterLoader.CombineItems(slot.Items, partyItems),
+                                    slot.Consequences, id: i));
             }
             return bodies;
         }
 
         /// <summary>Одно тело: где стоит, кто это, и какие у него числа на полосах.</summary>
         private WorldBody BuildOne(UnitData data, VesselData vessel, Vector2 position,
-                                   IReadOnlyList<ItemData> items, int id)
+                                   IReadOnlyList<ItemData> items,
+                                   IReadOnlyList<ConsequenceData> consequences, int id)
         {
-            Stats stats = EffectiveStats.Build(data, vessel, items, _config, _classBalance);
+            Stats stats = EffectiveStats.Build(data, vessel, items, consequences, _config, _classBalance);
 
+            // Тело МИРА стоит целым: StartHpPct — про вход в бой, а не про то, как боец выглядит во
+            // дворе. Травма по самому MaxHP здесь видна (потолок ниже), травма по стартовому запасу —
+            // нет, и это верно: до боя запас ещё не срезан.
             float maxHp = stats.Get(StatType.MaxHP);
 
             var body = new UnitSnapshot(
