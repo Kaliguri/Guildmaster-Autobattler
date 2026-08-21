@@ -35,4 +35,6 @@ MonoBehaviour:
     _position: {x: 4.5, y: -2.2}
     _count: 2
     _spacing: 0
+  _minFloor: 14
+  _maxFloor: 0
   _arenaId: 
