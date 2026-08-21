@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Persistence;
 using Guildmaster.Data.Definitions;
@@ -69,6 +69,9 @@ namespace Guildmaster.UI
             var title      = root.Q<Label>("profile-title");
             var slotsCap   = root.Q<Label>("slots-caption");
             var slotList   = root.Q<VisualElement>("slot-list");
+            var panelTitle = root.Q<Label>("panel-title");
+            var panelMeta  = root.Q<Label>("panel-meta");
+            var drop       = root.Q<Button>("btn-delete");
             var identCap   = root.Q<Label>("identity-caption");
             var steamToggle = root.Q<Components.ToggleRow>("toggle-steam-name");
             var nameField  = root.Q<TextField>("field-name");
@@ -90,7 +93,44 @@ namespace Guildmaster.UI
             if (steamToggle != null)
                 steamToggle.LabelText = L("ui.profile.name.steam", "Брать имя из Steam");
 
-            BuildSlots(slotList, slots, slotLimit, L, onSelect, onCreate, onDelete);
+            BuildSlots(slotList, slots, slotLimit, L, onSelect, onCreate);
+
+            // ── Панель выбранного ───────────────────────────────────────────
+            // Выбранный в списке и активный профиль — одно и то же: выбор слота МЕНЯЕТ активный, а
+            // не подсвечивает строку. Заводить отдельную «подсветку без применения» значило бы
+            // спрашивать игрока дважды.
+            SlotEntry active = default;
+            bool hasActive = false;
+            for (int i = 0; i < slots.Count; i++)
+            {
+                if (!slots[i].IsActive || slots[i].IsEmpty) continue;
+                active = slots[i];
+                hasActive = true;
+                break;
+            }
+
+            if (panelTitle != null)
+                panelTitle.text = hasActive
+                    ? active.Name
+                    : L("ui.profile.none.title", "Профиль не выбран");
+
+            if (panelMeta != null)
+                panelMeta.text = hasActive
+                    ? L("ui.profile.meta.active", "Текущий профиль")
+                    : L("ui.profile.none.hint", "Создайте профиль или выберите слот слева");
+
+            // Удаление относится к тому, что показано СПРАВА. Без профиля кнопки нет вовсе — гасить
+            // её значило бы предлагать действие, которого не существует.
+            if (drop != null)
+            {
+                drop.text = L("ui.profile.delete", "Удалить профиль");
+                if (hasActive)
+                {
+                    string id = active.Id;
+                    drop.clicked += () => onDelete?.Invoke(id);
+                }
+                else drop.style.display = DisplayStyle.None;
+            }
 
             // ── Идентичность ────────────────────────────────────────────────
             bool useSteam = identity.UseSteamName;
@@ -144,9 +184,14 @@ namespace Guildmaster.UI
             return screen;
         }
 
+        /// <summary>
+        /// Левая колонка: слоты. Кнопки удаления здесь НЕТ — она живёт под панелью выбранного
+        /// (приём обоих рефов класса, разбор `_teardowns/06-entry-service-coop.md`): так видно, что
+        /// именно удалится, и промахнуться по соседней строке нельзя.
+        /// </summary>
         private static void BuildSlots(VisualElement list, IReadOnlyList<SlotEntry> slots, int slotLimit,
                                        Func<string, string, string> L,
-                                       Action<string> onSelect, Action onCreate, Action<string> onDelete)
+                                       Action<string> onSelect, Action onCreate)
         {
             if (list == null) return;
             list.Clear();
@@ -155,6 +200,7 @@ namespace Guildmaster.UI
             {
                 var row = new VisualElement();
                 row.AddToClassList("gm-profile__slot");
+                row.AddToClassList("gm-entry__row");
 
                 if (i < slots.Count && !slots[i].IsEmpty)
                 {
@@ -167,12 +213,6 @@ namespace Guildmaster.UI
                     if (slot.IsActive) pick.AddToClassList("gm-button--primary");
                     pick.clicked += () => onSelect?.Invoke(slot.Id);
                     row.Add(pick);
-
-                    var drop = new Components.PlateButton { text = L("ui.profile.delete", "Удалить") };
-                    drop.AddToClassList("gm-button");
-                    drop.AddToClassList("gm-profile__slot-delete");
-                    drop.clicked += () => onDelete?.Invoke(slot.Id);
-                    row.Add(drop);
                 }
                 else
                 {

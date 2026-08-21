@@ -1,33 +1,53 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <gm:PanelFrame name="profile-frame" corner="0" />
             <ui:Label name="profile-title" text="Профиль" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
-            <ui:ScrollView class="gm-panel__body">
-                <!-- Слоты. Имени профиль не носит — только номер: именуемая сущность у игрока одна,
-                     это дом, он же слот сохранения. Строки строятся кодом: их число берётся из
-                     GameConfig, а не из разметки. -->
-                <ui:Label name="slots-caption" text="Слоты" class="gm-text-caption gm-text--muted" />
-                <ui:VisualElement name="slot-list" class="gm-profile__slots" />
+            <!-- СПИСОК СЛЕВА, ПАНЕЛЬ ВЫБРАННОГО СПРАВА — вариант В, принят Максом 05.08.2026. Тот же
+                 приём стоит на экране гильдии: два экрана входа идут подряд, и игрок учит ОДИН
+                 приём, а не два. Раскладку держат классы gm-entry__* — общий каркас обоих экранов
+                 (components/entry.uss). Блочного класса .gm-entry нет намеренно: своего вида у
+                 каркаса не было бы, а пустое правило гейт мёртвого USS считает мусором. -->
+            <ui:VisualElement class="gm-entry__body">
 
-                <ui:VisualElement class="gm-divider" />
+                <!-- Левая колонка: слоты. Пустой показывается наравне с занятыми — иначе список не
+                     отвечает на вопрос «а можно ещё?». -->
+                <ui:VisualElement class="gm-entry__list">
+                    <ui:Label name="slots-caption" text="Слоты" class="gm-text-caption gm-text--muted" />
+                    <ui:ScrollView name="slot-list" class="gm-entry__list-scroll" />
+                </ui:VisualElement>
 
-                <!-- Идентичность: то, чем игрок виден остальным. Настройки клиента (звук, экран) сюда
-                     НЕ переезжают — они принадлежат машине и не должны прыгать при смене профиля. -->
-                <ui:Label name="identity-caption" text="Как меня видят" class="gm-text-caption gm-text--muted" />
+                <!-- Правая колонка: выбранный профиль целиком. Идентичность живёт ЗДЕСЬ, а не на
+                     своём экране: вопрос у игрока один — «кем я захожу», и разводить слот с ником по
+                     двум экранам значит скрыть, что они меняются вместе. -->
+                <ui:VisualElement class="gm-entry__panel">
+                    <ui:Label name="panel-title" class="gm-text-subtitle gm-entry__panel-title" />
+                    <ui:Label name="panel-meta" class="gm-text-caption gm-text--muted" />
 
-                <gm:ToggleRow name="toggle-steam-name" label-text="Брать имя из Steam" value="true" />
-                <ui:TextField name="field-name" class="gm-profile__name" />
-                <ui:Label name="name-hint" class="gm-text-caption gm-text--muted gm-profile__hint" />
+                    <ui:VisualElement class="gm-divider" />
 
-                <ui:Label name="color-caption" text="Цвет" class="gm-text-caption gm-text--muted" />
-                <ui:VisualElement name="color-row" class="gm-profile__colors" />
+                    <ui:ScrollView class="gm-panel__body">
+                        <ui:Label name="identity-caption" text="Как меня видят" class="gm-text-caption gm-text--muted" />
 
-                <ui:Label name="cursor-caption" text="Курсор" class="gm-text-caption gm-text--muted" />
-                <ui:VisualElement name="cursor-row" class="gm-profile__cursors" />
-            </ui:ScrollView>
+                        <gm:ToggleRow name="toggle-steam-name" label-text="Брать имя из Steam" value="true" />
+                        <ui:TextField name="field-name" class="gm-profile__name" />
+                        <ui:Label name="name-hint" class="gm-text-caption gm-text--muted gm-profile__hint" />
+
+                        <ui:Label name="color-caption" text="Цвет" class="gm-text-caption gm-text--muted" />
+                        <ui:VisualElement name="color-row" class="gm-profile__colors" />
+
+                        <ui:Label name="cursor-caption" text="Курсор" class="gm-text-caption gm-text--muted" />
+                        <ui:VisualElement name="cursor-row" class="gm-profile__cursors" />
+                    </ui:ScrollView>
+
+                    <!-- УДАЛЕНИЕ ЖИВЁТ ПОД ПАНЕЛЬЮ ВЫБРАННОГО, а не внутри карточки списка: так
+                         устроено у обоих рефов класса, и это не стиль, а ответ на вопрос «что именно
+                         удалится» — кнопка физически принадлежит одному профилю. -->
+                    <gm:PlateButton name="btn-delete" text="Удалить профиль" class="gm-button gm-entry__danger" />
+                </ui:VisualElement>
+            </ui:VisualElement>
 
             <ui:VisualElement class="gm-divider" />
             <ui:VisualElement class="gm-profile__actions">

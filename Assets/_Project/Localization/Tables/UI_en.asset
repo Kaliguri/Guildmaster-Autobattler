@@ -331,6 +331,18 @@ MonoBehaviour:
     m_Localized: Cancel
     m_Metadata:
       m_Items: []
+  - m_Id: 14983733759434752
+    m_Localized: No profile selected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14983733805572096
+    m_Localized: Current profile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14983733805572097
+    m_Localized: Create a profile or pick a slot on the left
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -1,9 +1,5 @@
-/* === Экран «Профиль» =======================================================
+﻿/* === Экран «Профиль» =======================================================
    Слот и идентичность на одном листе: вопрос у игрока один — «кем я захожу». */
-.gm-profile__slots {
-    flex-direction: column;
-}
-
 .gm-profile__slot {
     flex-direction: row;
     align-items: center;
@@ -18,11 +14,6 @@
 .gm-profile__slot > .gm-button {
     flex-grow: 1;
     -unity-text-align: middle-left;
-}
-
-.gm-profile__slot-delete {
-    margin-left: var(--gm-space-1);
-    flex-shrink: 0;
 }
 
 .gm-profile__slot-create {

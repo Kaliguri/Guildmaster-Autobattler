@@ -34,6 +34,7 @@
 @import url("components/notice.uss");
 @import url("components/wait.uss");
 @import url("components/toast.uss");
+@import url("components/entry.uss");
 @import url("components/sheet.uss");
 
 /* --- Экраны. Идут ПОСЛЕ компонентов: экран уточняет общий вид, а не наоборот. --- */
