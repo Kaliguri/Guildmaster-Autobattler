@@ -18,6 +18,7 @@ MonoBehaviour:
   _baseDuration: -1
   _stacking: 0
   _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 0
   _unremovable: 0
   _cleansePrice:
@@ -31,6 +32,7 @@ MonoBehaviour:
   - rid: 5615026976500744326
   - rid: 5615027269181898857
   - rid: 5615027269181898858
+  _telegraphSeconds: 0
   _icon: {fileID: 0}
   _infoTags: []
   references:
@@ -39,7 +41,7 @@ MonoBehaviour:
     - rid: 5615026976500744326
       type: {class: BlazingBladesComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _selfDamagePctCurrentHp: 0.01
+        _selfDamagePctCurrentHp: 0.005
         _rampEffect: {fileID: 11400000, guid: 80edca810544eaf4d916a79f30a13f60, type: 2}
     - rid: 5615027269181898857
       type: {class: EmberIgniterComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
