@@ -49,8 +49,9 @@ namespace Guildmaster.Balance.Editor
         private const ulong SeedBase = 1UL;
 
         /// <summary>
-        /// Сколько РАЗНЫХ четвёрок гоняется в каждом режиме: вариант <c>k</c> берёт k-ю по счёту
-        /// реликвию каждой роли.
+        /// Потолок числа РАЗНЫХ четвёрок на связку «режим + тир»: вариант <c>k</c> берёт k-ю по счёту
+        /// реликвию каждой роли. Сколько наберётся на деле — решает ростер тира: повторы отсеиваются,
+        /// и у треша с одним китом на роль вариант остаётся один.
         /// </summary>
         /// <remarks>
         /// Одна четвёрка отвечает на вопрос «каково этим четверым», а не «каково этим ролям», и разница
@@ -126,6 +127,38 @@ namespace Guildmaster.Balance.Editor
             new Mode("misplaced", "Кривая расстановка (танк в тылу)", Lineups.SquadInverted),
         };
 
+        /// <summary>Тир китов, из которых набирается отряд.</summary>
+        private readonly struct Tier
+        {
+            public readonly DropRarity Rarity;
+            public readonly string Key;
+            public readonly string Title;
+
+            public Tier(DropRarity rarity, string key, string title)
+            {
+                Rarity = rarity;
+                Key = key;
+                Title = title;
+            }
+        }
+
+        /// <summary>
+        /// Отряд набирается В ГРАНИЦАХ ОДНОГО ТИРА, и тир — такая же ось замера, как строй.
+        /// </summary>
+        /// <remarks>
+        /// Пока границы не было, варианты состава шли по общему списку реликвий подряд: первые два
+        /// набирались из обычных китов, третий и четвёртый доскребали трешевыми — теми, что по замыслу
+        /// слабее. Среднее по такому режиму мешало два разных вопроса, и разброс внутри режима
+        /// объяснялся не ростером, а тем, в какой момент список кончился (BAL-029).
+        /// <para>Треш при этом не выброшен, а стал своей строкой: «насколько дешевле проход обычными
+        /// китами, чем трешевыми» — вопрос баланса, на который стенд теперь отвечает прямо.</para>
+        /// </remarks>
+        private static readonly Tier[] Tiers =
+        {
+            new Tier(DropRarity.Common, "common", "обычные"),
+            new Tier(DropRarity.Trash,  "trash",  "трешевые"),
+        };
+
         /// <summary>Итог одного боя на узле маршрута.</summary>
         private readonly struct NodeResult
         {
@@ -157,6 +190,13 @@ namespace Guildmaster.Balance.Editor
 
             /// <summary>Сколько маршрутов дошло до конца, не потеряв ни одного бойца из забега.</summary>
             public int RoutesIntact;
+
+            /// <summary>
+            /// Сколько маршрутов пройдено всего. Знаменатель доли целых маршрутов считается отсюда, а не
+            /// формулой «маршруты × варианты»: числа вариантов у тиров разные, и общая формула завысила
+            /// бы знаменатель треша втрое, показав его вчетверо аккуратнее, чем он есть.
+            /// </summary>
+            public int RoutesRun;
 
             /// <summary>На каком по счёту бою впервые забились все мелкие слоты (сумма по маршрутам, где забились).</summary>
             public int FirstOverflowSum;
@@ -217,32 +257,71 @@ namespace Guildmaster.Balance.Editor
             var thinRoles = new List<string>();
 
             foreach (Mode m in Modes)
-                for (int v = 0; v < Variants; v++)
+                foreach (Tier tier in Tiers)
                 {
-                    byVariant[VariantKey(m.Key, v)] = new ModeTally();
-                    heroesByMode[VariantKey(m.Key, v)] = PickHeroes(m.Lineup, relics, thinRoles, v);
+                    List<RelicData[]> squads = BuildSquads(m.Lineup, relics, tier, thinRoles);
+                    for (int v = 0; v < squads.Count; v++)
+                    {
+                        string key = VariantKey(m.Key, tier.Key, v);
+                        byVariant[key] = new ModeTally();
+                        heroesByMode[key] = squads[v];
+                    }
                 }
 
             for (int r = 0; r < Routes; r++)
             {
-                // Маршрут один и тот же для всех режимов и вариантов — иначе сравнивались бы разные
-                // акты, а не разные отряды.
+                // Маршрут один и тот же для всех режимов, тиров и вариантов — иначе сравнивались бы
+                // разные акты, а не разные отряды.
                 List<MapNodeType> route = BuildRoute(mapConfig, SeedBase + (ulong)r);
 
                 foreach (Mode mode in Modes)
-                    for (int v = 0; v < Variants; v++)
-                    {
-                        string key = VariantKey(mode.Key, v);
-                        WalkRoute(config, classes, enemiesById, pools, cap, mode, route,
-                            byVariant[key], (ulong)r, heroesByMode[key]);
-                    }
+                    foreach (Tier tier in Tiers)
+                        for (int v = 0; v < Variants; v++)
+                        {
+                            string key = VariantKey(mode.Key, tier.Key, v);
+                            if (!byVariant.TryGetValue(key, out ModeTally tally)) continue;
+
+                            WalkRoute(config, classes, enemiesById, pools, cap, mode, route,
+                                tally, (ulong)r, heroesByMode[key]);
+                        }
             }
 
             return WriteReports(byVariant, pools, missing, thinRoles, heroesByMode);
         }
 
-        /// <summary>Ключ «режим + номер варианта состава».</summary>
-        private static string VariantKey(string modeKey, int variant) => modeKey + "#" + variant;
+        /// <summary>Ключ «режим + тир китов + номер варианта состава».</summary>
+        private static string VariantKey(string modeKey, string tierKey, int variant)
+            => modeKey + "#" + tierKey + "#" + variant;
+
+        /// <summary>
+        /// Разные четвёрки одного тира: вариант <c>k</c> берёт k-ю реликвию каждой роли, повторы
+        /// отсеиваются по составу.
+        /// </summary>
+        /// <remarks>
+        /// Отсев обязателен, а не «на всякий случай»: у роли с единственным китом сдвиг варианта ничего
+        /// не меняет, и без него треш дал бы четыре прогона ОДНОГО отряда — четырёхкратный вес одной
+        /// точки в среднем, выглядящий как четыре независимых замера.
+        /// </remarks>
+        private static List<RelicData[]> BuildSquads(Slot[] lineup, List<RelicData> relics, Tier tier,
+                                                     List<string> thinRoles)
+        {
+            var squads = new List<RelicData[]>();
+            var seen = new HashSet<string>();
+
+            for (int v = 0; v < Variants; v++)
+            {
+                RelicData[] squad = PickHeroes(lineup, relics, thinRoles, v, tier);
+                if (squad.Length == 0) continue;
+
+                var ids = new List<string>(squad.Length);
+                for (int i = 0; i < squad.Length; i++) ids.Add(squad[i].Id);
+                ids.Sort(System.StringComparer.Ordinal);
+                if (!seen.Add(string.Join("|", ids))) continue;
+
+                squads.Add(squad);
+            }
+            return squads;
+        }
 
         // --- Маршрут ---
 
@@ -327,6 +406,7 @@ namespace Guildmaster.Balance.Editor
 
             bool intact = true;
             for (int s = 0; s < sheets.Length; s++) if (sheets[s].Retired) intact = false;
+            tally.RoutesRun++;
             if (intact) tally.RoutesIntact++;
 
             if (firstOverflowAt > 0)
@@ -402,7 +482,7 @@ namespace Guildmaster.Balance.Editor
         /// манекен в строю снова сделал бы замер ложным.</para>
         /// </remarks>
         private static RelicData[] PickHeroes(Slot[] lineup, List<RelicData> relics, List<string> thinRoles,
-                                              int variant)
+                                              int variant, Tier tier)
         {
             var picked = new List<RelicData>(lineup.Length);
             var used = new HashSet<string>();
@@ -417,6 +497,7 @@ namespace Guildmaster.Balance.Editor
                     RelicData relic = relics[r];
                     if (relic == null || string.IsNullOrEmpty(relic.Id)) continue;
                     if (relic.Id == ContentIds.BaseRelic) continue;
+                    if (relic.DropRarity != tier.Rarity) continue;
                     if (Lineups.SlotRole(relic.CombatClass) != lineup[s].Role) continue;
                     candidates.Add(relic);
                 }
@@ -432,7 +513,9 @@ namespace Guildmaster.Balance.Editor
 
                 if (found == null)
                 {
-                    string role = lineup[s].Role.ToString();
+                    // Тир в метке обязателен: роль бывает пустой ТОЛЬКО у треша, и общая строка
+                    // «поддержки нет» читалась бы как дыра в ростере целиком.
+                    string role = $"{lineup[s].Role} ({tier.Title})";
                     if (!thinRoles.Contains(role)) thinRoles.Add(role);
                     continue;
                 }
@@ -509,32 +592,38 @@ namespace Guildmaster.Balance.Editor
             List<string> thinRoles, Dictionary<string, RelicData[]> heroesByMode)
         {
             var tallies = new Dictionary<string, ModeTally>();
-            foreach (Mode m in Modes) tallies[m.Key] = Merge(byVariant, m.Key);
+            foreach (Mode m in Modes)
+                foreach (Tier tier in Tiers)
+                    tallies[TierKey(m.Key, tier.Key)] = Merge(byVariant, m.Key, tier);
 
             string[] headers =
             {
-                "Отряд", "Боёв", "Прошёл%", "СмертейНаБой", "ЦенаБоя%HP",
+                "Отряд", "Киты", "Боёв", "Прошёл%", "СмертейНаБой", "ЦенаБоя%HP",
                 "Мелких", "Средних", "Тяжёлых", "Выбыло", "МаршрутовБезПотерь%", "ПервоеПереполнениеНаБою",
             };
 
             var rows = new List<IReadOnlyList<object>>();
             foreach (Mode m in Modes)
-            {
-                ModeTally t = tallies[m.Key];
-                if (t.Battles == 0) continue;
-
-                rows.Add(new object[]
+                foreach (Tier tier in Tiers)
                 {
-                    m.Title,
-                    t.Battles,
-                    t.Cleared * 100.0 / t.Battles,
-                    t.Deaths / (double)t.Battles,
-                    t.HpCostSum * 100.0 / t.Battles,
-                    t.Bruises, t.Wounds, t.Maims, t.Retired,
-                    t.RoutesIntact * 100.0 / (Routes * Variants),
-                    t.FirstOverflowRoutes > 0 ? (object)(t.FirstOverflowSum / (double)t.FirstOverflowRoutes) : "—",
-                });
-            }
+                    ModeTally t = tallies[TierKey(m.Key, tier.Key)];
+                    if (t.Battles == 0) continue;
+
+                    rows.Add(new object[]
+                    {
+                        m.Title,
+                        tier.Title,
+                        t.Battles,
+                        t.Cleared * 100.0 / t.Battles,
+                        t.Deaths / (double)t.Battles,
+                        t.HpCostSum * 100.0 / t.Battles,
+                        t.Bruises, t.Wounds, t.Maims, t.Retired,
+                        t.RoutesRun > 0 ? (object)(t.RoutesIntact * 100.0 / t.RoutesRun) : "—",
+                        t.FirstOverflowRoutes > 0
+                            ? (object)(t.FirstOverflowSum / (double)t.FirstOverflowRoutes)
+                            : "—",
+                    });
+                }
 
             string notes = Notes(pools, missing, thinRoles, heroesByMode);
             string csv = ReportWriter.WriteCsv("run_act", headers, rows);
@@ -547,13 +636,16 @@ namespace Guildmaster.Balance.Editor
             return (csv, md);
         }
 
-        /// <summary>Сложить варианты одного режима в общую строку отчёта.</summary>
-        private static ModeTally Merge(Dictionary<string, ModeTally> byVariant, string modeKey)
+        /// <summary>Ключ строки отчёта: «режим + тир китов».</summary>
+        private static string TierKey(string modeKey, string tierKey) => modeKey + "#" + tierKey;
+
+        /// <summary>Сложить варианты одной связки «режим + тир» в общую строку отчёта.</summary>
+        private static ModeTally Merge(Dictionary<string, ModeTally> byVariant, string modeKey, Tier tier)
         {
             var sum = new ModeTally();
             for (int v = 0; v < Variants; v++)
             {
-                if (!byVariant.TryGetValue(VariantKey(modeKey, v), out ModeTally t)) continue;
+                if (!byVariant.TryGetValue(VariantKey(modeKey, tier.Key, v), out ModeTally t)) continue;
 
                 sum.Battles   += t.Battles;
                 sum.Cleared   += t.Cleared;
@@ -565,6 +657,7 @@ namespace Guildmaster.Balance.Editor
                 sum.Maims     += t.Maims;
                 sum.Retired   += t.Retired;
                 sum.RoutesIntact        += t.RoutesIntact;
+                sum.RoutesRun           += t.RoutesRun;
                 sum.FirstOverflowSum    += t.FirstOverflowSum;
                 sum.FirstOverflowRoutes += t.FirstOverflowRoutes;
 
@@ -584,30 +677,33 @@ namespace Guildmaster.Balance.Editor
         private static void WriteRosterSpread(Dictionary<string, ModeTally> byVariant,
             Dictionary<string, RelicData[]> heroesByMode)
         {
-            string[] headers = { "Отряд", "Состав", "Кто", "Боёв", "Прошёл%", "СмертейНаБой", "ЦенаБоя%HP" };
+            string[] headers =
+                { "Отряд", "Киты", "Состав", "Кто", "Боёв", "Прошёл%", "СмертейНаБой", "ЦенаБоя%HP" };
             var rows = new List<IReadOnlyList<object>>();
 
             foreach (Mode m in Modes)
-                for (int v = 0; v < Variants; v++)
-                {
-                    string key = VariantKey(m.Key, v);
-                    if (!byVariant.TryGetValue(key, out ModeTally t) || t.Battles == 0) continue;
-
-                    var names = new List<string>();
-                    if (heroesByMode.TryGetValue(key, out RelicData[] heroes) && heroes != null)
-                        foreach (RelicData h in heroes) names.Add(h != null ? h.name : "-");
-
-                    rows.Add(new object[]
+                foreach (Tier tier in Tiers)
+                    for (int v = 0; v < Variants; v++)
                     {
-                        m.Title,
-                        v + 1,
-                        string.Join(", ", names),
-                        t.Battles,
-                        t.Cleared * 100.0 / t.Battles,
-                        t.Deaths / (double)t.Battles,
-                        t.HpCostSum * 100.0 / t.Battles,
-                    });
-                }
+                        string key = VariantKey(m.Key, tier.Key, v);
+                        if (!byVariant.TryGetValue(key, out ModeTally t) || t.Battles == 0) continue;
+
+                        var names = new List<string>();
+                        if (heroesByMode.TryGetValue(key, out RelicData[] heroes) && heroes != null)
+                            foreach (RelicData h in heroes) names.Add(h != null ? h.name : "-");
+
+                        rows.Add(new object[]
+                        {
+                            m.Title,
+                            tier.Title,
+                            v + 1,
+                            string.Join(", ", names),
+                            t.Battles,
+                            t.Cleared * 100.0 / t.Battles,
+                            t.Deaths / (double)t.Battles,
+                            t.HpCostSum * 100.0 / t.Battles,
+                        });
+                    }
 
             if (rows.Count == 0) return;
 
@@ -618,8 +714,12 @@ namespace Guildmaster.Balance.Editor
                 "**Как читать.** Смотреть надо на РАЗБРОС внутри режима. Если варианты одного режима " +
                 "расходятся между собой сильнее, чем режимы расходятся в среднем, - сравнивать режимы " +
                 "рано: результат решают конкретные киты, а не строй.\n\n" +
-                "Составы собираются по кругу: вариант k берёт k-ю по счёту реликвию каждой роли. Роль с " +
-                "малым числом китов от этого страдает сильнее всех - там варианты повторяются.";
+                "Составы собираются по кругу ВНУТРИ ТИРА: вариант k берёт k-ю по счёту реликвию каждой " +
+                "роли, повторяющиеся четвёрки отсеиваются. Поэтому у треша вариантов меньше - там на " +
+                "роль приходится по одному киту, и сдвиг ничего не меняет.\n\n" +
+                "**Тиры сравнивать между собой можно, смешивать - нет.** Треш слабее обычных китов по " +
+                "замыслу, и строка «трешевые» отвечает на вопрос «сколько стоит бедный ростер», а не " +
+                "«каково играть этим строем».";
 
             ReportWriter.WriteCsv("run_roster", headers, rows);
             ReportWriter.WriteMarkdown("run_roster", "Забег: срез по ростеру", headers, rows, notes);
@@ -630,27 +730,28 @@ namespace Guildmaster.Balance.Editor
         private static void WriteCurve(Dictionary<string, ModeTally> tallies)
         {
             int longest = 0;
-            foreach (Mode m in Modes)
-                if (tallies[m.Key].DeathsByIndex.Count > longest) longest = tallies[m.Key].DeathsByIndex.Count;
+            foreach (ModeTally t in tallies.Values)
+                if (t.DeathsByIndex.Count > longest) longest = t.DeathsByIndex.Count;
             if (longest == 0) return;
 
-            var headers = new List<string> { "Отряд" };
+            var headers = new List<string> { "Отряд", "Киты" };
             for (int i = 0; i < longest; i++) headers.Add("бой " + (i + 1));
 
             var rows = new List<IReadOnlyList<object>>();
             foreach (Mode m in Modes)
-            {
-                ModeTally t = tallies[m.Key];
-                if (t.Battles == 0) continue;
-
-                var row = new List<object> { m.Title };
-                for (int i = 0; i < longest; i++)
+                foreach (Tier tier in Tiers)
                 {
-                    bool has = i < t.BattlesByIndex.Count && t.BattlesByIndex[i] > 0;
-                    row.Add(has ? (object)(t.DeathsByIndex[i] / (double)t.BattlesByIndex[i]) : "—");
+                    ModeTally t = tallies[TierKey(m.Key, tier.Key)];
+                    if (t.Battles == 0) continue;
+
+                    var row = new List<object> { m.Title, tier.Title };
+                    for (int i = 0; i < longest; i++)
+                    {
+                        bool has = i < t.BattlesByIndex.Count && t.BattlesByIndex[i] > 0;
+                        row.Add(has ? (object)(t.DeathsByIndex[i] / (double)t.BattlesByIndex[i]) : "—");
+                    }
+                    rows.Add(row);
                 }
-                rows.Add(row);
-            }
 
             const string notes =
                 "Столбцы — ПОРЯДКОВЫЙ НОМЕР боя на маршруте, а не этаж карты: маршруты роллятся, и на " +
@@ -673,8 +774,9 @@ namespace Guildmaster.Balance.Editor
                           "не упрощение стенда) — истощение держат **раны за смерти**, " +
                           "`gdd/30-run-meta/injuries-mettle`.");
             sb.AppendLine();
-            sb.AppendLine($"Маршрутов: **{Routes}**, каждый пройден тремя строями по **{Variants}** " +
-                          "состава в каждом (срез по ростеру — отдельная таблица `run_roster`). Слоты ран — " +
+            sb.AppendLine($"Маршрутов: **{Routes}**, каждый пройден тремя строями, и каждый строй — " +
+                          $"составами ДВУХ ТИРОВ порознь (до **{Variants}** четвёрок на тир; срез по " +
+                          "ростеру — отдельная таблица `run_roster`). Слоты ран — " +
                           $"**{InjuryCascade.BruiseSlots}** мелких, **{InjuryCascade.WoundSlots}** средних, " +
                           $"**{InjuryCascade.MaimingSlots}** тяжёлая; " +
                           "переполнение поднимает ступень, переполнение тяжёлой уводит бойца из забега.");
@@ -693,19 +795,28 @@ namespace Guildmaster.Balance.Editor
                           "вовсе — «поддержка» из него не лечит, — и отряд из манекенов сравнивал бы не " +
                           "роли, а суммы урона.");
             sb.AppendLine();
+            sb.AppendLine("**Отряд набирается в границах ОДНОГО тира.** Обычные и трешевые киты — разные " +
+                          "строки отчёта, а не варианты одного среднего: треш слабее по замыслу, и " +
+                          "смешивать их значит мерить не строй, а то, в какой момент кончился список " +
+                          "реликвий. Тыловой слот принимает Поддержку, Призывателя и **Целителя** — " +
+                          "последнего с 2026-08-21: до этого целители не выходили на арену ни в одном " +
+                          "замере.");
+            sb.AppendLine();
 
             foreach (Mode m in Modes)
             {
                 sb.AppendLine($"- **{m.Title}:**");
-                for (int v = 0; v < Variants; v++)
-                {
-                    if (!heroesByMode.TryGetValue(VariantKey(m.Key, v), out RelicData[] hs) || hs == null)
-                        continue;
+                foreach (Tier tier in Tiers)
+                    for (int v = 0; v < Variants; v++)
+                    {
+                        if (!heroesByMode.TryGetValue(VariantKey(m.Key, tier.Key, v), out RelicData[] hs)
+                            || hs == null) continue;
 
-                    var names = new List<string>(hs.Length);
-                    for (int i = 0; i < hs.Length; i++) names.Add(hs[i] != null ? hs[i].name : "—");
-                    sb.AppendLine($"  - состав {v + 1}: {(names.Count > 0 ? string.Join(", ", names) : "—")}");
-                }
+                        var names = new List<string>(hs.Length);
+                        for (int i = 0; i < hs.Length; i++) names.Add(hs[i] != null ? hs[i].name : "—");
+                        sb.AppendLine($"  - {tier.Title}, состав {v + 1}: " +
+                                      $"{(names.Count > 0 ? string.Join(", ", names) : "—")}");
+                    }
             }
             sb.AppendLine();
 
@@ -720,8 +831,8 @@ namespace Guildmaster.Balance.Editor
                           "настоящий акт будет тяжелее замеренного. «?»-узлы считаются небоевыми, а в игре " +
                           "бой выпадает из них примерно в пятой части случаев. Кто именно лёг, бенч не " +
                           "знает: раны раздаются по кругу, начиная с тех, у кого свободны мелкие слоты. " +
-                          "Строка режима — среднее по составам; чтобы понять, строй это или киты, " +
-                          "смотреть надо разброс в `run_roster`.");
+                          "Строка отчёта — среднее по составам своего тира; чтобы понять, строй это или " +
+                          "конкретные киты, смотреть надо разброс в `run_roster`.");
             sb.AppendLine();
 
             if (missing.Count > 0)

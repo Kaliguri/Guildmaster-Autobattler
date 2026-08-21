@@ -117,11 +117,18 @@ namespace Guildmaster.Balance.Editor
             => unitClass is UnitClass.Tank or UnitClass.Bruiser or UnitClass.Assassin;
 
         /// <summary>
-        /// Роль, чей слот занимает кит. Призыватель делит слот с поддержкой: обе роли стоят в тылу и
-        /// работают не автоатакой, а тем, что вокруг них происходит.
+        /// Роль, чей слот занимает кит. Призыватель и целитель делят слот с поддержкой: все трое стоят
+        /// в тылу и работают не автоатакой, а тем, что вокруг них происходит.
         /// </summary>
+        /// <remarks>
+        /// Целитель добавлен сюда 2026-08-21, и это была не мелочь: класс завели 28.07, а сопоставления
+        /// со слотом ему не дали — ни один строй слота <see cref="UnitClass.Healer"/> не объявляет,
+        /// поэтому Светлый пастырь и Травница не выходили на арену НИ В ОДНОМ замере. Отчёт при этом
+        /// выглядел целым: слот поддержки закрывал кит роли Support, и отсутствие хила в отряде читалось
+        /// как свойство ростера, а не как дыра в стенде.
+        /// </remarks>
         public static UnitClass SlotRole(UnitClass unitClass)
-            => unitClass == UnitClass.Summoner ? UnitClass.Support : unitClass;
+            => unitClass is UnitClass.Summoner or UnitClass.Healer ? UnitClass.Support : unitClass;
 
         /// <summary>
         /// Развернуть команду: каждый кит из <paramref name="heroes"/> встаёт в свободный слот своей роли,
