@@ -466,6 +466,7 @@ var hierarchy =
     [ "Guildmaster.Data.Stats.IModifierSource", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IModifierSource.html", [
       [ "Guildmaster.Combat.Effects.RuntimeEffect", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html", null ]
     ] ],
+    [ "Guildmaster.Presentation.Effects.ImpactReach", "classGuildmaster_1_1Presentation_1_1Effects_1_1ImpactReach.html", null ],
     [ "Guildmaster.Presentation.Effects.ImpactZoneResult", "structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneResult.html", null ],
     [ "Guildmaster.Presentation.Effects.ImpactZoneSample", "structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSample.html", null ],
     [ "Guildmaster.Presentation.Effects.ImpactZoneSolver", "classGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSolver.html", null ],
@@ -960,6 +961,7 @@ var hierarchy =
     [ "Guildmaster.Game.Session.Net.TextEventStage", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1TextEventStage.html", null ],
     [ "Guildmaster.Combat.TickLedger", "classGuildmaster_1_1Combat_1_1TickLedger.html", null ],
     [ "Guildmaster.UI.TitleCardScreenView", "classGuildmaster_1_1UI_1_1TitleCardScreenView.html", null ],
+    [ "Guildmaster.UI.ToastLayerView", "classGuildmaster_1_1UI_1_1ToastLayerView.html", null ],
     [ "Guildmaster.UI.Tooltips.TooltipChain< T >", "classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipChain.html", null ],
     [ "Guildmaster.UI.Tooltips.TooltipChain< Window >", "classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipChain.html", null ],
     [ "Guildmaster.UI.Tooltips.TooltipElementExtensions", "classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipElementExtensions.html", null ],
@@ -971,6 +973,7 @@ var hierarchy =
     [ "Guildmaster.UI.Components.UiComponentRegistry", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentRegistry.html", null ],
     [ "Guildmaster.DevTools.UiContactSheet", "classGuildmaster_1_1DevTools_1_1UiContactSheet.html", null ],
     [ "Guildmaster.UI.EditorTools.UiContactSheetMenu", "classGuildmaster_1_1UI_1_1EditorTools_1_1UiContactSheetMenu.html", null ],
+    [ "Guildmaster.DevTools.UiDevCommands", "classGuildmaster_1_1DevTools_1_1UiDevCommands.html", null ],
     [ "Guildmaster.DevTools.UiSampleFactory", "classGuildmaster_1_1DevTools_1_1UiSampleFactory.html", null ],
     [ "UiScreen", null, [
       [ "Guildmaster.UI.UiScreen< TResult >", "classGuildmaster_1_1UI_1_1UiScreen.html", [
@@ -1013,6 +1016,7 @@ var hierarchy =
       [ "Guildmaster.UI.Components.Slot", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html", null ],
       [ "Guildmaster.UI.Components.ToggleRow", "classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html", null ],
       [ "Guildmaster.UI.Components.TooltipCard", "classGuildmaster_1_1UI_1_1Components_1_1TooltipCard.html", null ],
+      [ "Guildmaster.UI.Components.WaitNote", "classGuildmaster_1_1UI_1_1Components_1_1WaitNote.html", null ],
       [ "Guildmaster.UI.Components.Wordmark", "classGuildmaster_1_1UI_1_1Components_1_1Wordmark.html", null ]
     ] ],
     [ "Guildmaster.DevTools.VisualFxCommands", "classGuildmaster_1_1DevTools_1_1VisualFxCommands.html", null ],

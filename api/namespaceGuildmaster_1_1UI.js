@@ -25,6 +25,7 @@ var namespaceGuildmaster_1_1UI =
     [ "SettingsViewModel", "classGuildmaster_1_1UI_1_1SettingsViewModel.html", "classGuildmaster_1_1UI_1_1SettingsViewModel" ],
     [ "ShopScreenView", "classGuildmaster_1_1UI_1_1ShopScreenView.html", "classGuildmaster_1_1UI_1_1ShopScreenView" ],
     [ "TitleCardScreenView", "classGuildmaster_1_1UI_1_1TitleCardScreenView.html", "classGuildmaster_1_1UI_1_1TitleCardScreenView" ],
+    [ "ToastLayerView", "classGuildmaster_1_1UI_1_1ToastLayerView.html", "classGuildmaster_1_1UI_1_1ToastLayerView" ],
     [ "UiNavigator", "classGuildmaster_1_1UI_1_1UiNavigator.html", "classGuildmaster_1_1UI_1_1UiNavigator" ],
     [ "UiRootBootstrap", "classGuildmaster_1_1UI_1_1UiRootBootstrap.html", "classGuildmaster_1_1UI_1_1UiRootBootstrap" ],
     [ "UiScreen", "classGuildmaster_1_1UI_1_1UiScreen.html", "classGuildmaster_1_1UI_1_1UiScreen" ],

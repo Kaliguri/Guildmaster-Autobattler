@@ -154,11 +154,12 @@ var NAVTREEINDEX2 =
 "IVisualTempo_8cs.html":[2,0,0,0,0,9,9,0],
 "IWorldMapView_8cs.html":[2,0,0,0,0,9,8,0],
 "IgnitionComponent_8cs.html":[2,0,0,0,0,1,3,0,28],
-"ImpactZoneSolver_8cs.html":[2,0,0,0,0,9,6,2],
-"ImpactZoneSolver_8cs.html#a1f564969757c1e61a7fdab29953f9ea7":[2,0,0,0,0,9,6,2,3],
-"ImpactZoneSolver_8cs.html#a1f564969757c1e61a7fdab29953f9ea7a48423a9049b3065103ef1026a5fa08e5":[2,0,0,0,0,9,6,2,3,2],
-"ImpactZoneSolver_8cs.html#a1f564969757c1e61a7fdab29953f9ea7a98921133d10fbdb0fb6dbb7b2648befe":[2,0,0,0,0,9,6,2,3,0],
-"ImpactZoneSolver_8cs.html#a1f564969757c1e61a7fdab29953f9ea7aac101b32dda4448cf13a93fe283dddd8":[2,0,0,0,0,9,6,2,3,1],
+"ImpactReach_8cs.html":[2,0,0,0,0,9,6,2],
+"ImpactZoneSolver_8cs.html":[2,0,0,0,0,9,6,3],
+"ImpactZoneSolver_8cs.html#a1f564969757c1e61a7fdab29953f9ea7":[2,0,0,0,0,9,6,3,3],
+"ImpactZoneSolver_8cs.html#a1f564969757c1e61a7fdab29953f9ea7a48423a9049b3065103ef1026a5fa08e5":[2,0,0,0,0,9,6,3,3,2],
+"ImpactZoneSolver_8cs.html#a1f564969757c1e61a7fdab29953f9ea7a98921133d10fbdb0fb6dbb7b2648befe":[2,0,0,0,0,9,6,3,3,0],
+"ImpactZoneSolver_8cs.html#a1f564969757c1e61a7fdab29953f9ea7aac101b32dda4448cf13a93fe283dddd8":[2,0,0,0,0,9,6,3,3,1],
 "InputContext_8cs.html":[2,0,0,0,0,2,5,1],
 "InputContext_8cs.html#a4c81028c2df2c0050893a9d7c4626ac8":[2,0,0,0,0,2,5,1,0],
 "InputContext_8cs.html#a4c81028c2df2c0050893a9d7c4626ac8a30ad1054cf7ad7636a26844a6f782e1f":[2,0,0,0,0,2,5,1,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "MovementSystem_8cs.html":[2,0,0,0,0,1,7,5],
 "NavHistory_8cs.html":[2,0,0,0,0,5,2,0,6],
 "NetByteBuffer_8cs.html":[2,0,0,0,0,8,6],
-"NetEnvelope_8cs.html":[2,0,0,0,0,8,7],
-"NetEnvelope_8cs.html#ad606a1b8f063f8707073aabe329e9809":[2,0,0,0,0,8,7,1]
+"NetEnvelope_8cs.html":[2,0,0,0,0,8,7]
 };

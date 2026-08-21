@@ -24,6 +24,7 @@ var dir_df5569801932b28b4cdbf7f7dfde2f64 =
     [ "SettingsViewModel.cs", "SettingsViewModel_8cs.html", "SettingsViewModel_8cs" ],
     [ "ShopScreenView.cs", "ShopScreenView_8cs.html", "ShopScreenView_8cs" ],
     [ "TitleCardScreenView.cs", "TitleCardScreenView_8cs.html", "TitleCardScreenView_8cs" ],
+    [ "ToastLayerView.cs", "ToastLayerView_8cs.html", "ToastLayerView_8cs" ],
     [ "UiRootBootstrap.cs", "UiRootBootstrap_8cs.html", "UiRootBootstrap_8cs" ],
     [ "UiSoundSystem.cs", "UiSoundSystem_8cs.html", "UiSoundSystem_8cs" ]
 ];

@@ -1,6 +1,7 @@
 var classGuildmaster_1_1Guild_1_1RunStateService =
 [
     [ "RunStateService", "classGuildmaster_1_1Guild_1_1RunStateService.html#aef2c9beed6ac9037fc00f347c8240c2d", null ],
+    [ "AddPartyItem", "classGuildmaster_1_1Guild_1_1RunStateService.html#ac2780a291147a3a28e73bcc8514dcaab", null ],
     [ "Autosave", "classGuildmaster_1_1Guild_1_1RunStateService.html#a6b735b72a2c9f42774c7c55876833639", null ],
     [ "BeginAct", "classGuildmaster_1_1Guild_1_1RunStateService.html#ade85486b137b5ce32d7773fc078ac12a", null ],
     [ "DeleteSave", "classGuildmaster_1_1Guild_1_1RunStateService.html#ae03f4a2a1736095f55fdf6b8fc053c19", null ],
@@ -8,9 +9,8 @@ var classGuildmaster_1_1Guild_1_1RunStateService =
     [ "IncreaseCapacity", "classGuildmaster_1_1Guild_1_1RunStateService.html#a978046fc3f6dd1453f290bd267e31855", null ],
     [ "NewDefaultRun", "classGuildmaster_1_1Guild_1_1RunStateService.html#aff54a03842a9198c822ef5b44bb800eb", null ],
     [ "NewRun", "classGuildmaster_1_1Guild_1_1RunStateService.html#a42b5f7b8c98688812518b9d22b64c89f", null ],
-    [ "RemoveBanner", "classGuildmaster_1_1Guild_1_1RunStateService.html#ad8deac6923a9f1274b113d9b7d1ef256", null ],
+    [ "RemovePartyItem", "classGuildmaster_1_1Guild_1_1RunStateService.html#abd14e1fbee026ef4d09876847273b6c2", null ],
     [ "RemoveVesselItem", "classGuildmaster_1_1Guild_1_1RunStateService.html#a54acc723a0eb55c0a41fced00e41c86e", null ],
-    [ "TryAddBanner", "classGuildmaster_1_1Guild_1_1RunStateService.html#afa42547894cf7f96e39f964ffd2cfcb2", null ],
     [ "TryAddRelic", "classGuildmaster_1_1Guild_1_1RunStateService.html#abef513da7f33d987703f3d13bb236f8b", null ],
     [ "TryAddVesselItem", "classGuildmaster_1_1Guild_1_1RunStateService.html#a187f4960b3598fea9a726e8e2b60e4f7", null ],
     [ "TryLoad", "classGuildmaster_1_1Guild_1_1RunStateService.html#a5a2ba3a5b9256ba76486ddeaee2a1d44", null ],
@@ -18,12 +18,11 @@ var classGuildmaster_1_1Guild_1_1RunStateService =
     [ "TrySpendRestart", "classGuildmaster_1_1Guild_1_1RunStateService.html#af0302368ff97537727e127ea6778dfa9", null ],
     [ "UnequipRelic", "classGuildmaster_1_1Guild_1_1RunStateService.html#a574be55aa19e4794b9041e42e56cbc6b", null ],
     [ "VesselItems", "classGuildmaster_1_1Guild_1_1RunStateService.html#ab17de7003e09f7779d188fd7c6f35fc8", null ],
-    [ "Banners", "classGuildmaster_1_1Guild_1_1RunStateService.html#a23231e2d22a6d327f8df34c4159d4844", null ],
     [ "Current", "classGuildmaster_1_1Guild_1_1RunStateService.html#a6a2355235ec220b94cb7538a3a7ed0ca", null ],
     [ "Gold", "classGuildmaster_1_1Guild_1_1RunStateService.html#a1fb1433fd22241d2dba2cb69ab4ee228", null ],
     [ "HasSave", "classGuildmaster_1_1Guild_1_1RunStateService.html#acaad66bee540cda5647a9d1dff7bf997", null ],
-    [ "MaxPartyBanners", "classGuildmaster_1_1Guild_1_1RunStateService.html#a68e298c265348a2793cb0f585129d1c0", null ],
     [ "MaxVesselItems", "classGuildmaster_1_1Guild_1_1RunStateService.html#a57dd7a33997b891f5db9f65c6b477f1e", null ],
+    [ "PartyItems", "classGuildmaster_1_1Guild_1_1RunStateService.html#a7dbc9a562217f7316533f8d375cb00d1", null ],
     [ "RelicInventoryFull", "classGuildmaster_1_1Guild_1_1RunStateService.html#acbda4747241d8b216f1a6a22a9ce22e8", null ],
     [ "RestartsRemaining", "classGuildmaster_1_1Guild_1_1RunStateService.html#ab4fe0df55abd43cd7ea17b17d1d788a7", null ],
     [ "Committed", "classGuildmaster_1_1Guild_1_1RunStateService.html#abe939efb0d2f08b8e4b0f14f590d5696", null ]

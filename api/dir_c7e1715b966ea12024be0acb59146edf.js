@@ -16,5 +16,6 @@ var dir_c7e1715b966ea12024be0acb59146edf =
     [ "TooltipCard.cs", "TooltipCard_8cs.html", "TooltipCard_8cs" ],
     [ "UiComponentRegistry.cs", "UiComponentRegistry_8cs.html", "UiComponentRegistry_8cs" ],
     [ "UiTextCase.cs", "UiTextCase_8cs.html", "UiTextCase_8cs" ],
+    [ "WaitNote.cs", "WaitNote_8cs.html", "WaitNote_8cs" ],
     [ "Wordmark.cs", "Wordmark_8cs.html", "Wordmark_8cs" ]
 ];

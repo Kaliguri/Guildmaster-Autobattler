@@ -1,9 +1,9 @@
 <map id="Guildmaster.Guild.ISessionRunState" name="Guildmaster.Guild.ISessionRunState">
 <area shape="rect" id="Node000001" title="Состояние забега ТЕКУЩЕГО СЕАНСА: то, что регистрирует в своём составе Сессия." alt="" coords="117,119,307,199"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html" title="Состояние забега у гостя: приходит снимком от хоста и читается как своё." alt="" coords="5,467,200,607"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="199,212,125,467,120,466,194,211"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Guild_1_1RunStateService.html" title="Владелец durable&#45;состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости к..." alt="" coords="224,247,419,827"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="230,211,240,246,235,247,225,212"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html" title="Состояние забега у гостя: приходит снимком от хоста и читается как своё." alt="" coords="5,457,200,597"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="199,212,126,457,121,456,194,211"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Guild_1_1RunStateService.html" title="Владелец durable&#45;состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости к..." alt="" coords="224,247,419,807"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="230,211,240,246,235,247,225,213"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1IRunStateView.html" title="Чтение durable&#45;состояния забега для тех, кто живёт ДОЛЬШЕ него: корневого интерфейса,..." alt="" coords="157,5,267,71"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="215,85,215,118,209,118,209,85"/>
 </map>

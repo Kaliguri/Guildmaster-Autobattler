@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Presentation_1_1VisualDefects.html" target="_top" xlink:title="Крик о том, чего показу НЕ ХВАТИЛО: разметки в клипе, части тела, префаба эффекта.">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html" target="_top" xlink:title="Чистая проекция «состояние сима → состояние анимации» (спайк S4, вики «13» §5).">
 <polygon fill="white" stroke="#666666" points="143,-30 0,-30 0,0 143,0 143,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
-<text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">VisualDefects</text>
+<text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">UnitAnimationSelector</text>
 </a>
 </g>
 </g>

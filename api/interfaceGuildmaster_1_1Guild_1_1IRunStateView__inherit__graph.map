@@ -4,8 +4,8 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,83,140,120,136,117,171,79"/>
 <area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Guild_1_1ISessionRunState.html" title="Состояние забега ТЕКУЩЕГО СЕАНСА: то, что регистрирует в своём составе Сессия." alt="" coords="224,119,413,199"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="251,79,285,117,281,120,247,83"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html" title="Состояние забега у гостя: приходит снимком от хоста и читается как своё." alt="" coords="112,467,307,607"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="306,212,232,467,227,466,301,211"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Guild_1_1RunStateService.html" title="Владелец durable&#45;состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости к..." alt="" coords="331,247,525,827"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="336,211,346,246,341,247,331,212"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestRunState.html" title="Состояние забега у гостя: приходит снимком от хоста и читается как своё." alt="" coords="112,457,307,597"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="306,212,232,457,227,456,301,211"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Guild_1_1RunStateService.html" title="Владелец durable&#45;состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости к..." alt="" coords="331,247,525,807"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="337,211,347,246,342,247,332,213"/>
 </map>

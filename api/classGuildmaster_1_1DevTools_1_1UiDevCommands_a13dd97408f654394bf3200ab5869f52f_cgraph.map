@@ -1,0 +1,9 @@
+<map id="Guildmaster.DevTools.UiDevCommands.Register" name="Guildmaster.DevTools.UiDevCommands.Register">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,69,213,109"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1UiDevCommands.html#a4cdc52706befbe2b7594e2987c088872" title="Поднять экран ожидания. Повторный вызов снимает его досрочно." alt="" coords="261,5,469,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,67,271,46,273,51,191,72"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1UiDevCommands.html#a1716a979495b78b330d3e38641d3449c" title="Показать окно нужного вида с нужным числом ответов." alt="" coords="261,69,469,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="213,87,248,87,248,92,213,92"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1DevTools_1_1UiDevCommands.html#a43ac8f15e1e0bfeb8bee93ab45b7409c" title="Показать одну&#45;три ленты подряд, чтобы увидеть стопку." alt="" coords="261,133,469,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="191,107,273,127,271,133,189,112"/>
+</map>

@@ -3,6 +3,7 @@ var namespaceGuildmaster_1_1Presentation_1_1Effects =
     [ "HitFormFactory", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory.html", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory" ],
     [ "HitFormParams", "structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html", "structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams" ],
     [ "HitFormVfx", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormVfx.html", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormVfx" ],
+    [ "ImpactReach", "classGuildmaster_1_1Presentation_1_1Effects_1_1ImpactReach.html", "classGuildmaster_1_1Presentation_1_1Effects_1_1ImpactReach" ],
     [ "ImpactZoneResult", "structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneResult.html", "structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneResult" ],
     [ "ImpactZoneSample", "structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSample.html", "structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSample" ],
     [ "ImpactZoneSolver", "classGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSolver.html", "classGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSolver" ],

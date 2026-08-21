@@ -12,6 +12,7 @@ var namespaceGuildmaster_1_1DevTools =
     [ "UiColourLadder", "classGuildmaster_1_1DevTools_1_1UiColourLadder.html", "classGuildmaster_1_1DevTools_1_1UiColourLadder" ],
     [ "UiContactSheet", "classGuildmaster_1_1DevTools_1_1UiContactSheet.html", "classGuildmaster_1_1DevTools_1_1UiContactSheet" ],
     [ "UiContactSheetRunner", "classGuildmaster_1_1DevTools_1_1UiContactSheetRunner.html", "classGuildmaster_1_1DevTools_1_1UiContactSheetRunner" ],
+    [ "UiDevCommands", "classGuildmaster_1_1DevTools_1_1UiDevCommands.html", "classGuildmaster_1_1DevTools_1_1UiDevCommands" ],
     [ "UiPreviewHost", "classGuildmaster_1_1DevTools_1_1UiPreviewHost.html", null ],
     [ "UiSampleFactory", "classGuildmaster_1_1DevTools_1_1UiSampleFactory.html", "classGuildmaster_1_1DevTools_1_1UiSampleFactory" ],
     [ "VisualFxCommands", "classGuildmaster_1_1DevTools_1_1VisualFxCommands.html", "classGuildmaster_1_1DevTools_1_1VisualFxCommands" ]

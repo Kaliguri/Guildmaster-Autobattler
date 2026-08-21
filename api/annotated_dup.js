@@ -423,6 +423,7 @@ var annotated_dup =
         [ "UiColourLadder", "classGuildmaster_1_1DevTools_1_1UiColourLadder.html", "classGuildmaster_1_1DevTools_1_1UiColourLadder" ],
         [ "UiContactSheet", "classGuildmaster_1_1DevTools_1_1UiContactSheet.html", "classGuildmaster_1_1DevTools_1_1UiContactSheet" ],
         [ "UiContactSheetRunner", "classGuildmaster_1_1DevTools_1_1UiContactSheetRunner.html", "classGuildmaster_1_1DevTools_1_1UiContactSheetRunner" ],
+        [ "UiDevCommands", "classGuildmaster_1_1DevTools_1_1UiDevCommands.html", "classGuildmaster_1_1DevTools_1_1UiDevCommands" ],
         [ "UiPreviewHost", "classGuildmaster_1_1DevTools_1_1UiPreviewHost.html", null ],
         [ "UiSampleFactory", "classGuildmaster_1_1DevTools_1_1UiSampleFactory.html", "classGuildmaster_1_1DevTools_1_1UiSampleFactory" ],
         [ "VisualFxCommands", "classGuildmaster_1_1DevTools_1_1VisualFxCommands.html", "classGuildmaster_1_1DevTools_1_1VisualFxCommands" ]
@@ -739,6 +740,7 @@ var annotated_dup =
           [ "HitFormFactory", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory.html", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormFactory" ],
           [ "HitFormParams", "structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams.html", "structGuildmaster_1_1Presentation_1_1Effects_1_1HitFormParams" ],
           [ "HitFormVfx", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormVfx.html", "classGuildmaster_1_1Presentation_1_1Effects_1_1HitFormVfx" ],
+          [ "ImpactReach", "classGuildmaster_1_1Presentation_1_1Effects_1_1ImpactReach.html", "classGuildmaster_1_1Presentation_1_1Effects_1_1ImpactReach" ],
           [ "ImpactZoneResult", "structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneResult.html", "structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneResult" ],
           [ "ImpactZoneSample", "structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSample.html", "structGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSample" ],
           [ "ImpactZoneSolver", "classGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSolver.html", "classGuildmaster_1_1Presentation_1_1Effects_1_1ImpactZoneSolver" ],
@@ -823,6 +825,7 @@ var annotated_dup =
           [ "UiComponentEntry", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentEntry.html", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentEntry" ],
           [ "UiComponentRegistry", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentRegistry.html", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentRegistry" ],
           [ "UiTextCase", "classGuildmaster_1_1UI_1_1Components_1_1UiTextCase.html", "classGuildmaster_1_1UI_1_1Components_1_1UiTextCase" ],
+          [ "WaitNote", "classGuildmaster_1_1UI_1_1Components_1_1WaitNote.html", "classGuildmaster_1_1UI_1_1Components_1_1WaitNote" ],
           [ "Wordmark", "classGuildmaster_1_1UI_1_1Components_1_1Wordmark.html", "classGuildmaster_1_1UI_1_1Components_1_1Wordmark" ]
         ] ],
         [ "DevConsole", "namespaceGuildmaster_1_1UI_1_1DevConsole.html", [
@@ -871,6 +874,7 @@ var annotated_dup =
         [ "SettingsViewModel", "classGuildmaster_1_1UI_1_1SettingsViewModel.html", "classGuildmaster_1_1UI_1_1SettingsViewModel" ],
         [ "ShopScreenView", "classGuildmaster_1_1UI_1_1ShopScreenView.html", "classGuildmaster_1_1UI_1_1ShopScreenView" ],
         [ "TitleCardScreenView", "classGuildmaster_1_1UI_1_1TitleCardScreenView.html", "classGuildmaster_1_1UI_1_1TitleCardScreenView" ],
+        [ "ToastLayerView", "classGuildmaster_1_1UI_1_1ToastLayerView.html", "classGuildmaster_1_1UI_1_1ToastLayerView" ],
         [ "UiNavigator", "classGuildmaster_1_1UI_1_1UiNavigator.html", "classGuildmaster_1_1UI_1_1UiNavigator" ],
         [ "UiRootBootstrap", "classGuildmaster_1_1UI_1_1UiRootBootstrap.html", "classGuildmaster_1_1UI_1_1UiRootBootstrap" ],
         [ "UiScreen", "classGuildmaster_1_1UI_1_1UiScreen.html", "classGuildmaster_1_1UI_1_1UiScreen" ],

@@ -11,7 +11,6 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig =
     [ "MaxGuildsPerProfile", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a32e2aa96c37bbff9b28e6aa27f8e9cb3", null ],
     [ "MaxProfiles", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a27f1813965d3a96f9af84c15baf2f226", null ],
     [ "MaxRosterCapacity", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a5971d919724780c308563eb0ebbdbf35", null ],
-    [ "PartyBannerSlots", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#af390edfc6e969f2436e7d2e2cd707b0d", null ],
     [ "PriceCommon", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ab9ce05565d427dac2f0de0c7239c8f78", null ],
     [ "PriceCursed", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a9a68d1be11384a91090718b67206222e", null ],
     [ "PriceDivine", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a9dee46b72046a72685e7e3beb8a4a173", null ],

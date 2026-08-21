@@ -17,6 +17,7 @@ var namespaceGuildmaster_1_1UI_1_1Components =
     [ "UiComponentEntry", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentEntry.html", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentEntry" ],
     [ "UiComponentRegistry", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentRegistry.html", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentRegistry" ],
     [ "UiTextCase", "classGuildmaster_1_1UI_1_1Components_1_1UiTextCase.html", "classGuildmaster_1_1UI_1_1Components_1_1UiTextCase" ],
+    [ "WaitNote", "classGuildmaster_1_1UI_1_1Components_1_1WaitNote.html", "classGuildmaster_1_1UI_1_1Components_1_1WaitNote" ],
     [ "Wordmark", "classGuildmaster_1_1UI_1_1Components_1_1Wordmark.html", "classGuildmaster_1_1UI_1_1Components_1_1Wordmark" ],
     [ "PlateFill", "namespaceGuildmaster_1_1UI_1_1Components.html#a91274a4408469c2712ba6dba053a1ea4", [
       [ "Down", "namespaceGuildmaster_1_1UI_1_1Components.html#a91274a4408469c2712ba6dba053a1ea4a08a38277b0309070706f6652eeae9a53", null ],

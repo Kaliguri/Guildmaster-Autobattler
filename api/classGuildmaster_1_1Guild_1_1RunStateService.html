@@ -162,12 +162,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a54acc723a0eb55c0a41fced00e41c86e" id="r_a54acc723a0eb55c0a41fced00e41c86e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a54acc723a0eb55c0a41fced00e41c86e">RemoveVesselItem</a> (int slotIndex, string itemId)</td></tr>
 <tr class="memdesc:a54acc723a0eb55c0a41fced00e41c86e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять один экземпляр предмета с сосуда слота.  <br /></td></tr>
 <tr class="separator:a54acc723a0eb55c0a41fced00e41c86e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa42547894cf7f96e39f964ffd2cfcb2" id="r_afa42547894cf7f96e39f964ffd2cfcb2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#afa42547894cf7f96e39f964ffd2cfcb2">TryAddBanner</a> (string bannerId)</td></tr>
-<tr class="memdesc:afa42547894cf7f96e39f964ffd2cfcb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Взять баннер, если есть свободный слот. false = слотов нет или нет забега.  <br /></td></tr>
-<tr class="separator:afa42547894cf7f96e39f964ffd2cfcb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8deac6923a9f1274b113d9b7d1ef256" id="r_ad8deac6923a9f1274b113d9b7d1ef256"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#ad8deac6923a9f1274b113d9b7d1ef256">RemoveBanner</a> (string bannerId)</td></tr>
-<tr class="memdesc:ad8deac6923a9f1274b113d9b7d1ef256"><td class="mdescLeft">&#160;</td><td class="mdescRight">Убрать баннер из активных.  <br /></td></tr>
-<tr class="separator:ad8deac6923a9f1274b113d9b7d1ef256"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2780a291147a3a28e73bcc8514dcaab" id="r_ac2780a291147a3a28e73bcc8514dcaab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#ac2780a291147a3a28e73bcc8514dcaab">AddPartyItem</a> (string itemId)</td></tr>
+<tr class="memdesc:ac2780a291147a3a28e73bcc8514dcaab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Взять предмет отряда. false = нет забега или пустой id; лимита слотов нет.  <br /></td></tr>
+<tr class="separator:ac2780a291147a3a28e73bcc8514dcaab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd14e1fbee026ef4d09876847273b6c2" id="r_abd14e1fbee026ef4d09876847273b6c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#abd14e1fbee026ef4d09876847273b6c2">RemovePartyItem</a> (string itemId)</td></tr>
+<tr class="memdesc:abd14e1fbee026ef4d09876847273b6c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Убрать предмет отряда.  <br /></td></tr>
+<tr class="separator:abd14e1fbee026ef4d09876847273b6c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -189,12 +189,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a57dd7a33997b891f5db9f65c6b477f1e" id="r_a57dd7a33997b891f5db9f65c6b477f1e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a57dd7a33997b891f5db9f65c6b477f1e">MaxVesselItems</a><code> [get]</code></td></tr>
 <tr class="memdesc:a57dd7a33997b891f5db9f65c6b477f1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько предметов помещается на одного сосуда.  <br /></td></tr>
 <tr class="separator:a57dd7a33997b891f5db9f65c6b477f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68e298c265348a2793cb0f585129d1c0" id="r_a68e298c265348a2793cb0f585129d1c0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a68e298c265348a2793cb0f585129d1c0">MaxPartyBanners</a><code> [get]</code></td></tr>
-<tr class="memdesc:a68e298c265348a2793cb0f585129d1c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько баннеров можно держать активными на весь отряд.  <br /></td></tr>
-<tr class="separator:a68e298c265348a2793cb0f585129d1c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23231e2d22a6d327f8df34c4159d4844" id="r_a23231e2d22a6d327f8df34c4159d4844"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a23231e2d22a6d327f8df34c4159d4844">Banners</a><code> [get]</code></td></tr>
-<tr class="memdesc:a23231e2d22a6d327f8df34c4159d4844"><td class="mdescLeft">&#160;</td><td class="mdescRight">Активные баннеры отряда.  <br /></td></tr>
-<tr class="separator:a23231e2d22a6d327f8df34c4159d4844"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dbc9a562217f7316533f8d375cb00d1" id="r_a7dbc9a562217f7316533f8d375cb00d1"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a7dbc9a562217f7316533f8d375cb00d1">PartyItems</a><code> [get]</code></td></tr>
+<tr class="memdesc:a7dbc9a562217f7316533f8d375cb00d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Предметы отряда, набранные за забег. Порядок — в каком брали.  <br /></td></tr>
+<tr class="separator:a7dbc9a562217f7316533f8d375cb00d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Guild_1_1IRunStateView"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Guild_1_1IRunStateView')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Guild_1_1IRunStateView.html">Guildmaster.Guild.IRunStateView</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
@@ -257,6 +254,34 @@ Events</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac2780a291147a3a28e73bcc8514dcaab" name="ac2780a291147a3a28e73bcc8514dcaab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2780a291147a3a28e73bcc8514dcaab">&#9670;&#160;</a></span>AddPartyItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Guild.RunStateService.AddPartyItem </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>itemId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Взять предмет отряда. false = нет забега или пустой id; лимита слотов нет. </p>
+
+</div>
+</div>
 <a id="a6b735b72a2c9f42774c7c55876833639" name="a6b735b72a2c9f42774c7c55876833639"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6b735b72a2c9f42774c7c55876833639">&#9670;&#160;</a></span>Autosave()</h2>
 
@@ -510,8 +535,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ad8deac6923a9f1274b113d9b7d1ef256" name="ad8deac6923a9f1274b113d9b7d1ef256"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8deac6923a9f1274b113d9b7d1ef256">&#9670;&#160;</a></span>RemoveBanner()</h2>
+<a id="abd14e1fbee026ef4d09876847273b6c2" name="abd14e1fbee026ef4d09876847273b6c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd14e1fbee026ef4d09876847273b6c2">&#9670;&#160;</a></span>RemovePartyItem()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -520,10 +545,10 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Guildmaster.Guild.RunStateService.RemoveBanner </td>
+          <td class="memname">void Guildmaster.Guild.RunStateService.RemovePartyItem </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>bannerId</em></td><td>)</td>
+          <td class="paramname"><em>itemId</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -534,7 +559,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Убрать баннер из активных. </p>
+<p>Убрать предмет отряда. </p>
 
 </div>
 </div>
@@ -573,34 +598,6 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Снять один экземпляр предмета с сосуда слота. </p>
-
-</div>
-</div>
-<a id="afa42547894cf7f96e39f964ffd2cfcb2" name="afa42547894cf7f96e39f964ffd2cfcb2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa42547894cf7f96e39f964ffd2cfcb2">&#9670;&#160;</a></span>TryAddBanner()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Guildmaster.Guild.RunStateService.TryAddBanner </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>bannerId</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Взять баннер, если есть свободный слот. false = слотов нет или нет забега. </p>
 
 </div>
 </div>
@@ -822,30 +819,6 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="a23231e2d22a6d327f8df34c4159d4844" name="a23231e2d22a6d327f8df34c4159d4844"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23231e2d22a6d327f8df34c4159d4844">&#9670;&#160;</a></span>Banners</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">IReadOnlyList&lt;string&gt; Guildmaster.Guild.RunStateService.Banners</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Активные баннеры отряда. </p>
-
-</div>
-</div>
 <a id="a6a2355235ec220b94cb7538a3a7ed0ca" name="a6a2355235ec220b94cb7538a3a7ed0ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6a2355235ec220b94cb7538a3a7ed0ca">&#9670;&#160;</a></span>Current</h2>
 
@@ -921,30 +894,6 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a68e298c265348a2793cb0f585129d1c0" name="a68e298c265348a2793cb0f585129d1c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68e298c265348a2793cb0f585129d1c0">&#9670;&#160;</a></span>MaxPartyBanners</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Guildmaster.Guild.RunStateService.MaxPartyBanners</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Сколько баннеров можно держать активными на весь отряд. </p>
-
-</div>
-</div>
 <a id="a57dd7a33997b891f5db9f65c6b477f1e" name="a57dd7a33997b891f5db9f65c6b477f1e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a57dd7a33997b891f5db9f65c6b477f1e">&#9670;&#160;</a></span>MaxVesselItems</h2>
 
@@ -966,6 +915,30 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Сколько предметов помещается на одного сосуда. </p>
+
+</div>
+</div>
+<a id="a7dbc9a562217f7316533f8d375cb00d1" name="a7dbc9a562217f7316533f8d375cb00d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7dbc9a562217f7316533f8d375cb00d1">&#9670;&#160;</a></span>PartyItems</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IReadOnlyList&lt;string&gt; Guildmaster.Guild.RunStateService.PartyItems</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Предметы отряда, набранные за забег. Порядок — в каком брали. </p>
 
 </div>
 </div>

@@ -104,13 +104,13 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Core_1_1Flow_1_1B
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Flow.BusyRequest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest__coll__graph.svg" width="208" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest__coll__graph.svg" width="218" height="462"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1c81ddc9583954a98b17ba5af12c1074" id="r_a1c81ddc9583954a98b17ba5af12c1074"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#a1c81ddc9583954a98b17ba5af12c1074">BusyRequest</a> (string titleKey, string titleFallback, CancellationToken until)</td></tr>
-<tr class="separator:a1c81ddc9583954a98b17ba5af12c1074"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4117d127f6277080c1a26633b89a7bd7" id="r_a4117d127f6277080c1a26633b89a7bd7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#a4117d127f6277080c1a26633b89a7bd7">BusyRequest</a> (string titleKey, string titleFallback, CancellationToken until, string detail=null, <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html">NoticeOption</a>? cancel=null)</td></tr>
+<tr class="separator:a4117d127f6277080c1a26633b89a7bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -123,14 +123,20 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ac51dfeb57bf7f43a59a1fd11e043533f" id="r_ac51dfeb57bf7f43a59a1fd11e043533f"><td class="memItemLeft" align="right" valign="top">readonly CancellationToken&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#ac51dfeb57bf7f43a59a1fd11e043533f">Until</a></td></tr>
 <tr class="memdesc:ac51dfeb57bf7f43a59a1fd11e043533f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ожидание кончилось: экран снимается отменой этого токена.  <br /></td></tr>
 <tr class="separator:ac51dfeb57bf7f43a59a1fd11e043533f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72272a5212e35f085f0e6c9133a38072" id="r_a72272a5212e35f085f0e6c9133a38072"><td class="memItemLeft" align="right" valign="top">readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#a72272a5212e35f085f0e6c9133a38072">Detail</a></td></tr>
+<tr class="memdesc:a72272a5212e35f085f0e6c9133a38072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подробность строкой ниже: ЧЕГО именно ждём.  <br /></td></tr>
+<tr class="separator:a72272a5212e35f085f0e6c9133a38072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abccb9ce02f63b9c59a02b798eec09486" id="r_abccb9ce02f63b9c59a02b798eec09486"><td class="memItemLeft" align="right" valign="top">readonly? <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html">NoticeOption</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#abccb9ce02f63b9c59a02b798eec09486">Cancel</a></td></tr>
+<tr class="memdesc:abccb9ce02f63b9c59a02b798eec09486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Чем игрок может прервать ожидание.  <br /></td></tr>
+<tr class="separator:abccb9ce02f63b9c59a02b798eec09486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Игра занята — показать это, пока идёт ожидание. </p>
 <p><b>Ожидание без экрана неотличимо от зависания.</b> Подключение к чужому лобби идёт через relay Valve и занимает секунды, в течение которых не происходило ничего видимого — игрок жал кнопку повторно, не зная, засчиталось ли первое нажатие (наход. Макса 08.08.2026: «Не хватает UI загрузки»). </p>
 <p><b>Сроком владеет тот, кто ждёт,</b> а не экран: показ снимается отменой Until. Своей кнопки «закрыть» у него нет намеренно — закрытое окно ожидания означало бы, что ждать перестали, а ждать не перестали.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1c81ddc9583954a98b17ba5af12c1074" name="a1c81ddc9583954a98b17ba5af12c1074"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c81ddc9583954a98b17ba5af12c1074">&#9670;&#160;</a></span>BusyRequest()</h2>
+<a id="a4117d127f6277080c1a26633b89a7bd7" name="a4117d127f6277080c1a26633b89a7bd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4117d127f6277080c1a26633b89a7bd7">&#9670;&#160;</a></span>BusyRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -154,7 +160,19 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">CancellationToken&#160;</td>
-          <td class="paramname"><em>until</em>&#160;</td>
+          <td class="paramname"><em>until</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>detail</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html">NoticeOption</a>?&#160;</td>
+          <td class="paramname"><em>cancel</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -172,6 +190,43 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="abccb9ce02f63b9c59a02b798eec09486" name="abccb9ce02f63b9c59a02b798eec09486"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abccb9ce02f63b9c59a02b798eec09486">&#9670;&#160;</a></span>Cancel</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly? <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html">NoticeOption</a> Guildmaster.Core.Flow.BusyRequest.Cancel</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Чем игрок может прервать ожидание. </p>
+<p><code>null</code> — прервать нечем, ждём до конца.</p>
+<p>Заведено 20.08.2026 по заказу Макса: «в подключение к игре дай возможность нажать кнопку отмены». Ожидание не спрашивает и потому кнопок не имеет по построению — но там, где ждать можно долго и по чужой вине (relay Valve ищет маршрут до чужого компьютера), единственный выход у игрока не должен быть через Alt+F4. </p>
+<p><b>Отмена обязана делать НАСТОЯЩЕЕ дело</b>, а не просто снимать экран: снятая картинка при живом подключении — обман, после которого игра внезапно вздрогнет чужим сеансом. Поэтому здесь лежит действие заказчика, а не флаг.</p>
+
+</div>
+</div>
+<a id="a72272a5212e35f085f0e6c9133a38072" name="a72272a5212e35f085f0e6c9133a38072"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72272a5212e35f085f0e6c9133a38072">&#9670;&#160;</a></span>Detail</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly string Guildmaster.Core.Flow.BusyRequest.Detail</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Подробность строкой ниже: ЧЕГО именно ждём. </p>
+<p>Пусто — строки не будет.</p>
+<p>Отдельно от TitleFallback по той же причине, что последствие отдельно от тела у сообщения: заголовок отвечает «что идёт», подробность — «почему это не мгновенно». Слитые в одну строку, они дают то, из-за чего экран и переделывали: фразу, по которой непонятно, ждёт игра чего-то или зависла. </p>
+
+</div>
+</div>
 <a id="a14122fdedbb405d3622cd0671a1b4232" name="a14122fdedbb405d3622cd0671a1b4232"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a14122fdedbb405d3622cd0671a1b4232">&#9670;&#160;</a></span>TitleFallback</h2>
 
