@@ -6,6 +6,7 @@
     "Guildmaster.Core",
     "Guildmaster.Data",
     "Guildmaster.Combat",
+    "Guildmaster.Guild",
     "Unity.Localization",
     "MCPForUnity.Editor"
   ],

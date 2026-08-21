@@ -36,6 +36,7 @@ namespace Guildmaster.Balance.Editor
             new Step("cards", "Карточки контента", ContentCards.Run),
             new Step("audit", "Аудит контента", ContentAuditor.Run),
             new Step("encounters", "Энкаунтеры (PvE)", EncounterBench.Run),
+            new Step("run", "Забег по акту", RunBench.Run),
             new Step("dps", "DPS-бенч", DpsBench.Run),
             new Step("survivability", "Бенч выживаемости", SurvivabilityBench.Run),
             new Step("duel", "Дуэли 1v1", DuelMatrixBench.Run),

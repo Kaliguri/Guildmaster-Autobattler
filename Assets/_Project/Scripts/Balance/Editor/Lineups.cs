@@ -65,6 +65,42 @@ namespace Guildmaster.Balance.Editor
             new Slot(UnitClass.Support, BackX, 0.6f),
         };
 
+        /// <summary>
+        /// КРИВОЙ СОСТАВ: четыре фронтовые роли, ни дальника, ни поддержки. Моделирует испытание-ограничение
+        /// вроде «только ближники» (<c>meta-progression</c> §Испытания) — игрок ломает пачку ради денег.
+        /// </summary>
+        /// <remarks>
+        /// Существует ради вопроса «сколько стоит квест»: сравнивается со <see cref="Squad"/> на том же
+        /// маршруте, и разница между ними и есть цена. Отдельный строй, а не флаг в бенче, потому что
+        /// «как выглядит команда» — язык этого файла: заведи такой же массив внутри бенча, и у понятия
+        /// строя станет два владельца.
+        /// </remarks>
+        public static readonly Slot[] MeleeOnly =
+        {
+            new Slot(UnitClass.Tank, FrontX, -0.6f),
+            new Slot(UnitClass.Bruiser, FrontX, 0.6f),
+            new Slot(UnitClass.Bruiser, BackX, -0.6f),
+            new Slot(UnitClass.Assassin, BackX, 0.6f),
+        };
+
+        /// <summary>
+        /// КРИВАЯ РАССТАНОВКА: состав штатный, но вывернут наизнанку — танк отправлен в тыл, поддержка
+        /// выставлена на острие. Роли те же, что у <see cref="Squad"/>, разница ТОЛЬКО в позициях.
+        /// </summary>
+        /// <remarks>
+        /// Отвечает на требование «рядовой бой обязан оставаться смертельным при неправильной расстановке»
+        /// (решение Макса 2026-08-21, <c>gdd/30-run-meta/injuries-mettle</c>). Без этого строя стенд знал
+        /// одну раскладку на бой и на вопрос про расстановку ответить не мог — слепое пятно, записанное
+        /// в самом <see cref="EncounterBench"/>.
+        /// </remarks>
+        public static readonly Slot[] SquadInverted =
+        {
+            new Slot(UnitClass.Support, FrontX, -0.6f),
+            new Slot(UnitClass.Ranged, FrontX, 0.6f),
+            new Slot(UnitClass.Bruiser, BackX, -0.6f),
+            new Slot(UnitClass.Tank, BackX, 0.6f),
+        };
+
         /// <summary>Шестёрка: отряд, растянутый до боя крупнее штатного (проверка, как масштабируются киты).</summary>
         public static readonly Slot[] Large =
         {

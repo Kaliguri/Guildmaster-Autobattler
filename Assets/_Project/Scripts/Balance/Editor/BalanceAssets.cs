@@ -54,6 +54,17 @@ namespace Guildmaster.Balance.Editor
 
         public static List<RelicData> LoadRelics() => LoadAll<RelicData>();
         public static List<EnemyData> LoadEnemies() => LoadAll<EnemyData>();
+        public static List<EncounterData> LoadEncounters() => LoadAll<EncounterData>();
+
+        /// <summary>
+        /// Конфиг генерации акта — первый найденный <c>ActConfig</c>; нет ни одного — <c>null</c>, и звать
+        /// придётся дефолтный POCO (тот же фолбэк, что у самой игры при неназначенном конфиге).
+        /// </summary>
+        public static Guildmaster.Guild.ActConfig LoadActConfig()
+        {
+            List<Guildmaster.Guild.ActConfig> all = LoadAll<Guildmaster.Guild.ActConfig>();
+            return all.Count > 0 ? all[0] : null;
+        }
 
         /// <summary>
         /// Ассет по имени среди тех типов, из которых трейс умеет собрать бой (реликвия, энкаунтер,
