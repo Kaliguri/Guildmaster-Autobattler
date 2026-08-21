@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: PresetCryomancer
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.BattlePresetData
   _id: battle_preset.cryomancer
-  _encounter: {fileID: 11400000, guid: eb1f7397d2db9e7448f2185e71269b2c, type: 2}
+  _encounter: {fileID: 11400000, guid: 5031a162cbaeff946abaee1464766c22, type: 2}
   _roster:
   - _relic: {fileID: 11400000, guid: 7ef9ed5a7ec3b0d41bdd65e85f35ff88, type: 2}
     _vessel: {fileID: 0}
     _position: {x: -6, y: 0}
+    _items: []
+    _consequences: []
   _deploymentMode: 0
+  _partyItems: []
+  _isCarrier: 0

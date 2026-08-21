@@ -13,18 +13,28 @@ MonoBehaviour:
   m_Name: PresetPartyVsRaid
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.BattlePresetData
   _id: battle_preset.party_vs_raid
-  _encounter: {fileID: 11400000, guid: a00a2ec28a657bf4bb44917fc484480d, type: 2}
+  _encounter: {fileID: 11400000, guid: 46933253785e7d6469a79dcb073eba7d, type: 2}
   _roster:
   - _relic: {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
     _vessel: {fileID: 0}
     _position: {x: -6, y: 1.5}
+    _items: []
+    _consequences: []
   - _relic: {fileID: 11400000, guid: 3929f651376911d4e8bf8d6d5adb3ef5, type: 2}
     _vessel: {fileID: 0}
     _position: {x: -5, y: -1.5}
+    _items: []
+    _consequences: []
   - _relic: {fileID: 11400000, guid: cbdaabcbd4ebc7d42b6f4cbb08c301c9, type: 2}
     _vessel: {fileID: 0}
     _position: {x: -7, y: 0.5}
+    _items: []
+    _consequences: []
   - _relic: {fileID: 11400000, guid: 2405b745f0480e2428fdaf24ac1b5d93, type: 2}
     _vessel: {fileID: 0}
     _position: {x: -7, y: -1}
+    _items: []
+    _consequences: []
   _deploymentMode: 0
+  _partyItems: []
+  _isCarrier: 0

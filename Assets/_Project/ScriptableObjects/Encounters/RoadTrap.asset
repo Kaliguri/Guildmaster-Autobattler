@@ -10,21 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e614c56209bc5e94b8994c183262b2ed, type: 3}
-  m_Name: GoblinAmbush
+  m_Name: RoadTrap
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EncounterData
-  _id: encounter.goblin_ambush
+  _id: encounter.road_trap
   _tier: 0
   _units:
-  - _enemyId: enemy.goblin_grunt
-    _position: {x: 5, y: 0}
+  - _enemyId: enemy.bandit_duelist
+    _position: {x: 4.5, y: 0}
     _count: 2
-    _spacing: 1
-  - _enemyId: enemy.goblin_cutthroat
-    _position: {x: 6, y: 3}
-    _count: 1
     _spacing: 0
-  - _enemyId: enemy.goblin_cutthroat
-    _position: {x: 6, y: -3}
+  - _enemyId: enemy.bandit_venombow
+    _position: {x: 7, y: 0}
     _count: 1
     _spacing: 0
   _arenaId: 

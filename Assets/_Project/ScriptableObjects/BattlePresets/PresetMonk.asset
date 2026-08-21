@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: PresetMonk
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.BattlePresetData
   _id: battle_preset.monk
-  _encounter: {fileID: 11400000, guid: e9bec1cd7bb5de24c8f84a8056aacb2e, type: 2}
+  _encounter: {fileID: 11400000, guid: 5031a162cbaeff946abaee1464766c22, type: 2}
   _roster:
   - _relic: {fileID: 11400000, guid: 996f2fad803a29546b30c3849034e749, type: 2}
     _vessel: {fileID: 0}
     _position: {x: -6, y: 0}
+    _items: []
+    _consequences: []
   _deploymentMode: 0
+  _partyItems: []
+  _isCarrier: 0

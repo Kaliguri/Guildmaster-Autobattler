@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: PresetDefender
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.BattlePresetData
   _id: battle_preset.defender
-  _encounter: {fileID: 11400000, guid: 919fad40c91371a41abad9d1d863df4b, type: 2}
+  _encounter: {fileID: 11400000, guid: a5b94964ae8baca4983ad59e41501fd4, type: 2}
   _roster:
   - _relic: {fileID: 11400000, guid: 3929f651376911d4e8bf8d6d5adb3ef5, type: 2}
     _vessel: {fileID: 0}
     _position: {x: -4, y: 0}
+    _items: []
+    _consequences: []
   _deploymentMode: 0
+  _partyItems: []
+  _isCarrier: 0

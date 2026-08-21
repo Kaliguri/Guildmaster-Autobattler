@@ -13,18 +13,28 @@ MonoBehaviour:
   m_Name: PresetPartyVsWarband
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.BattlePresetData
   _id: battle_preset.party_vs_warband
-  _encounter: {fileID: 11400000, guid: 919fad40c91371a41abad9d1d863df4b, type: 2}
+  _encounter: {fileID: 11400000, guid: a5b94964ae8baca4983ad59e41501fd4, type: 2}
   _roster:
   - _relic: {fileID: 11400000, guid: 7ef9ed5a7ec3b0d41bdd65e85f35ff88, type: 2}
     _vessel: {fileID: 0}
     _position: {x: -6, y: 1}
+    _items: []
+    _consequences: []
   - _relic: {fileID: 11400000, guid: b94a788eb332911478cd8f88880f03ea, type: 2}
     _vessel: {fileID: 0}
     _position: {x: -5, y: -1}
+    _items: []
+    _consequences: []
   - _relic: {fileID: 11400000, guid: 996f2fad803a29546b30c3849034e749, type: 2}
     _vessel: {fileID: 0}
     _position: {x: -6, y: -0.2}
+    _items: []
+    _consequences: []
   - _relic: {fileID: 11400000, guid: cbdaabcbd4ebc7d42b6f4cbb08c301c9, type: 2}
     _vessel: {fileID: 0}
     _position: {x: -7, y: 0.8}
+    _items: []
+    _consequences: []
   _deploymentMode: 0
+  _partyItems: []
+  _isCarrier: 0

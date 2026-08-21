@@ -10,16 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 510709c0768a8b54a9cb0853ec931536, type: 3}
-  m_Name: PresetSpearman
+  m_Name: GoblinLine
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.BattlePresetData
-  _id: battle_preset.spearman
-  _encounter: {fileID: 11400000, guid: 5031a162cbaeff946abaee1464766c22, type: 2}
-  _roster:
-  - _relic: {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
-    _vessel: {fileID: 0}
-    _position: {x: -5, y: 0}
-    _items: []
-    _consequences: []
-  _deploymentMode: 0
+  _id: battle_preset.goblin_line
+  _encounter: {fileID: 11400000, guid: bbc7d23c452e4d240bf7de18428822fd, type: 2}
+  _roster: []
+  _deploymentMode: 1
   _partyItems: []
   _isCarrier: 0

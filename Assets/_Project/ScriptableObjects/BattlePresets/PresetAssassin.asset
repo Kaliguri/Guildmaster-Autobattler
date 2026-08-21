@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: PresetAssassin
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.BattlePresetData
   _id: battle_preset.assassin
-  _encounter: {fileID: 11400000, guid: 927babe2f9296f8438ea394434fe19f5, type: 2}
+  _encounter: {fileID: 11400000, guid: a5b94964ae8baca4983ad59e41501fd4, type: 2}
   _roster:
   - _relic: {fileID: 11400000, guid: b94a788eb332911478cd8f88880f03ea, type: 2}
     _vessel: {fileID: 0}
     _position: {x: -5, y: 0}
+    _items: []
+    _consequences: []
   _deploymentMode: 0
+  _partyItems: []
+  _isCarrier: 0
