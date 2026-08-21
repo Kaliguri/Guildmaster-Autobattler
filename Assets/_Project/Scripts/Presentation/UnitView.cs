@@ -1021,6 +1021,28 @@ namespace Guildmaster.Presentation
         public int BodySortingOrder => Body != null ? Body.SortingOrder : 0;
 
         /// <summary>
+        /// Материал тела — им же рисуется его призрачная копия (шлейф рывка, иллюзия уклонения): копия
+        /// обязана светиться и сканироваться тем же шейдером, что оригинал, иначе она читается как чужой
+        /// объект рядом с юнитом, а не как его след.
+        /// </summary>
+        /// <remarks>
+        /// Берётся с ПЕРВОЙ живой части: материал у частей одного тела общий (он же несёт вспышку удара, и
+        /// её обязана уметь каждая часть). Тела нет — <c>null</c>, и копия рисуется дефолтным материалом
+        /// спрайта: без голограммы, но видимая.
+        /// </remarks>
+        public Material BodyMaterial
+        {
+            get
+            {
+                var parts = Body?.Parts?.Parts;
+                if (parts == null) return null;
+                for (int i = 0; i < parts.Count; i++)
+                    if (parts[i].Renderer != null) return parts[i].Renderer.sharedMaterial;
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Попадает ли мировая точка в ЭТАЛОННЫЙ габарит фигуры — ту самую зелёную рамку гизмо
         /// (<c>_recommendedWidth</c> × <c>_recommendedHeight</c> от ног). Это «тело юнита» в понимании дизайна:
         /// не зависит от кадра анимации и от прозрачных полей спрайта, поэтому зона хватания в расстановке

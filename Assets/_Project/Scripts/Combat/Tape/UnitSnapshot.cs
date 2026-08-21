@@ -94,6 +94,12 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Юнит в полёте от отбрасывания — вторая половина «стана» в понимании оверлея.</summary>
         public readonly bool IsDisplaced;
 
+        /// <summary>
+        /// Полёт юнит начал САМ — кувырок, телепорт, рывок способности. Показ тянет за таким движением шлейф
+        /// из призрачных копий; за телом, которое унесло чужим ударом, — не тянет.
+        /// </summary>
+        public readonly bool IsSelfDisplaced;
+
         /// <summary>Взведено усиление следующего удара (<c>EmpowerDamageMult</c> живого юнита).</summary>
         public readonly bool IsEmpowered;
 
@@ -132,7 +138,8 @@ namespace Guildmaster.Combat.Tape
             float attackRange = 0f, bool canAct = true, bool isDisplaced = false, bool isEmpowered = false,
             float sprintRamp = 0f, bool chargedSwing = false,
             int recoveryTicks = 0, int recoveryRemaining = 0,
-            int attackChannelTickPeriod = 0, int attackChannelTickRemaining = 0)
+            int attackChannelTickPeriod = 0, int attackChannelTickRemaining = 0,
+            bool isSelfDisplaced = false)
         {
             Id                  = id;
             Team                = team;
@@ -154,6 +161,7 @@ namespace Guildmaster.Combat.Tape
             AttackRange         = attackRange;
             CanAct              = canAct;
             IsDisplaced         = isDisplaced;
+            IsSelfDisplaced     = isSelfDisplaced;
             IsEmpowered         = isEmpowered;
             SprintRamp          = sprintRamp;
             ChargedSwing        = chargedSwing;
@@ -199,7 +207,8 @@ namespace Guildmaster.Combat.Tape
                 unit.AttackChannel.Exists
                     ? AttackTiming.IntervalTicks(unit.Stats.Get(StatType.AttackSpeed))
                     : 0,
-                unit.AttackChannelTickRemaining);
+                unit.AttackChannelTickRemaining,
+                unit.DisplacedTicksRemaining > 0 && unit.SelfDisplaced);
         }
     }
 }

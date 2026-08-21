@@ -310,6 +310,7 @@ namespace Guildmaster.Net.Tape
             if (unit.IsDisplaced)  flags |= TapeChunkFormat.UnitFlag.IsDisplaced;
             if (unit.IsEmpowered)  flags |= TapeChunkFormat.UnitFlag.IsEmpowered;
             if (unit.ChargedSwing) flags |= TapeChunkFormat.UnitFlag.ChargedSwing;
+            if (unit.IsSelfDisplaced) flags |= TapeChunkFormat.UnitFlag.SelfDisplaced;
             return flags;
         }
     }

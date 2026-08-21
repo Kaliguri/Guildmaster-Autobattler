@@ -81,6 +81,24 @@ namespace Guildmaster.Combat
             });
 
             target.DisplacedTicksRemaining = ticks;
+
+            // Своё это движение или тело унесло чужим ударом — факт нужен показу (шлейф тянется только за
+            // намеренным рывком). Чужой толчок ПЕРЕБИВАЕТ признак, свой поверх чужого — нет: по одному телу
+            // может идти несколько смещений сразу, и «меня несёт» сильнее, чем «я рвусь».
+            bool self = req.Source != null && ReferenceEquals(req.Source, target);
+            target.SelfDisplaced = self && !HasForeignDisplacement(target);
+        }
+
+        /// <summary>Идёт ли по телу хоть одно ЧУЖОЕ смещение — при нём свой рывок показу не показываем.</summary>
+        private bool HasForeignDisplacement(RuntimeUnit unit)
+        {
+            for (int i = 0; i < _active.Count; i++)
+            {
+                Active a = _active[i];
+                if (!ReferenceEquals(a.Unit, unit)) continue;
+                if (a.Source == null || !ReferenceEquals(a.Source, unit)) return true;
+            }
+            return false;
         }
 
         /// <summary>Продвинуть все активные смещения на один тик.</summary>
@@ -95,7 +113,7 @@ namespace Guildmaster.Combat
                 // Цель погибла в полёте — снимаем полёт, финальный сигнал не шлём (некому в спину).
                 if (u == null || u.IsDead)
                 {
-                    if (u != null) u.DisplacedTicksRemaining = 0;
+                    if (u != null) { u.DisplacedTicksRemaining = 0; u.SelfDisplaced = false; }
                     _active.RemoveAt(i);
                     continue;
                 }
@@ -146,6 +164,7 @@ namespace Guildmaster.Combat
                     if (HasActiveDisplacement(u)) continue;
 
                     u.DisplacedTicksRemaining = 0;
+                    u.SelfDisplaced           = false;
                     OnDisplacementEnded?.Invoke(a.Source, u);
                 }
             }

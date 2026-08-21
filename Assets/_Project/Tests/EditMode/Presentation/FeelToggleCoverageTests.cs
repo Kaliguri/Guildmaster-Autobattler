@@ -107,6 +107,10 @@ namespace Guildmaster.Tests.EditMode.Presentation
             // HitPoint — то есть в поведение до 06.08.2026. Оба режима сравниваются в бою.
             new Entry("ImpactZone",      Switch.Toggle, nameof(CombatFeelConfig.EnableImpactZones)),
 
+            // Шлейф из призрачных копий: копии снимает ПРЕЗЕНТЕР (он читает признак рывка из кадра), поэтому
+            // входа на виде у него нет — есть только тумблер, и спрашивается он в CombatPresenter.
+            new Entry("DashGhostTrail",  Switch.Toggle, nameof(CombatFeelConfig.EnableDashGhostTrail)),
+
             // Взмах и его геометрия — ЗАПРОСЫ к виду, а не эффекты: отвечают «где клинок», ничего не рисуя.
             new Entry("TryGetSwingArc",      Switch.NotAnEffect, "геометрия взмаха для дуги — запрос, не эффект"),
             new Entry("TryGetSwingProgress", Switch.NotAnEffect, "насколько прошёл взмах — запрос, не эффект"),

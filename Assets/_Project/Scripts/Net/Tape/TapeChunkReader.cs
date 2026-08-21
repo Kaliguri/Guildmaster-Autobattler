@@ -222,7 +222,8 @@ namespace Guildmaster.Net.Tape
                 recoveryTicks: recoveryTicks,
                 recoveryRemaining: recoveryLeft,
                 attackChannelTickPeriod: channelPeriod,
-                attackChannelTickRemaining: channelLeft);
+                attackChannelTickRemaining: channelLeft,
+                isSelfDisplaced: (flags & TapeChunkFormat.UnitFlag.SelfDisplaced) != 0);
 
             _previous[id] = snapshot;
             return snapshot;

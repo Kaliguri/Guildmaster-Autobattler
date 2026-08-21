@@ -546,6 +546,35 @@ namespace Guildmaster.Presentation.Design
                  "взмаха, поэтому след не кипит покадрово, но у соседних ударов разный.")]
         [SerializeField, Range(0f, 1f)] private float _swingArcRoughness = 0.35f;
 
+        [Header("VFX — шлейф из призрачных копий (рывок, кувырок, телепорт)")]
+        [Tooltip("Юнит, который сам рванул с места, оставляет за собой цепочку призрачных копий своего " +
+                 "тела. Тело, которое унесло ЧУЖИМ толчком, шлейфа не даёт: копия говорит о намерении, а " +
+                 "не о скорости. Выключено — рывок остаётся мгновенным перемещением.")]
+        [SerializeField] private bool _enableDashGhostTrail = true;
+
+        [Tooltip("Как часто снимается копия, сек. Меньше — гуще шлейф и больше рендереров на экране: " +
+                 "копия несёт все части тела, поэтому частота здесь дороже, чем у частиц.")]
+        [SerializeField, Range(0.01f, 0.2f)] private float _ghostTrailInterval = 0.045f;
+
+        [Tooltip("Сколько живёт ОДНА копия, сек. Вместе с интервалом задаёт длину хвоста: " +
+                 "жизнь / интервал = сколько копий видно разом.")]
+        [SerializeField, Range(0.05f, 1f)] private float _ghostLifeSeconds = 0.28f;
+
+        [Tooltip("Непрозрачность копии в момент снимка. Хвост — тот же свет юнита, теряющий " +
+                 "прозрачность, а не переход во второй цвет.")]
+        [SerializeField, Range(0.05f, 1f)] private float _ghostStartAlpha = 0.45f;
+
+        [Tooltip("Степень затухания копии: 1 — линейно, больше — держится дольше и гаснет резче.")]
+        [SerializeField, Range(0.3f, 4f)] private float _ghostFadePower = 1.6f;
+
+        [Tooltip("Сила голограммы на копии (тот же режим шейдера, что у развоплощения смерти). " +
+                 "0 — просто прозрачный силуэт своего цвета.")]
+        [SerializeField, Range(0f, 1f)] private float _ghostHolo = 0.35f;
+
+        [Tooltip("Насколько копия уходит ЗА тело по порядку отрисовки: шлейф обязан идти позади живого " +
+                 "юнита, иначе он закрывает того, за кем тянется.")]
+        [SerializeField] private int _ghostSortingOffset = -4;
+
         [SerializeField] private HitFormArchetypeConfig _hitFormSlash = HitFormArchetypeConfig.Slash();
         [SerializeField] private HitFormArchetypeConfig _hitFormPierce = HitFormArchetypeConfig.Pierce();
         [SerializeField] private HitFormArchetypeConfig _hitFormBlunt = HitFormArchetypeConfig.Blunt();
@@ -748,6 +777,21 @@ namespace Guildmaster.Presentation.Design
             float t = Mathf.Clamp01(hpDamageFrac / Mathf.Max(1e-4f, _heavyHitFrac));
             return Mathf.Lerp(_cutLengthMinH, _cutLengthMaxH, t) * Mathf.Max(0.01f, _hitFormUnitHeight);
         }
+
+        /// <summary>Тянуть ли шлейф из призрачных копий за юнитом, который рванул с места САМ.</summary>
+        public bool  EnableDashGhostTrail => _enableDashGhostTrail;
+        /// <summary>Период снятия копии, сек.</summary>
+        public float GhostTrailInterval   => _ghostTrailInterval;
+        /// <summary>Сколько живёт одна копия, сек.</summary>
+        public float GhostLifeSeconds     => _ghostLifeSeconds;
+        /// <summary>Непрозрачность копии в момент снимка.</summary>
+        public float GhostStartAlpha      => _ghostStartAlpha;
+        /// <summary>Степень затухания копии по её жизни.</summary>
+        public float GhostFadePower       => _ghostFadePower;
+        /// <summary>Сила голограммы на копии (0 — просто прозрачный силуэт).</summary>
+        public float GhostHolo            => _ghostHolo;
+        /// <summary>Сдвиг порядка отрисовки копии относительно тела: отрицательный — за спину.</summary>
+        public int   GhostSortingOffset   => _ghostSortingOffset;
 
         public bool    EnableSwingArc      => _enableSwingArc;
         public VfxData VfxSwingArc         => _vfxSwingArc;

@@ -81,6 +81,11 @@ namespace Guildmaster.Presentation
         private System.Action<FloatingText> _releaseText;
         private CombatStatusOverlay         _statusOverlay;
         private CombatVfx                   _vfx;               // пул боевых VFX-префабов
+        private Effects.CombatGhosts        _ghosts;            // пул призрачных копий тела (шлейф рывка)
+
+        // Часы шлейфа: сколько времени копится с последней копии, по id юнита. Держим здесь, а не в виде:
+        // шлейф — фидбэк на СОСТОЯНИЕ юнита в кадре показа, и решает про него тот же, кто читает кадр.
+        private readonly Dictionary<int, float> _ghostClock = new Dictionary<int, float>();
         private int                         _finisherCandidate = -1; // id автора последнего добивающего мили-удара
 
         private IPublisher<DamageDealtEvent> _damageDealtPublisher;
@@ -353,6 +358,11 @@ namespace Guildmaster.Presentation
             // Летящие VFX-префабы — погасить и вернуть в пул.
             if (_vfx != null) _vfx.DespawnAll();
 
+            // Призрачные копии — тем же порядком: они переживают своего юнита по замыслу, а значит и
+            // рестарт пережили бы, оставив на арене чужой шлейф.
+            if (_ghosts != null) _ghosts.DespawnAll();
+            _ghostClock.Clear();
+
             // О нехватке данных для визуала говорится один раз на факт — но «один раз» живёт в пределах
             // боя. Иначе после первого прогона консоль замолчит до перезапуска редактора, и следующий
             // состав будет молча терять эффекты.
@@ -376,6 +386,15 @@ namespace Guildmaster.Presentation
             var go = new GameObject("CombatVfx");
             go.transform.SetParent(transform, worldPositionStays: false);
             _vfx = go.AddComponent<CombatVfx>();
+        }
+
+        /// <summary>Создать пул призрачных копий тела в рантайме (без правок сцены) — тем же способом, что VFX.</summary>
+        private void EnsureGhosts()
+        {
+            if (_ghosts != null) return;
+            var go = new GameObject("CombatGhosts");
+            go.transform.SetParent(transform, worldPositionStays: false);
+            _ghosts = go.AddComponent<Effects.CombatGhosts>();
         }
 
         private void Update()
@@ -419,6 +438,64 @@ namespace Guildmaster.Presentation
                 kvp.Value.UpdateInterpolation(alpha);
             }
 
+            // Шлейф снимается ПОСЛЕ интерполяции: копия обязана повторять позу этого кадра, а до неё поза
+            // ещё от предыдущего — след шёл бы за телом с отставанием в кадр.
+            UpdateGhostTrails();
+        }
+
+        /// <summary>
+        /// Шлейф из призрачных копий за теми, кто рванул с места САМ (кувырок «Отхода», телепорт
+        /// «Смещения», рывок способности). Тело, которое унесло чужим толчком, копий не оставляет —
+        /// признак приходит из снимка (<c>IsSelfDisplaced</c>), потому что по одной позиции показ намерение
+        /// не отличит.
+        /// </summary>
+        private void UpdateGhostTrails()
+        {
+            if (_feel == null || !_feel.EnableDashGhostTrail) return;
+
+            float dt = Time.deltaTime;
+            float interval = Mathf.Max(0.01f, _feel.GhostTrailInterval);
+
+            foreach (var kvp in _views)
+            {
+                int id = kvp.Key;
+                UnitView view = kvp.Value;
+                if (view == null) continue;
+
+                if (!_frameIndex.TryGetValue(id, out Combat.Tape.UnitSnapshot s) || !s.IsSelfDisplaced || s.IsDead)
+                {
+                    // Рывок кончился — часы снимаются, чтобы следующий начался с копии, а не с остатка.
+                    _ghostClock.Remove(id);
+                    continue;
+                }
+
+                _ghostClock.TryGetValue(id, out float clock);
+
+                // Первая копия ставится СРАЗУ (clock == 0): половина рывков короче интервала, и с ожиданием
+                // они не оставили бы ни одной.
+                if (clock > 0f)
+                {
+                    clock -= dt;
+                    if (clock > 0f) { _ghostClock[id] = clock; continue; }
+                }
+
+                LeaveGhost(view, id, _feel.GhostStartAlpha, _feel.GhostLifeSeconds);
+                _ghostClock[id] = interval;
+            }
+        }
+
+        /// <summary>Оставить одну призрачную копию тела в его текущей позе и точке ног.</summary>
+        private void LeaveGhost(UnitView view, int unitId, float startAlpha, float life)
+        {
+            EnsureGhosts();
+
+            Vector3 feet = view.FeetPoint;
+            UnitSilhouette silhouette = view.CaptureSilhouette(feet);
+            if (!silhouette.Valid) return;
+
+            _ghosts.Leave(in silhouette, feet, VfxColorFor(unitId), view.BodyMaterial,
+                view.BodySortingLayerId, view.BodySortingOrder + _feel.GhostSortingOffset,
+                life, startAlpha, _feel.GhostFadePower, _feel.GhostHolo);
         }
 
         /// <summary>

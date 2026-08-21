@@ -64,6 +64,9 @@ namespace Guildmaster.Net.Tape
             public const byte IsDisplaced  = 1 << 2;
             public const byte IsEmpowered  = 1 << 3;
             public const byte ChargedSwing = 1 << 4;
+
+            /// <summary>Полёт начат самим юнитом (рывок), а не чужим толчком — по нему показ тянет шлейф.</summary>
+            public const byte SelfDisplaced = 1 << 5;
         }
     }
 }
