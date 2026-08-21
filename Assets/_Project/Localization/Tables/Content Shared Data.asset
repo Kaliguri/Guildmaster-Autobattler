@@ -1623,6 +1623,30 @@ MonoBehaviour:
     m_Key: relic.hemomancer.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 14998633542049792
+    m_Key: effect.evasion.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14998633617547264
+    m_Key: effect.evasion.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14998633617547265
+    m_Key: effect.headwind.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14998633617547266
+    m_Key: effect.headwind.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14998633617547267
+    m_Key: effect.gust.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14998633621741568
+    m_Key: effect.gust.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

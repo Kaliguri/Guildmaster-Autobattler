@@ -85,7 +85,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3196892471310
-    m_Localized: Dodge
+    m_Localized: Sidestep
     m_Metadata:
       m_Items: []
   - m_Id: 3196892471311
@@ -795,6 +795,33 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8611003560615936
     m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14998633542049792
+    m_Localized: Evasion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14998633617547264
+    m_Localized: 'Every fourth attack against the target goes wide. Stacks deepen
+      it: at four, every attack misses.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14998633617547265
+    m_Localized: Headwind
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14998633617547266
+    m_Localized: Ranged hits on the target are cut in half. The cut half is billed
+      to the stream; when it empties, the wind dies down.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14998633617547267
+    m_Localized: Gust
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14998633621741568
+    m_Localized: The wind pulls the ally out of the blow before it lands, leaving
+      Evasion behind.
     m_Metadata:
       m_Items: []
   references:
