@@ -280,6 +280,82 @@ function outcomeStats(ctx: CanvasRenderingContext2D, width: number, height: numb
   w.box(ctx, { x: 0.51, y: 0.82, w: 0.13, h: 0.055 }, width, height, { label: "В меню", size: 8 });
 }
 
+
+/* ── Лоадаут ──────────────────────────────────────────────────────────────── */
+
+/** Как сейчас: сетка внутри панели, справа описание. */
+function loadoutNow(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  w.screen(ctx, width, height);
+  const panel: w.Rect = { x: 0.42, y: 0.08, w: 0.56, h: 0.86 };
+  w.box(ctx, panel, width, height, {});
+  for (let r = 0; r < 3; r++)
+    for (let c = 0; c < 4; c++)
+      w.box(ctx, { x: 0.44 + c * 0.075, y: 0.16 + r * 0.20, w: 0.065, h: 0.17 }, width, height,
+        { lit: r === 0 && c === 0, size: 8 });
+  w.box(ctx, { x: 0.76, y: 0.12, w: 0.21, h: 0.78 }, width, height,
+    { label: "ОПИСАНИЕ", sub: "статы строками", size: 9 });
+  w.callout(ctx, { x: 0.42, y: 0.50 }, { x: 0.22, y: 0.50 },
+    "левая треть кадра пуста", width, height, "right");
+}
+
+/** Вариант А: витрина без панели — приём Guildrun. */
+function loadoutShowcase(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  w.screen(ctx, width, height);
+
+  w.box(ctx, { x: 0.02, y: 0.03, w: 0.09, h: 0.06 }, width, height, { label: "Назад", size: 8 });
+  for (let i = 0; i < 2; i++)
+    w.box(ctx, { x: 0.38 + i * 0.13, y: 0.03, w: 0.12, h: 0.06 }, width, height,
+      { label: ["Реликвии", "Предметы"][i] ?? "", lit: i === 0, size: 8 });
+  w.box(ctx, { x: 0.72, y: 0.03, w: 0.16, h: 0.06 }, width, height, { label: "Поиск", size: 8 });
+  w.box(ctx, { x: 0.90, y: 0.03, w: 0.08, h: 0.06 }, width, height, { label: "Все", size: 8 });
+
+  w.text(ctx, "СОБРАНО 13 ИЗ 75", { x: 0.03, y: 0.17 }, width, height, { size: 13 });
+  w.text(ctx, "реликвии открываются за победы над элитой", { x: 0.03, y: 0.22 }, width, height,
+    { size: 9, color: "#8A8A93" });
+
+  for (let r = 0; r < 3; r++)
+    for (let c = 0; c < 9; c++)
+      w.box(ctx, { x: 0.03 + c * 0.105, y: 0.28 + r * 0.22, w: 0.095, h: 0.19 }, width, height,
+        { lit: r === 0 && c === 0, dashed: r === 2 && c > 4, size: 7 });
+
+  w.callout(ctx, { x: 0.50, y: 0.25 }, { x: 0.66, y: 0.25 },
+    "панели нет: сетка прямо на фоне", width, height, "left");
+}
+
+/* ── Боевой HUD ───────────────────────────────────────────────────────────── */
+
+function hudNow(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  w.screen(ctx, width, height);
+  w.worldBehind(ctx, width, height);
+  w.box(ctx, { x: 0.30, y: 0.01, w: 0.40, h: 0.06 }, width, height, { label: "топбар", size: 8 });
+  w.box(ctx, { x: 0.40, y: 0.40, w: 0.08, h: 0.02 }, width, height, {});
+  w.box(ctx, { x: 0.56, y: 0.44, w: 0.08, h: 0.02 }, width, height, {});
+  w.callout(ctx, { x: 0.10, y: 0.80 }, { x: 0.30, y: 0.80 },
+    "трава до края кадра, углы пусты", width, height, "left");
+}
+
+/** Вариант А: обрамление поля и карточка выбранного — приём Guildrun. */
+function hudFramed(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  w.screen(ctx, width, height);
+  w.worldBehind(ctx, width, height);
+
+  // Обрамление: арт по краям кадра, поле боя в световом пятне посередине.
+  w.box(ctx, { x: 0.00, y: 0.00, w: 0.16, h: 1.00 }, width, height,
+    { label: "арт", sub: "камни, деревья", size: 8, hollow: true });
+  w.box(ctx, { x: 0.84, y: 0.00, w: 0.16, h: 1.00 }, width, height,
+    { label: "арт", size: 8, hollow: true });
+
+  w.box(ctx, { x: 0.28, y: 0.01, w: 0.44, h: 0.06 }, width, height,
+    { label: "ресурсы · статусы · таймер", sub: "торцы скошены", size: 8 });
+  w.box(ctx, { x: 0.74, y: 0.60, w: 0.22, h: 0.34 }, width, height,
+    { label: "ВЫБРАННЫЙ", sub: "портрет · HP · статы · слоты", lit: true, size: 9 });
+  w.box(ctx, { x: 0.18, y: 0.90, w: 0.40, h: 0.08 }, width, height,
+    { label: "отряд · резерв", size: 8 });
+
+  w.callout(ctx, { x: 0.16, y: 0.45 }, { x: 0.30, y: 0.45 },
+    "границу боя держит арт, а не пустота", width, height, "left");
+}
+
 const section: SectionDef = {
   id: "ui-uplift",
   title: "Догнать рефы",
@@ -514,6 +590,86 @@ const section: SectionDef = {
             "в отчёт — цифры должны быть тише знака.",
           size: [480, 270],
           draw: outcomeStats
+        }
+      ]
+    },
+
+    { kind: "head", id: "loadout", title: "Лоадаут и витрина", lede: "У Guildrun витрина живёт без панели вовсе." },
+    {
+      kind: "live",
+      id: "loadout-shots",
+      render: shots({
+        ref: "ref-loadout.jpg",
+        refCaption: "Guildrun: сетка на фоне, заголовок с прогрессом, поиск и фильтр в полосе табов",
+        ours: "ours-loadout.jpg",
+        oursCaption: "наш лоадаут: сетка внутри панели, описание справа"
+      })
+    },
+    {
+      kind: "stands",
+      items: [
+        {
+          id: "loadout-now",
+          status: "note",
+          title: "Как сейчас",
+          note: "Панель занимает правые 56% кадра, левая треть пуста, статы строками.",
+          verdict: "Читается прилично, особенно после холодной гаммы. Но кадр занят наполовину.",
+          size: [480, 270],
+          draw: loadoutNow
+        },
+        {
+          id: "loadout-showcase",
+          status: "waiting",
+          title: "А · витрина без панели",
+          note:
+            "Сетка ложится прямо на фон, сверху одна полоса: «Назад», табы, поиск, фильтр. Заголовок " +
+            "секции несёт прогресс («собрано 13 из 75») и строку-объяснение, откуда берутся новые.",
+          facts: [["сетка", "9 в ряд"], ["карточка", "9.5% x 19%"]],
+          verdict:
+            "Занимает весь кадр и даёт место прогрессу — тому, ради чего игрок сюда и заходит. " +
+            "Требует, чтобы описание выбранного переехало в тултип или на второй экран.",
+          size: [480, 270],
+          draw: loadoutShowcase
+        }
+      ]
+    },
+
+    { kind: "head", id: "hud", title: "Боевой HUD", lede: "Границу поля у Guildrun держит арт, а не край экрана." },
+    {
+      kind: "live",
+      id: "hud-shots",
+      render: shots({
+        ref: "ref-hud.jpg",
+        refCaption: "Guildrun: поле обрамлено артом, панели со скошенными торцами, карточка выбранного справа внизу",
+        ours: "ours-menu.jpg",
+        oursCaption: "наша арена (кадр из фона меню): трава до края кадра, обрамления нет"
+      })
+    },
+    {
+      kind: "stands",
+      items: [
+        {
+          id: "hud-now",
+          status: "note",
+          title: "Как сейчас",
+          note: "Полоски HP над юнитами, топбар сверху. Углы кадра пусты, поле уходит в край.",
+          verdict: "Бой читается, но кадр не выглядит собранным: нет ни рамки, ни фокуса.",
+          size: [480, 270],
+          draw: hudNow
+        },
+        {
+          id: "hud-framed",
+          status: "waiting",
+          title: "А · обрамление и карточка выбранного",
+          note:
+            "По краям кадра арт (камни, деревья), поле боя в световом пятне посередине. Верхняя " +
+            "полоса со скошенными торцами, справа внизу карточка выбранного юнита.",
+          facts: [["обрамление", "по 16% с каждой стороны"], ["карточка", "22% x 34%"]],
+          verdict:
+            "Сильнее всего меняет ощущение «игра, а не прототип». Самая дорогая позиция списка: " +
+            "нужен арт обрамления, без него останется тёмной виньеткой.",
+          size: [480, 270],
+          draw: hudFramed
         }
       ]
     },
