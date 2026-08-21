@@ -195,6 +195,60 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.IsTrue(es.RunPreDamage(ally, Ranged(brawler, 80f), ctx), "Оглушённого союзника выдёргивают");
         }
 
+        // ===================== Аура-раздатчик =====================
+
+        [Test]
+        public void Aura_GivesTheEffectToAlliesInRange_AndSkipsThoseWhoHaveIt()
+        {
+            var es = new EffectSystem();
+            var ctx = new MockCombatContext(effects: es);
+            var mage = TestUnit.Make();
+            var near = TestUnit.Make();
+            var far = TestUnit.Make();
+            mage.Position = Vector2.zero;
+            near.Position = new Vector2(2f, 0f);
+            far.Position = new Vector2(20f, 0f);
+            ctx.UnitsInWorld.AddRange(new[] { mage, near, far });
+
+            EffectData gust = Gust(after: null);
+            ctx.ApplyEffect(mage, Aura(gust), mage);
+
+            es.Tick(mage, 1f, ctx);
+            Assert.AreEqual(1, near.ActiveEffects.Count, "Ближнему союзнику «Порыв» выдан");
+            Assert.AreEqual(0, far.ActiveEffects.Count, "Дальнему — нет, он вне радиуса");
+            Assert.AreEqual(1, mage.ActiveEffects.Count, "На маге только сама аура: себе он не раздаёт");
+        }
+
+        /// <summary>
+        /// Главное свойство ауры: она не трогает уже висящую копию. Наложение поверх взвело бы заряды
+        /// заново, и «Порыв» с перезарядкой в восемь секунд срабатывал бы на каждый удар.
+        /// </summary>
+        [Test]
+        public void Aura_DoesNotRearmTheChargeOfAnEffectAlreadyInPlace()
+        {
+            var es = new EffectSystem();
+            var ctx = new MockCombatContext(effects: es);
+            var mage = TestUnit.Make();
+            var ally = TestUnit.Make();
+            mage.Position = Vector2.zero;
+            ally.Position = new Vector2(2f, 0f);
+            ctx.UnitsInWorld.AddRange(new[] { mage, ally });
+
+            var brawler = MeleeAttacker();
+            brawler.Position = new Vector2(4f, 0f);
+
+            ctx.ApplyEffect(mage, Aura(Gust(after: null)), mage);
+            es.Tick(mage, 1f, ctx);
+
+            Assert.IsTrue(es.RunPreDamage(ally, Ranged(brawler, 80f), ctx), "Первый удар перехвачен");
+            Assert.IsFalse(es.RunPreDamage(ally, Ranged(brawler, 80f), ctx), "Второй проходит — заряд потрачен");
+
+            // Аура тикает снова: если бы она перевешивала эффект, заряд взвёлся бы заново.
+            es.Tick(mage, 1f, ctx);
+            Assert.IsFalse(es.RunPreDamage(ally, Ranged(brawler, 80f), ctx),
+                "Аура не перевзвела заряд: перезарядка идёт своим ходом");
+        }
+
         // ===================== Хелперы =====================
 
         private static DamageRequest Ranged(RuntimeUnit source, float raw) => new DamageRequest(
@@ -225,6 +279,16 @@ namespace Guildmaster.Tests.EditMode.Combat
             return TestEffect.Make(baseDuration: 4f, polarity: EffectPolarity.Buff,
                 stacking: maxStacks > 1 ? StackRule.StackAndRefresh : StackRule.Refresh,
                 maxStacks: maxStacks, components: evasion);
+        }
+
+        private static EffectData Aura(EffectData carried)
+        {
+            var aura = new AllyAuraComponent()
+                .With("_effect", carried)
+                .With("_radius", 4f)
+                .With("_includeSelf", false)
+                .With("_interval", 1f);
+            return TestEffect.Make(baseDuration: -1f, components: aura);
         }
 
         private static EffectData Gust(EffectData after)
