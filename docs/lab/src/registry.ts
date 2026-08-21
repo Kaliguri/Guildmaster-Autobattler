@@ -380,6 +380,14 @@ export const PAGES: PageDef[] = [
     icon: "▥"
   },
   {
+    id: "ui-uplift",
+    area: "ui",
+    title: "Догнать рефы",
+    blurb: "Чем Heroes Olden Era и Guildrun сильнее нас, экран за экраном: кадры рядом и предложения макетами.",
+    load: () => import("./sections/ui-uplift.js"),
+    icon: "△"
+  },
+  {
     id: "ui-notice",
     area: "ui",
     title: "Сообщения игроку",
