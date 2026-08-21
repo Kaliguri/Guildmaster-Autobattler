@@ -108,17 +108,18 @@ Collaboration diagram for Guildmaster.UI.NewGameScreenView:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:abc463600de7a2678a3d052809f2405b5" id="r_abc463600de7a2678a3d052809f2405b5"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1NewGameScreenView.html#abc463600de7a2678a3d052809f2405b5">Build</a> (VisualTreeAsset uxml, bool steamReady, Func&lt; string, string &gt; localize, Action&lt; <a class="el" href="namespaceGuildmaster_1_1Guild.html#a38e8510cb3d9bbba3df18a5873f0a2e3">GameMode</a>, bool &gt; onPick, Action onBack)</td></tr>
-<tr class="separator:abc463600de7a2678a3d052809f2405b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0097be232f87d55430b777559904990" id="r_ac0097be232f87d55430b777559904990"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1NewGameScreenView.html#ac0097be232f87d55430b777559904990">Build</a> (bool steamReady, Func&lt; string, string &gt; localize, Action&lt; <a class="el" href="namespaceGuildmaster_1_1Guild.html#a38e8510cb3d9bbba3df18a5873f0a2e3">GameMode</a>, bool &gt; onPick, Action onBack)</td></tr>
+<tr class="separator:ac0097be232f87d55430b777559904990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Экран «Создать игру»: во что играем и пускаем ли друзей. </p>
-<p><b>Режим — это действие, а не галочка</b> (модель Макса 04.08.2026): клик по режиму сразу ведёт дальше, поэтому кнопки «Начать» здесь нет вовсе. Прежде экран собирал заказ целиком — режим, дом и лобби на одном листе, — и дом приходилось показывать рядом с режимами, которым он не нужен: половина экрана то появлялась, то исчезала, а «Начать» стояло третьим шагом после двух выборов. </p>
+<p><b>Режим — это действие, а не галочка</b> (модель Макса 04.08.2026): клик по режиму сразу ведёт дальше, поэтому кнопки «Начать» здесь нет вовсе. Прежде экран собирал заказ целиком — режим, дом и лобби на одном листе, — и дом приходилось показывать рядом с режимами, которым он не нужен: половина экрана то появлялась, то исчезала, а «Начать» стояло третьим шагом после двух выборов.</p>
+<p><b>Режимы показаны карточками</b> (заказ Макса 21.08.2026) — тем же приёмом, что развилка профиля: раскладку держит ModeChoiceView. Строки-кнопки с подсказкой за курсором ушли: описание режима теперь видно на самой карточке всегда, а не только под мышью.</p>
 <p><b>Дом выбирается СЛЕДУЮЩИМ экраном и только у Кампании</b> — см. GuildSelectScreenView. Площадка и матч уходят в игру этим же кликом: дома у них нет.</p>
-<p><b>Галочка лобби стоит НАД режимами,</b> потому что она про сеанс, а не про режим: сначала «с кем играем», потом «во что». Под кнопкой-действием она читалась бы как настройка этой кнопки.</p>
+<p><b>Галочка лобби живёт в футере</b> (решение Макса 21.08.2026): она про сеанс, а не про режим, и на поле карточек ей места нет — ряд дверей должен читаться рядом дверей.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="abc463600de7a2678a3d052809f2405b5" name="abc463600de7a2678a3d052809f2405b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc463600de7a2678a3d052809f2405b5">&#9670;&#160;</a></span>Build()</h2>
+<a id="ac0097be232f87d55430b777559904990" name="ac0097be232f87d55430b777559904990"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0097be232f87d55430b777559904990">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -129,12 +130,6 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">static VisualElement Guildmaster.UI.NewGameScreenView.Build </td>
           <td>(</td>
-          <td class="paramtype">VisualTreeAsset&#160;</td>
-          <td class="paramname"><em>uxml</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>steamReady</em>, </td>
         </tr>
@@ -168,6 +163,11 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1NewGameScreenView_ac0097be232f87d55430b777559904990_cgraph.svg" width="536" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

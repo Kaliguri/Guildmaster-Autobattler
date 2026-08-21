@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkFormat.html" target="_top" xlink:title="Формат чанка боевой ленты — числа, общие для писателя и читателя.">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Net_1_1Tape_1_1TapeAbilityIndex.html" target="_top" xlink:title="Индекс способностей по их id — то, чем приёмник чанка находит AbilityData.">
 <polygon fill="white" stroke="#666666" points="147,-30 0,-30 0,0 147,0 147,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Net.Tape.Tape</text>
-<text text-anchor="middle" x="73.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ChunkFormat</text>
+<text text-anchor="middle" x="73.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">AbilityIndex</text>
 </a>
 </g>
 </g>

@@ -9,7 +9,7 @@ var classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher =
     [ "AbilityCastInterrupted", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#a3dbe860fd6067df2b8fcb8408d8a1f5c", null ],
     [ "AbilityCastStarted", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#aaf68ca0902f9b7677a719f639433541e", null ],
     [ "AreaHit", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#af9a7963fac4a2a4700a7449d234bd9be", null ],
-    [ "AttackEvaded", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#affcdc292aa6dc43a5e1aa78709533a9f", null ],
+    [ "AttackEvaded", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#a1e5701271d9b24ab268de554df9f92f3", null ],
     [ "AttackInterrupted", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#ab7b7a5daac6c59afa0af0a4f9efe9ad0", null ],
     [ "AttackStarted", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#a5687475a8732b3e7edb2db1dd8af81f7", null ],
     [ "BattleEnded", "classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#a3a44d7bce97d8517ddefad6ce34f4c88", null ],

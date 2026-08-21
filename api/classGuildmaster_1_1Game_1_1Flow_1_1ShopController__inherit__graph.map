@@ -1,5 +1,5 @@
 <map id="Guildmaster.Game.Flow.ShopController" name="Guildmaster.Game.Flow.ShopController">
-<area shape="rect" id="Node000001" title="Логика магазина (план [[act&#45;map&#45;run&#45;loop]] §4 B2), реализация IShopController." alt="" coords="5,219,212,439"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1IShopController.html" title="Контракт магазина (план [[act&#45;map&#45;run&#45;loop]] §4 B2)." alt="" coords="51,5,166,171"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,185,111,218,106,218,106,185"/>
+<area shape="rect" id="Node000001" title="Логика магазина (план [[act&#45;map&#45;run&#45;loop]] §4 B2), реализация IShopController." alt="" coords="5,259,212,519"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1IShopController.html" title="Контракт магазина (план [[act&#45;map&#45;run&#45;loop]] §4 B2)." alt="" coords="51,5,166,211"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,224,111,259,106,259,106,224"/>
 </map>

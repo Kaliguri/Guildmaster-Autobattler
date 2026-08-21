@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Sh
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.ShopController:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1ShopController__inherit__graph.svg" width="218" height="444"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1ShopController__inherit__graph.svg" width="218" height="524"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Flow.ShopController:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1ShopController__coll__graph.svg" width="218" height="444"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1ShopController__coll__graph.svg" width="218" height="524"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -129,6 +129,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8ddaa4d518f9f336ea948e29f9e5615e" id="r_a8ddaa4d518f9f336ea948e29f9e5615e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a8ddaa4d518f9f336ea948e29f9e5615e">Sell</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> relic)</td></tr>
 <tr class="memdesc:a8ddaa4d518f9f336ea948e29f9e5615e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Продать реликвию из запаса (освободить место). false = такой в запасе нет.  <br /></td></tr>
 <tr class="separator:a8ddaa4d518f9f336ea948e29f9e5615e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0586bf04c9dd26c7b2074463e39323d7" id="r_a0586bf04c9dd26c7b2074463e39323d7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a0586bf04c9dd26c7b2074463e39323d7">Heal</a> (int slotIndex, string consequenceId)</td></tr>
+<tr class="memdesc:a0586bf04c9dd26c7b2074463e39323d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вылечить одно последствие за золото.  <br /></td></tr>
+<tr class="separator:a0586bf04c9dd26c7b2074463e39323d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -142,6 +145,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a17841d8d928da5eae3f088de61f47237" id="r_a17841d8d928da5eae3f088de61f47237"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1ShopStashItem.html">ShopStashItem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a17841d8d928da5eae3f088de61f47237">Stash</a><code> [get]</code></td></tr>
 <tr class="memdesc:a17841d8d928da5eae3f088de61f47237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запас игрока для продажи (реликвия + цена продажи 25%).  <br /></td></tr>
 <tr class="separator:a17841d8d928da5eae3f088de61f47237"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1748601f98f3efe7e80b15dd89ffc22a" id="r_a1748601f98f3efe7e80b15dd89ffc22a"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1ShopInjury.html">ShopInjury</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a1748601f98f3efe7e80b15dd89ffc22a">Injuries</a><code> [get]</code></td></tr>
+<tr class="memdesc:a1748601f98f3efe7e80b15dd89ffc22a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полка лекаря: все последствия отряда с ценой снятия.  <br /></td></tr>
+<tr class="separator:a1748601f98f3efe7e80b15dd89ffc22a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Guild_1_1IShopController"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Guild_1_1IShopController')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Guild_1_1IShopController.html">Guildmaster.Guild.IShopController</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
@@ -260,6 +266,47 @@ Events</h2></td></tr>
 
 </div>
 </div>
+<a id="a0586bf04c9dd26c7b2074463e39323d7" name="a0586bf04c9dd26c7b2074463e39323d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0586bf04c9dd26c7b2074463e39323d7">&#9670;&#160;</a></span>Heal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Game.Flow.ShopController.Heal </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slotIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>consequenceId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Вылечить одно последствие за золото. </p>
+<p><code>false</code> — такого на «Сосуде» нет или не хватает золота; списание и снятие происходят одним шагом у владельца забега. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1IShopController.html#ada69f1594486c3d1244afb79b9543c03">Guildmaster.Guild.IShopController</a>.</p>
+
+</div>
+</div>
 <a id="a5b33f02bfbdb9b813558ef7b49a38985" name="a5b33f02bfbdb9b813558ef7b49a38985"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5b33f02bfbdb9b813558ef7b49a38985">&#9670;&#160;</a></span>Open()</h2>
 
@@ -368,6 +415,33 @@ Events</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1IShopController.html#a98060cfc9df543008fa443c5239582fb">Guildmaster.Guild.IShopController</a>.</p>
+
+</div>
+</div>
+<a id="a1748601f98f3efe7e80b15dd89ffc22a" name="a1748601f98f3efe7e80b15dd89ffc22a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1748601f98f3efe7e80b15dd89ffc22a">&#9670;&#160;</a></span>Injuries</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IReadOnlyList&lt;<a class="el" href="classGuildmaster_1_1Guild_1_1ShopInjury.html">ShopInjury</a>&gt; Guildmaster.Game.Flow.ShopController.Injuries</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Полка лекаря: все последствия отряда с ценой снятия. </p>
+<p>Пересобирается на каждый запрос, а не кэшируется, — иначе вылеченная рана осталась бы висеть на витрине до перерисовки. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1IShopController.html#a8ed406373f8931f08c6a667e367df40f">Guildmaster.Guild.IShopController</a>.</p>
 
 </div>
 </div>

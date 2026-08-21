@@ -105,7 +105,7 @@ var sectionId = 'dynsection-1';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html#a3b678bd2057e04d46e2dfd628a86e079" target="_top" xlink:title="Оставить копию тела в точке feet &#160;(мировые координаты ног).">
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html#a6538419621b63753f8e3fc2651b1df01" target="_top" xlink:title="Оставить копию тела в точке feet &#160;(мировые координаты ног).">
 <polygon fill="white" stroke="#666666" points="336,-78 193,-78 193,-48 336,-48 336,-78"/>
 <text text-anchor="start" x="201" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
 <text text-anchor="middle" x="264.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Effects.GhostImage.Play</text>
@@ -124,7 +124,7 @@ var sectionId = 'dynsection-1';
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts.html#a4967e0d37e526b6dd915c66820f8ed81" target="_top" xlink:title="Оставить копию тела.">
+<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts.html#ac2afa0373ccf214cb14da79cbeb8c233" target="_top" xlink:title="Оставить копию тела.">
 <polygon fill="white" stroke="#666666" points="157,-78 0,-78 0,-48 157,-48 157,-78"/>
 <text text-anchor="start" x="8" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
 <text text-anchor="middle" x="78.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Effects.CombatGhosts.Leave</text>

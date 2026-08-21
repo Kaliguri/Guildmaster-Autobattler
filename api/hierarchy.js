@@ -53,6 +53,7 @@ var hierarchy =
     [ "Guildmaster.Guild.CampaignRecord", "classGuildmaster_1_1Guild_1_1CampaignRecord.html", null ],
     [ "Guildmaster.UI.CampScreenView", "classGuildmaster_1_1UI_1_1CampScreenView.html", null ],
     [ "Guildmaster.Guild.CampSession", "classGuildmaster_1_1Guild_1_1CampSession.html", null ],
+    [ "Guildmaster.UI.ModeChoiceView.Card", "structGuildmaster_1_1UI_1_1ModeChoiceView_1_1Card.html", null ],
     [ "Guildmaster.Presentation.Body.CastGlowMask", "classGuildmaster_1_1Presentation_1_1Body_1_1CastGlowMask.html", null ],
     [ "Guildmaster.Data.Editor.ContentEditService.Change", "structGuildmaster_1_1Data_1_1Editor_1_1ContentEditService_1_1Change.html", null ],
     [ "Guildmaster.Net.Transport.ChaosProfile", "structGuildmaster_1_1Net_1_1Transport_1_1ChaosProfile.html", null ],
@@ -741,6 +742,7 @@ var hierarchy =
     [ "Guildmaster.ContentHub.Editor.MarkdownTable", "classGuildmaster_1_1ContentHub_1_1Editor_1_1MarkdownTable.html", null ],
     [ "Guildmaster.Core.Flow.MenuBattleChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1MenuBattleChangedEvent.html", null ],
     [ "Guildmaster.Game.Flow.MenuReplayScope", "classGuildmaster_1_1Game_1_1Flow_1_1MenuReplayScope.html", null ],
+    [ "Guildmaster.UI.ModeChoiceView", "classGuildmaster_1_1UI_1_1ModeChoiceView.html", null ],
     [ "MonoBehaviour", null, [
       [ "Guildmaster.DevTools.CombatUnitDebugView", "classGuildmaster_1_1DevTools_1_1CombatUnitDebugView.html", null ],
       [ "Guildmaster.DevTools.DevEncounterPanel", "classGuildmaster_1_1DevTools_1_1DevEncounterPanel.html", null ],
@@ -942,6 +944,7 @@ var hierarchy =
     [ "Guildmaster.Guild.SetWorldMapRequest", "structGuildmaster_1_1Guild_1_1SetWorldMapRequest.html", null ],
     [ "Guildmaster.Core.Net.SharedDecisionChangedEvent", "structGuildmaster_1_1Core_1_1Net_1_1SharedDecisionChangedEvent.html", null ],
     [ "Guildmaster.Presentation.ShatterMesh", "classGuildmaster_1_1Presentation_1_1ShatterMesh.html", null ],
+    [ "Guildmaster.Guild.ShopInjury", "classGuildmaster_1_1Guild_1_1ShopInjury.html", null ],
     [ "Guildmaster.Guild.ShopItem", "classGuildmaster_1_1Guild_1_1ShopItem.html", null ],
     [ "Guildmaster.UI.ShopScreenView", "classGuildmaster_1_1UI_1_1ShopScreenView.html", null ],
     [ "Guildmaster.Guild.ShopStashItem", "classGuildmaster_1_1Guild_1_1ShopStashItem.html", null ],

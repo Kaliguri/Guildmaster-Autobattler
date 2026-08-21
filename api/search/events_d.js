@@ -4,7 +4,7 @@ var searchData=
   ['onabilitycastinterrupted_1',['OnAbilityCastInterrupted',['../classGuildmaster_1_1Combat_1_1AbilitySystem.html#af7c0d6284f795a855ef91e325143e9ec',1,'Guildmaster::Combat::AbilitySystem']]],
   ['onabilitycaststarted_2',['OnAbilityCastStarted',['../classGuildmaster_1_1Combat_1_1AbilitySystem.html#a393dee0b978cc74d557485b9911c4a40',1,'Guildmaster::Combat::AbilitySystem']]],
   ['onareahit_3',['OnAreaHit',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a9caad6a621e0b9755a74fb79f3ac7272',1,'Guildmaster::Combat::CombatSimulation']]],
-  ['onattackevaded_4',['OnAttackEvaded',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac488c96e1b4ab1abfff473a2fd0f1f8d',1,'Guildmaster::Combat::CombatSimulation']]],
+  ['onattackevaded_4',['OnAttackEvaded',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#aff60fedaa8ce9d2af1955a5c3cf508ee',1,'Guildmaster::Combat::CombatSimulation']]],
   ['onattackinterrupted_5',['OnAttackInterrupted',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae73567a995a49a3e63bdcfb76cfa75bd',1,'Guildmaster::Combat::CombatSimulation']]],
   ['onattackstarted_6',['OnAttackStarted',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a8b40f7605f54d4edcf58e483639f8a11',1,'Guildmaster::Combat::CombatSimulation']]],
   ['onbattleended_7',['OnBattleEnded',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a4a83041f340c0c1f635c66282dc3409d',1,'Guildmaster::Combat::CombatSimulation']]],

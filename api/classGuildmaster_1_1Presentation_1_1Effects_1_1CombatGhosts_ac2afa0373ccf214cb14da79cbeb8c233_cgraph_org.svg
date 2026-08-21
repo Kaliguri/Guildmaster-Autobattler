@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html#a3b678bd2057e04d46e2dfd628a86e079" target="_top" xlink:title="Оставить копию тела в точке feet &#160;(мировые координаты ног).">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html#a6538419621b63753f8e3fc2651b1df01" target="_top" xlink:title="Оставить копию тела в точке feet &#160;(мировые координаты ног).">
 <polygon fill="white" stroke="#666666" points="336,-30 193,-30 193,0 336,0 336,-30"/>
 <text text-anchor="start" x="201" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
 <text text-anchor="middle" x="264.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Effects.GhostImage.Play</text>

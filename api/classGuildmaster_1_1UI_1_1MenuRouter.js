@@ -7,7 +7,7 @@ var classGuildmaster_1_1UI_1_1MenuRouter =
     [ "HideInventory", "classGuildmaster_1_1UI_1_1MenuRouter.html#a9470bb010ed32739bc43fe4cc7be23f3", null ],
     [ "HideMapSpace", "classGuildmaster_1_1UI_1_1MenuRouter.html#a2efe12b26f74ed7a90ae3415ddba6865", null ],
     [ "HideTestZone", "classGuildmaster_1_1UI_1_1MenuRouter.html#af2b7bd4c590e87c81ec1f5c84d698d84", null ],
-    [ "Initialize", "classGuildmaster_1_1UI_1_1MenuRouter.html#ab9c3c37a1fbf886ac1a1cec4eb2d555f", null ],
+    [ "Initialize", "classGuildmaster_1_1UI_1_1MenuRouter.html#a72762a14abafc45f73e6eef1d030e149", null ],
     [ "OpenCamp", "classGuildmaster_1_1UI_1_1MenuRouter.html#a81c9d383730cb586afd48d65d613bcc4", null ],
     [ "OpenChest", "classGuildmaster_1_1UI_1_1MenuRouter.html#aae0f6d6efa1aca7fbee2a95d39bf38dd", null ],
     [ "OpenHub", "classGuildmaster_1_1UI_1_1MenuRouter.html#a1c6167d1befeb5233bceb45f04ec2ee9", null ],

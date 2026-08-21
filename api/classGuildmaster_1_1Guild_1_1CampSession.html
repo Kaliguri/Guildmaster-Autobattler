@@ -111,11 +111,18 @@ Collaboration diagram for Guildmaster.Guild.CampSession:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afd8e1a215c4f0581f73a5a936df7ff3b" id="r_afd8e1a215c4f0581f73a5a936df7ff3b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1CampSession.html#afd8e1a215c4f0581f73a5a936df7ff3b">CampSession</a> (int budget=<a class="el" href="classGuildmaster_1_1Guild_1_1CampSession.html#a934b3de1e4b061c922c367f58954671b">DefaultBudget</a>, int actionCost=<a class="el" href="classGuildmaster_1_1Guild_1_1CampSession.html#a6f24485623bc62023878e6f9a2e87a7a">DefaultActionCost</a>)</td></tr>
-<tr class="separator:afd8e1a215c4f0581f73a5a936df7ff3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44849dda85f5326e476bcb82b605bf92" id="r_a44849dda85f5326e476bcb82b605bf92"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1CampSession.html#a44849dda85f5326e476bcb82b605bf92">TryPerform</a> (<a class="el" href="namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5">CampAction</a> action)</td></tr>
-<tr class="memdesc:a44849dda85f5326e476bcb82b605bf92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выполнить действие.  <br /></td></tr>
-<tr class="separator:a44849dda85f5326e476bcb82b605bf92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5006fbb0740cfbd7d681f10596b9bf8a" id="r_a5006fbb0740cfbd7d681f10596b9bf8a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1CampSession.html#a5006fbb0740cfbd7d681f10596b9bf8a">CampSession</a> (int budget=<a class="el" href="classGuildmaster_1_1Guild_1_1CampSession.html#a934b3de1e4b061c922c367f58954671b">DefaultBudget</a>, int actionCost=<a class="el" href="classGuildmaster_1_1Guild_1_1CampSession.html#a6f24485623bc62023878e6f9a2e87a7a">DefaultActionCost</a>, Func&lt; <a class="el" href="namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5">CampAction</a>, int, string, bool &gt; effect=null)</td></tr>
+<tr class="memdesc:a5006fbb0740cfbd7d681f10596b9bf8a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">effect</td><td>Чем исполняется действие: <code>(действие, слот, id последствия) → удалось ли</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+ <br /></td></tr>
+<tr class="separator:a5006fbb0740cfbd7d681f10596b9bf8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc6b8d55536ac9def489a2fd03b4a0cf" id="r_acc6b8d55536ac9def489a2fd03b4a0cf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1CampSession.html#acc6b8d55536ac9def489a2fd03b4a0cf">TryPerform</a> (<a class="el" href="namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5">CampAction</a> action, int slotIndex=-1, string consequenceId=null)</td></tr>
+<tr class="memdesc:acc6b8d55536ac9def489a2fd03b4a0cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выполнить действие.  <br /></td></tr>
+<tr class="separator:acc6b8d55536ac9def489a2fd03b4a0cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -156,10 +163,10 @@ Events</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Состояние одного привала: бюджет действий отряда и его траты. </p>
 <p>Источник истины — здесь, у флоу; экран только читает Remaining и зовёт TryPerform. Так сделано намеренно: копия счётчика в вью рано или поздно разъезжается с доменом, и вылезает это уже в play-QA. </p>
-<p><b>Заглушка по существу:</b> действия пока ничего не делают, кроме списания бюджета — эффекты (усиление, копия реликвии, снятие последствия, найм) придут вместе с самими механиками. Каркас нужен раньше, чтобы узел уже стоял на карте и читался в ритме акта.</p>
+<p><b>Эффект действия сессия не исполняет сама</b>, а зовёт переданный ей исполнитель: снятие раны — запись в забег, и идти она обязана командой, о которой домен привала знать не должен. Отказ исполнителя бюджет НЕ тратит — иначе игрок платил бы действием за несостоявшееся лечение. Исполнителя нет (или он не знает этого действия) — трата проходит как прежде, вхолостую: часть действий привала своих механик ещё не имеет.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="afd8e1a215c4f0581f73a5a936df7ff3b" name="afd8e1a215c4f0581f73a5a936df7ff3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd8e1a215c4f0581f73a5a936df7ff3b">&#9670;&#160;</a></span>CampSession()</h2>
+<a id="a5006fbb0740cfbd7d681f10596b9bf8a" name="a5006fbb0740cfbd7d681f10596b9bf8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5006fbb0740cfbd7d681f10596b9bf8a">&#9670;&#160;</a></span>CampSession()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,7 +184,13 @@ Events</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>actionCost</em> = <code><a class="el" href="classGuildmaster_1_1Guild_1_1CampSession.html#a6f24485623bc62023878e6f9a2e87a7a">DefaultActionCost</a></code>&#160;</td>
+          <td class="paramname"><em>actionCost</em> = <code><a class="el" href="classGuildmaster_1_1Guild_1_1CampSession.html#a6f24485623bc62023878e6f9a2e87a7a">DefaultActionCost</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Func&lt; <a class="el" href="namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5">CampAction</a>, int, string, bool &gt;&#160;</td>
+          <td class="paramname"><em>effect</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -192,11 +205,20 @@ Events</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">effect</td><td>Чем исполняется действие: <code>(действие, слот, id последствия) → удалось ли</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+</p>
+<p>Возврат <code>false</code> отменяет трату целиком. <code>null</code> = действия без эффектов (каркас, тесты). </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a44849dda85f5326e476bcb82b605bf92" name="a44849dda85f5326e476bcb82b605bf92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44849dda85f5326e476bcb82b605bf92">&#9670;&#160;</a></span>TryPerform()</h2>
+<a id="acc6b8d55536ac9def489a2fd03b4a0cf" name="acc6b8d55536ac9def489a2fd03b4a0cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc6b8d55536ac9def489a2fd03b4a0cf">&#9670;&#160;</a></span>TryPerform()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -208,8 +230,24 @@ Events</h2></td></tr>
           <td class="memname">bool Guildmaster.Guild.CampSession.TryPerform </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Guild.html#a61e5a497069bead60762edb4bb6031d5">CampAction</a>&#160;</td>
-          <td class="paramname"><em>action</em></td><td>)</td>
+          <td class="paramname"><em>action</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slotIndex</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>consequenceId</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -220,11 +258,18 @@ Events</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Выполнить действие. </p>
-<p>CampAction.MoveOn закрывает привал и всегда проходит; остальные требуют CanAfford. Возвращает <code>false</code>, если действие не прошло (не хватило бюджета или привал уже закрыт) — экран по этому ответу даёт отказ-фидбэк, а не гасит себя. </p>
+<p>CampAction.MoveOn закрывает привал и всегда проходит; остальные требуют CanAfford. Возвращает <code>false</code>, если действие не прошло (не хватило бюджета или привал уже закрыт) — экран по этому ответу даёт отказ-фидбэк, а не гасит себя.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slotIndex</td><td>Кому — индекс «Сосуда» в гильдии. Нужен действиям, у которых есть цель.</td></tr>
+    <tr><td class="paramname">consequenceId</td><td>Что снимаем (CampAction.Cleanse).</td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1CampSession_a44849dda85f5326e476bcb82b605bf92_icgraph.svg" width="499" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1CampSession_acc6b8d55536ac9def489a2fd03b4a0cf_icgraph.svg" width="499" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

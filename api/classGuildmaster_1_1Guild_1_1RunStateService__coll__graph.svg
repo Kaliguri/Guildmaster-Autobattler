@@ -99,7 +99,7 @@ var sectionId = 'dynsection-1';
 <text text-anchor="start" x="27" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">DeleteSave()</text>
 <text text-anchor="start" x="9" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="27" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">TryAddRelic()</text>
-<text text-anchor="start" x="27" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">and 9 more...</text>
+<text text-anchor="start" x="27" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">and 10 more...</text>
 <text text-anchor="start" x="9" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">~</text>
 <text text-anchor="start" x="27" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">AddGold()</text>
 <text text-anchor="start" x="9" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">~</text>
@@ -115,7 +115,7 @@ var sectionId = 'dynsection-1';
 <text text-anchor="start" x="9" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">~</text>
 <text text-anchor="start" x="27" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">InflictInjury()</text>
 <text text-anchor="start" x="9" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">~</text>
-<text text-anchor="start" x="27" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">RemoveInjury()</text>
+<text text-anchor="start" x="27" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">HealInjury()</text>
 <polygon fill="#666666" stroke="#666666" points="0,-422 0,-422 146,-422 146,-422 0,-422"/>
 <polygon fill="#666666" stroke="#666666" points="0,-287 0,-287 25,-287 25,-287 0,-287"/>
 <polygon fill="#666666" stroke="#666666" points="25,-287 25,-287 146,-287 146,-287 25,-287"/>

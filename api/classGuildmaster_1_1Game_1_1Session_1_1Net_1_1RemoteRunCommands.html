@@ -136,6 +136,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa9f008044ee291c7febf40755410e5d0" id="r_aa9f008044ee291c7febf40755410e5d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#aa9f008044ee291c7febf40755410e5d0">InflictInjury</a> (int slotIndex, int rollSeed)</td></tr>
 <tr class="memdesc:aa9f008044ee291c7febf40755410e5d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Положить последствие боя на «Сосуд» слота: ступень уточнит каскад, конкретную рану выберет ролл от <em>rollSeed</em> .  <br /></td></tr>
 <tr class="separator:aa9f008044ee291c7febf40755410e5d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc7ac1209e42f2e2fdc3fda1ee591d5a" id="r_acc7ac1209e42f2e2fdc3fda1ee591d5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#acc7ac1209e42f2e2fdc3fda1ee591d5a">HealInjury</a> (int slotIndex, string consequenceId, bool payGold)</td></tr>
+<tr class="memdesc:acc7ac1209e42f2e2fdc3fda1ee591d5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять последствие с «Сосуда».  <br /></td></tr>
+<tr class="separator:acc7ac1209e42f2e2fdc3fda1ee591d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0c3a3a856db765ea7b749267c4946bc" id="r_ad0c3a3a856db765ea7b749267c4946bc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc">RequestSave</a> ()</td></tr>
 <tr class="memdesc:ad0c3a3a856db765ea7b749267c4946bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва.  <br /></td></tr>
 <tr class="separator:ad0c3a3a856db765ea7b749267c4946bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -239,6 +242,45 @@ Properties</h2></td></tr>
 <p>Достижимость проверяет применитель — по СВОЕЙ копии состояния, а не по той, что видел нажавший: у напарника карта могла отстать на снимок. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ab6732bfb2439b78bc09fd74c361e2b82">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
+
+</div>
+</div>
+<a id="acc7ac1209e42f2e2fdc3fda1ee591d5a" name="acc7ac1209e42f2e2fdc3fda1ee591d5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc7ac1209e42f2e2fdc3fda1ee591d5a">&#9670;&#160;</a></span>HealInjury()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Session.Net.RemoteRunCommands.HealInjury </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slotIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>consequenceId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>payGold</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Снять последствие с «Сосуда». </p>
+<p><em>payGold</em>  — списать ли цену из ассета (торговец) или снять бесплатно (привал: там уже заплачено действием). </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a2c89d51f1eb29cfb7ddc85602e504870">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
 
 </div>
 </div>

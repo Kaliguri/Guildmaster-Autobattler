@@ -108,7 +108,7 @@ Inheritance diagram for Guildmaster.Guild.Commands.IRunCommands:</div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.Commands.IRunCommands:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands__coll__graph.svg" width="224" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands__coll__graph.svg" width="224" height="251"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -134,6 +134,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9349745919db7f77106f86ced67e4a98" id="r_a9349745919db7f77106f86ced67e4a98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a9349745919db7f77106f86ced67e4a98">InflictInjury</a> (int slotIndex, int rollSeed)</td></tr>
 <tr class="memdesc:a9349745919db7f77106f86ced67e4a98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Положить последствие боя на «Сосуд» слота: ступень уточнит каскад, конкретную рану выберет ролл от <em>rollSeed</em> .  <br /></td></tr>
 <tr class="separator:a9349745919db7f77106f86ced67e4a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c89d51f1eb29cfb7ddc85602e504870" id="r_a2c89d51f1eb29cfb7ddc85602e504870"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a2c89d51f1eb29cfb7ddc85602e504870">HealInjury</a> (int slotIndex, string consequenceId, bool payGold)</td></tr>
+<tr class="memdesc:a2c89d51f1eb29cfb7ddc85602e504870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять последствие с «Сосуда».  <br /></td></tr>
+<tr class="separator:a2c89d51f1eb29cfb7ddc85602e504870"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae58102853d843cf68e8dbe8363b92245" id="r_ae58102853d843cf68e8dbe8363b92245"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ae58102853d843cf68e8dbe8363b92245">RequestSave</a> ()</td></tr>
 <tr class="memdesc:ae58102853d843cf68e8dbe8363b92245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Попросить владельца зафиксировать состояние на диск (точка автосейва).  <br /></td></tr>
 <tr class="separator:ae58102853d843cf68e8dbe8363b92245"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -206,6 +209,45 @@ Public Member Functions</h2></td></tr>
 <p>Достижимость проверяет применитель — по СВОЕЙ копии состояния, а не по той, что видел нажавший: у напарника карта могла отстать на снимок. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#a73fba3ac639c61c58c00278ca84b4557">Guildmaster.Game.Session.Net.RemoteRunCommands</a>, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#aecb1dc35062978c6672154736d49e000">Guildmaster.Game.Session.SessionCommandRouter</a>, and <a class="el" href="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html#a6ab880f2805b7334d47e87387ebb2731">Guildmaster.Guild.Commands.RunCommandBus</a>.</p>
+
+</div>
+</div>
+<a id="a2c89d51f1eb29cfb7ddc85602e504870" name="a2c89d51f1eb29cfb7ddc85602e504870"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c89d51f1eb29cfb7ddc85602e504870">&#9670;&#160;</a></span>HealInjury()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Guild.Commands.IRunCommands.HealInjury </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slotIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>consequenceId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>payGold</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Снять последствие с «Сосуда». </p>
+<p><em>payGold</em>  — списать ли цену из ассета (торговец) или снять бесплатно (привал: там уже заплачено действием). </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#acc7ac1209e42f2e2fdc3fda1ee591d5a">Guildmaster.Game.Session.Net.RemoteRunCommands</a>, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a8c228e49cf85aa1ccf5c8be57b066285">Guildmaster.Game.Session.SessionCommandRouter</a>, and <a class="el" href="classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html#acc0b9bb26392b44925013e319f42fe98">Guildmaster.Guild.Commands.RunCommandBus</a>.</p>
 
 </div>
 </div>

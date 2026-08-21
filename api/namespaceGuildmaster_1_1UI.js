@@ -16,6 +16,7 @@ var namespaceGuildmaster_1_1UI =
     [ "LoadoutViewModel", "classGuildmaster_1_1UI_1_1LoadoutViewModel.html", "classGuildmaster_1_1UI_1_1LoadoutViewModel" ],
     [ "MainMenuScreenView", "classGuildmaster_1_1UI_1_1MainMenuScreenView.html", "classGuildmaster_1_1UI_1_1MainMenuScreenView" ],
     [ "MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html", "classGuildmaster_1_1UI_1_1MenuRouter" ],
+    [ "ModeChoiceView", "classGuildmaster_1_1UI_1_1ModeChoiceView.html", "classGuildmaster_1_1UI_1_1ModeChoiceView" ],
     [ "NewGameScreenView", "classGuildmaster_1_1UI_1_1NewGameScreenView.html", "classGuildmaster_1_1UI_1_1NewGameScreenView" ],
     [ "NoticeDialogView", "classGuildmaster_1_1UI_1_1NoticeDialogView.html", "classGuildmaster_1_1UI_1_1NoticeDialogView" ],
     [ "OutcomeScreenView", "classGuildmaster_1_1UI_1_1OutcomeScreenView.html", "classGuildmaster_1_1UI_1_1OutcomeScreenView" ],

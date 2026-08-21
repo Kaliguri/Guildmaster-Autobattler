@@ -7,6 +7,7 @@ var classGuildmaster_1_1Guild_1_1RunStateService =
     [ "BeginAct", "classGuildmaster_1_1Guild_1_1RunStateService.html#ade85486b137b5ce32d7773fc078ac12a", null ],
     [ "DeleteSave", "classGuildmaster_1_1Guild_1_1RunStateService.html#ae03f4a2a1736095f55fdf6b8fc053c19", null ],
     [ "EquipRelic", "classGuildmaster_1_1Guild_1_1RunStateService.html#afef9ca09b0484a3893fa3beb23908ec1", null ],
+    [ "HealCost", "classGuildmaster_1_1Guild_1_1RunStateService.html#a9b47f3f6a68af991acd6a42bfa7f5002", null ],
     [ "IncreaseCapacity", "classGuildmaster_1_1Guild_1_1RunStateService.html#a978046fc3f6dd1453f290bd267e31855", null ],
     [ "NewDefaultRun", "classGuildmaster_1_1Guild_1_1RunStateService.html#aff54a03842a9198c822ef5b44bb800eb", null ],
     [ "NewRun", "classGuildmaster_1_1Guild_1_1RunStateService.html#a42b5f7b8c98688812518b9d22b64c89f", null ],

@@ -156,6 +156,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a577cbceb2c828c2457793c163bf9f356" id="r_a577cbceb2c828c2457793c163bf9f356"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a577cbceb2c828c2457793c163bf9f356">AdvanceInjuries</a> ()</td></tr>
 <tr class="memdesc:a577cbceb2c828c2457793c163bf9f356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узел маршрута пройден: состарить раны и снять те, что проходят сами.  <br /></td></tr>
 <tr class="separator:a577cbceb2c828c2457793c163bf9f356"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b47f3f6a68af991acd6a42bfa7f5002" id="r_a9b47f3f6a68af991acd6a42bfa7f5002"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a9b47f3f6a68af991acd6a42bfa7f5002">HealCost</a> (string consequenceId)</td></tr>
+<tr class="memdesc:a9b47f3f6a68af991acd6a42bfa7f5002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Во сколько золота обходится снятие последствия у торговца. 0 = каталог не знает такого.  <br /></td></tr>
+<tr class="separator:a9b47f3f6a68af991acd6a42bfa7f5002"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab17de7003e09f7779d188fd7c6f35fc8" id="r_ab17de7003e09f7779d188fd7c6f35fc8"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#ab17de7003e09f7779d188fd7c6f35fc8">VesselItems</a> (int slotIndex)</td></tr>
 <tr class="memdesc:ab17de7003e09f7779d188fd7c6f35fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Предметы, надетые на сосуд слота (пустой массив, если слот вне ростера).  <br /></td></tr>
 <tr class="separator:ab17de7003e09f7779d188fd7c6f35fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -310,6 +313,11 @@ Events</h2></td></tr>
 <p>Возвращает, сколько снялось.</p>
 <p>Зовётся ровно там, где узел помечается пройденным, — иначе «сколько узлов прожила рана» и «сколько узлов прошёл отряд» разъедутся, а расхождения этого не увидит никто: рана просто проживёт не столько, сколько обещано в карточке. </p>
 <p><b>public, в отличие от прочих мутаторов:</b> это не действие игрока, а следствие уже совершённого хода — как и Autosave. Зовёт его тот, кто двигает карту.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1RunStateService_a577cbceb2c828c2457793c163bf9f356_cgraph.svg" width="464" height="179"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -452,6 +460,31 @@ Here is the caller graph for this function:</div>
 
 <p>Надеть релик из запаса на сосуд слота (лоадаут-хаб): релик снимается с запаса и встаёт на слот, а прежний кит слота (если не базовый) возвращается в запас — это свап, не потеря. </p>
 <p>Требует, чтобы <em>relicId</em>  лежал в запасе. false = нет забега / слот вне ростера / релика нет в запасе. </p>
+
+</div>
+</div>
+<a id="a9b47f3f6a68af991acd6a42bfa7f5002" name="a9b47f3f6a68af991acd6a42bfa7f5002"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b47f3f6a68af991acd6a42bfa7f5002">&#9670;&#160;</a></span>HealCost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Guild.RunStateService.HealCost </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>consequenceId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Во сколько золота обходится снятие последствия у торговца. 0 = каталог не знает такого. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1RunStateService_a9b47f3f6a68af991acd6a42bfa7f5002_icgraph.svg" width="464" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -760,6 +793,11 @@ Here is the call graph for this function:</div>
 <p>Списать золото, если хватает. </p>
 <p>false = недостаточно (ничего не списано) или нет забега.</p>
 <p><b>Осталось публичным сознательно — это транзакция, а не односторонняя запись.</b> Метод отвечает «вышло или нет» СРАЗУ, а в коопе ответ даёт хост, и вызывающий обязан уметь ждать и откатывать оптимистичный показ. Завернуть это в шину, не переделав магазин, награды и лоадаут, нельзя — а их переделка и есть отложенный шаг «транзакции над экранами подготовки» ([[tech/40-planning/coop-vertical|Planning - Coop Vertical]] §10). Пока сюда ходят напрямую, и в логе команд этих изменений НЕТ: в коопе такой путь даст расхождение, поэтому первым делом перед транзакциями сюда и возвращаемся. Товарищи по той же причине: TryAddRelic, TrySpendRestart, IncreaseCapacity. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1RunStateService_add6c1a1a30714bb4524dca745b6fcec2_icgraph.svg" width="464" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

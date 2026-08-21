@@ -41,6 +41,7 @@ var namespaceGuildmaster_1_1Guild =
     [ "RunState", "classGuildmaster_1_1Guild_1_1RunState.html", "classGuildmaster_1_1Guild_1_1RunState" ],
     [ "RunStateService", "classGuildmaster_1_1Guild_1_1RunStateService.html", "classGuildmaster_1_1Guild_1_1RunStateService" ],
     [ "SetWorldMapRequest", "structGuildmaster_1_1Guild_1_1SetWorldMapRequest.html", "structGuildmaster_1_1Guild_1_1SetWorldMapRequest" ],
+    [ "ShopInjury", "classGuildmaster_1_1Guild_1_1ShopInjury.html", "classGuildmaster_1_1Guild_1_1ShopInjury" ],
     [ "ShopItem", "classGuildmaster_1_1Guild_1_1ShopItem.html", "classGuildmaster_1_1Guild_1_1ShopItem" ],
     [ "ShopStashItem", "classGuildmaster_1_1Guild_1_1ShopStashItem.html", "classGuildmaster_1_1Guild_1_1ShopStashItem" ],
     [ "VesselState", "classGuildmaster_1_1Guild_1_1VesselState.html", "classGuildmaster_1_1Guild_1_1VesselState" ],

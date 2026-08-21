@@ -1,0 +1,7 @@
+<map id="Guildmaster.UI.ModeChoiceView.Build" name="Guildmaster.UI.ModeChoiceView.Build">
+<area shape="rect" id="Node000001" title=" " alt="" coords="288,37,491,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1NewGameScreenView.html#ac0097be232f87d55430b777559904990" title=" " alt="" coords="5,5,240,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="274,46,240,42,240,37,275,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1ProfileHubView.html#a9469078531abff4418a371a0979b1009" title=" " alt="" coords="27,69,218,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="275,74,218,81,218,75,274,68"/>
+</map>

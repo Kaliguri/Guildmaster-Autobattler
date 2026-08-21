@@ -1,7 +1,7 @@
 var classGuildmaster_1_1Guild_1_1CampSession =
 [
-    [ "CampSession", "classGuildmaster_1_1Guild_1_1CampSession.html#afd8e1a215c4f0581f73a5a936df7ff3b", null ],
-    [ "TryPerform", "classGuildmaster_1_1Guild_1_1CampSession.html#a44849dda85f5326e476bcb82b605bf92", null ],
+    [ "CampSession", "classGuildmaster_1_1Guild_1_1CampSession.html#a5006fbb0740cfbd7d681f10596b9bf8a", null ],
+    [ "TryPerform", "classGuildmaster_1_1Guild_1_1CampSession.html#acc6b8d55536ac9def489a2fd03b4a0cf", null ],
     [ "DefaultActionCost", "classGuildmaster_1_1Guild_1_1CampSession.html#a6f24485623bc62023878e6f9a2e87a7a", null ],
     [ "DefaultBudget", "classGuildmaster_1_1Guild_1_1CampSession.html#a934b3de1e4b061c922c367f58954671b", null ],
     [ "ActionCost", "classGuildmaster_1_1Guild_1_1CampSession.html#a3e0a410aa1597eacbd402d796f57695d", null ],

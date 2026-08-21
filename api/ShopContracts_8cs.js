@@ -2,6 +2,7 @@ var ShopContracts_8cs =
 [
     [ "Guildmaster.Guild.ShopItem", "classGuildmaster_1_1Guild_1_1ShopItem.html", "classGuildmaster_1_1Guild_1_1ShopItem" ],
     [ "Guildmaster.Guild.ShopStashItem", "classGuildmaster_1_1Guild_1_1ShopStashItem.html", "classGuildmaster_1_1Guild_1_1ShopStashItem" ],
+    [ "Guildmaster.Guild.ShopInjury", "classGuildmaster_1_1Guild_1_1ShopInjury.html", "classGuildmaster_1_1Guild_1_1ShopInjury" ],
     [ "Guildmaster.Guild.IShopController", "interfaceGuildmaster_1_1Guild_1_1IShopController.html", "interfaceGuildmaster_1_1Guild_1_1IShopController" ],
     [ "Guildmaster.Guild.OpenShopRequest", "structGuildmaster_1_1Guild_1_1OpenShopRequest.html", "structGuildmaster_1_1Guild_1_1OpenShopRequest" ],
     [ "ShopBuyOutcome", "ShopContracts_8cs.html#afcea6b7c65659bfd1d6925299e6e0f09", [

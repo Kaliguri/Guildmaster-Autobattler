@@ -43,7 +43,7 @@ var classGuildmaster_1_1Combat_1_1CombatSimulation =
     [ "Tuning", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a5c1c25bef2787d28f77d0e8c2e328e8a", null ],
     [ "Units", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6a7d8e090ee8dcca46ee0aaf705e7d24", null ],
     [ "OnAreaHit", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a9caad6a621e0b9755a74fb79f3ac7272", null ],
-    [ "OnAttackEvaded", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac488c96e1b4ab1abfff473a2fd0f1f8d", null ],
+    [ "OnAttackEvaded", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#aff60fedaa8ce9d2af1955a5c3cf508ee", null ],
     [ "OnAttackInterrupted", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae73567a995a49a3e63bdcfb76cfa75bd", null ],
     [ "OnAttackStarted", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a8b40f7605f54d4edcf58e483639f8a11", null ],
     [ "OnBattleEnded", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a4a83041f340c0c1f635c66282dc3409d", null ],

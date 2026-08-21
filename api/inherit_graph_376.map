@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classGuildmaster_1_1Presentation_1_1Map_1_1MapIntroTiming.html" title="Когда какая часть карты прорастает на интро: фронт выходит из стартового узла и идёт ПО ДОРОЖКАМ,..." alt="" coords="5,5,196,45"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource.html" title="Источник точек фокуса экшн&#45;камеры (вики «16» §5): позиции сущностей, которые камера держит в кадре." alt="" coords="5,69,196,109"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Presentation_1_1CombatFocusPointSource.html" title="Боевой источник точек фокуса: позиции живых юнитов активной симуляции." alt="" coords="244,5,435,45"/>
+<area shape="poly" id="edge414_Node000000_Node000001" title=" " alt="" coords="188,63,264,43,265,48,190,68"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1EmptyFocusPointSource.html" title="Пустой источник точек фокуса: камера ни за кем не следует." alt="" coords="244,69,435,109"/>
+<area shape="poly" id="edge415_Node000000_Node000002" title=" " alt="" coords="210,87,244,87,244,92,210,92"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1TapeFocusPointSource.html" title="Источник точек фокуса из ЛЕНТЫ: позиции юнитов текущего кадра показа." alt="" coords="244,133,435,173"/>
+<area shape="poly" id="edge416_Node000000_Node000003" title=" " alt="" coords="190,110,265,131,264,136,188,116"/>
 </map>

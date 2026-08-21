@@ -2,10 +2,12 @@ var classGuildmaster_1_1Game_1_1Flow_1_1ShopController =
 [
     [ "ShopController", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a8e1497565a81d13eb549f1033b5f5d52", null ],
     [ "Buy", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#ae27e588c92fef203395ce3e2c8972335", null ],
+    [ "Heal", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a0586bf04c9dd26c7b2074463e39323d7", null ],
     [ "Open", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a5b33f02bfbdb9b813558ef7b49a38985", null ],
     [ "Reroll", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a831775f4225e317a1ad213d829340b23", null ],
     [ "Sell", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a8ddaa4d518f9f336ea948e29f9e5615e", null ],
     [ "Gold", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a8181017165353619b6ad935adb43619a", null ],
+    [ "Injuries", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a1748601f98f3efe7e80b15dd89ffc22a", null ],
     [ "RerollCost", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a75f6d6ecd7e460546b3a7ef77b89c205", null ],
     [ "Shelf", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a61c9d84e3757b14e654da7c50e6002a4", null ],
     [ "Stash", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a17841d8d928da5eae3f088de61f47237", null ],

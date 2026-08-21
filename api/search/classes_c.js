@@ -26,5 +26,6 @@ var searchData=
   ['menurouter_23',['MenuRouter',['../classGuildmaster_1_1UI_1_1MenuRouter.html',1,'Guildmaster::UI']]],
   ['midbattlejoinhold_24',['MidBattleJoinHold',['../classGuildmaster_1_1Net_1_1Tape_1_1MidBattleJoinHold.html',1,'Guildmaster::Net::Tape']]],
   ['missinghpshieldcomponent_25',['MissingHpShieldComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MissingHpShieldComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
-  ['movementsystem_26',['MovementSystem',['../classGuildmaster_1_1Combat_1_1MovementSystem.html',1,'Guildmaster::Combat']]]
+  ['modechoiceview_26',['ModeChoiceView',['../classGuildmaster_1_1UI_1_1ModeChoiceView.html',1,'Guildmaster::UI']]],
+  ['movementsystem_27',['MovementSystem',['../classGuildmaster_1_1Combat_1_1MovementSystem.html',1,'Guildmaster::Combat']]]
 ];

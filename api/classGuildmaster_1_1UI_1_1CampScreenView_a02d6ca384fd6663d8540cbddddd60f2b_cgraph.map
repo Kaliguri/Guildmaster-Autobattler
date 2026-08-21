@@ -1,5 +1,5 @@
 <map id="Guildmaster.UI.CampScreenView.Build" name="Guildmaster.UI.CampScreenView.Build">
 <area shape="rect" id="Node000001" title="Построить экран привала." alt="" coords="5,5,211,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1CampSession.html#a44849dda85f5326e476bcb82b605bf92" title="Выполнить действие." alt="" coords="259,5,493,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1CampSession.html#acc6b8d55536ac9def489a2fd03b4a0cf" title="Выполнить действие." alt="" coords="259,5,493,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,23,245,23,245,28,211,28"/>
 </map>

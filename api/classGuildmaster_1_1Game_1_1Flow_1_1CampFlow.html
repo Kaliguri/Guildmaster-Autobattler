@@ -113,18 +113,18 @@ Collaboration diagram for Guildmaster.Game.Flow.CampFlow:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af1833747321bf9fbf8a8f7ca4c0553bb" id="r_af1833747321bf9fbf8a8f7ca4c0553bb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1CampFlow.html#af1833747321bf9fbf8a8f7ca4c0553bb">CampFlow</a> (IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenCampRequest.html">OpenCampRequest</a> &gt; openCampPub, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html">Session.Net.HostSessionStage</a> stage=null)</td></tr>
-<tr class="separator:af1833747321bf9fbf8a8f7ca4c0553bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa96ef40408a0d2a0545f2bdd32bd4049" id="r_aa96ef40408a0d2a0545f2bdd32bd4049"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1CampFlow.html#aa96ef40408a0d2a0545f2bdd32bd4049">CampFlow</a> (IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenCampRequest.html">OpenCampRequest</a> &gt; openCampPub, <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html">Guildmaster.Guild.Commands.IRunCommands</a> commands, <a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1HostSessionStage.html">Session.Net.HostSessionStage</a> stage=null)</td></tr>
+<tr class="separator:aa96ef40408a0d2a0545f2bdd32bd4049"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9821f79f95803168e1e712a2d118f637" id="r_a9821f79f95803168e1e712a2d118f637"><td class="memItemLeft" align="right" valign="top">async UniTask&lt; <a class="el" href="structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html">EventResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1CampFlow.html#a9821f79f95803168e1e712a2d118f637">Run</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html">RunContext</a> ctx)</td></tr>
 <tr class="separator:a9821f79f95803168e1e712a2d118f637"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Узел забега «привал»: отряд привозит бюджет действий (CampSession) и тратит его на несколько трат ПОДРЯД, пока не уйдёт сам или пока бюджет не кончится. </p>
 <p>Этим привал и отличается от текстового ивента: там выбор один и он же выход, здесь выбор повторяемый, а выход — отдельное решение. </p>
-<p>Действия пока без эффектов (см. CampSession) — узел стоит на карте и тратит бюджет, сами механики навешиваются позже, не трогая ни петлю, ни резолвер.</p>
+<p>Свой эффект пока есть у одного действия — «снять последствие»; остальные тратят бюджет вхолостую и обзаведутся механиками позже, не трогая ни петлю, ни резолвер.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af1833747321bf9fbf8a8f7ca4c0553bb" name="af1833747321bf9fbf8a8f7ca4c0553bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1833747321bf9fbf8a8f7ca4c0553bb">&#9670;&#160;</a></span>CampFlow()</h2>
+<a id="aa96ef40408a0d2a0545f2bdd32bd4049" name="aa96ef40408a0d2a0545f2bdd32bd4049"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa96ef40408a0d2a0545f2bdd32bd4049">&#9670;&#160;</a></span>CampFlow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -137,6 +137,12 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OpenCampRequest.html">OpenCampRequest</a> &gt;&#160;</td>
           <td class="paramname"><em>openCampPub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html">Guildmaster::Guild::Commands::IRunCommands</a>&#160;</td>
+          <td class="paramname"><em>commands</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

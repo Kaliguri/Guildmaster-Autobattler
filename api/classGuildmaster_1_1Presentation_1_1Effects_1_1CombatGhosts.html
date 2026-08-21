@@ -113,9 +113,9 @@ Collaboration diagram for Guildmaster.Presentation.Effects.CombatGhosts:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4967e0d37e526b6dd915c66820f8ed81" id="r_a4967e0d37e526b6dd915c66820f8ed81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts.html#a4967e0d37e526b6dd915c66820f8ed81">Leave</a> (in <a class="el" href="structGuildmaster_1_1Presentation_1_1UnitSilhouette.html">UnitSilhouette</a> silhouette, Vector3 feet, Color color, Material material, int sortingLayerId, int sortingOrder, float life, float startAlpha, float fadePower, float holo)</td></tr>
-<tr class="memdesc:a4967e0d37e526b6dd915c66820f8ed81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оставить копию тела.  <br /></td></tr>
-<tr class="separator:a4967e0d37e526b6dd915c66820f8ed81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2afa0373ccf214cb14da79cbeb8c233" id="r_ac2afa0373ccf214cb14da79cbeb8c233"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts.html#ac2afa0373ccf214cb14da79cbeb8c233">Leave</a> (in <a class="el" href="structGuildmaster_1_1Presentation_1_1UnitSilhouette.html">UnitSilhouette</a> silhouette, Vector3 feet, Color color, Material material, int sortingLayerId, int sortingOrder, float life, float startAlpha, float fadePower, float holo, float growTo=1f, float delay=0f)</td></tr>
+<tr class="memdesc:ac2afa0373ccf214cb14da79cbeb8c233"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оставить копию тела.  <br /></td></tr>
+<tr class="separator:ac2afa0373ccf214cb14da79cbeb8c233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa14bc6c06c6f5cf6717bc7ba9946c2f6" id="r_aa14bc6c06c6f5cf6717bc7ba9946c2f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts.html#aa14bc6c06c6f5cf6717bc7ba9946c2f6">DespawnAll</a> ()</td></tr>
 <tr class="memdesc:aa14bc6c06c6f5cf6717bc7ba9946c2f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Погасить все копии и вернуть их в пул (сброс боя, уход арены).  <br /></td></tr>
 <tr class="separator:aa14bc6c06c6f5cf6717bc7ba9946c2f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,8 +156,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a4967e0d37e526b6dd915c66820f8ed81" name="a4967e0d37e526b6dd915c66820f8ed81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4967e0d37e526b6dd915c66820f8ed81">&#9670;&#160;</a></span>Leave()</h2>
+<a id="ac2afa0373ccf214cb14da79cbeb8c233" name="ac2afa0373ccf214cb14da79cbeb8c233"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2afa0373ccf214cb14da79cbeb8c233">&#9670;&#160;</a></span>Leave()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -223,7 +223,19 @@ Here is the call graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>holo</em>&#160;</td>
+          <td class="paramname"><em>holo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>growTo</em> = <code>1f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>delay</em> = <code>0f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -239,11 +251,18 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Оставить копию тела. </p>
-<p>Точка — мировые координаты ног, поза — снимок силуэта на этот момент. </p>
+<p>Точка — мировые координаты ног, поза — снимок силуэта на этот момент.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">growTo</td><td>До какого масштаба копия вырастает: 1 — стоит (шлейф), больше — кольцо ряби.</td></tr>
+    <tr><td class="paramname">delay</td><td>Пауза перед появлением, сек: ею разводятся во времени кольца ряби.</td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts_a4967e0d37e526b6dd915c66820f8ed81_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1CombatGhosts_ac2afa0373ccf214cb14da79cbeb8c233_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

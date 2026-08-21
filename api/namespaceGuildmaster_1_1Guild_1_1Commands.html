@@ -131,6 +131,8 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespaceGuildmaster_1_1Guild_1_1Commands.html#a23389335a81be52ef0362854f4a8cba5a6a9fe08d4fc1b26177ddcee4cf1452b0">AwardBattleReward</a> = 5
 , <a class="el" href="namespaceGuildmaster_1_1Guild_1_1Commands.html#a23389335a81be52ef0362854f4a8cba5a976b009c4e0b979a2f6f7b04fcd9f752">ChooseNode</a> = 6
 , <a class="el" href="namespaceGuildmaster_1_1Guild_1_1Commands.html#a23389335a81be52ef0362854f4a8cba5a52ac064880d6ff7f3eb3fa466bca0f01">InflictInjury</a> = 7
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Guild_1_1Commands.html#a23389335a81be52ef0362854f4a8cba5ad9fb770494599dfa2a8c492d04488d90">HealInjury</a> = 8
 <br />
  }</td></tr>
 <tr class="memdesc:a23389335a81be52ef0362854f4a8cba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что команда делает с забегом.  <a href="namespaceGuildmaster_1_1Guild_1_1Commands.html#a23389335a81be52ef0362854f4a8cba5">More...</a><br /></td></tr>
@@ -170,6 +172,10 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a23389335a81be52ef0362854f4a8cba5a52ac064880d6ff7f3eb3fa466bca0f01" name="a23389335a81be52ef0362854f4a8cba5a52ac064880d6ff7f3eb3fa466bca0f01"></a>InflictInjury&#160;</td><td class="fielddoc"><p>Положить последствие боя на «Сосуд»: <code>SlotIndex</code> — чей, <code>Amount</code> — сид ролла. </p>
 <p>Ступень уточняет каскад по состоянию, конкретную рану выбирает взвешенный ролл от сида.</p>
 <p>Сид едет В КОМАНДЕ, а не берётся из генератора забега, потому что команда обязана воспроизводиться из лога сама по себе. Возьми применитель поток <code>IRngService</code> — результат зависел бы от того, сколько раз этот поток дёрнули до неё, то есть от порядка чужих действий; у хозяина и гостя раны разъехались бы молча, и поймалось бы это только рассинхроном. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a23389335a81be52ef0362854f4a8cba5ad9fb770494599dfa2a8c492d04488d90" name="a23389335a81be52ef0362854f4a8cba5ad9fb770494599dfa2a8c492d04488d90"></a>HealInjury&#160;</td><td class="fielddoc"><p>Снять последствие с «Сосуда»: <code>SlotIndex</code> — чей, <code>Text</code> — id последствия, <code>Amount</code> — платно ли (<code>1</code> — списать цену из ассета, <code>0</code> — бесплатно). </p>
+<p>Один вид на оба пути лечения намеренно: торговец и привал СНИМАЮТ одинаково, а платят разным — золотом забега и бюджетом действий привала. Бюджет привала durable-состоянием не является и живёт свой узел, поэтому в команду ему нечего класть; в ней остаётся только та оплата, что меняет забег. </p>
+<p>Цена не едет числом, а спрашивается у ассета при применении: пришли мы её в команде — и старый лог, воспроизведённый после правки баланса, списал бы вчерашнее золото.</p>
 </td></tr>
 </table>
 

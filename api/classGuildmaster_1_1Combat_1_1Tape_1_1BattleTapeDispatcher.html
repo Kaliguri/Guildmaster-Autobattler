@@ -142,9 +142,9 @@ Events</h2></td></tr>
 <tr class="memitem:a0a2194da9110f476c8cf47a909ddab22" id="r_a0a2194da9110f476c8cf47a909ddab22"><td class="memItemLeft" align="right" valign="top">Action&lt; int, int, float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#a0a2194da9110f476c8cf47a909ddab22">Healed</a></td></tr>
 <tr class="memdesc:a0a2194da9110f476c8cf47a909ddab22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Лечение показано: источник, цель, величина.  <br /></td></tr>
 <tr class="separator:a0a2194da9110f476c8cf47a909ddab22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affcdc292aa6dc43a5e1aa78709533a9f" id="r_affcdc292aa6dc43a5e1aa78709533a9f"><td class="memItemLeft" align="right" valign="top">Action&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#affcdc292aa6dc43a5e1aa78709533a9f">AttackEvaded</a></td></tr>
-<tr class="memdesc:affcdc292aa6dc43a5e1aa78709533a9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удар по цели отменён целиком — показ рисует «evade».  <br /></td></tr>
-<tr class="separator:affcdc292aa6dc43a5e1aa78709533a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e5701271d9b24ab268de554df9f92f3" id="r_a1e5701271d9b24ab268de554df9f92f3"><td class="memItemLeft" align="right" valign="top">Action&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#a1e5701271d9b24ab268de554df9f92f3">AttackEvaded</a></td></tr>
+<tr class="memdesc:a1e5701271d9b24ab268de554df9f92f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удар по цели отменён целиком: бьющий и цель.  <br /></td></tr>
+<tr class="separator:a1e5701271d9b24ab268de554df9f92f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5687475a8732b3e7edb2db1dd8af81f7" id="r_a5687475a8732b3e7edb2db1dd8af81f7"><td class="memItemLeft" align="right" valign="top">Action&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Tape_1_1BattleTapeDispatcher.html#a5687475a8732b3e7edb2db1dd8af81f7">AttackStarted</a></td></tr>
 <tr class="memdesc:a5687475a8732b3e7edb2db1dd8af81f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Начался замах: источник, цель.  <br /></td></tr>
 <tr class="separator:a5687475a8732b3e7edb2db1dd8af81f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -396,19 +396,20 @@ Events</h2></td></tr>
 
 </div>
 </div>
-<a id="affcdc292aa6dc43a5e1aa78709533a9f" name="affcdc292aa6dc43a5e1aa78709533a9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#affcdc292aa6dc43a5e1aa78709533a9f">&#9670;&#160;</a></span>AttackEvaded</h2>
+<a id="a1e5701271d9b24ab268de554df9f92f3" name="a1e5701271d9b24ab268de554df9f92f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e5701271d9b24ab268de554df9f92f3">&#9670;&#160;</a></span>AttackEvaded</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Action&lt;int&gt; Guildmaster.Combat.Tape.BattleTapeDispatcher.AttackEvaded</td>
+          <td class="memname">Action&lt;int, int&gt; Guildmaster.Combat.Tape.BattleTapeDispatcher.AttackEvaded</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Удар по цели отменён целиком — показ рисует «evade». </p>
+<p>Удар по цели отменён целиком: бьющий и цель. </p>
+<p>Источник нужен показу, чтобы положить удар по призрачной копии в правильном направлении; <code>-1</code> — автора нет (ловушка, окружение). </p>
 
 </div>
 </div>
