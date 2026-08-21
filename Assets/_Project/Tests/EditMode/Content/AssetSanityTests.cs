@@ -2,13 +2,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Stats;
 using NUnit.Framework;
 using UnityEditor;
 
 namespace Guildmaster.Tests.EditMode.Content
 {
     /// <summary>
-    /// Ловит enum-поля ассетов, которые держат НЕ ТО значение — при том, что формально валидны.
+    /// Ловит поля ассетов, которые формально валидны, а игру ломают: enum держит чужое значение,
+    /// стат забыт и молча равен нулю. Общее у всех случаев одно — тесты зелёные, а в бою тишина.
     /// <para><b>Зачем гейт.</b> Ассеты часто заводятся кодом, а `SerializedProperty.enumValueIndex`
     /// присваивает позицию в списке имён, не значение enum; совпадают они только у перечислений без
     /// дыр. 21.08.2026 так уехали пять ассетов сразу: автоатака поддержки стала `Pure` (урон, не
@@ -18,7 +20,7 @@ namespace Guildmaster.Tests.EditMode.Content
     /// <para>Проверки намеренно узкие: ловится не «странное число», а <b>сочетание, которого не
     /// бывает по дизайну</b>. Легальное исключение здесь — повод обсудить дизайн, а не ослабить тест.</para>
     /// </summary>
-    public sealed class EnumSanityTests
+    public sealed class AssetSanityTests
     {
         /// <summary>Компоненты, которые бывают только у ПОЛЕЗНОГО эффекта: щиты, негейты, лечение.</summary>
         private static readonly HashSet<string> BuffOnly = new HashSet<string>
@@ -106,6 +108,28 @@ namespace Guildmaster.Tests.EditMode.Content
 
             Assert.That(wrong, Is.Empty,
                 "Эффект копит стаки, но упёрт в один:\n  " + string.Join("\n  ", wrong));
+        }
+
+        /// <summary>
+        /// Дальнобойный юнит обязан иметь ненулевую скорость снаряда: его автоатака не бьёт напрямую, а
+        /// выпускает снаряд, и при `ProjectileSpeed = 0` тот никуда не летит. Юнит исправно замахивается
+        /// и не наносит **ровно ноль** урона за весь бой.
+        /// <para>Стат забывается легко: остальные приходят каскадом от класса, а этот задаётся только
+        /// своей строкой в стат-блоке. 21.08.2026 так простоял весь бой `relic.windwarden` — дефект нашёлся
+        /// на балансном стенде по нулю в DmgDealt, и это единственный след, который он оставляет.</para>
+        /// </summary>
+        [Test]
+        public void RangedUnit_HasProjectileSpeed()
+        {
+            var wrong = Units()
+                .Where(u => u.AttackType != AttackType.Melee)
+                .Where(u => !u.Stats.Any(m => m.Stat == StatType.ProjectileSpeed && m.Value > 0f))
+                .Select(u => $"{u.Id}: {u.AttackType}, а ProjectileSpeed не задан")
+                .ToList();
+
+            Assert.That(wrong, Is.Empty,
+                "Дальнобойный юнит со снарядом нулевой скорости — он не попадёт ни разу:\n  "
+                + string.Join("\n  ", wrong));
         }
 
         private static IEnumerable<UnitData> Units()

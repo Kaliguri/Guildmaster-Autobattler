@@ -55,6 +55,9 @@ MonoBehaviour:
   - Stat: 27
     Op: 3
     Value: 60
+  - Stat: 18
+    Op: 3
+    Value: 10
   _grantedEffects:
   - {fileID: 11400000, guid: 951cb3709ad077941b0cc35f46fd9d50, type: 2}
   _abilities:
@@ -104,7 +107,7 @@ MonoBehaviour:
     _displaceDistance: 0
     _visualSlot: 0
     _infoTags: []
-  _aiPreset: {fileID: 0}
+  _aiPreset: {fileID: 11400000, guid: 23dcec69dda38814e99c0d882a05b246, type: 2}
   _ai:
     _autoAttackTargeting: 0
     _autoAttackMode: 0
@@ -117,7 +120,7 @@ MonoBehaviour:
       Enabled: 0
       FleeDist: 1.5
       FallbackDist: 3
-    _passiveTrigger: 0
+    _passiveTrigger: 1
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
   _infoTags:

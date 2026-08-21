@@ -28,7 +28,7 @@ namespace Guildmaster.Balance.Editor
             var headers = new List<string>
             {
                 "Side", "Unit", "DmgDealt", "DmgAutoPhys", "DmgAutoMagic", "DmgAbility", "DmgDoT", "DmgVuln",
-                "DmgSelf", "DmgTaken", "Healing", "Died", "DeathSec", "HpLeft%",
+                "DmgSelf", "DmgTaken", "DmgMitigated", "HitsEvaded", "Healing", "Died", "DeathSec", "HpLeft%",
             };
             var table = new List<IReadOnlyList<object>>();
             foreach (UnitMetric m in report.Units)
@@ -45,6 +45,8 @@ namespace Guildmaster.Balance.Editor
                     m.DamageFromVulnerability,
                     m.SelfDamage,
                     m.DamageTaken,
+                    m.DamageMitigated,
+                    m.HitsEvaded,
                     m.HealingDone,
                     m.Died ? "yes" : "no",
                     m.Died ? (object)(m.DeathTick / (double)SimConstants.TickRate) : "-",
@@ -56,6 +58,10 @@ namespace Guildmaster.Balance.Editor
             string notes = $"**Сценарий:** {scenario.name}. **Исход:** {result} за {report.Seconds:0.0} с. " +
                            "Per-unit метрики боя A (team 0) vs B (team 1). DmgVuln — сколько урона добавили " +
                            "уязвимости цели («Угли»); это часть DmgDealt, а не добавка к нему. " +
+                           "DmgMitigated — сколько урона срезали броня и стойкости, не дойдя до HP; " +
+                           "HitsEvaded — сколько входящих ударов отменено ЦЕЛИКОМ (отход, уклонение, " +
+                           "маскировка, «Порыв»). Эти две колонки отвечают на «за счёт чего он выжил», " +
+                           "на который DmgTaken не отвечает: срезанное и отменённое в него не попадает. " +
                            "HpLeft% — остаток HP на конец боя.";
 
             string csv = ReportWriter.WriteCsv("scenario_" + Safe(scenario.name), headers, table);
