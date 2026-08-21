@@ -51,7 +51,7 @@ namespace Guildmaster.Game.Flow
 
                 slots.Add(new PlayerSlot(relic, vessel, rs.SavedPosition,
                                          ResolveItems(rs.VesselItemIds, content),
-                                         ResolveConsequences(rs.InjuryIds, content)));
+                                         ResolveConsequences(rs.Injuries, content)));
             }
             return slots.ToArray();
         }
@@ -72,13 +72,14 @@ namespace Guildmaster.Game.Flow
         /// разрешилось). Ненайденный id кричит в лог: молча потерянная травма — это боец, вошедший в
         /// бой здоровым после того, как игрок за него заплатил слотом.
         /// </summary>
-        public static ConsequenceData[] ResolveConsequences(IReadOnlyList<string> ids, IContentDatabase content)
+        public static ConsequenceData[] ResolveConsequences(IReadOnlyList<Injury> injuries, IContentDatabase content)
         {
-            if (ids == null || ids.Count == 0 || content == null) return null;
+            if (injuries == null || injuries.Count == 0 || content == null) return null;
 
-            var list = new List<ConsequenceData>(ids.Count);
-            foreach (string id in ids)
+            var list = new List<ConsequenceData>(injuries.Count);
+            foreach (Injury injury in injuries)
             {
+                string id = injury?.Id;
                 if (string.IsNullOrEmpty(id)) continue;
                 if (content.TryGet(id, out ConsequenceData consequence)) list.Add(consequence);
                 else Debug.LogWarning($"[GuildRoster] - последствие '{id}' не найдено в контент-БД → "

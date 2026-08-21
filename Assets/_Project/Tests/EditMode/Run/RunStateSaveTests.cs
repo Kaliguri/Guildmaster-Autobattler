@@ -95,7 +95,7 @@ namespace Guildmaster.Tests.EditMode.Run
             var config = GameConfig.CreateDefault(); // заготовка: вместимость 12, потолок 16
             try
             {
-                var svc = new RunStateService(new JsonFileSaveService(), config, new FixedProfileService());
+                var svc = new RunStateService(new JsonFileSaveService(), config, new FixedProfileService(), content: null);
                 RunState run = svc.NewRun(1L, new[] { new RosterSlot() });
 
                 Assert.AreEqual(config.RelicCapacityBase, run.RelicCapacity);
@@ -125,7 +125,7 @@ namespace Guildmaster.Tests.EditMode.Run
             var config = GameConfig.CreateDefault(); // заготовка: VesselItemSlots = 3
             try
             {
-                var svc = new RunStateService(new JsonFileSaveService(), config, new FixedProfileService());
+                var svc = new RunStateService(new JsonFileSaveService(), config, new FixedProfileService(), content: null);
                 svc.NewRun(1L, new[] { new RosterSlot(), new RosterSlot() });
 
                 for (int i = 0; i < config.VesselItemSlots; i++)
@@ -160,7 +160,7 @@ namespace Guildmaster.Tests.EditMode.Run
             var config = GameConfig.CreateDefault();
             try
             {
-                var svc = new RunStateService(new JsonFileSaveService(), config, new FixedProfileService());
+                var svc = new RunStateService(new JsonFileSaveService(), config, new FixedProfileService(), content: null);
                 svc.NewRun(1L, new[] { new RosterSlot() });
 
                 const int many = 12;

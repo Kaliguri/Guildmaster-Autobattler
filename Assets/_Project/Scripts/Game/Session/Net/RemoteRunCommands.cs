@@ -52,6 +52,10 @@ namespace Guildmaster.Game.Session.Net
         // Клик гостя по узлу карты: та же команда, что и у хозяина, тем же каналом.
         public void ChooseNode(string nodeId) => Send(Next(RunCommandKind.ChooseNode, text: nodeId));
 
+        // Раны кладёт владелец забега; гостю остаётся тот же интент тем же каналом.
+        public void InflictInjury(int slotIndex, int rollSeed)
+            => Send(Next(RunCommandKind.InflictInjury, slotIndex: slotIndex, amount: rollSeed));
+
         /// <summary>
         /// Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва.
         /// <c>false</c> здесь — не отказ, а факт, и вызывающие его уже читают.

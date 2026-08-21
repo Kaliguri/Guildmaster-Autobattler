@@ -38,6 +38,9 @@ namespace Guildmaster.Game.Session
 
         public void ChooseNode(string nodeId) => _sessions.Commands?.ChooseNode(nodeId);
 
+        public void InflictInjury(int slotIndex, int rollSeed)
+            => _sessions.Commands?.InflictInjury(slotIndex, rollSeed);
+
         public bool RequestSave() => _sessions.Commands?.RequestSave() ?? false;
     }
 }

@@ -21,7 +21,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         public void SetUp()
         {
             _config = GameConfig.CreateDefault(); // заготовка: RestartsPerAct = 2
-            _runStates = new RunStateService(new InMemorySaveService(), _config, new FixedProfileService());
+            _runStates = new RunStateService(new InMemorySaveService(), _config, new FixedProfileService(), content: null);
             _runStates.NewRun(1L, Array.Empty<RosterSlot>());
         }
 

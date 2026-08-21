@@ -95,6 +95,7 @@
 | Открыть снаряжение бойца | `OpenLoadoutIntent` | оба | **НЕТ** — экран открывает владелец состава |
 | Начислить золото | `RunCommandKind.AddGold` | система | — |
 | Награда за победу | `RunCommandKind.AwardBattleReward` | система | — |
+| Рана за смерть в бою | `RunCommandKind.InflictInjury` | система | — |
 | Дать согласие «готов» | `Decision` | оба | да |
 | Выбрать награду из витрины | `Decision` | оба | да |
 | Начать забег из двора | `Decision` | оба | да |

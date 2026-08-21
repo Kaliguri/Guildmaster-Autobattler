@@ -209,7 +209,7 @@ namespace Guildmaster.Tests.EditMode.Run
         [Test]
         public void RunService_RefusesToSaveWhenThereIsNoGuild()
         {
-            var runs = new RunStateService(_save, _config, FixedProfileService.WithoutGuild());
+            var runs = new RunStateService(_save, _config, FixedProfileService.WithoutGuild(), content: null);
             runs.NewDefaultRun(seed: 1);
 
             // Молча «сохранить в никуда» нельзя: игрок доиграл бы забег и потерял его целиком.

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
@@ -50,7 +51,22 @@ namespace Guildmaster.Game.Flow
         UniTask<BattleOutcome> WaitOutcomeAsync(CancellationToken ct);
 
         /// <summary>child → session: сообщить исход (из <c>BattleEndedEvent</c>).</summary>
-        void ReportOutcome(BattleOutcome outcome);
+        /// <param name="fallenGuildIndices">
+        /// Кто из отряда лёг — индексы слотов гильдии, в порядке ростера. Нужны узлу забега, чтобы
+        /// выдать раны за смерти (ГДД <c>injuries-mettle</c>). null / пусто = обошлось без потерь.
+        /// </param>
+        void ReportOutcome(BattleOutcome outcome, IReadOnlyList<int> fallenGuildIndices = null);
+
+        /// <summary>
+        /// Кто лёг в последнем законченном бою — индексы слотов гильдии. Читает владелец узла, когда
+        /// исход уже получен.
+        /// </summary>
+        /// <remarks>
+        /// Едет отдельно от <see cref="BattleOutcome"/>, а не полем внутри него: исход — это ответ
+        /// «чем кончилось», его читают показ, звук и статистика, и список павших им не нужен. Расширив
+        /// исход, мы бы протащили состав отряда через каждого его читателя.
+        /// </remarks>
+        IReadOnlyList<int> LastFallen { get; }
 
         /// <summary>child → session: как перезапустить текущий бой на месте (без перезагрузки сцены; для ретрая).</summary>
         void BindRestart(Action restart);
@@ -125,8 +141,11 @@ namespace Guildmaster.Game.Flow
             return tcs.Task;
         }
 
-        public void ReportOutcome(BattleOutcome outcome)
+        public IReadOnlyList<int> LastFallen { get; private set; } = Array.Empty<int>();
+
+        public void ReportOutcome(BattleOutcome outcome, IReadOnlyList<int> fallenGuildIndices = null)
         {
+            LastFallen        = fallenGuildIndices ?? (IReadOnlyList<int>)Array.Empty<int>();
             _outcomeDelivered = true;
             _outcome?.TrySetResult(outcome);
         }

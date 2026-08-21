@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Guild;
 
@@ -74,10 +75,33 @@ namespace Guildmaster.Game.Flow
             // +золото за победу (B1). Считаем узел взятым, когда игрок ушёл с досмотра: до этого его ещё
             // можно откатить, и начисленное пришлось бы отбирать назад.
             _commands.AwardBattleReward();
+            InflictInjuries(ctx);
 
             for (int i = 0; i < _rewardCount; i++)        // элитка = 2 выбора подряд (B5)
                 await _reward.PresentAsync(_tier, ctx.Cancellation); // ct → отмена забега размотает награду (QA #37)
             return result;
+        }
+
+        /// <summary>
+        /// Раны за тех, кто лёг в этом бою: по одной команде на павшего.
+        /// </summary>
+        /// <remarks>
+        /// Зовётся ТАМ ЖЕ, где начисляется золото, и по той же причине: до ухода с досмотра узел можно
+        /// откатить (dev-R), и выданные раны пришлось бы отбирать назад.
+        /// <para>Сид ролла тянется из генератора забега здесь, у публикующей стороны, и едет в команде.
+        /// Применитель роллит уже от него, поэтому лог воспроизводится сам по себе — независимо от того,
+        /// сколько раз поток RNG дёрнули между боями.</para>
+        /// </remarks>
+        private void InflictInjuries(RunContext ctx)
+        {
+            IReadOnlyList<int> fallen = _session?.LastFallen;
+            if (fallen == null || fallen.Count == 0) return;
+
+            for (int i = 0; i < fallen.Count; i++)
+            {
+                int seed = ctx.Rng != null ? unchecked((int)ctx.Rng.NextUInt()) : 0;
+                _commands.InflictInjury(fallen[i], seed);
+            }
         }
 
         /// <summary>

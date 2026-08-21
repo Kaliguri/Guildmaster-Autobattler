@@ -62,6 +62,14 @@ namespace Guildmaster.Guild.Commands
                 // Достижимость проверяется ЗДЕСЬ, а не у нажавшего: у напарника карта могла отстать на
                 // снимок, и его клик по уже пройденному узлу обязан отвалиться так же тихо, как отвалился
                 // бы свой. Отказ не громкий именно поэтому — это гонка, а не забытая проводка.
+                // Рана кладётся ЗДЕСЬ, а не у публикующей стороны: ступень зависит от занятых слотов,
+                // то есть от состояния, а состояние знает только владелец. Сид ролла приезжает в
+                // команде, поэтому применение воспроизводится из лога один в один.
+                case RunCommandKind.InflictInjury:
+                    if (_state.Current == null) return false;
+                    _state.InflictInjury(command.SlotIndex, unchecked((ulong)(uint)command.Amount));
+                    return true;
+
                 case RunCommandKind.ChooseNode:
                     if (_state.Current?.Map == null || string.IsNullOrEmpty(command.Text)) return false;
                     if (!MapTraversal.CanEnter(_state.Current.Map, command.Text)) return false;

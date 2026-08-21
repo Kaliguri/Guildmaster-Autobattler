@@ -27,7 +27,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         private RunContext Ctx()
         {
             var config = GameConfig.CreateDefault();
-            _runStates = new RunStateService(new InMemorySaveService(), config, new FixedProfileService());
+            _runStates = new RunStateService(new InMemorySaveService(), config, new FixedProfileService(), content: null);
             _runStates.NewRun(1L, Array.Empty<RosterSlot>());
             _commands  = new Guildmaster.Guild.Commands.RunCommandBus(
                 new Guildmaster.Guild.Commands.RunCommandApplier(_runStates),

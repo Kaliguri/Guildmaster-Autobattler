@@ -29,7 +29,7 @@ namespace Guildmaster.Tests.EditMode.Guild
             _save = new InMemorySaveService();
             _profiles = new FixedProfileService();
             var config = GameConfig.CreateDefault();
-            _runStates = new RunStateService(_save, config, _profiles);
+            _runStates = new RunStateService(_save, config, _profiles, content: null);
         }
 
         private RunContext NewRunWithMap(long seed = 4242L)

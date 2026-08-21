@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
@@ -83,7 +84,39 @@ namespace Guildmaster.Game.Flow
         private void OnBattleEnded(BattleEndedEvent e)
         {
             _session.SetPhase(BattlePhase.Interlude);
-            _session.ReportOutcome(e.Outcome);
+            _session.ReportOutcome(e.Outcome, FallenGuildIndices());
+        }
+
+        /// <summary>
+        /// Кто из отряда лёг — индексами слотов гильдии.
+        /// </summary>
+        /// <remarks>
+        /// Связь «юнит → слот» здесь не хранится, а ВЫВОДИТСЯ из порядка спавна: отряд ставится на
+        /// арену строго в порядке <c>RunState.Guild</c> (<c>GuildRoster.Resolve</c> → <c>PlaceParty</c>),
+        /// поэтому порядковый номер юнита среди team-0 и есть индекс «Сосуда». На том же инварианте
+        /// стоит запись позиций расстановки в сейв (<c>DeploymentController</c>), и ломается он ровно в
+        /// одном случае — если кто-то начнёт спавнить отряд мимо ростера.
+        /// <para>Считаются ВСЕ team-0 по порядку, включая живых: пропусти мы мёртвых при нумерации —
+        /// и рана после первой же потери уезжала бы не тому бойцу.</para>
+        /// </remarks>
+        private List<int> FallenGuildIndices()
+        {
+            var fallen = new List<int>();
+            IReadOnlyList<RuntimeUnit> units = _sim.Units;
+            int guildIndex = 0;
+
+            for (int i = 0; i < units.Count; i++)
+            {
+                RuntimeUnit u = units[i];
+                if (u.Team != 0) continue;
+                // Призванные телами гильдии не являются и слота не занимают — иначе скелет некроманта
+                // сдвинул бы нумерацию, и рана легла бы на соседа.
+                if (u.Summoner != null) continue;
+
+                if (u.IsDead) fallen.Add(guildIndex);
+                guildIndex++;
+            }
+            return fallen;
         }
     }
 }

@@ -22,6 +22,12 @@ namespace Guildmaster.Guild
         private readonly ISaveService    _save;
         private readonly GameConfig      _config;
         private readonly IProfileService _profiles;
+
+        // Каталог контента: по нему резолвятся последствия боёв (ступень раны, срок истечения, пул для
+        // ролла). Обязателен, а не опционален: без каталога травма не легла бы молча, и забег пошёл бы
+        // дальше без цены за смерть — то есть игра стала бы другой, ничего не сообщив.
+        private readonly IContentDatabase _content;
+
         // Звук награды за бой. Опционален: сервис создают и в тестах, где звука нет вовсе.
         private readonly Core.Audio.IAudioService _audio;
 
@@ -40,11 +46,12 @@ namespace Guildmaster.Guild
         public event Action<RunState> Committed;
 
         public RunStateService(ISaveService save, GameConfig config, IProfileService profiles,
-            Core.Audio.IAudioService audio = null)
+            IContentDatabase content, Core.Audio.IAudioService audio = null)
         {
             _save     = save;
             _config   = config;
             _profiles = profiles;
+            _content  = content;
             _audio    = audio;
         }
 
@@ -372,6 +379,41 @@ namespace Guildmaster.Guild
             slot.RelicId = relicId;
             return true;
         }
+
+        // ── Последствия боёв (травмы и закалка, ГДД injuries-mettle) ──
+
+        /// <summary>
+        /// Положить последствие на «Сосуд» слота: ступень уточняет каскад, конкретную рану выбирает
+        /// ролл от <paramref name="rollSeed"/>. Возвращает исход каскада — по нему вызывающий узнаёт,
+        /// поднялась ли ступень и не выбыл ли «Сосуд» из забега.
+        /// <para><b>internal:</b> снаружи через <c>IRunCommands.InflictInjury</c> — как и всё, что
+        /// меняет забег.</para>
+        /// </summary>
+        internal InjuryOutcome InflictInjury(int slotIndex, ulong rollSeed)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            if (slot == null) return default;
+
+            return InjuryLedger.Inflict(slot, InjuryGrade.Bruise, _content, rollSeed);
+        }
+
+        /// <summary>
+        /// Узел маршрута пройден: состарить раны и снять те, что проходят сами. Возвращает, сколько
+        /// снялось.
+        /// </summary>
+        /// <remarks>
+        /// Зовётся ровно там, где узел помечается пройденным, — иначе «сколько узлов прожила рана» и
+        /// «сколько узлов прошёл отряд» разъедутся, а расхождения этого не увидит никто: рана просто
+        /// проживёт не столько, сколько обещано в карточке.
+        /// </remarks>
+        /// <para><b>public, в отличие от прочих мутаторов:</b> это не действие игрока, а следствие уже
+        /// совершённого хода — как и <see cref="Autosave"/>. Зовёт его тот, кто двигает карту.</para>
+        public int AdvanceInjuries()
+            => Current == null ? 0 : InjuryLedger.AdvanceNode(Current, _content);
+
+        /// <summary>Снять одно последствие с «Сосуда» (торговец, привал). false = такого на нём нет.</summary>
+        internal bool RemoveInjury(int slotIndex, string consequenceId)
+            => InjuryLedger.Remove(SlotAt(slotIndex), consequenceId);
 
         // ── Предметы сосуда (Vessel-скоуп, лимит GameConfig.VesselItemSlots) ──
 

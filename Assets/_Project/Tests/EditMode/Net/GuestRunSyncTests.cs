@@ -38,7 +38,7 @@ namespace Guildmaster.Tests.EditMode.Net
             _guestNode = _net.CreateNode();
 
             GameConfig config = GameConfig.CreateDefault();
-            _hostRun = new RunStateService(new InMemorySaveService(), config, new FixedProfileService());
+            _hostRun = new RunStateService(new InMemorySaveService(), config, new FixedProfileService(), content: null);
             _hostRun.NewDefaultRun(1L);
 
             _hostBus   = new RunCommandBus(new RunCommandApplier(_hostRun), new RunCommandLog());

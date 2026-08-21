@@ -35,6 +35,12 @@ namespace Guildmaster.Guild.Commands
         void ChooseNode(string nodeId);
 
         /// <summary>
+        /// Положить последствие боя на «Сосуд» слота: ступень уточнит каскад, конкретную рану выберет
+        /// ролл от <paramref name="rollSeed"/>. Зовётся по одному разу на каждого павшего в бою.
+        /// </summary>
+        void InflictInjury(int slotIndex, int rollSeed);
+
+        /// <summary>
         /// Попросить владельца зафиксировать состояние на диск (точка автосейва).
         /// </summary>
         /// <remarks>

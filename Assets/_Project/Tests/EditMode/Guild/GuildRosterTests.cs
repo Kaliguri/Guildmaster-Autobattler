@@ -27,7 +27,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         public void SetUp()
         {
             _config    = GameConfig.CreateDefault();
-            _runStates = new RunStateService(new InMemorySaveService(), _config, new FixedProfileService());
+            _runStates = new RunStateService(new InMemorySaveService(), _config, new FixedProfileService(), content: null);
         }
 
         [Test]

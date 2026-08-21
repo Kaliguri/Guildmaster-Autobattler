@@ -213,7 +213,10 @@ namespace Guildmaster.Tests.EditMode.Run
                 return UniTask.FromResult(outcome);
             }
 
-            public void ReportOutcome(BattleOutcome outcome) { }
+            public void ReportOutcome(BattleOutcome outcome,
+                                      System.Collections.Generic.IReadOnlyList<int> fallenGuildIndices = null) { }
+            public System.Collections.Generic.IReadOnlyList<int> LastFallen =>
+                System.Array.Empty<int>();
             public void BindRestart(Action restart) { }
             public void UnbindRestart() { }
 

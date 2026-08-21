@@ -85,7 +85,10 @@ namespace Guildmaster.Tests.EditMode.Net
             public UniTask<BattleOutcome> WaitOutcomeAsync(CancellationToken ct) =>
                 UniTask.FromResult(default(BattleOutcome));
 
-            public void ReportOutcome(BattleOutcome outcome) { }
+            public void ReportOutcome(BattleOutcome outcome,
+                                      System.Collections.Generic.IReadOnlyList<int> fallenGuildIndices = null) { }
+            public System.Collections.Generic.IReadOnlyList<int> LastFallen =>
+                System.Array.Empty<int>();
             public void BindRestart(Action restart) { }
             public void UnbindRestart() { }
             public bool CanRestart => false;

@@ -89,6 +89,9 @@ namespace Guildmaster.Guild.Commands
 
         public void ChooseNode(string nodeId) => Submit(Next(RunCommandKind.ChooseNode, text: nodeId));
 
+        public void InflictInjury(int slotIndex, int rollSeed) =>
+            Submit(Next(RunCommandKind.InflictInjury, slotIndex: slotIndex, amount: rollSeed));
+
         public bool RequestSave() => _applier.Save();
 
         private RunCommand Next(RunCommandKind kind, int slotIndex = -1, int amount = 0,

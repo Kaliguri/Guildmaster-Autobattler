@@ -26,7 +26,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         public void SetUp()
         {
             _config = GameConfig.CreateDefault();
-            _state  = new RunStateService(new InMemorySaveService(), _config, new FixedProfileService());
+            _state  = new RunStateService(new InMemorySaveService(), _config, new FixedProfileService(), content: null);
             _state.NewDefaultRun(1L);   // 4 сосуда с relic.base
 
             _log = new RunCommandLog();
@@ -51,7 +51,7 @@ namespace Guildmaster.Tests.EditMode.Guild
             int    stashAfterPlay = _state.Current.RelicInventory.Length;
 
             // Чистый забег с тем же сидом и тот же лог, прогнанный по порядку.
-            var replayState = new RunStateService(new InMemorySaveService(), _config, new FixedProfileService());
+            var replayState = new RunStateService(new InMemorySaveService(), _config, new FixedProfileService(), content: null);
             replayState.NewDefaultRun(1L);
             replayState.TryAddRelic("relic.druid");     // транзакции восстанавливаются не логом — см. ниже
             var replayApplier = new RunCommandApplier(replayState);

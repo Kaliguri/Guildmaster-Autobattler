@@ -24,7 +24,7 @@ namespace Guildmaster.Tests.EditMode.Run
         public void SetUp()
         {
             var config = GameConfig.CreateDefault(); // заготовка: вместимость 12, потолок 16
-            _run = new RunStateService(new InMemorySaveService(), config, new FixedProfileService());
+            _run = new RunStateService(new InMemorySaveService(), config, new FixedProfileService(), content: null);
             _run.NewRun(1, Array.Empty<RosterSlot>());
             _run.Current.Gold = 0; // старт-золото забега — не предмет этих тестов (проверяем дельту эффекта)
             // Золото и снятие реликвии едут через шину команд; выдача и вместимость — пока напрямую.
