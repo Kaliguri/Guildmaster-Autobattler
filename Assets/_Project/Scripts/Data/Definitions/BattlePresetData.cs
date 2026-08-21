@@ -110,6 +110,12 @@ namespace Guildmaster.Data.Definitions
         public EncounterTier            Tier           => _encounter != null ? _encounter.Tier : EncounterTier.Common;
 
         /// <summary>
+        /// Уместен ли бой пресета на этаже акта. Пресет без энкаунтера уместен везде — ограничивать
+        /// нечего, а спрятать его молча значило бы выкинуть дев-бой из пула по чужой причине.
+        /// </summary>
+        public bool FitsFloor(int floor) => _encounter == null || _encounter.FitsFloor(floor);
+
+        /// <summary>
         /// Собрать ТРАНЗИЕНТНЫЙ пресет боя в рантайме (узел забега): враги — из авторского пресета, а player-ростер —
         /// из гильдии игрока (<c>RunState</c>), режим — обычно <see cref="DeploymentMode.Free"/> (расстановка перед
         /// боем). Не ассет, в контент-БД не регистрируется, живёт один бой. Так узел деплоит СВОЮ четвёрку, а не

@@ -78,6 +78,13 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Вражеский состав: пакеты {враг + позиция + количество}. Player-сторона — вне энкаунтера (BattlePreset, шаг 3).")]
         [SerializeField] private EncounterUnit[] _units;
 
+        [Header("Where it belongs")]
+        [Tooltip("С какого этажа акта бой уместен (0 = с самого начала).")]
+        [SerializeField] private int _minFloor;
+
+        [Tooltip("По какой этаж включительно (0 = без верхней границы).")]
+        [SerializeField] private int _maxFloor;
+
         [Header("Arena (seam)")]
         [Tooltip("Ключ арены боя (prefab-per-arena Addressables, вики «10» §4-5). ЗАДЕЛ: пока не читается — " +
                  "арена берётся из сцены поиском по типу. Свап на загрузку по ключу — будущий шаг.")]
@@ -86,5 +93,28 @@ namespace Guildmaster.Data.Definitions
         public EncounterTier Tier => _tier;
         public IReadOnlyList<EncounterUnit> Units => _units;
         public string ArenaId => _arenaId;
+
+        /// <summary>Нижняя граница этажей, на которых бой уместен (включительно).</summary>
+        public int MinFloor => _minFloor;
+
+        /// <summary>Верхняя граница включительно; <c>0</c> — без ограничения сверху.</summary>
+        public int MaxFloor => _maxFloor;
+
+        /// <summary>
+        /// Уместен ли бой на этаже <paramref name="floor"/> (ГДД <c>act-1-encounters</c> §Ступени бюджета).
+        /// </summary>
+        /// <remarks>
+        /// Диапазон этажей — ВТОРАЯ ось, отдельная от <see cref="Tier"/>, и это решение (2026-08-21).
+        /// Тир отвечает «что это за узел»: какая иконка на карте и какой тир награды. Диапазон отвечает
+        /// «когда этот бой уместен». Свали их в одно поле — и смена сложности потянет за собой смену
+        /// награды, а бой на четырнадцать очков угрозы сможет выпасть на первом этаже.
+        /// <para>Незаданный диапазон (оба нуля) означает «где угодно»: так читаются все ассеты, заведённые
+        /// до этого поля, и так же читается дев-бой, которому этажи безразличны.</para>
+        /// </remarks>
+        public bool FitsFloor(int floor)
+        {
+            if (floor < _minFloor) return false;
+            return _maxFloor <= 0 || floor <= _maxFloor;
+        }
     }
 }

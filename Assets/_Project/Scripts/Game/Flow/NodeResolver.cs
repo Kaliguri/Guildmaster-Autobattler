@@ -169,9 +169,24 @@ namespace Guildmaster.Game.Flow
             var all = _content.All<BattlePresetData>();
             if (all.Count == 0) return null;
 
+            // Два фильтра, а не один: тир отвечает «что это за узел», этаж — «когда бой уместен».
+            // Без второго рядовой бой на четырнадцать очков угрозы выпадает на первом этаже
+            // (ГДД act-1-encounters §Ступени бюджета, решено 2026-08-21).
             var pool = new List<BattlePresetData>(all.Count);
             foreach (var p in all)
-                if (p != null && p.Tier == wantTier) pool.Add(p);
+                if (p != null && p.Tier == wantTier && p.FitsFloor(node.Floor)) pool.Add(p);
+
+            if (pool.Count == 0)
+            {
+                // Отступаем ПО ОДНОЙ оси за раз и обе потери называем вслух: этаж — ограничение мягкое
+                // (бой не той сложности хуже, чем бой не с того этажа), тир — жёсткое.
+                foreach (var p in all)
+                    if (p != null && p.Tier == wantTier) pool.Add(p);
+
+                if (pool.Count > 0)
+                    Debug.LogWarning($"[NodeResolver] - узел '{node.Type}' на этаже {node.Floor}: нет пресетов " +
+                                     $"сложности '{wantTier}' для этого этажа → беру любой этой сложности");
+            }
 
             if (pool.Count == 0)
             {
