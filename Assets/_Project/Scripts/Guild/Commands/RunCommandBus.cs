@@ -92,6 +92,10 @@ namespace Guildmaster.Guild.Commands
         public void InflictInjury(int slotIndex, int rollSeed) =>
             Submit(Next(RunCommandKind.InflictInjury, slotIndex: slotIndex, amount: rollSeed));
 
+        public void HealInjury(int slotIndex, string consequenceId, bool payGold) =>
+            Submit(Next(RunCommandKind.HealInjury, slotIndex: slotIndex,
+                        amount: payGold ? 1 : 0, text: consequenceId));
+
         public bool RequestSave() => _applier.Save();
 
         private RunCommand Next(RunCommandKind kind, int slotIndex = -1, int amount = 0,

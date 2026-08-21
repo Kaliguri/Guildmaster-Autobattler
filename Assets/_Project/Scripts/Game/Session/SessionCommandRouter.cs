@@ -41,6 +41,9 @@ namespace Guildmaster.Game.Session
         public void InflictInjury(int slotIndex, int rollSeed)
             => _sessions.Commands?.InflictInjury(slotIndex, rollSeed);
 
+        public void HealInjury(int slotIndex, string consequenceId, bool payGold)
+            => _sessions.Commands?.HealInjury(slotIndex, consequenceId, payGold);
+
         public bool RequestSave() => _sessions.Commands?.RequestSave() ?? false;
     }
 }

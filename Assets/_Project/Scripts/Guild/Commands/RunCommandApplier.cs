@@ -70,6 +70,10 @@ namespace Guildmaster.Guild.Commands
                     _state.InflictInjury(command.SlotIndex, unchecked((ulong)(uint)command.Amount));
                     return true;
 
+                case RunCommandKind.HealInjury:
+                    if (_state.Current == null || string.IsNullOrEmpty(command.Text)) return false;
+                    return _state.HealInjury(command.SlotIndex, command.Text, payGold: command.Amount != 0);
+
                 case RunCommandKind.ChooseNode:
                     if (_state.Current?.Map == null || string.IsNullOrEmpty(command.Text)) return false;
                     if (!MapTraversal.CanEnter(_state.Current.Map, command.Text)) return false;

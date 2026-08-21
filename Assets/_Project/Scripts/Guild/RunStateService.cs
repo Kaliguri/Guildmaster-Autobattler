@@ -411,9 +411,42 @@ namespace Guildmaster.Guild
         public int AdvanceInjuries()
             => Current == null ? 0 : InjuryLedger.AdvanceNode(Current, _content);
 
-        /// <summary>Снять одно последствие с «Сосуда» (торговец, привал). false = такого на нём нет.</summary>
-        internal bool RemoveInjury(int slotIndex, string consequenceId)
-            => InjuryLedger.Remove(SlotAt(slotIndex), consequenceId);
+        /// <summary>
+        /// Снять одно последствие с «Сосуда» (торговец, привал). <paramref name="payGold"/> — списать ли
+        /// цену из ассета. <c>false</c> = такого последствия нет, оно бесплатным не лечится или не
+        /// хватило золота — во всех трёх случаях состояние остаётся нетронутым.
+        /// <para><b>internal:</b> снаружи через <c>IRunCommands.HealInjury</c>.</para>
+        /// </summary>
+        /// <remarks>
+        /// Оплата и снятие живут в ОДНОМ методе, а не двумя вызовами подряд: разнеси их — и появится
+        /// состояние «золото списано, рана на месте», в которое попадёт любой отказ между ними.
+        /// </remarks>
+        internal bool HealInjury(int slotIndex, string consequenceId, bool payGold)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            if (slot == null || string.IsNullOrEmpty(consequenceId)) return false;
+            if (!HasInjury(slot, consequenceId)) return false;
+
+            if (payGold)
+            {
+                int cost = HealCost(consequenceId);
+                if (cost > 0 && !TrySpendGold(cost)) return false;
+            }
+
+            return InjuryLedger.Remove(slot, consequenceId);
+        }
+
+        /// <summary>Во сколько золота обходится снятие последствия у торговца. 0 = каталог не знает такого.</summary>
+        public int HealCost(string consequenceId) =>
+            _content != null && _content.TryGet(consequenceId, out ConsequenceData def) ? def.HealCostGold : 0;
+
+        private static bool HasInjury(RosterSlot slot, string consequenceId)
+        {
+            if (slot?.Injuries == null) return false;
+            for (int i = 0; i < slot.Injuries.Length; i++)
+                if (slot.Injuries[i]?.Id == consequenceId) return true;
+            return false;
+        }
 
         // ── Предметы сосуда (Vessel-скоуп, лимит GameConfig.VesselItemSlots) ──
 

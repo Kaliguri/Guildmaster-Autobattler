@@ -56,6 +56,11 @@ namespace Guildmaster.Game.Session.Net
         public void InflictInjury(int slotIndex, int rollSeed)
             => Send(Next(RunCommandKind.InflictInjury, slotIndex: slotIndex, amount: rollSeed));
 
+        // Лечение — решение общее (казна одна), поэтому просить о нём вправе оба.
+        public void HealInjury(int slotIndex, string consequenceId, bool payGold)
+            => Send(Next(RunCommandKind.HealInjury, slotIndex: slotIndex,
+                         amount: payGold ? 1 : 0, text: consequenceId));
+
         /// <summary>
         /// Гостю сохранять нечего и некуда: забег не его, и пишет его хост в свою точку автосейва.
         /// <c>false</c> здесь — не отказ, а факт, и вызывающие его уже читают.

@@ -127,7 +127,7 @@ namespace Guildmaster.Game.Flow
                     return new ChestFlow(_reward, _decision, _stage);
 
                 case MapNodeType.Camp:
-                    return new CampFlow(_openCampPub, _stage);
+                    return new CampFlow(_openCampPub, _commands, _stage);
 
                 // «?»: тип роллится на входе, делегируем себе же (B4).
                 case MapNodeType.Unknown:

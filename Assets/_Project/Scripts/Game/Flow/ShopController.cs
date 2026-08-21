@@ -118,6 +118,61 @@ namespace Guildmaster.Game.Flow
             return true;
         }
 
+        /// <summary>
+        /// Полка лекаря: все последствия отряда с ценой снятия. Пересобирается на каждый запрос, а не
+        /// кэшируется, — иначе вылеченная рана осталась бы висеть на витрине до перерисовки.
+        /// </summary>
+        public IReadOnlyList<ShopInjury> Injuries
+        {
+            get
+            {
+                var list = new List<ShopInjury>();
+                RunState run = _runStates.Current;
+                if (run?.Guild == null) return list;
+
+                for (int slot = 0; slot < run.Guild.Length; slot++)
+                {
+                    Injury[] injuries = run.Guild[slot]?.Injuries;
+                    if (injuries == null) continue;
+
+                    for (int i = 0; i < injuries.Length; i++)
+                    {
+                        string id = injuries[i]?.Id;
+                        if (string.IsNullOrEmpty(id)) continue;
+                        if (!_content.TryGet(id, out ConsequenceData def) || !def.IsInjury) continue;
+
+                        list.Add(new ShopInjury
+                        {
+                            SlotIndex   = slot,
+                            Consequence = def,
+                            Price       = def.HealCostGold,
+                        });
+                    }
+                }
+                return list;
+            }
+        }
+
+        public bool Heal(int slotIndex, string consequenceId)
+        {
+            if (string.IsNullOrEmpty(consequenceId) || _runStates.Current == null) return false;
+
+            // Цену спрашиваем ДО отправки команды: применитель откажет молча (команда ничего не
+            // возвращает), а лекарю надо ответить игроку отказом здесь и сейчас.
+            int cost = _runStates.HealCost(consequenceId);
+            if (cost > Gold)
+            {
+                _audio?.Play("shop.deny.ui");
+                return false;
+            }
+
+            _commands.HealInjury(slotIndex, consequenceId, payGold: true);
+            _runStates.Autosave();
+            Changed?.Invoke();
+            _audio?.Play("shop.buy.ui");
+            return true;
+        }
+
         private void RollShelf()
         {
             _shelf.Clear();

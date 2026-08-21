@@ -21,6 +21,21 @@ namespace Guildmaster.Guild
     }
 
     /// <summary>Итог попытки покупки (план [[act-map-run-loop]] §5.4).</summary>
+    /// <summary>
+    /// Одна рана отряда на прилавке лекаря: чья, какая и почём. Собирается контроллером из состояния
+    /// забега — своего списка магазин не держит, иначе он отстал бы от вылеченного.
+    /// </summary>
+    public sealed class ShopInjury
+    {
+        /// <summary>Индекс «Сосуда» в гильдии — тот же, что в <c>RunState.Guild</c>.</summary>
+        public int SlotIndex;
+
+        public ConsequenceData Consequence;
+
+        /// <summary>Цена снятия золотом (из ассета).</summary>
+        public int Price;
+    }
+
     public enum ShopBuyOutcome
     {
         Bought,          // куплено: золото списано, реликвия в запасе, слот опустел
@@ -52,6 +67,18 @@ namespace Guildmaster.Guild
 
         /// <summary>Продать реликвию из запаса (освободить место). false = такой в запасе нет.</summary>
         bool Sell(RelicData relic);
+
+        /// <summary>
+        /// Раны и закалки отряда, которые лекарь берётся снять, — по всем «Сосудам» гильдии.
+        /// Пусто = отряд цел, полка лекаря не показывается.
+        /// </summary>
+        IReadOnlyList<ShopInjury> Injuries { get; }
+
+        /// <summary>
+        /// Вылечить одно последствие за золото. <c>false</c> — такого на «Сосуде» нет или не хватает
+        /// золота; списание и снятие происходят одним шагом у владельца забега.
+        /// </summary>
+        bool Heal(int slotIndex, string consequenceId);
 
         /// <summary>Изменилось состояние (золото/витрина/запас) — UI перерисовывается.</summary>
         event Action Changed;

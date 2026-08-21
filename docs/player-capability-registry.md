@@ -96,6 +96,7 @@
 | Начислить золото | `RunCommandKind.AddGold` | система | — |
 | Награда за победу | `RunCommandKind.AwardBattleReward` | система | — |
 | Рана за смерть в бою | `RunCommandKind.InflictInjury` | система | — |
+| Вылечить рану у торговца или на привале | `RunCommandKind.HealInjury` | оба | да — казна общая, решение общее |
 | Дать согласие «готов» | `Decision` | оба | да |
 | Выбрать награду из витрины | `Decision` | оба | да |
 | Начать забег из двора | `Decision` | оба | да |

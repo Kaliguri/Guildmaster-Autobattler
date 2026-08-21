@@ -48,6 +48,51 @@ namespace Guildmaster.Tests.EditMode.Guild
             Assert.AreEqual(0, camp.Spent, "Уход ничего не стоит.");
         }
 
+        /// <summary>
+        /// Отказ исполнителя не стоит игроку действия. Иначе промах по цели («снять нечего») списывал
+        /// бы четверть бюджета привала и выглядел бы как поломка кнопки.
+        /// </summary>
+        [Test]
+        public void RefusedEffect_CostsNothing()
+        {
+            var camp = new CampSession(effect: (action, slot, id) => false);
+
+            Assert.IsFalse(camp.TryPerform(CampAction.Cleanse, slotIndex: 0, consequenceId: "consequence.x"));
+            Assert.AreEqual(0, camp.Spent, "Не вышло — не заплатили.");
+            Assert.AreEqual(8, camp.Remaining);
+        }
+
+        [Test]
+        public void SuccessfulEffect_GetsTheTargetItWasGiven()
+        {
+            int seenSlot = -99;
+            string seenId = null;
+            var camp = new CampSession(effect: (action, slot, id) =>
+            {
+                seenSlot = slot;
+                seenId   = id;
+                return true;
+            });
+
+            Assert.IsTrue(camp.TryPerform(CampAction.Cleanse, slotIndex: 2, consequenceId: "consequence.rib"));
+            Assert.AreEqual(2, seenSlot);
+            Assert.AreEqual("consequence.rib", seenId);
+            Assert.AreEqual(2, camp.Spent);
+        }
+
+        /// <summary>
+        /// Действия без своей механики по-прежнему тратят бюджет: их эффекты придут позже, а кнопка
+        /// уже есть, и отказывать в ней значило бы соврать про то, чего привал не умеет.
+        /// </summary>
+        [Test]
+        public void ActionsWithoutEffect_StillSpendBudget()
+        {
+            var camp = new CampSession();
+
+            Assert.IsTrue(camp.TryPerform(CampAction.Empower));
+            Assert.AreEqual(2, camp.Spent);
+        }
+
         [Test]
         public void ClosedSession_RefusesEverything()
         {

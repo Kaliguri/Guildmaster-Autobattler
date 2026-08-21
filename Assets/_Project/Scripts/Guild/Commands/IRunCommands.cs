@@ -41,6 +41,12 @@ namespace Guildmaster.Guild.Commands
         void InflictInjury(int slotIndex, int rollSeed);
 
         /// <summary>
+        /// Снять последствие с «Сосуда». <paramref name="payGold"/> — списать ли цену из ассета
+        /// (торговец) или снять бесплатно (привал: там уже заплачено действием).
+        /// </summary>
+        void HealInjury(int slotIndex, string consequenceId, bool payGold);
+
+        /// <summary>
         /// Попросить владельца зафиксировать состояние на диск (точка автосейва).
         /// </summary>
         /// <remarks>

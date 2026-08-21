@@ -289,6 +289,11 @@ namespace Guildmaster.DevTools
             }
             public bool Reroll() { Changed?.Invoke(); return true; }
             public bool Sell(RelicData relic) { Changed?.Invoke(); return true; }
+
+            // Полка лекаря на стенде пуста: раны живут в забеге, а у стенда забега нет.
+            public IReadOnlyList<Guildmaster.Guild.ShopInjury> Injuries =>
+                System.Array.Empty<Guildmaster.Guild.ShopInjury>();
+            public bool Heal(int slotIndex, string consequenceId) { Changed?.Invoke(); return true; }
         }
 
         private static void BuildChest(VisualElement root)
@@ -314,14 +319,11 @@ namespace Guildmaster.DevTools
                 uxml, RuValue, () => { }, () => { }, () => { }, () => { }));
         }
 
-        /// <summary>Экран «Создать игру»: три режима и галочка лобби.</summary>
+        /// <summary>Экран «Создать игру»: три режима карточками и галочка лобби в футере.</summary>
         private static void BuildNewGame(VisualElement root)
         {
-            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/NewGameScreen.uxml");
-            if (uxml == null) { AddError(root, "NewGameScreen.uxml не найден"); return; }
-
             root.Add(Guildmaster.UI.NewGameScreenView.Build(
-                uxml, steamReady: true, RuValue, (_, _) => { }, () => { }));
+                steamReady: true, RuValue, (_, _) => { }, () => { }));
         }
 
         /// <summary>

@@ -20,9 +20,11 @@ namespace Guildmaster.Guild
     /// Состояние одного привала: бюджет действий отряда и его траты. Источник истины — здесь, у флоу; экран
     /// только читает <see cref="Remaining"/> и зовёт <see cref="TryPerform"/>. Так сделано намеренно: копия
     /// счётчика в вью рано или поздно разъезжается с доменом, и вылезает это уже в play-QA.
-    /// <para><b>Заглушка по существу:</b> действия пока ничего не делают, кроме списания бюджета — эффекты
-    /// (усиление, копия реликвии, снятие последствия, найм) придут вместе с самими механиками. Каркас нужен
-    /// раньше, чтобы узел уже стоял на карте и читался в ритме акта.</para>
+    /// <para><b>Эффект действия сессия не исполняет сама</b>, а зовёт переданный ей исполнитель: снятие
+    /// раны — запись в забег, и идти она обязана командой, о которой домен привала знать не должен.
+    /// Отказ исполнителя бюджет НЕ тратит — иначе игрок платил бы действием за несостоявшееся лечение.
+    /// Исполнителя нет (или он не знает этого действия) — трата проходит как прежде, вхолостую: часть
+    /// действий привала своих механик ещё не имеет.</para>
     /// </summary>
     public sealed class CampSession
     {
@@ -32,11 +34,19 @@ namespace Guildmaster.Guild
         /// <summary>Во сколько действий обходится одна трата. Пока одна цена на все — балансится позже.</summary>
         public const int DefaultActionCost = 2;
 
-        public CampSession(int budget = DefaultBudget, int actionCost = DefaultActionCost)
+        /// <param name="effect">
+        /// Чем исполняется действие: <c>(действие, слот, id последствия) → удалось ли</c>. Возврат
+        /// <c>false</c> отменяет трату целиком. <c>null</c> = действия без эффектов (каркас, тесты).
+        /// </param>
+        public CampSession(int budget = DefaultBudget, int actionCost = DefaultActionCost,
+                           Func<CampAction, int, string, bool> effect = null)
         {
             Budget     = Mathf.Max(0, budget);
             ActionCost = Mathf.Max(1, actionCost);
+            _effect    = effect;
         }
+
+        private readonly Func<CampAction, int, string, bool> _effect;
 
         /// <summary>Стартовый бюджет действий.</summary>
         public int Budget { get; }
@@ -64,7 +74,9 @@ namespace Guildmaster.Guild
         /// требуют <see cref="CanAfford"/>. Возвращает <c>false</c>, если действие не прошло (не хватило
         /// бюджета или привал уже закрыт) — экран по этому ответу даёт отказ-фидбэк, а не гасит себя.
         /// </summary>
-        public bool TryPerform(CampAction action)
+        /// <param name="slotIndex">Кому — индекс «Сосуда» в гильдии. Нужен действиям, у которых есть цель.</param>
+        /// <param name="consequenceId">Что снимаем (<see cref="CampAction.Cleanse"/>).</param>
+        public bool TryPerform(CampAction action, int slotIndex = -1, string consequenceId = null)
         {
             if (IsClosed) return false;
 
@@ -77,9 +89,11 @@ namespace Guildmaster.Guild
 
             if (!CanAfford) return false;
 
+            // Эффект ПЕРВЫМ, бюджет вторым: отказ исполнителя (нечего снимать, промах по цели) не должен
+            // стоить игроку действия. Порядок наоборот дал бы «заплатил и не получил».
+            if (_effect != null && !_effect(action, slotIndex, consequenceId)) return false;
+
             Spent += ActionCost;
-            Debug.Log($"[CampSession] - действие '{action}' (-{ActionCost}), остаток {Remaining}/{Budget}. " +
-                      "Эффект пока не реализован (каркас привала).");
             Changed?.Invoke();
             return true;
         }
