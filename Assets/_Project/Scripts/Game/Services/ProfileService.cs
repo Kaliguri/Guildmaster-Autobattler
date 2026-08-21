@@ -40,7 +40,23 @@ namespace Guildmaster.Game.Services
             _config = config;
         }
 
-        public IReadOnlyList<ProfileSummary> Profiles => _profiles;
+        /// <summary>
+        /// Все профили сводками. У АКТИВНОГО статистика пересчитывается на месте.
+        /// </summary>
+        /// <remarks>
+        /// Список собран чтением диска, а правда активного профиля живёт в памяти: наигранное копится
+        /// там и попадает в файл раз в минуту. Без пересчёта экран показывал бы состояние на момент
+        /// запуска игры — то есть ноль наигранного у того, кто играет второй час.
+        /// </remarks>
+        public IReadOnlyList<ProfileSummary> Profiles
+        {
+            get
+            {
+                SyncActiveSummary();
+                return _profiles;
+            }
+        }
+
         public IReadOnlyList<ProfileSummary> Guilds   => _guilds;
 
         public ProfileSummary ActiveProfile => _activeProfile != null
@@ -326,6 +342,28 @@ namespace Guildmaster.Game.Services
         private long _unsavedPlaySeconds;
 
         // ── Внутреннее ───────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Освежить сводку активного профиля в списке: в памяти она новее, чем на диске.
+        /// </summary>
+        /// <remarks>
+        /// Зовётся ленивно, из геттера списка, а не на каждое изменение: наигранное прибавляется раз в
+        /// секунду, а <see cref="StatsOf"/> перечисляет каталог домов — считать это ежесекундно значит
+        /// дёргать диск ради числа, которое никто в этот момент не смотрит.
+        /// </remarks>
+        private void SyncActiveSummary()
+        {
+            if (_activeProfile == null) return;
+
+            for (int i = 0; i < _profiles.Count; i++)
+            {
+                if (_profiles[i].Id != _activeProfile.Id) continue;
+
+                _profiles[i] = new ProfileSummary(_activeProfile.Id, _activeProfile.Name,
+                                                  StatsOf(_activeProfile));
+                return;
+            }
+        }
 
         private void RefreshProfiles()
         {

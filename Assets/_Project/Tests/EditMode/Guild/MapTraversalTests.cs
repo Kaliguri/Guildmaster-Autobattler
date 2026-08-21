@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Guildmaster.Core.Random;
 using Guildmaster.Guild;
 using NUnit.Framework;
@@ -40,6 +40,37 @@ namespace Guildmaster.Tests.EditMode.Guild
             Assert.IsTrue(MapTraversal.Advance(map, target.Id));
             Assert.AreEqual(target.Id, map.CurrentNodeId, "Текущий узел сместился.");
             Assert.IsTrue(MapTraversal.NodeById(map, target.Id).Cleared, "Узел помечен пройденным.");
+        }
+
+        /// <summary>
+        /// Длина забега — это узлы, ПРОЙДЕННЫЕ ногами. Стартовый помечен пройденным при генерации
+        /// (драться там не с кем), и без вычета любой забег был бы длиннее себя на единицу — включая
+        /// брошенный на первом шаге, где пройдено ноль. Статистика профиля читает именно это число
+        /// (<c>RunStatsRecorder</c>), поэтому промах виден игроку как «лучший забег: 1 узел» у того,
+        /// кто не сделал ни шага.
+        /// </summary>
+        [Test]
+        public void ClearedCount_IgnoresStart_AndGrowsWithEachStep()
+        {
+            var map = FreshMap();
+            Assert.AreEqual(0, MapTraversal.ClearedCount(map),
+                            "Свежая карта: старт пройденным помечен, но ногами не пройдено ничего.");
+
+            var first = MapTraversal.AvailableNext(map)[0];
+            Assert.IsTrue(MapTraversal.Advance(map, first.Id));
+            Assert.AreEqual(1, MapTraversal.ClearedCount(map), "Один шаг — один пройденный узел.");
+
+            var second = MapTraversal.AvailableNext(map)[0];
+            Assert.IsTrue(MapTraversal.Advance(map, second.Id));
+            Assert.AreEqual(2, MapTraversal.ClearedCount(map), "Второй шаг считается тоже.");
+        }
+
+        /// <summary>Карты нет вовсе (забег свёрнут) — ноль, а не падение: считать нечего.</summary>
+        [Test]
+        public void ClearedCount_OnMissingMap_IsZero()
+        {
+            Assert.AreEqual(0, MapTraversal.ClearedCount(null));
+            Assert.AreEqual(0, MapTraversal.ClearedCount(new MapState()));
         }
 
         [Test]

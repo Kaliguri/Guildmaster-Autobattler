@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Guildmaster.Guild
@@ -66,6 +66,29 @@ namespace Guildmaster.Guild
         {
             var current = Current(map);
             return current != null && current.Type == MapNodeType.Boss && current.Cleared;
+        }
+
+        /// <summary>
+        /// Сколько узлов группа прошла своими ногами: длина забега для статистики профиля.
+        /// </summary>
+        /// <remarks>
+        /// <b>СТАРТ НЕ СЧИТАЕТСЯ.</b> Генератор помечает стартовый узел пройденным сразу при создании
+        /// карты (там никто не дрался), поэтому простой счёт <c>Cleared</c> завышал бы длину любого
+        /// забега на единицу — в том числе брошенного на первом же шаге, где пройдено ноль.
+        /// Отбрасывается он по этажу: старт единственный на нулевом, это свойство генератора карты.
+        /// <para>Счёт живёт здесь, у владельца топологии, а не у того, кто пишет статистику: «что
+        /// значит пройденный узел» — вопрос карты, и второе мнение о нём разошлось бы с первым в тот
+        /// день, когда у карты появятся ответвления.</para>
+        /// </remarks>
+        public static int ClearedCount(MapState map)
+        {
+            if (map?.Nodes == null) return 0;
+
+            int count = 0;
+            foreach (MapNode node in map.Nodes)
+                if (node != null && node.Cleared && node.Floor > 0) count++;
+
+            return count;
         }
     }
 }

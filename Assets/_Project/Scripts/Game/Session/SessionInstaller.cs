@@ -1,4 +1,4 @@
-using VContainer;
+﻿using VContainer;
 using VContainer.Unity;
 
 namespace Guildmaster.Game.Session
@@ -35,6 +35,11 @@ namespace Guildmaster.Game.Session
             // Экраны узла — ОДИН код на обе роли (HARD-правило «равные игроки», 08.08.2026). Роль
             // решает, кто ОБЪЯВЛЯЕТ шаг узла; кто его показывает, от роли не зависит — смотрят оба.
             builder.RegisterEntryPoint<Net.SessionStageScreens>(Lifetime.Singleton);
+
+            // Итог забега в статистику профиля — по той же причине общий: акт прошли оба, и в профиле
+            // должно прибавиться у обоих. Слушает объявленный шаг, а не петлю акта: петля есть только
+            // у владельца.
+            builder.RegisterEntryPoint<RunStatsRecorder>(Lifetime.Singleton);
         }
 
         /// <summary>Владелец сейва: держит забег сам, сам его пишет и сам раздаёт гостям.</summary>

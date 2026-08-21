@@ -206,6 +206,45 @@ namespace Guildmaster.Tests.EditMode.Run
             Assert.IsEmpty(_profiles.RunKey, "писать забег снова некуда, и это видно");
         }
 
+        /// <summary>
+        /// Наигранное видно в списке СРАЗУ, а не после перезапуска игры.
+        /// </summary>
+        /// <remarks>
+        /// Список профилей собран чтением диска, а секунды копятся в памяти и уезжают в файл раз в
+        /// минуту. Пока сводка активного не пересчитывалась, экран профиля показывал состояние на
+        /// момент запуска — ноль наигранного у того, кто играет второй час (пойман живым прогоном
+        /// 21.08.2026).
+        /// </remarks>
+        [Test]
+        public void PlayedTime_ShowsUpInTheListImmediately()
+        {
+            GivenProfile();
+            _profiles.AddPlayedTime(75);
+
+            string id = _profiles.ActiveProfile.Id;
+            ProfileSummary listed = default;
+            foreach (ProfileSummary p in _profiles.Profiles)
+                if (p.Id == id) listed = p;
+
+            Assert.AreEqual(75, listed.Stats.PlayedSeconds, "список показывает наигранное из памяти");
+            Assert.AreEqual(75, _profiles.ActiveProfile.Stats.PlayedSeconds);
+        }
+
+        /// <summary>Итог забега виден там же и сразу: победа поднимает и счёт забегов, и счёт побед.</summary>
+        [Test]
+        public void FinishedRun_CountsOnceAndKeepsTheBestLength()
+        {
+            GivenProfile();
+
+            _profiles.RecordRunFinished(victory: false, nodesPassed: 7);
+            _profiles.RecordRunFinished(victory: true,  nodesPassed: 4);
+
+            ProfileStats stats = _profiles.ActiveProfile.Stats;
+            Assert.AreEqual(2, stats.RunsFinished, "оба забега закончены");
+            Assert.AreEqual(1, stats.RunsWon,      "выигран один");
+            Assert.AreEqual(7, stats.BestRunNodes, "лучший результат не портится следующим забегом");
+        }
+
         [Test]
         public void RunService_RefusesToSaveWhenThereIsNoGuild()
         {

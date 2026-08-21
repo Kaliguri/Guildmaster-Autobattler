@@ -1,4 +1,4 @@
-using Guildmaster.Core.Audio;
+﻿using Guildmaster.Core.Audio;
 using Guildmaster.Core.DevConsole;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
@@ -385,6 +385,10 @@ namespace Guildmaster.Game
             // Провайдера GlobalMessagePipe здесь больше нет: статический доступ к шине не звал никто,
             // все потребители получают IPublisher/ISubscriber инъекцией — как и задумано (аудит 2026-07-26).
             builder.RegisterMessagePipe();
+
+            // Секундомер наигранного. В корне, потому что считает время С ЗАПУЩЕННОЙ ИГРОЙ, а не время
+            // забега: сеанс и мероприятие приходят и уходят, часы игрока идут всё это время.
+            builder.RegisterEntryPoint<Services.PlayTimeTracker>(Lifetime.Singleton);
 
             // Разрыв связи глазами игрока: кто пропал и что делать. Живёт в корне, потому что переживает
             // и сеанс, и мероприятие — терять напарника можно в любом из них.
