@@ -86,7 +86,7 @@ namespace Guildmaster.Balance.Editor
         /// <summary>Урон, срезанный бронёй и эффективностями до того, как коснулся щита или HP.</summary>
         public double DamageMitigated;
 
-        /// <summary>Сколько раз входящий удар был отменён целиком («Изворотливость»).</summary>
+        /// <summary>Сколько раз входящий удар был отменён целиком («Отход»).</summary>
         public int HitsEvaded;
 
         // --- КОНТРОЛЬ: сколько времени юнит отнял у врагов ---

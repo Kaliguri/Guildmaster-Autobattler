@@ -38,6 +38,11 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnExpire(in EffectContext ctx) { }
 
+        /// <summary>Стойкость работает с уже состоявшимся попаданием.</summary>
+
+        public int Priority => ReactionPriority.Absorb;
+
+
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (_resistPct <= 0f || result.Negated) return;

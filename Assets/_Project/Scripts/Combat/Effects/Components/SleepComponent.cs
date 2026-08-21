@@ -37,6 +37,11 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnExpire(in EffectContext ctx) { }
 
+        /// <summary>Пробуждение усиливает удар и рвёт сон, но самого удара не отменяет.</summary>
+
+        public int Priority => ReactionPriority.Modify;
+
+
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (result.Negated) return;

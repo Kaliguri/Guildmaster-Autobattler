@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Guildmaster.Combat.Effects.Components
 {
     /// <summary>
-    /// «Изворотливость» (§9.3, §9.4, §10.5): pre-damage реактив с зарядами. Полностью отменяет входящую
+    /// «Отход» (§9.3, §9.4, §10.5): pre-damage реактив с зарядами. Полностью отменяет входящую
     /// АВТОАТАКУ (<see cref="DamageRequest.IsAutoAttack"/>) — любую, даже слабую; урон способностей/DoT/шипов
     /// не гасит. Дополнительно фильтруется триггером блока F (из <c>self.Unit.Ai.PassiveTrigger</c>) и тратит
     /// один заряд; заряды восстанавливаются независимо. Состояние зарядов — per-effect в
@@ -28,7 +28,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// </summary>
     [Serializable]
     /// <remarks>
-    /// Требует дееспособности (<see cref="IRequiresAgencyComponent"/>): «Изворотливость» — это кувырок с
+    /// Требует дееспособности (<see cref="IRequiresAgencyComponent"/>): «Отход» — это кувырок с
     /// уходом с места, то есть ДЕЙСТВИЕ. Оглушённый ассасин уклоняться не может (решение Макса 2026-07-29).
     /// </remarks>
     public sealed class DodgeComponent : IPreDamageComponent, IStackableComponent, IRequiresAgencyComponent
@@ -66,10 +66,15 @@ namespace Guildmaster.Combat.Effects.Components
             // обнулил бы массив — бесплатный рефилл всех зарядов негейта на каждый стак (07 §3.8 B2).
         }
 
+        /// <summary>Отход уносит носителя с места удара — спрашивается раньше щитов, чтобы те не тратили запас впустую.</summary>
+
+        public int Priority => ReactionPriority.Evade;
+
+
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (result.Negated) return; // уже отменён другим компонентом
-            if (!incoming.IsAutoAttack) return; // «Изворотливость» уклоняется ТОЛЬКО от автоатак (не от способностей/DoT)
+            if (!incoming.IsAutoAttack) return; // «Отход» уклоняется ТОЛЬКО от автоатак (не от способностей/DoT)
 
             RuntimeUnit self = ctx.Target;
             if (self == null || self.IsDead) return;

@@ -148,7 +148,7 @@ namespace Guildmaster.Combat
         /// </summary>
         public event Action<RuntimeUnit, RuntimeUnit, float> OnShieldAbsorbed;
 
-        /// <summary>Входящий удар полностью отменён pre-damage реактивом («Изворотливость»). Для presentation («evade»). Урона нет.</summary>
+        /// <summary>Входящий удар полностью отменён pre-damage реактивом («Отход»). Для presentation («evade»). Урона нет.</summary>
         public event Action<RuntimeUnit> OnAttackEvaded;
 
         /// <summary>Юнит вошёл в замах авто-атаки (вики «14»): запускает анимацию свинга во View.</summary>
@@ -415,7 +415,7 @@ namespace Guildmaster.Combat
             if (target == null || target.IsDead) return DamageResolution.None;
 
             // Pre-damage перехват (§9.3): «Оплот» поднимает щит (поглотит этот же удар),
-            // «Изворотливость» может полностью отменить удар. Порядок детерминирован.
+            // «Отход» может полностью отменить удар. Порядок детерминирован.
             if (_effectSystem.RunPreDamage(target, in req, this))
             {
                 OnAttackEvaded?.Invoke(target); // presentation-сигнал «evade», симуляцию не трогает

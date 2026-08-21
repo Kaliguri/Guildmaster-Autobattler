@@ -20,6 +20,7 @@ namespace Guildmaster.Combat
         private readonly List<RuntimeEffect> _tickBuffer = new List<RuntimeEffect>();
         private readonly List<RuntimeEffect> _dispatchBuffer = new List<RuntimeEffect>();
         private readonly List<RuntimeEffect> _preDamageBuffer = new List<RuntimeEffect>();
+        private readonly List<PendingReaction> _reactionBuffer = new List<PendingReaction>();
         private readonly List<RuntimeEffect> _forcedRemoveBuffer = new List<RuntimeEffect>();
         private readonly PreDamageResult     _preDamageResult = new PreDamageResult();
 
@@ -275,6 +276,42 @@ namespace Guildmaster.Combat
             _preDamageBuffer.Clear();
             _preDamageBuffer.AddRange(target.ActiveEffects);
 
+            CollectReactions(target);
+
+            for (int r = 0; r < _reactionBuffer.Count; r++)
+            {
+                PendingReaction pending = _reactionBuffer[r];
+                RuntimeEffect eff = pending.Effect;
+
+                // Реакция могла уехать, пока опрашивали предыдущие: чужой диспел, истёкшая длительность,
+                // снятие своим же срабатыванием. Список собран заранее, поэтому проверяем на каждом шаге.
+                if (!target.ActiveEffects.Contains(eff)) continue;
+
+                EffectContext ctx = MakeContext(target, eff.Source, combat, eff, pending.ComponentIndex, 0f);
+                pending.Component.OnPreDamage(in req, _preDamageResult, in ctx);
+
+                // Удар отменён — дальше не спрашиваем никого: за отменённый удар не платят ни зарядом,
+                // ни запасом щита. Раньше эту остановку каждый компонент делал сам первой строкой, и
+                // «Оплот» её не делал — жёг заряд и вешал щит против удара, которого уже не было.
+                if (_preDamageResult.Negated) break;
+            }
+
+            _reactionBuffer.Clear();
+            return _preDamageResult.Negated;
+        }
+
+        /// <summary>
+        /// Собрать pre-damage реакции цели в порядке опроса: <see cref="IPreDamageComponent.Priority"/>
+        /// вниз, при равных — своя реакция раньше наложенной союзником, при совсем равных — по индексу
+        /// в <see cref="RuntimeUnit.ActiveEffects"/>.
+        /// <para><b>Сортировка вставками, а не <c>List.Sort</c>:</b> реакций на юните единицы, зато
+        /// вставки стабильны и не боксят компаратор — проход идёт на каждый удар и обязан не аллоцировать
+        /// (гейт <c>CaptureTick_DoesNotAllocate_AfterWarmup</c>).</para>
+        /// </summary>
+        private void CollectReactions(RuntimeUnit target)
+        {
+            _reactionBuffer.Clear();
+
             for (int e = 0; e < _preDamageBuffer.Count; e++)
             {
                 RuntimeEffect eff = _preDamageBuffer[e];
@@ -283,23 +320,63 @@ namespace Guildmaster.Combat
                 IEffectComponent[] comps = eff.Def.Components;
                 if (comps == null) continue;
 
+                // Своя реакция или наложенная кем-то ещё. Источника нет (эффект арены, стартовый бафф) —
+                // считаем своей: платить за неё некому, значит и уступать чужому ресурсу нечему.
+                ReactionOrigin origin = eff.Source == null || ReferenceEquals(eff.Source, target)
+                    ? ReactionOrigin.SelfCast
+                    : ReactionOrigin.FromAlly;
+
                 for (int i = 0; i < comps.Length; i++)
                 {
-                    if (comps[i] is IPreDamageComponent pre)
-                    {
-                        // Выведенный контролем щита не поднимает и в кувырок не уходит: это ДЕЙСТВИЯ, и
-                        // маркер на компоненте говорит, что они таковы (см. IRequiresAgencyComponent).
-                        // Читается СНИМОК на начало тика, а не живой флаг: живой меняется посреди тика, и
-                        // реакция стала бы зависеть от порядка юнитов в списке.
-                        if (!target.CanActAtTickStart && comps[i] is IRequiresAgencyComponent) continue;
+                    if (comps[i] is not IPreDamageComponent pre) continue;
 
-                        EffectContext ctx = MakeContext(target, eff.Source, combat, eff, i, 0f);
-                        pre.OnPreDamage(in req, _preDamageResult, in ctx);
-                    }
+                    // Выведенный контролем щита не поднимает и в отход не уходит: это ДЕЙСТВИЯ, и
+                    // маркер на компоненте говорит, что они таковы (см. IRequiresAgencyComponent).
+                    // Читается СНИМОК на начало тика, а не живой флаг: живой меняется посреди тика, и
+                    // реакция стала бы зависеть от порядка юнитов в списке.
+                    if (!target.CanActAtTickStart && comps[i] is IRequiresAgencyComponent) continue;
+
+                    InsertByOrder(new PendingReaction(pre, eff, i, pre.Priority, origin));
                 }
             }
+        }
 
-            return _preDamageResult.Negated;
+        /// <summary>Вставить реакцию на её место в <see cref="_reactionBuffer"/> (сортировка вставками).</summary>
+        private void InsertByOrder(PendingReaction pending)
+        {
+            int at = _reactionBuffer.Count;
+            while (at > 0 && GoesBefore(pending, _reactionBuffer[at - 1])) at--;
+            _reactionBuffer.Insert(at, pending);
+        }
+
+        /// <summary>Идёт ли <paramref name="a"/> раньше <paramref name="b"/> в опросе реакций.</summary>
+        private static bool GoesBefore(in PendingReaction a, in PendingReaction b)
+        {
+            if (a.Priority != b.Priority) return a.Priority > b.Priority;
+
+            // Равные по обоим ключам не переставляются: вставки стабильны, и порядок сбора (индекс в
+            // ActiveEffects, затем индекс компонента) остаётся последним разделителем.
+            return a.Origin < b.Origin;
+        }
+
+        /// <summary>Одна pre-damage реакция, снятая с эффекта до опроса.</summary>
+        private readonly struct PendingReaction
+        {
+            public readonly IPreDamageComponent Component;
+            public readonly RuntimeEffect       Effect;
+            public readonly int                 ComponentIndex;
+            public readonly int                 Priority;
+            public readonly ReactionOrigin      Origin;
+
+            public PendingReaction(IPreDamageComponent component, RuntimeEffect effect, int componentIndex,
+                                   int priority, ReactionOrigin origin)
+            {
+                Component      = component;
+                Effect         = effect;
+                ComponentIndex = componentIndex;
+                Priority       = priority;
+                Origin         = origin;
+            }
         }
 
         /// <summary>

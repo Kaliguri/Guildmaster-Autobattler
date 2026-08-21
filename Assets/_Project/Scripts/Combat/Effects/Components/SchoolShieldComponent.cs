@@ -58,6 +58,11 @@ namespace Guildmaster.Combat.Effects.Components
             if (delta > 0f) ctx.Effect.AddHeldShield(delta);
         }
 
+        /// <summary>Щит съедает то, что долетело, — после всех, кто мог удар отменить.</summary>
+
+        public int Priority => ReactionPriority.Absorb;
+
+
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (result.Negated) return;

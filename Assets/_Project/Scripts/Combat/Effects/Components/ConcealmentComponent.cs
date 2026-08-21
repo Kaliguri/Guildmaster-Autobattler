@@ -42,6 +42,11 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnExpire(in EffectContext ctx) { }
 
+        /// <summary>Выше отхода намеренно: маскировка НИЧЕГО не тратит, и спрашивать её надо прежде платных негейтов — иначе заряд отхода сгорит на ударе, который и так не нашёл бы цель.</summary>
+
+        public int Priority => ReactionPriority.Evade + 10;
+
+
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (result.Negated) return;

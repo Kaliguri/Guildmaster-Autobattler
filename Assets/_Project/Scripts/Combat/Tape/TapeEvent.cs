@@ -11,7 +11,7 @@ namespace Guildmaster.Combat.Tape
 
         Healed,
 
-        /// <summary>Удар полностью отменён («Изворотливость») — показ рисует «evade».</summary>
+        /// <summary>Удар полностью отменён («Отход») — показ рисует «evade».</summary>
         AttackEvaded,
 
         AttackStarted,

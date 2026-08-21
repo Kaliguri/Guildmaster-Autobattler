@@ -22,7 +22,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// <b>Триггер — прилетевший удар, как у Блока</b> (вердикт Макса 2026-07-31). Альтернатива —
     /// намерение атакующего («кто выбрал парирующего целью») — позволяла бы отбивать до попадания, но
     /// требовала бы нового шва «кто в кого целится» в pre-damage; выбран прилетевший удар, и тогда
-    /// парирование целиком живёт на уже написанном pre-damage-шве вместе с Блоком и «Изворотливостью».
+    /// парирование целиком живёт на уже написанном pre-damage-шве вместе с Блоком и «Отходом».
     /// <para><b>Ответ — это рекаст, а не свой путь урона.</b> Уникальный удар выходит той же дорогой,
     /// что «Решительный удар»: заряд <see cref="_riposteCharge"/> плюс
     /// <see cref="RuntimeUnit.RecastAttack"/>. Поэтому ответ можно сбить контролем, от него можно
@@ -78,7 +78,7 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnStacksChanged(int previousStacks, in EffectContext ctx)
         {
-            // Рестак НЕ трогает заряды — та же готча, что у Блока и «Изворотливости»: дефолтный
+            // Рестак НЕ трогает заряды — та же готча, что у Блока и «Отхода»: дефолтный
             // OnExpire→OnApply дал бы бесплатный рефилл всех зарядов на каждый стак.
         }
 
@@ -98,6 +98,11 @@ namespace Guildmaster.Combat.Effects.Components
             RuntimeUnit attacker = incoming.Source;
             return attacker != null && attacker.AttackType == AttackType.Melee;
         }
+
+        /// <summary>Парирование встречает удар и платит за это.</summary>
+
+        public int Priority => ReactionPriority.Deflect;
+
 
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {

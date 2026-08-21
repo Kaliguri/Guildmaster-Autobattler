@@ -58,6 +58,11 @@ namespace Guildmaster.Combat.Effects.Components
                 target, DispelTargetPolarity.Any, EffectTag.Frostbite, int.MaxValue, 0, ctx.Source));
         }
 
+        /// <summary>Хрупкость статуи и раскол считаются по уже прилетевшему удару.</summary>
+
+        public int Priority => ReactionPriority.Modify;
+
+
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (result.Negated) return;

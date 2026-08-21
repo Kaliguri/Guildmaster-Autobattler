@@ -55,6 +55,11 @@ namespace Guildmaster.Combat.Effects.Components
         /// <summary>Новый уголёк лёг сверху — сход откладывается и начинает отсчёт заново (канон [[burn]]).</summary>
         public void OnStacksChanged(int previousStacks, in EffectContext ctx) => ResetDecay(in ctx);
 
+        /// <summary>«Угли» только меняют число урона и ничего не тратят.</summary>
+
+        public int Priority => ReactionPriority.Modify;
+
+
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (!incoming.IsFire) return; // «Угли» усиливают только огонь — любой, от кого бы он ни шёл

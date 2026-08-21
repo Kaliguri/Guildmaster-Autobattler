@@ -14,7 +14,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 {
     /// <summary>
     /// Вертикальный срез «Скрытный убийца» (вики «13» §10.5): «Скрытность» (§9.6 — усиление первой
-    /// авто-атаки, рестелс после своего убийства) и «Изворотливость» (§9.3/§9.4 — 2 заряда негейта
+    /// авто-атаки, рестелс после своего убийства) и «Отход» (§9.3/§9.4 — 2 заряда негейта
     /// входящего удара с независимой перезарядкой).
     /// </summary>
     public sealed class AssassinSliceTests
@@ -144,7 +144,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(74f, assassin.CurrentResource, 1e-4f, "Ресурс не списан");
         }
 
-        // ===================== «Изворотливость» (§9.3/§9.4) =====================
+        // ===================== «Отход» (§9.3/§9.4) =====================
 
         [Test]
         public void Dodge_NegatesUpToChargeCount_ThenRecharges()
@@ -170,7 +170,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         [Test]
         public void Dodge_DoesNotWorkWhileIncapacitated()
         {
-            // Решение Макса 29.07: «Изворотливость» — кувырок с уходом с места, то есть ДЕЙСТВИЕ.
+            // Решение Макса 29.07: «Отход» — кувырок с уходом с места, то есть ДЕЙСТВИЕ.
             // Оглушённый ассасин уклоняться не может, и удар по нему проходит.
             var es  = new EffectSystem();
             var ctx = new TickContext(es);

@@ -27,6 +27,11 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnExpire(in EffectContext ctx) { }
 
+        /// <summary>Окно парирования зарядов не тратит, поэтому идёт прежде платных отбивов — как и маскировка прежде отхода.</summary>
+
+        public int Priority => ReactionPriority.Deflect + 10;
+
+
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (result.Negated) return;

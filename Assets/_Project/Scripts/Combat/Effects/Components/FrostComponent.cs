@@ -142,6 +142,11 @@ namespace Guildmaster.Combat.Effects.Components
             TickDecay(in ctx);
         }
 
+        /// <summary>Хрупкость ко льду — множитель к состоявшемуся удару.</summary>
+
+        public int Priority => ReactionPriority.Modify;
+
+
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (result.Negated) return;

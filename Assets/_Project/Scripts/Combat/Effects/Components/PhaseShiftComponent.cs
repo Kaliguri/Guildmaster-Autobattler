@@ -65,8 +65,13 @@ namespace Guildmaster.Combat.Effects.Components
         public void OnStacksChanged(int previousStacks, in EffectContext ctx)
         {
             // Рестак НЕ перевзводит период: иначе повторное наложение пассивки дарило бы бесплатное
-            // смещение вне очереди (та же ловушка, что у зарядов «Изворотливости», 07 §3.8 B2).
+            // смещение вне очереди (та же ловушка, что у зарядов «Отхода», 07 §3.8 B2).
         }
+
+        /// <summary>Смещение выводит цель из точки удара: то же семейство, что и отход.</summary>
+
+        public int Priority => ReactionPriority.Evade;
+
 
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {

@@ -114,7 +114,7 @@ namespace Guildmaster.Combat
         /// <summary>Урон стихии огня — то, что копит «Угли» и усиливается ими.</summary>
         public bool IsFire => Type == DamageType.Fire;
 
-        /// <summary>Урон авто-атаки. «Изворотливость» убийцы уклоняется только от таких.</summary>
+        /// <summary>Урон авто-атаки. «Отход» убийцы уклоняется только от таких.</summary>
         public bool IsAutoAttack => SourceKind == DamageSourceKind.AutoAttack;
 
         /// <summary>

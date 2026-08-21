@@ -61,8 +61,13 @@ namespace Guildmaster.Combat.Effects.Components
         {
             // Рестак НЕ трогает заряды: их число фиксировано, а per-charge таймеры уже живут в
             // в самом эффекте. Дефолтный OnExpire→OnApply дал бы бесплатный рефилл
-            // всех зарядов на каждый стак (та же гоча, что у «Изворотливости»).
+            // всех зарядов на каждый стак (та же гоча, что у «Отхода»).
         }
+
+        /// <summary>«Оплот» встречает прямой удар зарядом и щитом.</summary>
+
+        public int Priority => ReactionPriority.Deflect;
+
 
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
