@@ -414,6 +414,10 @@ namespace Guildmaster.Combat
         {
             if (target == null || target.IsDead) return DamageResolution.None;
 
+            // Входящий Удар считается ДО опроса реакций и независимо от их исхода — зеркально
+            // HitsMade у слепоты. На этом счётчике стоит Уклонение: «каждая X-я атака по носителю мимо».
+            if (req.IsAutoAttack) target.HitsTaken++;
+
             // Pre-damage перехват (§9.3): «Оплот» поднимает щит (поглотит этот же удар),
             // «Отход» может полностью отменить удар. Порядок детерминирован.
             if (_effectSystem.RunPreDamage(target, in req, this))
