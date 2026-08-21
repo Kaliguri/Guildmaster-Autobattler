@@ -150,13 +150,28 @@ namespace Guildmaster.Core.Flow
         /// </remarks>
         public readonly string Detail;
 
+        /// <summary>
+        /// Чем игрок может прервать ожидание. <c>null</c> — прервать нечем, ждём до конца.
+        /// </summary>
+        /// <remarks>
+        /// Заведено 20.08.2026 по заказу Макса: «в подключение к игре дай возможность нажать кнопку
+        /// отмены». Ожидание не спрашивает и потому кнопок не имеет по построению — но там, где
+        /// ждать можно долго и по чужой вине (relay Valve ищет маршрут до чужого компьютера),
+        /// единственный выход у игрока не должен быть через Alt+F4.
+        /// <para><b>Отмена обязана делать НАСТОЯЩЕЕ дело</b>, а не просто снимать экран: снятая
+        /// картинка при живом подключении — обман, после которого игра внезапно вздрогнет чужим
+        /// сеансом. Поэтому здесь лежит действие заказчика, а не флаг.</para>
+        /// </remarks>
+        public readonly NoticeOption? Cancel;
+
         public BusyRequest(string titleKey, string titleFallback, CancellationToken until,
-                           string detail = null)
+                           string detail = null, NoticeOption? cancel = null)
         {
             TitleKey      = titleKey;
             TitleFallback = titleFallback;
             Until         = until;
             Detail        = detail;
+            Cancel        = cancel;
         }
     }
 }

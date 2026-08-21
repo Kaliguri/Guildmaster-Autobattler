@@ -185,9 +185,16 @@ namespace Guildmaster.Game.Session
                 if (_waiting != null) return;   // уже ждём: второе окно поверх первого — это мигание
 
                 _waiting = new System.Threading.CancellationTokenSource();
+                // Отмена делает настоящее дело: выходит из сеанса И снимает экран. Только снять
+                // картинку нельзя — подключение продолжилось бы, и игра вздрогнула бы чужим сеансом
+                // через несколько секунд после «отмены».
+                var cancel = new Core.Flow.NoticeOption(
+                    "ui.common.cancel", "Отмена",
+                    () => { _coop?.Leave(); ShowWaitingWhileConnecting(CoopSessionState.Offline); });
+
                 _busy?.Publish(new Core.Flow.BusyRequest(
                     "ui.coop.connecting", "Подключение к игре", _waiting.Token,
-                    "Steam ищет маршрут — это занимает несколько секунд."));
+                    "Steam ищет маршрут — это занимает несколько секунд.", cancel));
                 return;
             }
 

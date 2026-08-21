@@ -165,6 +165,8 @@ namespace Guildmaster.UI
         private Presence.ParticipantsPanelView _participants; // кооп: список участников слева под топбаром
         private Tooltips.KeywordStyle _keywordStyle; // Трек Т: цвет терминов, читается с USS-доноров
         private UiSoundSystem _uiSound;           // звук интерфейса: один слушатель на корне панели
+        private VisualElement _layerSystem;       // [7] системные наложения: лента сообщений
+        private ToastLayerView _toasts;           // лента — второй облик сообщений, без ответов
         private bool _lastProvingGrounds;    // ребро вида панели: забег ↔ площадка
         private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
         private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4; источник — _router.IsInventoryOpen)
@@ -294,6 +296,8 @@ namespace Guildmaster.UI
             // Список участников живёт в слое топбара: он такой же постоянный элемент забега и обязан
             // лежать над экранами, а не под ними.
             _participants?.Attach(_layerTopbar);
+            _toasts = new ToastLayerView();
+            _toasts.Attach(_layerSystem);
             // Доноры цвета терминов: невидимые элементы с классами .gm-kw--* в слое подсказок. Так
             // палитра остаётся в USS, а rich text получает готовый hex (rich text переменные не читает).
             _keywordStyle?.Attach(_layerTooltip);
@@ -346,7 +350,20 @@ namespace Guildmaster.UI
             _openHubSubscription = _openHubSub?.Subscribe(req => _router.OpenHub(req));
             // Сообщение игроку и экран ожидания — общий шов на всю игру: и ошибки связи, и
             // предупреждения по ходу боя идут одной дорогой, а не заводят себе по экрану.
-            _noticeSubscription = _noticeSub?.Subscribe(req => _router.ShowNotice(in req));
+            // ОБЛИК ВЫБИРАЕТ МОДЕЛЬ, А НЕ ЗАКАЗЧИК (решение Макса 20.08.2026). Ответов нет и это не
+            // ошибка — сообщение ни о чём не спрашивает, значит лента в углу; иначе игра ждёт решения,
+            // и это окно со scrim. Отдай выбор вызывающему коду — и «нет слота под реликвию» через
+            // месяц приедет модалкой, потому что кому-то оно покажется важным.
+            _noticeSubscription = _noticeSub?.Subscribe(req =>
+            {
+                if (_toasts != null && ToastLayerView.Suits(in req))
+                {
+                    _toasts.Show(in req, key => _loc?.GetString(key));
+                    return;
+                }
+
+                _router.ShowNotice(in req);
+            });
             _busySubscription   = _busySub?.Subscribe(req => _router.ShowBusy(in req));
 
             // Запрос Ристалища закрывает главное меню тем же путём, что кнопка: резолв экрана через
@@ -418,7 +435,8 @@ namespace Guildmaster.UI
             _layerModal        = AddLayer(root, "layer-modal");
             _layerCursors = AddLayer(root, "layer-cursors"); // кооп: курсоры других игроков (03.08.2026)
             _layerTooltip = AddLayer(root, "layer-tooltip"); // Трек Т: окно тултипа над топбаром и модалками
-            AddLayer(root, "layer-system");   // задел II.13/Трек К (тосты/фид/dev-консоль)
+            // Слой системных наложений перестал быть заделом 20.08.2026: в него въехала лента.
+            _layerSystem = AddLayer(root, "layer-system");
 
             // Шторка перехода — САМЫЙ верх (QA #47): она обязана накрывать и топбар, и модалки. Всё, что
             // ниже, гасится ею целиком; никаких исключений у перехода между сценами узла быть не должно.

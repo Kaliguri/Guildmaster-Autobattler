@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Flow;
 using UnityEngine.UIElements;
@@ -23,6 +23,14 @@ namespace Guildmaster.UI
         public static VisualElement Build(in NoticeRequest request, Func<string, string> localize,
                                           Action close)
         {
+            // ОБЁРТКА-ЭКРАН ОБЯЗАТЕЛЬНА, и это не оформление. Затемнение рисует элемент с классом
+            // .gm-screen — навигатор ищет именно его (UiNavigator.ScrimOf), — он же центрирует
+            // содержимое в кадре. Пока Build отдавал голую панель, окно приходило БЕЗ scrim и
+            // прижатым к верхней кромке: ровно то, что Макс увидел 20.08.2026 («не вижу затемнения
+            // иных элементов при открытии Notification»).
+            var screen = new VisualElement { name = "notice-screen" };
+            screen.AddToClassList("gm-screen");
+
             var root = new VisualElement();
             root.AddToClassList("gm-panel");
             // НЕ .gm-panel--dialog: его габариты — мера большого экрана (1280 x 860 минимум), и
@@ -30,6 +38,7 @@ namespace Guildmaster.UI
             root.AddToClassList("gm-notice");
             root.AddToClassList(ModifierFor(request.Kind));
             root.pickingMode = PickingMode.Position;
+            screen.Add(root);
 
             root.Add(Badge(Text(localize, request.TitleKey, request.TitleFallback,
                                 DefaultTitleFor(request.Kind))));
@@ -59,7 +68,7 @@ namespace Guildmaster.UI
             }
 
             root.Add(BuildAnswers(in request, localize, close));
-            return root;
+            return screen;
         }
 
         /// <summary>
@@ -135,7 +144,7 @@ namespace Guildmaster.UI
         /// фаски и без заливки — то есть ровно ту ловушку, что уже случилась с карточкой реликвии в
         /// гриде лоадаута: разметка одинаковая, а всё, что контрол делает НЕ разметкой, теряется молча.
         /// </remarks>
-        private static Components.PlateButton Answer(string text, bool primary, Action act)
+        internal static Components.PlateButton Answer(string text, bool primary, Action act)
         {
             var button = new Components.PlateButton(() => act?.Invoke()) { text = text };
             button.AddToClassList("gm-button");
@@ -161,7 +170,7 @@ namespace Guildmaster.UI
             _                  => "К сведению",
         };
 
-        private static string Text(Func<string, string> localize, string key, string fallback,
+        internal static string Text(Func<string, string> localize, string key, string fallback,
                                    string last)
         {
             if (!string.IsNullOrEmpty(key))
@@ -185,11 +194,16 @@ namespace Guildmaster.UI
     {
         public static VisualElement Build(in BusyRequest request, Func<string, string> localize)
         {
+            // Та же обёртка-экран, что у сообщения: затемнение и центрирование живут на .gm-screen.
+            var screen = new VisualElement { name = "busy-screen" };
+            screen.AddToClassList("gm-screen");
+
             var root = new VisualElement();
             root.AddToClassList("gm-panel");
             // Габариты — свои (см. .gm-busy), диалоговые здесь означали бы окно 1280 x 860 под одно
             // слово «Подождите».
             root.AddToClassList("gm-busy");
+            screen.Add(root);
             root.pickingMode = PickingMode.Position;   // ожидание перехватывает клики: под ним жать нечего
 
             string text = null;
@@ -203,7 +217,20 @@ namespace Guildmaster.UI
             var note = new Components.WaitNote { Title = text, Detail = request.Detail };
             root.Add(note);
 
-            return root;
+            // Кнопка прерывания — только если заказчику есть что прервать. Ожидание без неё
+            // по-прежнему снимается отменой токена, а не игроком.
+            if (request.Cancel.HasValue)
+            {
+                NoticeOption cancel = request.Cancel.Value;
+                var row = new VisualElement();
+                row.AddToClassList("gm-notice__answers");
+                row.Add(NoticeDialogView.Answer(
+                    NoticeDialogView.Text(localize, cancel.LocKey, cancel.Fallback, "Отмена"),
+                               primary: false, act: () => cancel.Act?.Invoke()));
+                root.Add(row);
+            }
+
+            return screen;
         }
     }
 }

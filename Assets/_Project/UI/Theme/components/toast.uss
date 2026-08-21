@@ -1,0 +1,57 @@
+/* ============================================================================
+ * ЛЕНТА — сообщения, которые ничего не спрашивают.
+ *
+ * Место: правый нижний угол, НАД журналом событий (решение Макса 20.08.2026 — прямое, при моём
+ * возражении, что лента закроет свежие строки журнала: «Обычно лента НЕ будет появляться в бою. А
+ * если и будет — все ок, так задумано»).
+ *
+ * Стопка растёт снизу вверх: новая строка приходит ближе к низу, старые поднимаются. Так угол
+ * читается как поток, у которого свежее — ближе к руке.
+ * ========================================================================== */
+
+/* Стопка одной ширины, а не по тексту каждой строки: кадр 20.08.2026 показал, что плашки разной
+   длины дают ступеньки у правого края и читаются как три разных элемента, а не как один поток. */
+.gm-toasts {
+    position: absolute;
+    right: var(--gm-space-3);
+    bottom: var(--gm-space-3);
+    width: 620px;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: stretch;
+}
+
+/* Строка ленты. Кликается — клик закрывает досрочно, поэтому pickingMode у неё Position, в отличие
+   от самой стопки: пустое место угла кликов не крадёт. */
+.gm-toast {
+    background-color: var(--gm-color-surface-panel);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+    border-radius: var(--gm-radius-0);
+    padding: var(--gm-space-2) var(--gm-space-3);
+    margin-top: var(--gm-space-1);
+    max-width: 620px;
+    flex-shrink: 0;
+}
+
+/* Вид меняет цвет левой каймы — тот же приём, что был у окна до ярлыка. Ленте ярлык не положен:
+   у неё нет заголовка вовсе, она вся — одна фраза. */
+.gm-toast--info {
+    border-left-color: var(--gm-color-info);
+    border-left-width: 3px;
+}
+
+.gm-toast--warning {
+    border-left-color: var(--gm-color-warning);
+    border-left-width: 3px;
+}
+
+.gm-toast--error {
+    border-left-color: var(--gm-color-danger);
+    border-left-width: 3px;
+}
+
+.gm-toast__text {
+    white-space: normal;
+    -unity-text-align: middle-left;
+}

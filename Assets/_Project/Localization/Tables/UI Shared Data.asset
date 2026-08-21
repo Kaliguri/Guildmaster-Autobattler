@@ -503,6 +503,10 @@ MonoBehaviour:
     m_Key: ui.coop.invite.decline
     m_Metadata:
       m_Items: []
+  - m_Id: 14971300764442624
+    m_Key: ui.common.cancel
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
