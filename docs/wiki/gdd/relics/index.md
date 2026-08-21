@@ -65,6 +65,7 @@ updated: 2026-07-29
 | [[gdd/relics/the-winter|The Winter (Cryomancer)]] | контроллер-маг (заморозка→стан) | «Контроллер маг» |
 | [[gdd/relics/the-spear|The Spear (Spearman)]] | фронтлайн-брузер с AOE | «Авангард копейщик» |
 | [[gdd/relics/the-gale|The Gale (Monk)]] | мобильный контроллер-дуэлянт | «Монах» |
+| [[gdd/relics/the-zephyr|The Zephyr (Windwarden)]] | превентивная поддержка: режет дальний урон и выдёргивает союзника из-под удара | «Маг ветра» (2026-08-21) |
 | [[gdd/relics/the-hunter|The Hunter (Ranger)]] | рейндж-дпс с меткой | «Рейнжер» |
 | [[gdd/relics/the-shepherd|The Shepherd (Priest)]] | саппорт-хилер | «Хил» |
 | [[gdd/relics/the-verdict|The Verdict (Assassin)]] | ассасин-добиватель | — |
