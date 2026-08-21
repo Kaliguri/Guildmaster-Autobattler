@@ -39,7 +39,7 @@ MonoBehaviour:
     - rid: 4993783284149518430
       type: {class: AllyGustComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _radius: 4
+        _radius: 8
         _distance: 1.6
         _speedPerSecond: 14
         _cooldownSeconds: 8

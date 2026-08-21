@@ -40,6 +40,6 @@ MonoBehaviour:
       type: {class: AllyAuraComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _effect: {fileID: 11400000, guid: eb203bdda363b2f458ec44f3b34d63d5, type: 2}
-        _radius: 4
+        _radius: 8
         _includeSelf: 0
         _interval: 1
