@@ -14,22 +14,38 @@ const OWN = "255,204,51";
 /** Холодный призрак — альтернатива под сравнение, а не канон. */
 const COLD = "77,242,255";
 
-const UH = 96;          // рост тела на сцене
-const DASH_PERIOD = 75; // рывок раз в 2.5 с
-const DASH_TICKS = 12;  // сам рывок — 0.4 с
+const UH = 74;          // рост тела на сцене: бросок обязан быть в 5-10 ширин тела, как в бою
+const DASH_TICKS = 20;  // сам рывок — 0.66 с
+const DASH_HOLD = 8;    // сколько стоим в конце, догорая копиями
+const DASH_PERIOD = DASH_TICKS + DASH_HOLD;
+
+/**
+ * Сдвиг фазы, с которого начинается цикл. Существует ради СНИМКА: `lab-shot.ps1` без ключа снимает
+ * нулевой кадр, а на нулевом кадре рывок ещё не начался — все пять вариаций выходили одинаковым
+ * стоящим юнитом (проверено раскадровкой 21.08.2026, дважды). Со сдвигом нулевой кадр приходится на
+ * 0.7 броска: шлейф уже набран, тело ещё в движении.
+ */
+const SHOW_AT = 14;
+
+/** То же для сцены уклонения: нулевой кадр обязан прийтись ПОСЛЕ контакта, иначе на снимке замах. */
+const HIT_SHOW_AT = 20;
 
 /* ---------- общее ---------- */
 
-/** Фаза рывка: -1 = стоит, иначе доля 0..1 от начала до конца броска. */
+/**
+ * Фаза рывка 0..1. Простоя «до броска» в цикле НЕТ намеренно: снимок стенда берёт произвольный
+ * кадр, и на паузе все пять вариаций выглядели бы одинаковым стоящим юнитом — сравнивать было бы
+ * нечего. Поэтому цикл — бросок плюс короткое стояние в конце, где копии ещё догорают.
+ */
 function dashPhase(): number {
-  const t = tick % DASH_PERIOD;
-  return t < DASH_TICKS ? t / DASH_TICKS : -1;
+  const t = (tick + SHOW_AT) % DASH_PERIOD;
+  return t < DASH_TICKS ? t / DASH_TICKS : 1;
 }
 
 /** Путь рывка: слева направо с замедлением к концу — так читается «оттолкнулся и приехал». */
 function dashX(w: number, p: number): number {
   const e = 1 - Math.pow(1 - p, 2);
-  return w * 0.22 + (w * 0.56) * e;
+  return w * 0.13 + (w * 0.74) * e;
 }
 
 /**
@@ -93,13 +109,6 @@ function trail(count: number, life: number, mode: "fill" | "holo" | "outline", r
   return (ctx, w, h) => {
     const groundY = ground(ctx, w, h, 62);
     const p = dashPhase();
-
-    if (p < 0) {
-      drawUnit(ctx, w * 0.22, groundY, UH);
-      label(ctx, "ждёт рывка", h);
-      return;
-    }
-
     const x = dashX(w, p);
 
     if (tail) {
@@ -107,7 +116,7 @@ function trail(count: number, life: number, mode: "fill" | "holo" | "outline", r
       const from = dashX(w, Math.max(0, p - life));
       const g = ctx.createLinearGradient(from, 0, x, 0);
       g.addColorStop(0, `rgba(${rgb},0)`);
-      g.addColorStop(1, `rgba(${rgb},.22)`);
+      g.addColorStop(1, `rgba(${rgb},.34)`);
       ctx.save();
       ctx.globalCompositeOperation = "lighter";
       ctx.fillStyle = g;
@@ -206,7 +215,7 @@ function illusion(kind: "shatter" | "ripple" | "glitch" | "puff" | "none", moves
   return (ctx, w, h) => {
     const groundY = ground(ctx, w, h, 62);
     const tx = w * 0.62;
-    const after = frame - CONTACT;
+    const after = ((frame + HIT_SHOW_AT) % TOTAL) - CONTACT;
     const k = after <= 0 ? -1 : after / (TOTAL - CONTACT); // 0..1 после попадания
 
     drawUnit(ctx, w * 0.28, groundY, UH * 0.95);           // бьющий: он свой удар доводит всегда
@@ -217,9 +226,11 @@ function illusion(kind: "shatter" | "ripple" | "glitch" | "puff" | "none", moves
       return;
     }
 
-    // Живое тело: ушло вбок (или осталось на месте — «Уклонение» тело не двигает).
-    const bodyX = moves ? tx + w * 0.16 * (1 - Math.pow(1 - Math.min(1, k * 2.2), 2)) : tx;
-    drawUnit(ctx, bodyX, groundY, UH, true);
+
+    // Живое тело: ушло вбок (или осталось на месте — «Уклонение» тело не двигает). Рисуется в конце
+    // сцены, поверх копии: оно ближе к зрителю, а при неподвижном теле копия закрыла бы его целиком.
+    const bodyX = moves ? tx + w * 0.26 * (1 - Math.pow(1 - Math.min(1, k * 2.2), 2)) : tx;
+    const body = (): void => drawUnit(ctx, bodyX, groundY, UH, true);
 
     const u = UH / 16;
     const fade = 1 - k;
@@ -228,6 +239,7 @@ function illusion(kind: "shatter" | "ripple" | "glitch" | "puff" | "none", moves
       ctx.font = "500 13px ui-monospace, Consolas, monospace";
       ctx.fillStyle = `rgba(217,226,235,${fade.toFixed(3)})`;
       ctx.fillText("evade", tx - 18, groundY - UH - 8 - k * 14);
+      body();
       label(ctx, "как сейчас: только надпись", h);
       return;
     }
@@ -248,6 +260,7 @@ function illusion(kind: "shatter" | "ripple" | "glitch" | "puff" | "none", moves
       }
       ctx.restore();
       ghost(ctx, tx, groundY, fade * 0.5, OWN);
+      body();
       label(ctx, "копия осыпается осколками", h);
       return;
     }
@@ -259,14 +272,15 @@ function illusion(kind: "shatter" | "ripple" | "glitch" | "puff" | "none", moves
       for (let r = 0; r < 3; r++) {
         const rk = Math.min(1, k * 1.6 - r * 0.18);
         if (rk <= 0) continue;
-        ctx.strokeStyle = `rgba(${OWN},${((1 - rk) * 0.6).toFixed(3)})`;
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = `rgba(${OWN},${((1 - rk) * 0.55).toFixed(3)})`;
+        ctx.lineWidth = 1.4;
         ctx.beginPath();
-        ctx.ellipse(tx, groundY - UH * 0.55, u * 3 + rk * u * 7, u * 4 + rk * u * 8, 0, 0, Math.PI * 2);
+        ctx.ellipse(tx, groundY - UH * 0.55, u * 2.6 + rk * u * 6, u * 3.4 + rk * u * 5, 0, 0, Math.PI * 2);
         ctx.stroke();
       }
       ctx.restore();
       ghost(ctx, tx, groundY, fade * 0.8, OWN, "holo");
+      body();
       label(ctx, "копия расходится рябью", h);
       return;
     }
@@ -285,6 +299,7 @@ function illusion(kind: "shatter" | "ripple" | "glitch" | "puff" | "none", moves
         ctx.fillRect(tx - u * 3 + off, y, u * 6, UH / 10 - 1);
       }
       ctx.restore();
+      body();
       label(ctx, "копия разъезжается полосами", h);
       return;
     }
@@ -302,6 +317,7 @@ function illusion(kind: "shatter" | "ripple" | "glitch" | "puff" | "none", moves
     }
     ctx.restore();
     ghost(ctx, tx, groundY, fade * 0.35, OWN);
+    body();
     label(ctx, "копия схлопывается в дымку", h);
   };
 }
