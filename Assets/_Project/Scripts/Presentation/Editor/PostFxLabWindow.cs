@@ -1178,6 +1178,9 @@ namespace Guildmaster.Presentation.Editor
                     if (material != null) r.sharedMaterial = material;
                 }
 
+                // Прайм — тот же, что в бою: без него шейдер игнорирует color, и копия стоит белой.
+                GhostImage.PrimeParts(parts, new MaterialPropertyBlock(), feel.GhostHolo, main);
+
                 // Шлейф: копии стоят вдоль пути рывка и снимались через равные промежутки, поэтому у
                 // дальней возраст больше. Иллюзия: все копии в одной точке, но расходятся во времени.
                 float delay = trail ? 0f : feel.IllusionRippleDelay * i;

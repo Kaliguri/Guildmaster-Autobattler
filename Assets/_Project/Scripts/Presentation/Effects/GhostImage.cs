@@ -80,7 +80,7 @@ namespace Guildmaster.Presentation.Effects
                 if (material != null) sr.sharedMaterial = material;
             }
 
-            ApplyHolo();
+            PrimeParts(_parts, _mpb ??= new MaterialPropertyBlock(), _holo, _color);
             _running = true;
         }
 
@@ -150,23 +150,36 @@ namespace Guildmaster.Presentation.Effects
         }
 
         /// <summary>
-        /// Голограмма пишется ОДИН раз при спавне, а не каждый кадр: её сила по жизни копии не меняется —
-        /// гаснет прозрачность, а не развоплощение.
+        /// Праймить части копии: записать им property block с силой голограммы. Пишется ОДИН раз при
+        /// спавне — по жизни копии голограмма не меняется, гаснет прозрачность, а не развоплощение.
         /// </summary>
-        private void ApplyHolo()
+        /// <remarks>
+        /// <b>Блок пишется ВСЕГДА, даже при нулевой голограмме, и это не расточительство.</b> Наш
+        /// спрайтовый шейдер (SRP Batcher) подхватывает <c>SpriteRenderer.color</c> только после первой
+        /// записи per-instance блока — ровно та же причина, по которой у живого тела есть
+        /// <c>IUnitBodyVisual.Prime</c>. Без прайма копия рисуется БЕЛОЙ и не гаснет: ни цвет юнита, ни
+        /// падающая прозрачность до неё не доезжают (поймано раскадровкой 21.08.2026 — на стенде стояла
+        /// стена белых силуэтов, одинаковых во всех двадцати четырёх кадрах).
+        /// <para>Метод статический и публичный, потому что копии рисует не только бой: стенд Post FX Lab
+        /// расставляет их сам, и свой прайм там разошёлся бы с этим молча.</para>
+        /// </remarks>
+        public static void PrimeParts(IReadOnlyList<SpriteRenderer> parts, MaterialPropertyBlock mpb,
+                                      float holo, Color holoColor)
         {
-            if (_holo <= 0.0001f) return;
-            _mpb ??= new MaterialPropertyBlock();
+            if (parts == null || mpb == null) return;
 
-            for (int i = 0; i < _parts.Count; i++)
+            for (int i = 0; i < parts.Count; i++)
             {
-                SpriteRenderer sr = _parts[i];
+                SpriteRenderer sr = parts[i];
                 if (sr == null || !sr.gameObject.activeSelf) continue;
 
-                sr.GetPropertyBlock(_mpb);
-                _mpb.SetFloat(BodyShaderIds.Holo, _holo);
-                _mpb.SetColor(BodyShaderIds.HoloColor, _color);
-                sr.SetPropertyBlock(_mpb);
+                sr.GetPropertyBlock(mpb);
+                mpb.SetFloat(BodyShaderIds.Holo, Mathf.Clamp01(holo));
+                mpb.SetColor(BodyShaderIds.HoloColor, holoColor);
+                mpb.SetFloat(BodyShaderIds.FlashAmount, 0f);
+                mpb.SetFloat(BodyShaderIds.Outline, 0f);
+                mpb.SetFloat(BodyShaderIds.GlowAmount, 0f);
+                sr.SetPropertyBlock(mpb);
             }
         }
 
