@@ -110,6 +110,8 @@ namespace Guildmaster.Tests.EditMode.Presentation
             // Шлейф из призрачных копий: копии снимает ПРЕЗЕНТЕР (он читает признак рывка из кадра), поэтому
             // входа на виде у него нет — есть только тумблер, и спрашивается он в CombatPresenter.
             new Entry("DashGhostTrail",  Switch.Toggle, nameof(CombatFeelConfig.EnableDashGhostTrail)),
+            // Иллюзия уклонения — там же: копию оставляет презентер по событию evade, входа на виде нет.
+            new Entry("DodgeIllusion",   Switch.Toggle, nameof(CombatFeelConfig.EnableDodgeIllusion)),
 
             // Взмах и его геометрия — ЗАПРОСЫ к виду, а не эффекты: отвечают «где клинок», ничего не рисуя.
             new Entry("TryGetSwingArc",      Switch.NotAnEffect, "геометрия взмаха для дуги — запрос, не эффект"),

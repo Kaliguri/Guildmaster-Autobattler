@@ -18,9 +18,11 @@ namespace Guildmaster.Presentation.Effects
         /// <summary>
         /// Оставить копию тела. Точка — мировые координаты ног, поза — снимок силуэта на этот момент.
         /// </summary>
+        /// <param name="growTo">До какого масштаба копия вырастает: 1 — стоит (шлейф), больше — кольцо ряби.</param>
+        /// <param name="delay">Пауза перед появлением, сек: ею разводятся во времени кольца ряби.</param>
         public void Leave(in UnitSilhouette silhouette, Vector3 feet, Color color, Material material,
                           int sortingLayerId, int sortingOrder, float life, float startAlpha,
-                          float fadePower, float holo)
+                          float fadePower, float holo, float growTo = 1f, float delay = 0f)
         {
             if (!silhouette.Valid) return;
 
@@ -30,7 +32,7 @@ namespace Guildmaster.Presentation.Effects
             GhostImage ghost = _pool.Get();
             _active.Add(ghost);
             ghost.Play(in silhouette, feet, color, material, sortingLayerId, sortingOrder,
-                       life, startAlpha, fadePower, holo, _release);
+                       life, startAlpha, fadePower, holo, _release, growTo, delay);
         }
 
         /// <summary>Погасить все копии и вернуть их в пул (сброс боя, уход арены).</summary>

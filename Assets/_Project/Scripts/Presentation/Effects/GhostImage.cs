@@ -30,6 +30,8 @@ namespace Guildmaster.Presentation.Effects
 
         private Color _color;
         private float _life, _elapsed, _startAlpha, _fadePower, _holo;
+        private float _growTo = 1f, _delay;
+        private Vector3 _feet;
         private bool  _running;
 
         /// <summary>
@@ -42,9 +44,15 @@ namespace Guildmaster.Presentation.Effects
         /// <param name="startAlpha">Непрозрачность в момент снимка.</param>
         /// <param name="fadePower">Степень затухания: 1 — линейно, больше — копия дольше держится и резко гаснет.</param>
         /// <param name="holo">Сила голограммы 0..1 (<c>_Holo</c>): 0 — просто прозрачный силуэт.</param>
+        /// <param name="growTo">
+        /// До какого масштаба копия вырастает к концу жизни. 1 — стоит на месте (шлейф); больше —
+        /// расходится наружу, и из таких копий собирается РЯБЬ иллюзии. Второго канала под кольца нет
+        /// намеренно: рябь и шлейф — одна магия, и строятся одним приёмом.
+        /// </param>
+        /// <param name="delay">Пауза перед появлением, сек: ею кольца ряби разводятся во времени.</param>
         public void Play(in UnitSilhouette silhouette, Vector3 feet, Color color, Material material,
                          int sortingLayerId, int sortingOrder, float life, float startAlpha, float fadePower,
-                         float holo, System.Action<GhostImage> onDone)
+                         float holo, System.Action<GhostImage> onDone, float growTo = 1f, float delay = 0f)
         {
             _onDone     = onDone;
             _color      = color;
@@ -52,9 +60,13 @@ namespace Guildmaster.Presentation.Effects
             _startAlpha = Mathf.Clamp01(startAlpha);
             _fadePower  = Mathf.Max(0.01f, fadePower);
             _holo       = Mathf.Clamp01(holo);
+            _growTo     = Mathf.Max(0.01f, growTo);
+            _delay      = Mathf.Max(0f, delay);
             _elapsed    = 0f;
+            _feet       = feet;
 
             transform.position = feet;
+            transform.localScale = Vector3.one;
             gameObject.SetActive(true);
 
             SilhouetteDraw.Apply(_parts, in silhouette, Tint(0f), sortingOrder, MakePart);
@@ -83,20 +95,42 @@ namespace Guildmaster.Presentation.Effects
             if (!_running) return;
 
             _elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(_elapsed / _life);
 
-            Color tint = Tint(t);
-            for (int i = 0; i < _parts.Count; i++)
+            // Ожидание своей очереди: кольцо ряби ещё не появилось. Прозрачным, а не выключенным —
+            // выключенный объект не тикает, и очередь никогда бы не подошла.
+            if (_elapsed < _delay)
             {
-                SpriteRenderer sr = _parts[i];
-                if (sr != null && sr.gameObject.activeSelf) sr.color = tint;
+                SetTint(new Color(_color.r, _color.g, _color.b, 0f));
+                return;
             }
+
+            float t = Mathf.Clamp01((_elapsed - _delay) / _life);
+
+            if (_growTo > 1.0001f)
+            {
+                // Растём ОТ НОГ, а не от центра: копия остаётся стоящей на земле, иначе кольцо
+                // всплывает над ареной.
+                float k = Mathf.Lerp(1f, _growTo, t);
+                transform.localScale = new Vector3(k, k, 1f);
+                transform.position = _feet;
+            }
+
+            SetTint(Tint(t));
 
             if (t < 1f) return;
 
             _running = false;
             gameObject.SetActive(false);
             _onDone?.Invoke(this);
+        }
+
+        private void SetTint(Color tint)
+        {
+            for (int i = 0; i < _parts.Count; i++)
+            {
+                SpriteRenderer sr = _parts[i];
+                if (sr != null && sr.gameObject.activeSelf) sr.color = tint;
+            }
         }
 
         /// <summary>Цвет копии на доле жизни: тот же свет юнита, теряющий прозрачность (а не уходящий в другой цвет).</summary>

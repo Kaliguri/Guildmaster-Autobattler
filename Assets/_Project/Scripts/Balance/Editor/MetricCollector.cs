@@ -406,7 +406,7 @@ namespace Guildmaster.Balance.Editor
             if (author != null && _byId.TryGetValue(author.Id, out UnitMetric m)) m.ShieldGranted += amount;
         }
 
-        private void HandleEvaded(RuntimeUnit target)
+        private void HandleEvaded(RuntimeUnit attacker, RuntimeUnit target)
         {
             if (target != null && _byId.TryGetValue(target.Id, out UnitMetric m)) m.HitsEvaded++;
         }

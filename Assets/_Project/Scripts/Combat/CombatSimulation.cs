@@ -149,7 +149,7 @@ namespace Guildmaster.Combat
         public event Action<RuntimeUnit, RuntimeUnit, float> OnShieldAbsorbed;
 
         /// <summary>Входящий удар полностью отменён pre-damage реактивом («Отход»). Для presentation («evade»). Урона нет.</summary>
-        public event Action<RuntimeUnit> OnAttackEvaded;
+        public event Action<RuntimeUnit, RuntimeUnit> OnAttackEvaded;
 
         /// <summary>Юнит вошёл в замах авто-атаки (вики «14»): запускает анимацию свинга во View.</summary>
         public event Action<RuntimeUnit, RuntimeUnit> OnAttackStarted;
@@ -381,7 +381,7 @@ namespace Guildmaster.Combat
         /// виноват» показу сегодня недоступна — расхождение помечено в статусе врагов.
         /// </summary>
         public void ReportAttackMissed(RuntimeUnit attacker, RuntimeUnit target) =>
-            OnAttackEvaded?.Invoke(target);
+            OnAttackEvaded?.Invoke(attacker, target);
 
         /// <summary>
         /// Домножить удар на прибавки, которые даёт носителю его собственные эффекты за состояние цели.
@@ -422,7 +422,7 @@ namespace Guildmaster.Combat
             // «Отход» может полностью отменить удар. Порядок детерминирован.
             if (_effectSystem.RunPreDamage(target, in req, this))
             {
-                OnAttackEvaded?.Invoke(target); // presentation-сигнал «evade», симуляцию не трогает
+                OnAttackEvaded?.Invoke(req.Source, target); // presentation-сигнал «evade», симуляцию не трогает
                 return DamageResolution.None;   // удар негейтнут — ни урона, ни урон-событий
             }
 

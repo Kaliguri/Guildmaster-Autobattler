@@ -88,7 +88,8 @@ namespace Guildmaster.Presentation.Audio
 
         private void OnHealed(int sourceId, int targetId, float amount) => PlayFor(targetId, AudioAction.Heal);
 
-        private void OnAttackEvaded(int targetId) => PlayFor(targetId, AudioAction.Evade);
+        // Источник удара звуку не нужен: уклонение звучит с того, КТО уклонился, а не с того, кто бил.
+        private void OnAttackEvaded(int attackerId, int targetId) => PlayFor(targetId, AudioAction.Evade);
 
         private void OnAttackStarted(int sourceId, int targetId) => PlayFor(sourceId, AudioAction.Attack);
 

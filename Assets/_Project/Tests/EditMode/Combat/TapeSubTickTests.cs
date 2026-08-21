@@ -109,7 +109,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var dispatcher = new BattleTapeDispatcher(tape);
 
             int calls = 0;
-            dispatcher.AttackEvaded += _ => calls++;
+            dispatcher.AttackEvaded += (_, _) => calls++;
 
             tape.Record(new TapeEvent(TapeEventKind.AttackEvaded, tick: 2, targetId: 4, subTick: 0.99f));
             dispatcher.PumpTo(2);

@@ -35,8 +35,11 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Лечение показано: источник, цель, величина.</summary>
         public event Action<int, int, float> Healed;
 
-        /// <summary>Удар по цели отменён целиком — показ рисует «evade».</summary>
-        public event Action<int> AttackEvaded;
+        /// <summary>
+        /// Удар по цели отменён целиком: бьющий и цель. Источник нужен показу, чтобы положить удар по
+        /// призрачной копии в правильном направлении; <c>-1</c> — автора нет (ловушка, окружение).
+        /// </summary>
+        public event Action<int, int> AttackEvaded;
 
         /// <summary>Начался замах: источник, цель.</summary>
         public event Action<int, int> AttackStarted;
@@ -136,7 +139,7 @@ namespace Guildmaster.Combat.Tape
                     Healed?.Invoke(ev.SourceId, ev.TargetId, ev.Amount);
                     break;
                 case TapeEventKind.AttackEvaded:
-                    AttackEvaded?.Invoke(ev.TargetId);
+                    AttackEvaded?.Invoke(ev.SourceId, ev.TargetId);
                     break;
                 case TapeEventKind.AttackStarted:
                     AttackStarted?.Invoke(ev.SourceId, ev.TargetId);

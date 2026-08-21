@@ -87,8 +87,9 @@ namespace Guildmaster.Balance.Editor
         private void HandleCastInterrupted(RuntimeUnit caster)
             => Add(Name(caster), "каст сорван", "", null, "", Hp(caster));
 
-        private void HandleEvaded(RuntimeUnit target)
-            => Add(Name(target), "уклонился", "", null, "входящий удар отменён целиком", Hp(target));
+        private void HandleEvaded(RuntimeUnit attacker, RuntimeUnit target)
+            => Add(Name(target), "уклонился", attacker != null ? Name(attacker) : "",
+                   null, "входящий удар отменён целиком", Hp(target));
 
         private void HandleDeath(RuntimeUnit unit)
             => Add(Name(unit), "погиб", "", null, "", "0");

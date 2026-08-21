@@ -558,11 +558,11 @@ namespace Guildmaster.Presentation.Design
 
         [Tooltip("Сколько живёт ОДНА копия, сек. Вместе с интервалом задаёт длину хвоста: " +
                  "жизнь / интервал = сколько копий видно разом.")]
-        [SerializeField, Range(0.05f, 1f)] private float _ghostLifeSeconds = 0.28f;
+        [SerializeField, Range(0.05f, 1f)] private float _ghostLifeSeconds = 0.36f;
 
         [Tooltip("Непрозрачность копии в момент снимка. Хвост — тот же свет юнита, теряющий " +
                  "прозрачность, а не переход во второй цвет.")]
-        [SerializeField, Range(0.05f, 1f)] private float _ghostStartAlpha = 0.45f;
+        [SerializeField, Range(0.05f, 1f)] private float _ghostStartAlpha = 0.4f;
 
         [Tooltip("Степень затухания копии: 1 — линейно, больше — держится дольше и гаснет резче.")]
         [SerializeField, Range(0.3f, 4f)] private float _ghostFadePower = 1.6f;
@@ -574,6 +574,29 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Насколько копия уходит ЗА тело по порядку отрисовки: шлейф обязан идти позади живого " +
                  "юнита, иначе он закрывает того, за кем тянется.")]
         [SerializeField] private int _ghostSortingOffset = -4;
+
+        [Header("VFX — иллюзия уклонения (удар приходит по копии)")]
+        [Tooltip("Уклонение показывается ударом по призрачной копии: тело выпало из точки, копия " +
+                 "осталась и расходится рябью. Выключено — уклонение снова показывается одной надписью " +
+                 "«evade», как до 21.08.2026.")]
+        [SerializeField] private bool _enableDodgeIllusion = true;
+
+        [Tooltip("Сколько колец ряби расходится от копии. Кольцо — это ТА ЖЕ копия тела, растущая " +
+                 "наружу: рябь и шлейф обязаны читаться как одна магия, а не как два разных эффекта.")]
+        [SerializeField, Range(1, 5)] private int _illusionRipples = 3;
+
+        [Tooltip("Сколько живёт кольцо ряби, сек.")]
+        [SerializeField, Range(0.1f, 1.2f)] private float _illusionRippleLife = 0.42f;
+
+        [Tooltip("Задержка между кольцами, сек: рябь расходится волнами, а не одним хлопком.")]
+        [SerializeField, Range(0f, 0.3f)] private float _illusionRippleDelay = 0.07f;
+
+        [Tooltip("До какого масштаба вырастает кольцо к концу жизни. 1 = не растёт.")]
+        [SerializeField, Range(1f, 2.5f)] private float _illusionRippleGrow = 1.5f;
+
+        [Tooltip("Непрозрачность копии, по которой пришёлся удар. Выше, чем у копий шлейфа: эта — " +
+                 "предмет события, а не его хвост.")]
+        [SerializeField, Range(0.05f, 1f)] private float _illusionAlpha = 0.6f;
 
         [SerializeField] private HitFormArchetypeConfig _hitFormSlash = HitFormArchetypeConfig.Slash();
         [SerializeField] private HitFormArchetypeConfig _hitFormPierce = HitFormArchetypeConfig.Pierce();
@@ -792,6 +815,19 @@ namespace Guildmaster.Presentation.Design
         public float GhostHolo            => _ghostHolo;
         /// <summary>Сдвиг порядка отрисовки копии относительно тела: отрицательный — за спину.</summary>
         public int   GhostSortingOffset   => _ghostSortingOffset;
+
+        /// <summary>Показывать ли уклонение ударом по призрачной копии.</summary>
+        public bool  EnableDodgeIllusion  => _enableDodgeIllusion;
+        /// <summary>Сколько колец ряби расходится от копии.</summary>
+        public int   IllusionRipples      => _illusionRipples;
+        /// <summary>Сколько живёт кольцо ряби, сек.</summary>
+        public float IllusionRippleLife   => _illusionRippleLife;
+        /// <summary>Задержка между кольцами ряби, сек.</summary>
+        public float IllusionRippleDelay  => _illusionRippleDelay;
+        /// <summary>До какого масштаба вырастает кольцо к концу жизни.</summary>
+        public float IllusionRippleGrow   => _illusionRippleGrow;
+        /// <summary>Непрозрачность копии, принявшей удар.</summary>
+        public float IllusionAlpha        => _illusionAlpha;
 
         public bool    EnableSwingArc      => _enableSwingArc;
         public VfxData VfxSwingArc         => _vfxSwingArc;

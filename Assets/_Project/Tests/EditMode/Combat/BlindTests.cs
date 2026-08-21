@@ -84,7 +84,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             // поэтому счёт точен и не зависит от того, долетел ли удар: считаем только промахи первых
             // attacks взмахов, дальнейшие в счёт не идут.
             int missesSeen = 0;
-            sim.OnAttackEvaded += _ => { if (blinded.HitsMade <= attacks) missesSeen++; };
+            sim.OnAttackEvaded += (_, _) => { if (blinded.HitsMade <= attacks) missesSeen++; };
 
             for (int t = 0; t < attacks * 90 && blinded.HitsMade < attacks; t++)
                 sim.Tick(SimConstants.TickDelta);

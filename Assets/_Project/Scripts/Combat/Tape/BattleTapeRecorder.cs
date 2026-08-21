@@ -122,8 +122,9 @@ namespace Guildmaster.Combat.Tape
                 TapeEventKind.Healed, Tick,
                 source != null ? source.Id : -1, target != null ? target.Id : -1, amount));
 
-        private void HandleAttackEvaded(RuntimeUnit target) =>
-            _tape.Record(new TapeEvent(TapeEventKind.AttackEvaded, Tick, targetId: target.Id));
+        private void HandleAttackEvaded(RuntimeUnit attacker, RuntimeUnit target) =>
+            _tape.Record(new TapeEvent(TapeEventKind.AttackEvaded, Tick,
+                sourceId: attacker != null ? attacker.Id : -1, targetId: target.Id));
 
         private void HandleAttackStarted(RuntimeUnit unit, RuntimeUnit target) =>
             _tape.Record(new TapeEvent(

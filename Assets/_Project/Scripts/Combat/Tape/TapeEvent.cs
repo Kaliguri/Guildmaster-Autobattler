@@ -11,7 +11,7 @@ namespace Guildmaster.Combat.Tape
 
         Healed,
 
-        /// <summary>Удар полностью отменён («Отход») — показ рисует «evade».</summary>
+        /// <summary>Удар полностью отменён («Отход») — показ рисует удар по призрачной копии.</summary>
         AttackEvaded,
 
         AttackStarted,
@@ -59,7 +59,7 @@ namespace Guildmaster.Combat.Tape
     /// <item><term>UnitSpawned / UnitDied / AttackInterrupted</term><description><c>SourceId</c> — юнит.</description></item>
     /// <item><term>DamageDealt</term><description><c>SourceId</c> → <c>TargetId</c>, подробности по <c>PayloadIndex</c>.</description></item>
     /// <item><term>Healed</term><description><c>SourceId</c> → <c>TargetId</c>, <c>Amount</c> — величина.</description></item>
-    /// <item><term>AttackEvaded</term><description><c>TargetId</c> — тот, кто уклонился.</description></item>
+    /// <item><term>AttackEvaded</term><description><c>SourceId</c> — бьющий (или <c>-1</c>), <c>TargetId</c> — тот, кто уклонился.</description></item>
     /// <item><term>AttackStarted</term><description><c>SourceId</c> → <c>TargetId</c>.</description></item>
     /// <item><term>AreaHit</term><description>геометрия по <c>PayloadIndex</c>.</description></item>
     /// <item><term>BattleEnded</term><description>исход по <c>PayloadIndex</c>.</description></item>

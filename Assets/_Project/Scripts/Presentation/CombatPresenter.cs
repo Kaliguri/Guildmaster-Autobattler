@@ -1043,7 +1043,7 @@ namespace Guildmaster.Presentation
             }
         }
 
-        private void HandleAttackEvaded(int targetId)
+        private void HandleAttackEvaded(int attackerId, int targetId)
         {
             if (!TryGetShown(targetId, out Combat.Tape.UnitSnapshot target)) return;
 
@@ -1052,6 +1052,50 @@ namespace Guildmaster.Presentation
             // то есть настоящее перемещение в симуляции (gdd/20-combat/positioning). Появится оно — вид
             // поедет за ним сам.
             SpawnNumber(AnchorFor(targetId, target.Position), "evade", _evadeColor);
+
+            PlayDodgeIllusion(targetId);
+        }
+
+        /// <summary>
+        /// Удар по иллюзии: тело выпало из точки, а копия осталась — и расходится рябью
+        /// (решение <c>2026-08-21/7</c>). Кольцо ряби — ТА ЖЕ призрачная копия, растущая наружу, а не
+        /// отдельный префаб колец: иначе шлейф рывка и иллюзия читались бы как две разные магии.
+        /// </summary>
+        /// <remarks>
+        /// Иллюзия ставится на ВСЕХ четырёх уклонениях, включая то, при котором тело с места не уходит
+        /// («Уклонение» — каждая X-я атака мимо): удар прошёл сквозь, значит бил по копии. Решение Макса
+        /// 21.08.2026; риск «копия стоит ровно в теле» разобран стендом <c>#/ghosts</c>, карточка
+        /// <c>illusion-standing</c>.
+        /// </remarks>
+        private void PlayDodgeIllusion(int targetId)
+        {
+            if (_feel == null || !_feel.EnableDodgeIllusion) return;
+            if (!_views.TryGetValue(targetId, out UnitView view) || view == null) return;
+
+            EnsureGhosts();
+
+            Vector3 feet = view.FeetPoint;
+            UnitSilhouette silhouette = view.CaptureSilhouette(feet);
+            if (!silhouette.Valid) return;
+
+            Color color = VfxColorFor(targetId);
+            Material material = view.BodyMaterial;
+            int layer = view.BodySortingLayerId;
+            int order = view.BodySortingOrder + _feel.GhostSortingOffset;
+
+            // Копия, принявшая удар: стоит на месте и гаснет. Она — предмет события, поэтому плотнее
+            // копий шлейфа.
+            _ghosts.Leave(in silhouette, feet, color, material, layer, order,
+                _feel.IllusionRippleLife, _feel.IllusionAlpha, _feel.GhostFadePower, _feel.GhostHolo);
+
+            // Рябь: те же копии, расходящиеся наружу волнами. Первая идёт вместе с ударом, остальные —
+            // со сдвигом, иначе вместо ряби один хлопок.
+            for (int i = 0; i < _feel.IllusionRipples; i++)
+            {
+                _ghosts.Leave(in silhouette, feet, color, material, layer, order,
+                    _feel.IllusionRippleLife, _feel.IllusionAlpha * 0.6f, _feel.GhostFadePower, _feel.GhostHolo,
+                    growTo: _feel.IllusionRippleGrow, delay: _feel.IllusionRippleDelay * i);
+            }
         }
 
         // Задержка на UNSCALED-времени: в паузе и в финишер-slowmo вторая цифра иначе не приходила вовсе —
