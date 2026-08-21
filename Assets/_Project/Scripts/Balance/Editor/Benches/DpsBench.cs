@@ -26,6 +26,7 @@ namespace Guildmaster.Balance.Editor
             var headers = new List<string>
             {
                 "Relic", "DPS_solo", "DPS_summons", "DPS_with_summons", "DPS_aoe", "AoE_ratio",
+                "ControlSec", "ControlShare%", "DmgControlled%",
                 "AutoPhys%", "AutoMagic%", "Ability%", "DoT%", "React%", "Vuln%", "SelfDmg%",
                 "aoe_AutoPhys%", "aoe_AutoMagic%", "aoe_Ability%", "aoe_DoT%", "aoe_React%",
             };
@@ -60,6 +61,9 @@ namespace Guildmaster.Balance.Editor
                 table.Add(new object[]
                 {
                     relic.name, solo, summonDps, solo + summonDps, aoe, ratio,
+                    a?.ControlSecondsDealt ?? 0.0,
+                    soloReport.Seconds > 0 ? 100.0 * (a?.ControlSecondsDealt ?? 0.0) / soloReport.Seconds : 0.0,
+                    Share(a?.DamageOnControlled ?? 0.0),
                     Share(a?.DamageAutoPhysical ?? 0.0),
                     Share(a?.DamageAutoMagical ?? 0.0),
                     Share(a?.DamageAbility ?? 0.0),
@@ -91,6 +95,12 @@ namespace Guildmaster.Balance.Editor
                 "Колонки **aoe_\\*** — та же разбивка, но по AoE-прогону: у кита, чья способность требует нескольких " +
                 "целей, в solo она не кастуется вовсе, и её доля там ноль по отсутствию, а не по слабости. " +
                 "Сравнивать solo- и aoe-доли имеет смысл только с оглядкой на AoE_ratio — знаменатели разные. " +
+                "**Контроль — три колонки, и они не про урон.** ControlSec — сколько секунд контроля кит " +
+                "наложил на цель (сон, оглушение, заморозка, подброс), ControlShare% — какую долю боя цель " +
+                "простояла под ним, DmgControlled% — доля урона, попавшая в это окно. " +
+                "Кит, у которого DPS ниже нормы, а DmgControlled% под сотню, — не слабый: он просто " +
+                "меряется не тем. Пожиратель снов по своей карточке в открытом размене не бьётся вовсе " +
+                "(`docs/balance-issues.md` §BAL-032). " +
                 "Фикс-HP цели (не 1e9) — чтобы механики «% от HP» не взрывали цифру. Чувствительно к расстановке; " +
                 "wind-up первых кадров занижает DPS. Способности/on-hit учтены (полный сим). DPS=0 — кит не бьёт цель (напр. хилер).";
 

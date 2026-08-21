@@ -100,6 +100,18 @@ namespace Guildmaster.Balance.Editor
         /// <summary>Секунды контроля, полученные самим юнитом.</summary>
         public double ControlSecondsTaken;
 
+        /// <summary>
+        /// Урон, нанесённый по цели, которая В ЭТОТ МОМЕНТ под контролем (сон, оглушение, заморозка,
+        /// подброс) — не важно, чьим.
+        /// </summary>
+        /// <remarks>
+        /// Ради китов, у которых урон живёт в окне контроля, а не в открытом размене: карточка
+        /// Пожирателя снов прямо просит мерить её по интервалу «уснула → проснулась»
+        /// (<c>docs/balance-issues.md</c> §BAL-032). Для обычного кита это число околонулевое, и по
+        /// самому его размеру видно, к какому типу кит относится.
+        /// </remarks>
+        public double DamageOnControlled;
+
         // --- ПРОКЛЯТИЯ: порча, наложенная на врагов ---
 
         /// <summary>Сколько дебаффов наложил на врагов (каждое наложение, включая рефреши и стаки).</summary>
@@ -257,7 +269,8 @@ namespace Guildmaster.Balance.Editor
         private readonly Dictionary<int, RuntimeUnit> _unitById = new Dictionary<int, RuntimeUnit>();
 
         /// <summary>Теги, по которым эффект считается контролем (отнимает у цели действия).</summary>
-        private const EffectTag ControlTags = EffectTag.Control | EffectTag.Frozen | EffectTag.KnockUp;
+        private const EffectTag ControlTags =
+            EffectTag.Control | EffectTag.Frozen | EffectTag.KnockUp | EffectTag.Sleep;
 
         /// <summary>Теги «химии» — яд и горение: их считаем отдельно от прочей порчи.</summary>
         private const EffectTag DotTags = EffectTag.DoT | EffectTag.Poison | EffectTag.Burn;
@@ -434,6 +447,11 @@ namespace Guildmaster.Balance.Editor
                     case DamageSourceKind.Periodic:   sm.DamagePeriodic += result.TotalDamage; break;
                     case DamageSourceKind.Reactive:   sm.DamageReactive += result.TotalDamage; break;
                 }
+
+                // Маска тегов читается у ЦЕЛИ на момент удара, а не история контроля: вопрос «попал ли
+                // удар в окно» решается состоянием цели, и только оно.
+                if (target != null && (target.EffectTagMask & ControlTags) != 0)
+                    sm.DamageOnControlled += result.TotalDamage;
             }
 
             if (target != null && _byId.TryGetValue(target.Id, out UnitMetric tm))
