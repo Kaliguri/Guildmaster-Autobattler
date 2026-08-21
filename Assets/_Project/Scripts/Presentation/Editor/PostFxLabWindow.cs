@@ -93,7 +93,8 @@ namespace Guildmaster.Presentation.Editor
         {
             HitSlash, HitPierce, HitBlunt, HitBolt,
             SwingArc, Sparks, ImpactDust, CastBurst,
-            CastGlow, BlockFlash, DeathFlash, Shatter
+            CastGlow, BlockFlash, DeathFlash, Shatter,
+            GhostTrail, DodgeIllusion
         }
 
         static readonly (Cell cell, string label)[] Cells =
@@ -110,6 +111,8 @@ namespace Guildmaster.Presentation.Editor
             (Cell.BlockFlash, "Вспышка блока"),
             (Cell.DeathFlash, "Смерть: вспышка"),
             (Cell.Shatter,    "Смерть: осколки"),
+            (Cell.GhostTrail, "Рывок: шлейф копий"),
+            (Cell.DodgeIllusion, "Уклонение: удар по иллюзии"),
         };
 
         // Набор вариаций для серии. Текущее состояние боевого профиля (1.0 / 0.7) стоит последним —
@@ -620,7 +623,8 @@ namespace Guildmaster.Presentation.Editor
         /// так — второе тело рядом только запутает, кто из них показывает эффект.
         /// </summary>
         static bool NeedsRuler(Cell cell) =>
-            cell != Cell.CastGlow && cell != Cell.BlockFlash && cell != Cell.DeathFlash && cell != Cell.Shatter;
+            cell != Cell.CastGlow && cell != Cell.BlockFlash && cell != Cell.DeathFlash && cell != Cell.Shatter
+            && cell != Cell.GhostTrail && cell != Cell.DodgeIllusion;
 
         /// <summary>
         /// Юнит-линейка сбоку от эффекта: мера роста, по которой читается его размер. Стоит именно
@@ -660,6 +664,8 @@ namespace Guildmaster.Presentation.Editor
                 case Cell.BlockFlash: BuildUnitGlow(at, main, block: true,  feel); break;
                 case Cell.DeathFlash: BuildDeathFlash(at, feel); break;
                 case Cell.Shatter:    BuildShatter(at, feel, spread); break;
+                case Cell.GhostTrail:    BuildGhosts(at, feel, main, trail: true);  break;
+                case Cell.DodgeIllusion: BuildGhosts(at, feel, main, trail: false); break;
             }
         }
 
@@ -1112,6 +1118,93 @@ namespace Guildmaster.Presentation.Editor
         // Подписи в кадре не рисуем: эффект в кадре ровно один, его имя стоит в выборе стенда и уезжает
         // в манифест, а на сайте становится обычным текстом. Подпись поверх снимка была бы третьей
         // копией того же слова — и единственной, которую нельзя ни перевести, ни поправить.
+
+        /// <summary>
+        /// Призрачные копии тела: шлейф за рывком (<paramref name="trail"/>) и удар по иллюзии.
+        /// </summary>
+        /// <remarks>
+        /// <b>Копии здесь расставляет стенд, а гасит их общая кривая</b> — <see cref="GhostImage.Sample"/>.
+        /// В стенде нет тика MonoBehaviour, поэтому проиграть настоящий <c>GhostImage</c> нельзя: он
+        /// живёт на <c>Update</c>. Но своя формула затухания разошлась бы с боем МОЛЧА — копии остались
+        /// бы нарисованными, просто гасли бы иначе, — поэтому от <c>GhostImage</c> берётся ровно то, что
+        /// решает «как копия выглядит на своей секунде».
+        /// <para><b>Поза снимается той же дорогой, что в бою</b> (<c>UnitView.CaptureSilhouette</c> →
+        /// <see cref="SilhouetteDraw"/>): стенд не имеет права рисовать тело по-своему, иначе он покажет
+        /// не тот эффект, который увидит игрок.</para>
+        /// </remarks>
+        private void BuildGhosts(Transform at, CombatFeelConfig feel, Color main, bool trail)
+        {
+            GameObject subject = Spawn(_subjectPrefab, at);
+            if (!subject.TryGetComponent(out UnitView view))
+                throw new InvalidOperationException("у субъекта нет UnitView — снять позу тела нечем");
+
+            Vector3 feet = subject.transform.position;
+            UnitSilhouette silhouette = view.CaptureSilhouette(feet);
+            if (!silhouette.Valid) throw new InvalidOperationException("силуэт субъекта пуст — копию строить не из чего");
+
+            Material material = view.BodyMaterial;
+            int layer = view.BodySortingLayerId;
+            int order = view.BodySortingOrder + feel.GhostSortingOffset;
+
+            // Дистанция рывка — та же, на которую в бою уносит кувырок «Отхода» (2 мировых единицы).
+            // Число живёт в компоненте эффекта, до стенда не доезжает, поэтому названо здесь явно.
+            const float DashDistance = 2f;
+
+            int count = trail
+                ? Mathf.Max(1, Mathf.RoundToInt(feel.GhostLifeSeconds / Mathf.Max(0.01f, feel.GhostTrailInterval)))
+                : feel.IllusionRipples + 1;
+
+            float life  = trail ? feel.GhostLifeSeconds : feel.IllusionRippleLife;
+            float alpha = trail ? feel.GhostStartAlpha  : feel.IllusionAlpha;
+
+            var copies = new List<(GameObject go, List<SpriteRenderer> parts, float delay, float x, float grow)>();
+            for (int i = 0; i < count; i++)
+            {
+                var go = new GameObject($"Ghost {i}") { hideFlags = HideFlags.HideAndDontSave };
+                go.transform.SetParent(at, false);
+
+                var parts = new List<SpriteRenderer>();
+                SilhouetteDraw.Apply(parts, in silhouette, new Color(main.r, main.g, main.b, alpha), order,
+                    () =>
+                    {
+                        var part = new GameObject("GhostPart") { hideFlags = HideFlags.HideAndDontSave };
+                        part.transform.SetParent(go.transform, false);
+                        return part.AddComponent<SpriteRenderer>();
+                    });
+
+                foreach (SpriteRenderer r in parts)
+                {
+                    r.sortingLayerID = layer;
+                    if (material != null) r.sharedMaterial = material;
+                }
+
+                // Шлейф: копии стоят вдоль пути рывка и снимались через равные промежутки, поэтому у
+                // дальней возраст больше. Иллюзия: все копии в одной точке, но расходятся во времени.
+                float delay = trail ? 0f : feel.IllusionRippleDelay * i;
+                float age   = trail ? feel.GhostTrailInterval * i : 0f;
+                float x     = trail ? feet.x - DashDistance * (i / (float)count) : feet.x;
+                float grow  = trail || i == 0 ? 1f : feel.IllusionRippleGrow;
+
+                go.transform.position = new Vector3(x, feet.y, feet.z);
+                copies.Add((go, parts, delay + age, x, grow));
+            }
+
+            subject.transform.position = new Vector3(feet.x, feet.y, feet.z);
+            _phaseDuration = life + (trail ? feel.GhostTrailInterval * count : feel.IllusionRippleDelay * count);
+
+            _applyPhase = t =>
+            {
+                float elapsed = t * _phaseDuration;
+                foreach ((GameObject go, List<SpriteRenderer> parts, float delay, float x, float grow) c in copies)
+                {
+                    GhostImage.Sample(elapsed, life, c.delay, alpha, feel.GhostFadePower, c.grow,
+                                      out float a, out float scale);
+                    c.go.transform.localScale = new Vector3(scale, scale, 1f);
+                    c.go.transform.position   = new Vector3(c.x, feet.y, feet.z);
+                    foreach (SpriteRenderer r in c.parts) r.color = new Color(main.r, main.g, main.b, a);
+                }
+            };
+        }
 
         private GameObject Spawn(GameObject prefab, Transform at)
         {

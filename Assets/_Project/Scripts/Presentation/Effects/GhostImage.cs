@@ -69,7 +69,8 @@ namespace Guildmaster.Presentation.Effects
             transform.localScale = Vector3.one;
             gameObject.SetActive(true);
 
-            SilhouetteDraw.Apply(_parts, in silhouette, Tint(0f), sortingOrder, MakePart);
+            SilhouetteDraw.Apply(_parts, in silhouette, new Color(color.r, color.g, color.b, _startAlpha),
+                                 sortingOrder, MakePart);
 
             for (int i = 0; i < _parts.Count; i++)
             {
@@ -81,6 +82,26 @@ namespace Guildmaster.Presentation.Effects
 
             ApplyHolo();
             _running = true;
+        }
+
+        /// <summary>
+        /// Состояние копии на момент <paramref name="elapsed"/>: дожила ли она, её прозрачность и масштаб.
+        /// ОДИН владелец кривой жизни: её зовёт и бой (<see cref="Update"/>), и стенд Post FX Lab, который
+        /// расставляет копии по фазе сам — там нет тика MonoBehaviour. Своя формула на стороне стенда
+        /// разошлась бы с боем молча: копии остались бы нарисованными, просто гасли бы иначе.
+        /// </summary>
+        /// <returns><c>false</c> — копия отжила: рисовать её больше не нужно.</returns>
+        public static bool Sample(float elapsed, float life, float delay, float startAlpha, float fadePower,
+                                  float growTo, out float alpha, out float scale)
+        {
+            alpha = 0f;
+            scale = 1f;
+            if (elapsed < delay) return true;   // ещё не появилась — но появится
+
+            float t = Mathf.Clamp01((elapsed - delay) / Mathf.Max(0.01f, life));
+            alpha = Mathf.Clamp01(startAlpha) * Mathf.Pow(1f - t, Mathf.Max(0.01f, fadePower));
+            scale = growTo > 1.0001f ? Mathf.Lerp(1f, growTo, t) : 1f;
+            return t < 1f;
         }
 
         /// <summary>Погасить копию досрочно (сброс боя) — без колбэка: возврат в пул делает вызывающий.</summary>
@@ -96,28 +117,23 @@ namespace Guildmaster.Presentation.Effects
 
             _elapsed += Time.deltaTime;
 
-            // Ожидание своей очереди: кольцо ряби ещё не появилось. Прозрачным, а не выключенным —
-            // выключенный объект не тикает, и очередь никогда бы не подошла.
-            if (_elapsed < _delay)
-            {
-                SetTint(new Color(_color.r, _color.g, _color.b, 0f));
-                return;
-            }
+            // Кривая жизни — общая с Post FX Lab (см. Sample). Ожидание своей очереди отыгрывается
+            // прозрачностью, а не выключением: выключенный объект не тикает, и очередь никогда бы не
+            // подошла.
+            bool alive = Sample(_elapsed, _life, _delay, _startAlpha, _fadePower, _growTo,
+                                out float alpha, out float scale);
 
-            float t = Mathf.Clamp01((_elapsed - _delay) / _life);
-
+            // Масштаб растёт ОТ НОГ, а не от центра: копия остаётся стоящей на земле, иначе кольцо
+            // ряби всплывает над ареной.
             if (_growTo > 1.0001f)
             {
-                // Растём ОТ НОГ, а не от центра: копия остаётся стоящей на земле, иначе кольцо
-                // всплывает над ареной.
-                float k = Mathf.Lerp(1f, _growTo, t);
-                transform.localScale = new Vector3(k, k, 1f);
+                transform.localScale = new Vector3(scale, scale, 1f);
                 transform.position = _feet;
             }
 
-            SetTint(Tint(t));
+            SetTint(new Color(_color.r, _color.g, _color.b, alpha));
 
-            if (t < 1f) return;
+            if (alive) return;
 
             _running = false;
             gameObject.SetActive(false);
@@ -131,14 +147,6 @@ namespace Guildmaster.Presentation.Effects
                 SpriteRenderer sr = _parts[i];
                 if (sr != null && sr.gameObject.activeSelf) sr.color = tint;
             }
-        }
-
-        /// <summary>Цвет копии на доле жизни: тот же свет юнита, теряющий прозрачность (а не уходящий в другой цвет).</summary>
-        private Color Tint(float t)
-        {
-            Color c = _color;
-            c.a = _startAlpha * Mathf.Pow(1f - t, _fadePower);
-            return c;
         }
 
         /// <summary>
