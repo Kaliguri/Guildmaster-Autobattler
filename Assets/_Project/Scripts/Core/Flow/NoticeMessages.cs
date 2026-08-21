@@ -179,8 +179,19 @@ namespace Guildmaster.Core.Flow
         /// </remarks>
         public readonly bool TakesOver;
 
+        /// <summary>
+        /// Кого или чего касается ожидание: «Игра Гильберта». Пусто — строки не будет.
+        /// </summary>
+        /// <remarks>
+        /// НЕ локализуется: сюда приходит имя человека из Steam, а имена не переводят. Строка вокруг
+        /// него («Игра такого-то») собирается заказчиком — он же знает, есть ли имя вообще: вход через
+        /// оверлей друзей идёт мимо приглашения, и тогда называть некого.
+        /// </remarks>
+        public readonly string Subject;
+
         public BusyRequest(string titleKey, string titleFallback, CancellationToken until,
-                           string detail = null, NoticeOption? cancel = null, bool takesOver = false)
+                           string detail = null, NoticeOption? cancel = null, bool takesOver = false,
+                           string subject = null)
         {
             TitleKey      = titleKey;
             TitleFallback = titleFallback;
@@ -188,6 +199,7 @@ namespace Guildmaster.Core.Flow
             Detail        = detail;
             Cancel        = cancel;
             TakesOver     = takesOver;
+            Subject       = subject;
         }
     }
 

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI.Components
@@ -27,6 +27,7 @@ namespace Guildmaster.UI.Components
     {
         private readonly VisualElement _ring;
         private readonly Label _title;
+        private readonly Label _subject;
         private readonly Label _detail;
 
         /// <summary>Что происходит: «Подключение к игре», «Выход из игры».</summary>
@@ -38,6 +39,26 @@ namespace Guildmaster.UI.Components
             {
                 _title.text = value;
                 _title.style.display = string.IsNullOrEmpty(value) ? DisplayStyle.None : DisplayStyle.Flex;
+            }
+        }
+
+        /// <summary>
+        /// Кого или чего касается ожидание: «Игра Гильберта». Пусто — строки не будет.
+        /// </summary>
+        /// <remarks>
+        /// Отдельно от <see cref="Title"/> и <see cref="Detail"/>, потому что отвечает на третий
+        /// вопрос: заголовок говорит ЧТО идёт, подробность — на каком мы этапе, а эта строка — КУДА
+        /// мы идём. Без неё полноэкранное подключение выглядело пустым: кадр закрыт целиком, а на нём
+        /// нет ни одного признака того, к кому именно мы стучимся (правка Макса 21.08.2026).
+        /// </remarks>
+        [UxmlAttribute]
+        public string Subject
+        {
+            get => _subject.text;
+            set
+            {
+                _subject.text = value;
+                _subject.style.display = string.IsNullOrEmpty(value) ? DisplayStyle.None : DisplayStyle.Flex;
             }
         }
 
@@ -69,6 +90,12 @@ namespace Guildmaster.UI.Components
             _title.AddToClassList("gm-text-body");
             _title.AddToClassList("gm-wait__title");
             column.Add(_title);
+
+            _subject = new Label { name = "wait-subject" };
+            _subject.AddToClassList("gm-text-body");
+            _subject.AddToClassList("gm-wait__subject");
+            _subject.style.display = DisplayStyle.None;
+            column.Add(_subject);
 
             _detail = new Label { name = "wait-detail" };
             _detail.AddToClassList("gm-text-caption");

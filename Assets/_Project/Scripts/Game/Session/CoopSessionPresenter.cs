@@ -44,6 +44,17 @@ namespace Guildmaster.Game.Session
         /// <summary>Подписка на «состояние доехало» — живёт столько же, сколько сам презентер.</summary>
         private IDisposable _partyReadySubscription;
 
+        /// <summary>
+        /// Кто позвал: имя нужно экрану подключения, чтобы сказать, в чью игру мы идём.
+        /// </summary>
+        /// <remarks>
+        /// Держится здесь, а не спрашивается у сеанса: пока идёт подключение, ростер пуст — имён в
+        /// нём взяться неоткуда, мы ещё не поздоровались. Вход через оверлей друзей идёт мимо
+        /// приглашения, и тогда имя остаётся пустым — строку про хозяина в этом случае не пишем
+        /// вовсе, а не подставляем «Напарника»: выдуманное имя хуже отсутствующего.
+        /// </remarks>
+        private string _invitedBy;
+
         public CoopSessionPresenter(ICoopSessionControl coop, ISessionRoster roster,
                                        Core.Flow.IRunControl runControl,
                                        IPublisher<Core.Flow.NoticeRequest> notice,
@@ -104,6 +115,7 @@ namespace Guildmaster.Game.Session
         private void OnInvited(string fromName, ulong fromSteamId)
         {
             string who = string.IsNullOrWhiteSpace(fromName) ? "Напарник" : fromName;
+            _invitedBy = string.IsNullOrWhiteSpace(fromName) ? null : fromName;
 
             _notice?.Publish(new Core.Flow.NoticeRequest(
                 Core.Flow.NoticeKind.Info,
@@ -210,7 +222,8 @@ namespace Guildmaster.Game.Session
                 _busy?.Publish(new Core.Flow.BusyRequest(
                     "ui.coop.connecting", "Подключение к игре", _waiting.Token,
                     "Steam ищет маршрут — это занимает несколько секунд.", cancel,
-                    takesOver: true));
+                    takesOver: true,
+                    subject: string.IsNullOrEmpty(_invitedBy) ? null : $"Игра {_invitedBy}"));
                 return;
             }
 

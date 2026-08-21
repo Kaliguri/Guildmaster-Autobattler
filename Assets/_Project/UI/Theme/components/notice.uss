@@ -188,6 +188,16 @@
 }
 
 .gm-busy--takeover .gm-wait__title,
+.gm-busy--takeover .gm-wait__subject,
 .gm-busy--takeover .gm-wait__detail {
     -unity-text-align: middle-center;
+}
+
+/* Чья игра — латунью: на заслонке это главное слово, ради которого игрок и ждёт. Роль
+   heading-accent, а не value: имя хозяина — не ценность и не действие, а крупная метка экрана. */
+.gm-busy--takeover .gm-wait__subject {
+    color: var(--gm-color-heading-accent);
+    letter-spacing: 1px;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-1);
 }

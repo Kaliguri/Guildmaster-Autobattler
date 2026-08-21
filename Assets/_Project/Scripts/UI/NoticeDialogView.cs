@@ -234,7 +234,12 @@ namespace Guildmaster.UI
             // Кольцо и две строки — контролом, а не голой меткой: одна строка сериф-шрифтом посреди
             // пустой панели не отвечала на вопрос «игра занята или зависла» (правка Макса 20.08.2026:
             // «оч криво и не пойму что это»).
-            note = new Components.WaitNote { Title = text, Detail = request.Detail };
+            note = new Components.WaitNote
+            {
+                Title   = text,
+                Subject = request.Subject,
+                Detail  = request.Detail,
+            };
             root.Add(note);
 
             // Кнопка прерывания — только если заказчику есть что прервать. Ожидание без неё
