@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 424072082}
   - component: {fileID: 424072081}
   - component: {fileID: 424072080}
+  - component: {fileID: 424072083}
   m_Layer: 0
   m_Name: UI Preview Host
   m_TagString: Untagged
@@ -188,6 +189,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &424072083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424072079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b4689da8dd54bdeb5a4a4130f47dfc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.DevTools::Guildmaster.DevTools.UiPreviewBackdrop
+  _style: {fileID: 11400000, guid: 992688b3cce9ba144859796f3920a341, type: 2}
+  _viewHeight: 8
 --- !u!1 &1214740626
 GameObject:
   m_ObjectHideFlags: 0
