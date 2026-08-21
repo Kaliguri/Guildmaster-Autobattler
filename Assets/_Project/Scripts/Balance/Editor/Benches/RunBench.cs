@@ -29,6 +29,10 @@ namespace Guildmaster.Balance.Editor
     /// (<see cref="Lineups.SquadInverted"/>). Разница между первым и вторым — цена квеста; между первым
     /// и третьим — цена ошибки в расстановке. Настраиваются они порознь.</para>
     ///
+    /// <para><b>Отряд собирается из настоящих реликвий, а не манекенов</b> — см.
+    /// <see cref="PickHeroes"/>: эталонный боец не умеет ни лечить, ни кастовать, и отряд из таких
+    /// болванок сравнивает суммы урона вместо ролей.</para>
+    ///
     /// <para><b>Чего бенч НЕ делает.</b> Раны здесь только считаются, но на бой не влияют: их эффектов
     /// в движке пока нет вовсе. То есть отчёт отвечает «сколько ран набежит», а не «каково играть
     /// ранеными» — второй вопрос откроется, когда раны появятся в коде.</para>
@@ -180,7 +184,15 @@ namespace Guildmaster.Balance.Editor
                 : new MapGenConfig().Validated();
 
             var tallies = new Dictionary<string, ModeTally>();
-            foreach (Mode m in Modes) tallies[m.Key] = new ModeTally();
+            var heroesByMode = new Dictionary<string, RelicData[]>();
+            List<RelicData> relics = BalanceAssets.LoadRelics();
+            var thinRoles = new List<string>();
+
+            foreach (Mode m in Modes)
+            {
+                tallies[m.Key] = new ModeTally();
+                heroesByMode[m.Key] = PickHeroes(m.Lineup, relics, thinRoles);
+            }
 
             for (int r = 0; r < Routes; r++)
             {
@@ -190,10 +202,10 @@ namespace Guildmaster.Balance.Editor
 
                 foreach (Mode mode in Modes)
                     WalkRoute(config, classes, enemiesById, pools, cap, mode, route,
-                        tallies[mode.Key], (ulong)r);
+                        tallies[mode.Key], (ulong)r, heroesByMode[mode.Key]);
             }
 
-            return WriteReports(tallies, pools, missing);
+            return WriteReports(tallies, pools, missing, thinRoles, heroesByMode);
         }
 
         // --- Маршрут ---
@@ -233,7 +245,8 @@ namespace Guildmaster.Balance.Editor
         /// <summary>Пройти маршрут одним режимом: бой за боем, копя смерти в листы ран отряда.</summary>
         private static void WalkRoute(StatsConfig config, ClassBalanceConfig classes,
             Dictionary<string, EnemyData> enemiesById, Dictionary<EncounterTier, List<EncounterData>> pools,
-            int cap, Mode mode, List<MapNodeType> route, ModeTally tally, ulong routeSeed)
+            int cap, Mode mode, List<MapNodeType> route, ModeTally tally, ulong routeSeed,
+            IReadOnlyList<RelicData> heroes)
         {
             var sheets = new WoundSheet[mode.Lineup.Length];
             int firstOverflowAt = -1;
@@ -246,7 +259,8 @@ namespace Guildmaster.Balance.Editor
 
                 // Сид боя разный на каждом узле: один сид на весь маршрут дал бы N копий одного боя.
                 ulong seed = SeedBase + routeSeed * 1000UL + (ulong)i;
-                NodeResult res = RunNode(config, classes, enemiesById, encounter, cap, mode.Lineup, seed);
+                NodeResult res = RunNode(config, classes, enemiesById, encounter, cap, mode.Lineup,
+                    heroes, seed);
 
                 tally.Battles++;
                 if (res.Cleared) tally.Cleared++;
@@ -311,14 +325,12 @@ namespace Guildmaster.Balance.Editor
 
         private static NodeResult RunNode(StatsConfig config, ClassBalanceConfig classes,
             Dictionary<string, EnemyData> enemiesById, EncounterData encounter, int cap, Slot[] lineup,
-            ulong seed)
+            IReadOnlyList<RelicData> heroes, ulong seed)
         {
             var env = new SimEnvironment(seed, config);
             var tracked = new List<TrackedUnit>();
 
-            // Отряд без китов: строй заполняется эталонными манекенами по ролям слотов. Так и задумано —
-            // здесь меряется не сила кита, а сложность акта; кит добавил бы третью переменную.
-            Lineups.SpawnTeam(env, classes, tracked, System.Array.Empty<RelicData>(), 0, lineup);
+            Lineups.SpawnTeam(env, classes, tracked, heroes, 0, lineup);
             EncounterSetup.SpawnEnemies(env, tracked, encounter, enemiesById);
 
             BattleReport report = SimBench.Drive(env, tracked, RunMode.UntilOutcome, cap);
@@ -337,6 +349,54 @@ namespace Guildmaster.Balance.Editor
 
             bool cleared = !report.TimedOut && report.Outcome.IsWinFor(0);
             return new NodeResult(cleared, fallen, maxHp > 0.0 ? hpLeft / maxHp : 0.0, report.TimedOut);
+        }
+
+        /// <summary>
+        /// Собрать отряд НАСТОЯЩИХ реликвий под строй — по одной на слот, по совпадению роли.
+        /// </summary>
+        /// <remarks>
+        /// <b>Манекенами здесь мерить нельзя, и это стоило одного ложного вывода.</b> Эталонный боец
+        /// (<c>SyntheticUnits.ReferenceAlly</c>) — чистые статы без единой способности: «поддержка» из
+        /// него не лечит, она просто стоит с низкой нормой DPS. Отряд из таких манекенов сравнивает не
+        /// роли, а суммы урона, и первый прогон 2026-08-21 честно показал, что четыре ближника проходят
+        /// акт «дешевле» штатной четвёрки — вывод, целиком порождённый инструментом.
+        /// <para>Реликвии берутся детерминированно (порядок ассетов), <c>relic.base</c> исключён: он
+        /// заведомо слабейший в ростере и мерил бы не отряд, а свою болванку. Роль без реликвии
+        /// закрывается манекеном по-прежнему — и такие роли перечисляются в отчёте, потому что молчаливый
+        /// манекен в строю снова сделал бы замер ложным.</para>
+        /// </remarks>
+        private static RelicData[] PickHeroes(Slot[] lineup, List<RelicData> relics, List<string> thinRoles)
+        {
+            var picked = new List<RelicData>(lineup.Length);
+            var used = new HashSet<string>();
+
+            for (int s = 0; s < lineup.Length; s++)
+            {
+                RelicData found = null;
+                for (int r = 0; r < relics.Count; r++)
+                {
+                    RelicData relic = relics[r];
+                    if (relic == null || string.IsNullOrEmpty(relic.Id)) continue;
+                    if (relic.Id == ContentIds.BaseRelic) continue;
+                    if (used.Contains(relic.Id)) continue;
+                    if (Lineups.SlotRole(relic.CombatClass) != lineup[s].Role) continue;
+
+                    found = relic;
+                    break;
+                }
+
+                if (found == null)
+                {
+                    string role = lineup[s].Role.ToString();
+                    if (!thinRoles.Contains(role)) thinRoles.Add(role);
+                    continue;
+                }
+
+                picked.Add(found);
+                used.Add(found.Id);
+            }
+
+            return picked.ToArray();
         }
 
         // --- Пулы энкаунтеров ---
@@ -400,7 +460,8 @@ namespace Guildmaster.Balance.Editor
         /// бенч пишет файлы сам, наружу отдаёт, куда написал).
         /// </summary>
         private static (string csv, string md) WriteReports(Dictionary<string, ModeTally> tallies,
-            Dictionary<EncounterTier, List<EncounterData>> pools, List<string> missing)
+            Dictionary<EncounterTier, List<EncounterData>> pools, List<string> missing,
+            List<string> thinRoles, Dictionary<string, RelicData[]> heroesByMode)
         {
             string[] headers =
             {
@@ -427,7 +488,7 @@ namespace Guildmaster.Balance.Editor
                 });
             }
 
-            string notes = Notes(pools, missing);
+            string notes = Notes(pools, missing, thinRoles, heroesByMode);
             string csv = ReportWriter.WriteCsv("run_act", headers, rows);
             string md = ReportWriter.WriteMarkdown("run_act", "Забег по акту: сколько ран стоит проход",
                 headers, rows, notes);
@@ -475,7 +536,8 @@ namespace Guildmaster.Balance.Editor
                 headers, rows, notes);
         }
 
-        private static string Notes(Dictionary<EncounterTier, List<EncounterData>> pools, List<string> missing)
+        private static string Notes(Dictionary<EncounterTier, List<EncounterData>> pools,
+            List<string> missing, List<string> thinRoles, Dictionary<string, RelicData[]> heroesByMode)
         {
             var sb = new StringBuilder();
             sb.AppendLine("**Линза забега, а не боя.** Маршрут генерируется тем же `MapGenerator`, что и в " +
@@ -496,11 +558,33 @@ namespace Guildmaster.Balance.Editor
                           "**Цена ошибки в расстановке** — разница между «Штатным отрядом» и «Кривой " +
                           "расстановкой». Две разные ручки, крутятся порознь.");
             sb.AppendLine();
+            sb.AppendLine("**Кто дерётся.** Каждый слот строя закрыт НАСТОЯЩЕЙ реликвией своей роли " +
+                          "(`relic.base` исключён). Это не мелочь: эталонный манекен способностей не имеет " +
+                          "вовсе — «поддержка» из него не лечит, — и отряд из манекенов сравнивал бы не " +
+                          "роли, а суммы урона.");
+            sb.AppendLine();
+
+            foreach (Mode m in Modes)
+            {
+                RelicData[] hs = heroesByMode[m.Key];
+                var names = new List<string>(hs.Length);
+                for (int i = 0; i < hs.Length; i++) names.Add(hs[i].name);
+                sb.AppendLine($"- **{m.Title}:** {(names.Count > 0 ? string.Join(", ", names) : "—")}");
+            }
+            sb.AppendLine();
+
+            if (thinRoles.Count > 0)
+            {
+                sb.AppendLine($"**Ролей без реликвии: {string.Join(", ", thinRoles)}** — их слоты закрыты " +
+                              "манекенами, и по этим ролям замер занижен.");
+                sb.AppendLine();
+            }
+
             sb.AppendLine("**Слепые пятна.** Раны не влияют на бой — их эффектов в движке нет, так что " +
                           "настоящий акт будет тяжелее замеренного. «?»-узлы считаются небоевыми, а в игре " +
-                          "бой выпадает из них примерно в пятой части случаев. Отряд собран из эталонных " +
-                          "манекенов без реликвий: меряется сложность акта, а не сила китов. Кто именно " +
-                          "лёг, бенч не знает — раны раздаются по кругу, начиная с тех, у кого свободны " +
+                          "бой выпадает из них примерно в пятой части случаев. Состав фиксированный (по " +
+                          "первой реликвии на роль) — это одна точка, а не срез по ростеру. Кто именно " +
+                          "лёг, бенч не знает: раны раздаются по кругу, начиная с тех, у кого свободны " +
                           "мелкие слоты.");
             sb.AppendLine();
 
