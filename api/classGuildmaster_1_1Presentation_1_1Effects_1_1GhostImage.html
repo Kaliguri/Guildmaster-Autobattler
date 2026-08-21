@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Ef
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.Effects.GhostImage:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage__inherit__graph.svg" width="194" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage__inherit__graph.svg" width="194" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.Effects.GhostImage:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage__coll__graph.svg" width="194" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage__coll__graph.svg" width="194" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -126,6 +126,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a9b85ca3e2e55e6a6381e159098656bcc" id="r_a9b85ca3e2e55e6a6381e159098656bcc"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html#a9b85ca3e2e55e6a6381e159098656bcc">Sample</a> (float elapsed, float life, float delay, float startAlpha, float fadePower, float growTo, out float alpha, out float scale)</td></tr>
 <tr class="memdesc:a9b85ca3e2e55e6a6381e159098656bcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Состояние копии на момент <em>elapsed</em> : дожила ли она, её прозрачность и масштаб.  <br /></td></tr>
 <tr class="separator:a9b85ca3e2e55e6a6381e159098656bcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c643091e3b1679414db760e4da27326" id="r_a0c643091e3b1679414db760e4da27326"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html#a0c643091e3b1679414db760e4da27326">PrimeParts</a> (IReadOnlyList&lt; SpriteRenderer &gt; parts, MaterialPropertyBlock mpb, float holo, Color holoColor)</td></tr>
+<tr class="memdesc:a0c643091e3b1679414db760e4da27326"><td class="mdescLeft">&#160;</td><td class="mdescRight">Праймить части копии: записать им property block с силой голограммы.  <br /></td></tr>
+<tr class="separator:a0c643091e3b1679414db760e4da27326"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Призрачная копия тела: поза юнита, замороженная в один момент, которая гаснет на месте. </p>
@@ -252,12 +255,70 @@ Static Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage_a6538419621b63753f8e3fc2651b1df01_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage_a6538419621b63753f8e3fc2651b1df01_cgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage_a6538419621b63753f8e3fc2651b1df01_icgraph.svg" width="459" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a0c643091e3b1679414db760e4da27326" name="a0c643091e3b1679414db760e4da27326"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c643091e3b1679414db760e4da27326">&#9670;&#160;</a></span>PrimeParts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Guildmaster.Presentation.Effects.GhostImage.PrimeParts </td>
+          <td>(</td>
+          <td class="paramtype">IReadOnlyList&lt; SpriteRenderer &gt;&#160;</td>
+          <td class="paramname"><em>parts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">MaterialPropertyBlock&#160;</td>
+          <td class="paramname"><em>mpb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>holo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>holoColor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Праймить части копии: записать им property block с силой голограммы. </p>
+<p>Пишется ОДИН раз при спавне — по жизни копии голограмма не меняется, гаснет прозрачность, а не развоплощение.</p>
+<p><b>Блок пишется ВСЕГДА, даже при нулевой голограмме, и это не расточительство.</b> Наш спрайтовый шейдер (SRP Batcher) подхватывает <code>SpriteRenderer.color</code> только после первой записи per-instance блока — ровно та же причина, по которой у живого тела есть <code><a class="el" href="interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitBodyVisual.html#a782c4bde4441f3a4a2a3d0f39ecc2eac" title="Праймить per-instance путь: спрайт с нашим SRP-batcher-шейдером подхватывает color/flip только после ...">IUnitBodyVisual.Prime</a></code>. Без прайма копия рисуется БЕЛОЙ и не гаснет: ни цвет юнита, ни падающая прозрачность до неё не доезжают (поймано раскадровкой 21.08.2026 — на стенде стояла стена белых силуэтов, одинаковых во всех двадцати четырёх кадрах). </p>
+<p>Метод статический и публичный, потому что копии рисует не только бой: стенд Post FX Lab расставляет их сам, и свой прайм там разошёлся бы с этим молча.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage_a0c643091e3b1679414db760e4da27326_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

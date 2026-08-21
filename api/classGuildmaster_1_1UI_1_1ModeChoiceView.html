@@ -115,24 +115,25 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a9d70aa1c8959f186bd664c685d94b54d" id="r_a9d70aa1c8959f186bd664c685d94b54d"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1ModeChoiceView.html#a9d70aa1c8959f186bd664c685d94b54d">Build</a> (string name, string title, string hint, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1ModeChoiceView_1_1Card.html">Card</a> &gt; cards, string backText, Action onBack, VisualElement footerExtra=null)</td></tr>
-<tr class="memdesc:a9d70aa1c8959f186bd664c685d94b54d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
+<tr class="memitem:af3651ad978d4e8797f83fe81cd3b128a" id="r_af3651ad978d4e8797f83fe81cd3b128a"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1ModeChoiceView.html#af3651ad978d4e8797f83fe81cd3b128a">Build</a> (string name, string title, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1ModeChoiceView_1_1Card.html">Card</a> &gt; cards, string backText, Action onBack, VisualElement footerExtra=null)</td></tr>
+<tr class="memdesc:af3651ad978d4e8797f83fe81cd3b128a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">footerExtra</td><td>Необязательный довесок футера слева от «Назад» — то, что относится ко всему экрану, а не к отдельной двери (галочка лобби у «Создать игру»). </td></tr>
   </table>
   </dd>
 </dl>
  <br /></td></tr>
-<tr class="separator:a9d70aa1c8959f186bd664c685d94b54d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:af3651ad978d4e8797f83fe81cd3b128a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Экран-развилка: несколько крупных дверей в ряд, у каждой знак, заголовок и описание. </p>
 <p><b>Один вид на все развилки.</b> Приём взят с Heroes Olden Era (реф <code>Heroes Olden Era Mode Choice.png</code>) и живёт здесь в единственном экземпляре: на нём стоят и «Профиль» (ProfileHubView), и «Создать игру» (NewGameScreenView). Скопировать карточки во второй экран значило бы завести им второго владельца — разошлись бы они на первой же правке отступов.</p>
 <p><b>Панели у экрана нет</b> — карточки лежат прямо на затемнённом кадре, как у рефа. Рамка вокруг них отняла бы половину кадра, и крупные двери превратились бы в марки; доли карточек считались бы от панели, а не от экрана.</p>
+<p><b>Подсказки «нажмите, чтобы выбрать» здесь нет</b> (снята по слову Макса 21.08.2026: «мы игроков за дурочков не держим»). Ряд крупных дверей и так читается как выбор — подпись объясняла бы жест, который экран показывает собой.</p>
 <p><b>Карточка — это кнопка</b> (Components.PlateButton): фаска, состояния наведения и фокус клавиатуры приходят от контрола, а не пишутся заново.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9d70aa1c8959f186bd664c685d94b54d" name="a9d70aa1c8959f186bd664c685d94b54d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d70aa1c8959f186bd664c685d94b54d">&#9670;&#160;</a></span>Build()</h2>
+<a id="af3651ad978d4e8797f83fe81cd3b128a" name="af3651ad978d4e8797f83fe81cd3b128a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3651ad978d4e8797f83fe81cd3b128a">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -151,12 +152,6 @@ Static Public Member Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>title</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>hint</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -206,7 +201,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1ModeChoiceView_a9d70aa1c8959f186bd664c685d94b54d_icgraph.svg" width="496" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1ModeChoiceView_af3651ad978d4e8797f83fe81cd3b128a_icgraph.svg" width="496" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

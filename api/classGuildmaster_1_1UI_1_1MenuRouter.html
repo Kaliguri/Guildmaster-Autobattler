@@ -172,6 +172,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3462b80761f33c45ab5679982dc80f23" id="r_a3462b80761f33c45ab5679982dc80f23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a3462b80761f33c45ab5679982dc80f23">ShowBusy</a> (in <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html">Core.Flow.BusyRequest</a> request)</td></tr>
 <tr class="memdesc:a3462b80761f33c45ab5679982dc80f23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать ожидание, пока живёт токен заказчика.  <br /></td></tr>
 <tr class="separator:a3462b80761f33c45ab5679982dc80f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a358985900302fd28345c00673db1cdf9" id="r_a358985900302fd28345c00673db1cdf9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a358985900302fd28345c00673db1cdf9">SetBusyStage</a> (in <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyStageChanged.html">Core.Flow.BusyStageChanged</a> stage)</td></tr>
+<tr class="memdesc:a358985900302fd28345c00673db1cdf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ожидание продвинулось: сменить строку этапа, не пересобирая экран.  <br /></td></tr>
+<tr class="separator:a358985900302fd28345c00673db1cdf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5215490de9920cc0e64a1ee9236c6680" id="r_a5215490de9920cc0e64a1ee9236c6680"><td class="memItemLeft" align="right" valign="top">UniTask&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#a5215490de9920cc0e64a1ee9236c6680">ConfirmAsync</a> (string title, string body, string consequence, string confirmText)</td></tr>
 <tr class="memdesc:a5215490de9920cc0e64a1ee9236c6680"><td class="mdescLeft">&#160;</td><td class="mdescRight">Спросить подтверждение необратимого действия.  <br /></td></tr>
 <tr class="separator:a5215490de9920cc0e64a1ee9236c6680"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -985,6 +988,35 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a358985900302fd28345c00673db1cdf9" name="a358985900302fd28345c00673db1cdf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a358985900302fd28345c00673db1cdf9">&#9670;&#160;</a></span>SetBusyStage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.MenuRouter.SetBusyStage </td>
+          <td>(</td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyStageChanged.html">Core::Flow::BusyStageChanged</a>&#160;</td>
+          <td class="paramname"><em>stage</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Ожидание продвинулось: сменить строку этапа, не пересобирая экран. </p>
+<p>Ожидания нет на экране — сообщение молча тонет, и это верно: этап относится к показанному ожиданию, а показывать его самому по себе негде. Кричать в лог тут было бы шумом на ровном месте — гонка «этап пришёл на кадр раньше снятия экрана» законна и ничего не ломает. </p>
+
+</div>
+</div>
 <a id="a3462b80761f33c45ab5679982dc80f23" name="a3462b80761f33c45ab5679982dc80f23"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3462b80761f33c45ab5679982dc80f23">&#9670;&#160;</a></span>ShowBusy()</h2>
 
@@ -1011,11 +1043,6 @@ Here is the call graph for this function:</div>
 
 <p>Показать ожидание, пока живёт токен заказчика. </p>
 <p><b>Снимает экран отмена, а не игрок.</b> Кнопки «закрыть» у ожидания нет: закрытое окно означало бы, что ждать перестали, — а ждать не перестали. Уже отменённый токен не показывает ничего: ожидание кончилось раньше, чем успело начаться, и мигать им незачем. </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MenuRouter_a3462b80761f33c45ab5679982dc80f23_cgraph.svg" width="471" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

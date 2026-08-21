@@ -104,13 +104,13 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Core_1_1Flow_1_1B
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Flow.BusyRequest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest__coll__graph.svg" width="218" height="462"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest__coll__graph.svg" width="218" height="502"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4117d127f6277080c1a26633b89a7bd7" id="r_a4117d127f6277080c1a26633b89a7bd7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#a4117d127f6277080c1a26633b89a7bd7">BusyRequest</a> (string titleKey, string titleFallback, CancellationToken until, string detail=null, <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html">NoticeOption</a>? cancel=null)</td></tr>
-<tr class="separator:a4117d127f6277080c1a26633b89a7bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad265f2678fc871c938e25d3003514670" id="r_ad265f2678fc871c938e25d3003514670"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#ad265f2678fc871c938e25d3003514670">BusyRequest</a> (string titleKey, string titleFallback, CancellationToken until, string detail=null, <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html">NoticeOption</a>? cancel=null, bool takesOver=false, string subject=null)</td></tr>
+<tr class="separator:ad265f2678fc871c938e25d3003514670"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -129,14 +129,20 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:abccb9ce02f63b9c59a02b798eec09486" id="r_abccb9ce02f63b9c59a02b798eec09486"><td class="memItemLeft" align="right" valign="top">readonly? <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html">NoticeOption</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#abccb9ce02f63b9c59a02b798eec09486">Cancel</a></td></tr>
 <tr class="memdesc:abccb9ce02f63b9c59a02b798eec09486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Чем игрок может прервать ожидание.  <br /></td></tr>
 <tr class="separator:abccb9ce02f63b9c59a02b798eec09486"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88f6b8d95302de5aa456758886a1cba5" id="r_a88f6b8d95302de5aa456758886a1cba5"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#a88f6b8d95302de5aa456758886a1cba5">TakesOver</a></td></tr>
+<tr class="memdesc:a88f6b8d95302de5aa456758886a1cba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ожидание забирает экран целиком: заслонка на весь кадр вместо окна посередине.  <br /></td></tr>
+<tr class="separator:a88f6b8d95302de5aa456758886a1cba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c90ce3cf78e0c8513c00a288d9c3a4d" id="r_a4c90ce3cf78e0c8513c00a288d9c3a4d"><td class="memItemLeft" align="right" valign="top">readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#a4c90ce3cf78e0c8513c00a288d9c3a4d">Subject</a></td></tr>
+<tr class="memdesc:a4c90ce3cf78e0c8513c00a288d9c3a4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кого или чего касается ожидание: «Игра Гильберта».  <br /></td></tr>
+<tr class="separator:a4c90ce3cf78e0c8513c00a288d9c3a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Игра занята — показать это, пока идёт ожидание. </p>
 <p><b>Ожидание без экрана неотличимо от зависания.</b> Подключение к чужому лобби идёт через relay Valve и занимает секунды, в течение которых не происходило ничего видимого — игрок жал кнопку повторно, не зная, засчиталось ли первое нажатие (наход. Макса 08.08.2026: «Не хватает UI загрузки»). </p>
 <p><b>Сроком владеет тот, кто ждёт,</b> а не экран: показ снимается отменой Until. Своей кнопки «закрыть» у него нет намеренно — закрытое окно ожидания означало бы, что ждать перестали, а ждать не перестали.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a4117d127f6277080c1a26633b89a7bd7" name="a4117d127f6277080c1a26633b89a7bd7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4117d127f6277080c1a26633b89a7bd7">&#9670;&#160;</a></span>BusyRequest()</h2>
+<a id="ad265f2678fc871c938e25d3003514670" name="ad265f2678fc871c938e25d3003514670"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad265f2678fc871c938e25d3003514670">&#9670;&#160;</a></span>BusyRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -172,7 +178,19 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html">NoticeOption</a>?&#160;</td>
-          <td class="paramname"><em>cancel</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>cancel</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>takesOver</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>subject</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -224,6 +242,42 @@ Public Attributes</h2></td></tr>
 <p>Подробность строкой ниже: ЧЕГО именно ждём. </p>
 <p>Пусто — строки не будет.</p>
 <p>Отдельно от TitleFallback по той же причине, что последствие отдельно от тела у сообщения: заголовок отвечает «что идёт», подробность — «почему это не мгновенно». Слитые в одну строку, они дают то, из-за чего экран и переделывали: фразу, по которой непонятно, ждёт игра чего-то или зависла. </p>
+
+</div>
+</div>
+<a id="a4c90ce3cf78e0c8513c00a288d9c3a4d" name="a4c90ce3cf78e0c8513c00a288d9c3a4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c90ce3cf78e0c8513c00a288d9c3a4d">&#9670;&#160;</a></span>Subject</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly string Guildmaster.Core.Flow.BusyRequest.Subject</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Кого или чего касается ожидание: «Игра Гильберта». </p>
+<p>Пусто — строки не будет.</p>
+<p>НЕ локализуется: сюда приходит имя человека из Steam, а имена не переводят. Строка вокруг него («Игра такого-то») собирается заказчиком — он же знает, есть ли имя вообще: вход через оверлей друзей идёт мимо приглашения, и тогда называть некого. </p>
+
+</div>
+</div>
+<a id="a88f6b8d95302de5aa456758886a1cba5" name="a88f6b8d95302de5aa456758886a1cba5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88f6b8d95302de5aa456758886a1cba5">&#9670;&#160;</a></span>TakesOver</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly bool Guildmaster.Core.Flow.BusyRequest.TakesOver</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ожидание забирает экран целиком: заслонка на весь кадр вместо окна посередине. </p>
+<p><b>Делит ожидания не длительность, а то, МОЖЕТ ЛИ игрок продолжать жить</b> (решение Макса 21.08.2026). Фоновое ожидание («хозяин ещё собирается») управления не отбирает и живёт лентой в углу. Ожидание, за которым следует смена всего — подключение к чужой игре, — по существу отбирает его само: через несколько секунд эта игра кончится и начнётся чужая, и делать в это время нечего. </p>
+<p>Маленькая модалка посередине признана худшей из трёх: кадр загораживает, а фокуса не даёт. У полноэкранного есть и то, чего нет у остальных, — место сказать, на каком мы этапе, вместо одной строки, по которой не понять, движется ли что-то.</p>
 
 </div>
 </div>

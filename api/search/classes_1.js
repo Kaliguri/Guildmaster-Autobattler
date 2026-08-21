@@ -39,5 +39,6 @@ var searchData=
   ['bonecollectorcomponent_36',['BoneCollectorComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BoneCollectorComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
   ['brainsystem_37',['BrainSystem',['../classGuildmaster_1_1Combat_1_1BrainSystem.html',1,'Guildmaster::Combat']]],
   ['busyoverlayview_38',['BusyOverlayView',['../classGuildmaster_1_1UI_1_1BusyOverlayView.html',1,'Guildmaster::UI']]],
-  ['busyrequest_39',['BusyRequest',['../structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html',1,'Guildmaster::Core::Flow']]]
+  ['busyrequest_39',['BusyRequest',['../structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html',1,'Guildmaster::Core::Flow']]],
+  ['busystagechanged_40',['BusyStageChanged',['../structGuildmaster_1_1Core_1_1Flow_1_1BusyStageChanged.html',1,'Guildmaster::Core::Flow']]]
 ];

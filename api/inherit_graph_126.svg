@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Core_1_1Flow_1_1ScreenTransitionShape.html" target="_top" xlink:title="Форма одного «моргания»: сколько закрываемся, сколько держим закрытый кадр, сколько открываемся,...">
+<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Core_1_1Flow_1_1ScreenFadeChangedEvent.html" target="_top" xlink:title="Шторка перехода: насколько кадр закрыт (0 — открыт, 1 — закрыт наглухо).">
 <polygon fill="white" stroke="#666666" points="163,-30 0,-30 0,0 163,0 163,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Core.Flow.Screen</text>
-<text text-anchor="middle" x="81.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">TransitionShape</text>
+<text text-anchor="middle" x="81.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">FadeChangedEvent</text>
 </a>
 </g>
 </g>

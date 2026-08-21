@@ -1,9 +1,11 @@
 <map id="Guildmaster.Presentation.Effects.CombatGhosts.Leave" name="Guildmaster.Presentation.Effects.CombatGhosts.Leave">
-<area shape="rect" id="Node000001" title="Оставить копию тела." alt="" coords="5,5,215,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html#a6538419621b63753f8e3fc2651b1df01" title="Оставить копию тела в точке feet &#160;(мировые координаты ног)." alt="" coords="263,5,453,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="215,23,249,23,249,28,215,28"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1SilhouetteDraw.html#a6be574eda10002ef6d4f36c7d3bcddda" title="Разложить силуэт по рендерерам parts , дополняя список фабрикой make &#160;и гася лишние." alt="" coords="501,5,692,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="454,23,487,23,487,28,454,28"/>
-<area shape="rect" id="Node000004" href="$structGuildmaster_1_1Presentation_1_1SilhouettePart.html#a8bcd04508e8bfa1badb6066d7be54212" title="Разложить позу в трансформ (позиция / поворот вокруг Z / масштаб со знаком)." alt="" coords="740,5,935,45"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="692,23,726,23,726,28,692,28"/>
+<area shape="rect" id="Node000001" title="Оставить копию тела." alt="" coords="5,37,215,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html#a6538419621b63753f8e3fc2651b1df01" title="Оставить копию тела в точке feet &#160;(мировые координаты ног)." alt="" coords="263,37,453,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="215,55,249,55,249,60,215,60"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1SilhouetteDraw.html#a6be574eda10002ef6d4f36c7d3bcddda" title="Разложить силуэт по рендерерам parts , дополняя список фабрикой make &#160;и гася лишние." alt="" coords="517,5,708,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="453,43,504,36,504,42,454,48"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html#a0c643091e3b1679414db760e4da27326" title="Праймить части копии: записать им property block с силой голограммы." alt="" coords="501,69,724,109"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="454,67,488,71,487,76,453,72"/>
+<area shape="rect" id="Node000004" href="$structGuildmaster_1_1Presentation_1_1SilhouettePart.html#a8bcd04508e8bfa1badb6066d7be54212" title="Разложить позу в трансформ (позиция / поворот вокруг Z / масштаб со знаком)." alt="" coords="772,5,967,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="708,23,758,23,758,28,708,28"/>
 </map>

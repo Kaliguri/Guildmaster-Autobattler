@@ -31,7 +31,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1DevTools_1_1UiDevCommands.html#a4cdc52706befbe2b7594e2987c088872" target="_top" xlink:title="Поднять экран ожидания. Повторный вызов снимает его досрочно.">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1DevTools_1_1UiDevCommands.html#a53f760c0a46ed4a99bb1a58d1c0f7d97" target="_top" xlink:title="Поднять экран ожидания.">
 <polygon fill="white" stroke="#666666" points="348,-126 192,-126 192,-96 348,-96 348,-126"/>
 <text text-anchor="start" x="200" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.UiDev</text>
 <text text-anchor="middle" x="270" y="-103" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.Busy</text>

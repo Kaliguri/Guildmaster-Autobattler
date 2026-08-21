@@ -47,6 +47,7 @@ var hierarchy =
     [ "Guildmaster.Combat.BrainSystem", "classGuildmaster_1_1Combat_1_1BrainSystem.html", null ],
     [ "Guildmaster.UI.BusyOverlayView", "classGuildmaster_1_1UI_1_1BusyOverlayView.html", null ],
     [ "Guildmaster.Core.Flow.BusyRequest", "structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html", null ],
+    [ "Guildmaster.Core.Flow.BusyStageChanged", "structGuildmaster_1_1Core_1_1Flow_1_1BusyStageChanged.html", null ],
     [ "Button", null, [
       [ "Guildmaster.UI.Components.PlateButton", "classGuildmaster_1_1UI_1_1Components_1_1PlateButton.html", null ]
     ] ],

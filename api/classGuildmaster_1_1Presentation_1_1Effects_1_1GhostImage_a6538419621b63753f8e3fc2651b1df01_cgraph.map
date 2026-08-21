@@ -1,7 +1,9 @@
 <map id="Guildmaster.Presentation.Effects.GhostImage.Play" name="Guildmaster.Presentation.Effects.GhostImage.Play">
-<area shape="rect" id="Node000001" title="Оставить копию тела в точке feet &#160;(мировые координаты ног)." alt="" coords="5,5,196,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1SilhouetteDraw.html#a6be574eda10002ef6d4f36c7d3bcddda" title="Разложить силуэт по рендерерам parts , дополняя список фабрикой make &#160;и гася лишние." alt="" coords="244,5,435,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
-<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Presentation_1_1SilhouettePart.html#a8bcd04508e8bfa1badb6066d7be54212" title="Разложить позу в трансформ (позиция / поворот вокруг Z / масштаб со знаком)." alt="" coords="483,5,677,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="435,23,469,23,469,28,435,28"/>
+<area shape="rect" id="Node000001" title="Оставить копию тела в точке feet &#160;(мировые координаты ног)." alt="" coords="5,37,196,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1SilhouetteDraw.html#a6be574eda10002ef6d4f36c7d3bcddda" title="Разложить силуэт по рендерерам parts , дополняя список фабрикой make &#160;и гася лишние." alt="" coords="260,5,451,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,43,246,36,247,42,197,48"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Presentation_1_1Effects_1_1GhostImage.html#a0c643091e3b1679414db760e4da27326" title="Праймить части копии: записать им property block с силой голограммы." alt="" coords="244,69,467,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="197,67,231,71,230,76,196,72"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Presentation_1_1SilhouettePart.html#a8bcd04508e8bfa1badb6066d7be54212" title="Разложить позу в трансформ (позиция / поворот вокруг Z / масштаб со знаком)." alt="" coords="515,5,709,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="451,23,501,23,501,28,451,28"/>
 </map>

@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1Components_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.UI.Components.WaitNote:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1WaitNote__inherit__graph.svg" width="212" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1WaitNote__inherit__graph.svg" width="212" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.Components.WaitNote:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1WaitNote__coll__graph.svg" width="212" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1WaitNote__coll__graph.svg" width="212" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -129,6 +129,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a4a434d98a2ffc08f3baa933897a714df" id="r_a4a434d98a2ffc08f3baa933897a714df"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1WaitNote.html#a4a434d98a2ffc08f3baa933897a714df">Title</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a4a434d98a2ffc08f3baa933897a714df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что происходит: «Подключение к игре», «Выход из игры».  <br /></td></tr>
 <tr class="separator:a4a434d98a2ffc08f3baa933897a714df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64b5f92584bfe347b409be4db44ce74c" id="r_a64b5f92584bfe347b409be4db44ce74c"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1WaitNote.html#a64b5f92584bfe347b409be4db44ce74c">Subject</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a64b5f92584bfe347b409be4db44ce74c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кого или чего касается ожидание: «Игра Гильберта».  <br /></td></tr>
+<tr class="separator:a64b5f92584bfe347b409be4db44ce74c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45e8f9b76a7df559f9f031f9052c9258" id="r_a45e8f9b76a7df559f9f031f9052c9258"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1WaitNote.html#a45e8f9b76a7df559f9f031f9052c9258">Detail</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a45e8f9b76a7df559f9f031f9052c9258"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подробность строкой ниже: чего именно ждём. Пусто — строки не будет.  <br /></td></tr>
 <tr class="separator:a45e8f9b76a7df559f9f031f9052c9258"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -226,6 +229,32 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Подробность строкой ниже: чего именно ждём. Пусто — строки не будет. </p>
+
+</div>
+</div>
+<a id="a64b5f92584bfe347b409be4db44ce74c" name="a64b5f92584bfe347b409be4db44ce74c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64b5f92584bfe347b409be4db44ce74c">&#9670;&#160;</a></span>Subject</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Guildmaster.UI.Components.WaitNote.Subject</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Кого или чего касается ожидание: «Игра Гильберта». </p>
+<p>Пусто — строки не будет.</p>
+<p>Отдельно от Title и Detail, потому что отвечает на третий вопрос: заголовок говорит ЧТО идёт, подробность — на каком мы этапе, а эта строка — КУДА мы идём. Без неё полноэкранное подключение выглядело пустым: кадр закрыт целиком, а на нём нет ни одного признака того, к кому именно мы стучимся (правка Макса 21.08.2026). </p>
 
 </div>
 </div>

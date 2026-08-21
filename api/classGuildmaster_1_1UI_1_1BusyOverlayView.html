@@ -108,15 +108,17 @@ Collaboration diagram for Guildmaster.UI.BusyOverlayView:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af6db93c9adf02f6de021d7a0549b2e79" id="r_af6db93c9adf02f6de021d7a0549b2e79"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1BusyOverlayView.html#af6db93c9adf02f6de021d7a0549b2e79">Build</a> (in <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html">BusyRequest</a> request, Func&lt; string, string &gt; localize)</td></tr>
-<tr class="separator:af6db93c9adf02f6de021d7a0549b2e79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a613e13ddb111d33a7ee3294a6d39c6d1" id="r_a613e13ddb111d33a7ee3294a6d39c6d1"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1BusyOverlayView.html#a613e13ddb111d33a7ee3294a6d39c6d1">Build</a> (in <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html">BusyRequest</a> request, Func&lt; string, string &gt; localize, out <a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1WaitNote.html">Components.WaitNote</a> note)</td></tr>
+<tr class="memdesc:a613e13ddb111d33a7ee3294a6d39c6d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строка этапа у показанного ожидания — её меняет Core.Flow.BusyStageChanged.  <br /></td></tr>
+<tr class="separator:a613e13ddb111d33a7ee3294a6d39c6d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Экран ожидания: игра занята, и это видно. </p>
-<p>Кнопки нет намеренно — снимается он отменой того, кто ждёт (см. <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#ac51dfeb57bf7f43a59a1fd11e043533f" title="Ожидание кончилось: экран снимается отменой этого токена.">BusyRequest.Until</a>). Собирается кодом по той же причине, что и NoticeDialogView: временный вид. </p>
+<p>Кнопки нет намеренно — снимается он отменой того, кто ждёт (см. <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#ac51dfeb57bf7f43a59a1fd11e043533f" title="Ожидание кончилось: экран снимается отменой этого токена.">BusyRequest.Until</a>); исключение — <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#abccb9ce02f63b9c59a02b798eec09486" title="Чем игрок может прервать ожидание.">BusyRequest.Cancel</a> там, где ждать можно долго и по чужой вине. Собирается кодом по той же причине, что и NoticeDialogView: временный вид.</p>
+<p><b>Два облика, одно устройство.</b> Обычное ожидание — окно посередине поверх затемнения. Ожидание с <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#a88f6b8d95302de5aa456758886a1cba5" title="Ожидание забирает экран целиком: заслонка на весь кадр вместо окна посередине.">BusyRequest.TakesOver</a> — заслонка на весь кадр: та же пара «кольцо и две строки», та же кнопка, но без панели и без видимого за ней экрана. Второго вида здесь не заведено намеренно — разошлись бы на первой правке, как это уже было с диалогами.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="af6db93c9adf02f6de021d7a0549b2e79" name="af6db93c9adf02f6de021d7a0549b2e79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6db93c9adf02f6de021d7a0549b2e79">&#9670;&#160;</a></span>Build()</h2>
+<a id="a613e13ddb111d33a7ee3294a6d39c6d1" name="a613e13ddb111d33a7ee3294a6d39c6d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a613e13ddb111d33a7ee3294a6d39c6d1">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -134,7 +136,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Func&lt; string, string &gt;&#160;</td>
-          <td class="paramname"><em>localize</em>&#160;</td>
+          <td class="paramname"><em>localize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out <a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1WaitNote.html">Components::WaitNote</a>&#160;</td>
+          <td class="paramname"><em>note</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -148,11 +156,9 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1BusyOverlayView_af6db93c9adf02f6de021d7a0549b2e79_icgraph.svg" width="471" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+
+<p>Строка этапа у показанного ожидания — её меняет Core.Flow.BusyStageChanged. </p>
+<p>Возвращается наружу, потому что заказчику нужно менять ИМЕННО эту строку, а не пересобирать экран: повторная сборка сбросила бы кольцо в начало, и продвижение читалось бы как мигание. </p>
 
 </div>
 </div>

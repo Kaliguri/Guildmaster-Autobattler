@@ -102,27 +102,29 @@ var sectionId = 'dynsection-0';
 <g id="Node000004" class="node">
 <title>Node4</title>
 <g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html" target="_top" xlink:title="Готовый бой (план шаг 3): вражеская сторона (EncounterData) + player&#45;ростер (PlayerSlot[]) + режим ра...">
-<polygon fill="white" stroke="transparent" points="328,-366 173,-366 173,-231 328,-231 328,-366"/>
-<text text-anchor="start" x="178.5" y="-353.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="start" x="209" y="-342.5" font-family="Helvetica,sans-Serif" font-size="10.00">BattlePresetData</text>
-<text text-anchor="start" x="189" y="-327.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-327.5" font-family="Helvetica,sans-Serif" font-size="10.00">Encounter</text>
-<text text-anchor="start" x="189" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00">Roster</text>
-<text text-anchor="start" x="189" y="-297.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-297.5" font-family="Helvetica,sans-Serif" font-size="10.00">DeploymentMode</text>
-<text text-anchor="start" x="189" y="-282.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-282.5" font-family="Helvetica,sans-Serif" font-size="10.00">PartyItems</text>
-<text text-anchor="start" x="189" y="-267.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-267.5" font-family="Helvetica,sans-Serif" font-size="10.00">IsCarrier</text>
-<text text-anchor="start" x="189" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">Tier</text>
-<text text-anchor="start" x="189" y="-237.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="213.5" y="-237.5" font-family="Helvetica,sans-Serif" font-size="10.00">CreateRuntime()</text>
-<polygon fill="#666666" stroke="#666666" points="173.5,-337.5 173.5,-337.5 328.5,-337.5 328.5,-337.5 173.5,-337.5"/>
-<polygon fill="#666666" stroke="#666666" points="173.5,-247.5 173.5,-247.5 211.5,-247.5 211.5,-247.5 173.5,-247.5"/>
-<polygon fill="#666666" stroke="#666666" points="211.5,-247.5 211.5,-247.5 328.5,-247.5 328.5,-247.5 211.5,-247.5"/>
-<polygon fill="none" stroke="#666666" points="173,-231 173,-366 328,-366 328,-231 173,-231"/>
+<polygon fill="white" stroke="transparent" points="328,-373.5 173,-373.5 173,-223.5 328,-223.5 328,-373.5"/>
+<text text-anchor="start" x="178.5" y="-361.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
+<text text-anchor="start" x="209" y="-350.5" font-family="Helvetica,sans-Serif" font-size="10.00">BattlePresetData</text>
+<text text-anchor="start" x="189" y="-335.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-335.5" font-family="Helvetica,sans-Serif" font-size="10.00">Encounter</text>
+<text text-anchor="start" x="189" y="-320.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-320.5" font-family="Helvetica,sans-Serif" font-size="10.00">Roster</text>
+<text text-anchor="start" x="189" y="-305.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-305.5" font-family="Helvetica,sans-Serif" font-size="10.00">DeploymentMode</text>
+<text text-anchor="start" x="189" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">PartyItems</text>
+<text text-anchor="start" x="189" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">IsCarrier</text>
+<text text-anchor="start" x="189" y="-260.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-260.5" font-family="Helvetica,sans-Serif" font-size="10.00">Tier</text>
+<text text-anchor="start" x="189" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">FitsFloor()</text>
+<text text-anchor="start" x="189" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="213.5" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">CreateRuntime()</text>
+<polygon fill="#666666" stroke="#666666" points="173.5,-345.5 173.5,-345.5 328.5,-345.5 328.5,-345.5 173.5,-345.5"/>
+<polygon fill="#666666" stroke="#666666" points="173.5,-255.5 173.5,-255.5 211.5,-255.5 211.5,-255.5 173.5,-255.5"/>
+<polygon fill="#666666" stroke="#666666" points="211.5,-255.5 211.5,-255.5 328.5,-255.5 328.5,-255.5 211.5,-255.5"/>
+<polygon fill="none" stroke="#666666" points="173,-223.5 173,-373.5 328,-373.5 328,-223.5 173,-223.5"/>
 </a>
 </g>
 </g>
@@ -130,7 +132,7 @@ var sectionId = 'dynsection-0';
 <g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
 <g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1459.42,-490.75C1197.14,-489.39 433.48,-480.72 336.5,-426 312.56,-412.49 293.92,-389.23 280.21,-366.31"/>
+<path fill="none" stroke="#63b8ff" d="M1459.42,-490.75C1197.14,-489.39 433.48,-480.72 336.5,-426 315.11,-413.93 297.94,-394.07 284.75,-373.62"/>
 <polygon fill="none" stroke="#63b8ff" points="1459.64,-494.25 1469.66,-490.8 1459.67,-487.25 1459.64,-494.25"/>
 </a>
 </g>
@@ -266,20 +268,25 @@ var sectionId = 'dynsection-0';
 <g id="Node000008" class="node">
 <title>Node8</title>
 <g id="a_Node000008"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData.html" target="_top" xlink:title="Состав боя (вражеская сторона): кто и где стоит из врагов (вики «13» §3.3, «10» §3).">
-<polygon fill="white" stroke="transparent" points="1020,-343.5 865,-343.5 865,-253.5 1020,-253.5 1020,-343.5"/>
-<text text-anchor="start" x="870.5" y="-331.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="start" x="906.5" y="-320.5" font-family="Helvetica,sans-Serif" font-size="10.00">EncounterData</text>
-<text text-anchor="start" x="893.5" y="-305.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="930.5" y="-305.5" font-family="Helvetica,sans-Serif" font-size="10.00">Tier</text>
-<text text-anchor="start" x="893.5" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="930.5" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">Units</text>
-<text text-anchor="start" x="893.5" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="930.5" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">ArenaId</text>
-<text text-anchor="start" x="941" y="-260.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<polygon fill="#666666" stroke="#666666" points="865.5,-315.5 865.5,-315.5 1020.5,-315.5 1020.5,-315.5 865.5,-315.5"/>
-<polygon fill="#666666" stroke="#666666" points="865.5,-270.5 865.5,-270.5 928.5,-270.5 928.5,-270.5 865.5,-270.5"/>
-<polygon fill="#666666" stroke="#666666" points="928.5,-270.5 928.5,-270.5 1020.5,-270.5 1020.5,-270.5 928.5,-270.5"/>
-<polygon fill="none" stroke="#666666" points="865,-253.5 865,-343.5 1020,-343.5 1020,-253.5 865,-253.5"/>
+<polygon fill="white" stroke="transparent" points="1020,-358.5 865,-358.5 865,-238.5 1020,-238.5 1020,-358.5"/>
+<text text-anchor="start" x="870.5" y="-346.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
+<text text-anchor="start" x="906.5" y="-335.5" font-family="Helvetica,sans-Serif" font-size="10.00">EncounterData</text>
+<text text-anchor="start" x="890.5" y="-320.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="924.5" y="-320.5" font-family="Helvetica,sans-Serif" font-size="10.00">Tier</text>
+<text text-anchor="start" x="890.5" y="-305.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="924.5" y="-305.5" font-family="Helvetica,sans-Serif" font-size="10.00">Units</text>
+<text text-anchor="start" x="890.5" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="924.5" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">ArenaId</text>
+<text text-anchor="start" x="890.5" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="924.5" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">MinFloor</text>
+<text text-anchor="start" x="890.5" y="-260.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="924.5" y="-260.5" font-family="Helvetica,sans-Serif" font-size="10.00">MaxFloor</text>
+<text text-anchor="start" x="890.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="924.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">FitsFloor()</text>
+<polygon fill="#666666" stroke="#666666" points="865.5,-330.5 865.5,-330.5 1020.5,-330.5 1020.5,-330.5 865.5,-330.5"/>
+<polygon fill="#666666" stroke="#666666" points="865.5,-255.5 865.5,-255.5 922.5,-255.5 922.5,-255.5 865.5,-255.5"/>
+<polygon fill="#666666" stroke="#666666" points="922.5,-255.5 922.5,-255.5 1020.5,-255.5 1020.5,-255.5 922.5,-255.5"/>
+<polygon fill="none" stroke="#666666" points="865,-238.5 865,-358.5 1020,-358.5 1020,-238.5 865,-238.5"/>
 </a>
 </g>
 </g>
@@ -287,7 +294,7 @@ var sectionId = 'dynsection-0';
 <g id="edge7_Node000001_Node000008" class="edge">
 <title>Node1&#45;&gt;Node8</title>
 <g id="a_edge7_Node000001_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1459.77,-488.64C1331.12,-483.76 1098.92,-469.09 1028.5,-426 997.47,-407.01 975.02,-372.12 960.86,-343.78"/>
+<path fill="none" stroke="#63b8ff" d="M1459.77,-488.64C1331.12,-483.76 1098.92,-469.09 1028.5,-426 1002.79,-410.27 982.97,-383.62 968.88,-358.83"/>
 <polygon fill="none" stroke="#63b8ff" points="1459.87,-492.15 1469.99,-489.02 1460.13,-485.16 1459.87,-492.15"/>
 </a>
 </g>

@@ -113,9 +113,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a1716a979495b78b330d3e38641d3449c" id="r_a1716a979495b78b330d3e38641d3449c"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1UiDevCommands.html#a1716a979495b78b330d3e38641d3449c">Notice</a> (int kind, int answers)</td></tr>
 <tr class="memdesc:a1716a979495b78b330d3e38641d3449c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать окно нужного вида с нужным числом ответов.  <br /></td></tr>
 <tr class="separator:a1716a979495b78b330d3e38641d3449c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cdc52706befbe2b7594e2987c088872" id="r_a4cdc52706befbe2b7594e2987c088872"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1UiDevCommands.html#a4cdc52706befbe2b7594e2987c088872">Busy</a> ()</td></tr>
-<tr class="memdesc:a4cdc52706befbe2b7594e2987c088872"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поднять экран ожидания. Повторный вызов снимает его досрочно.  <br /></td></tr>
-<tr class="separator:a4cdc52706befbe2b7594e2987c088872"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53f760c0a46ed4a99bb1a58d1c0f7d97" id="r_a53f760c0a46ed4a99bb1a58d1c0f7d97"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1UiDevCommands.html#a53f760c0a46ed4a99bb1a58d1c0f7d97">Busy</a> (bool fullscreen=false)</td></tr>
+<tr class="memdesc:a53f760c0a46ed4a99bb1a58d1c0f7d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поднять экран ожидания.  <br /></td></tr>
+<tr class="separator:a53f760c0a46ed4a99bb1a58d1c0f7d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43ac8f15e1e0bfeb8bee93ab45b7409c" id="r_a43ac8f15e1e0bfeb8bee93ab45b7409c"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1UiDevCommands.html#a43ac8f15e1e0bfeb8bee93ab45b7409c">Toast</a> (int count)</td></tr>
 <tr class="memdesc:a43ac8f15e1e0bfeb8bee93ab45b7409c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать одну-три ленты подряд, чтобы увидеть стопку.  <br /></td></tr>
 <tr class="separator:a43ac8f15e1e0bfeb8bee93ab45b7409c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,8 +125,8 @@ Static Public Member Functions</h2></td></tr>
 <p><b>Зачем.</b> Заказ Макса 20.08.2026: «Дай мне через F меню возможность мб в игре открывать пустые сообщения (ленты и notification). Чтобы сам потестил». До этого единственным способом увидеть окно был мой скриншот из play-сеанса — то есть приёмка шла через мои глаза, а владелец вида смотрел на картинку и не мог ни навести курсор, ни нажать, ни оценить размер вживую. Настоящие поводы (разрыв связи, приглашение, снос профиля) воспроизводятся тяжело: для половины нужен второй компьютер со Steam.</p>
 <p><b>Команды публикуют ТОТ ЖЕ заказ, что и игра</b> — NoticeRequest и BusyRequest в общий канал. Никакого своего пути показа у них нет: иначе дев-окно начнёт отличаться от игрового ровно тем местом, которое и пришли проверить.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4cdc52706befbe2b7594e2987c088872" name="a4cdc52706befbe2b7594e2987c088872"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cdc52706befbe2b7594e2987c088872">&#9670;&#160;</a></span>Busy()</h2>
+<a id="a53f760c0a46ed4a99bb1a58d1c0f7d97" name="a53f760c0a46ed4a99bb1a58d1c0f7d97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53f760c0a46ed4a99bb1a58d1c0f7d97">&#9670;&#160;</a></span>Busy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -137,7 +137,8 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">static string Guildmaster.DevTools.UiDevCommands.Busy </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>fullscreen</em> = <code>false</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -148,11 +149,18 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Поднять экран ожидания. Повторный вызов снимает его досрочно. </p>
+<p>Поднять экран ожидания. </p>
+<p>Повторный вызов снимает его досрочно.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fullscreen</td><td>Полноэкранная заслонка вместо окна посередине — тот облик, в котором игрок видит подключение к чужой игре. Через несколько секунд после показа приходит следующий этап: смотреть надо и на смену строки, а не только на первый кадр. </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1UiDevCommands_a4cdc52706befbe2b7594e2987c088872_icgraph.svg" width="475" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1UiDevCommands_a53f760c0a46ed4a99bb1a58d1c0f7d97_icgraph.svg" width="475" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

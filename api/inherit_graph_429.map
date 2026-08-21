@@ -1,9 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,77,96,102"/>
-<area shape="rect" id="Node000001" href="$structGuildmaster_1_1Combat_1_1BattleOutcome.html" title="Итог боя: «победила команда N», а не «победил игрок»." alt="" coords="146,5,345,45"/>
-<area shape="poly" id="edge427_Node000000_Node000001" title=" " alt="" coords="100,70,143,55,180,43,181,48,145,60,102,75"/>
-<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState.html" title="Где идёт игра прямо сейчас: вид мероприятия, его ограничения, открыт ли бой и в какой он фазе." alt="" coords="144,69,347,109"/>
-<area shape="poly" id="edge428_Node000000_Node000002" title=" " alt="" coords="109,87,144,87,144,92,109,92"/>
-<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html" title="Шаг узла: какой экран перед группой, что на нём и пройден ли узел." alt="" coords="144,133,347,173"/>
-<area shape="poly" id="edge429_Node000000_Node000003" title=" " alt="" coords="102,104,145,119,181,131,180,136,143,124,100,109"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,129,38"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html" title="Реалтайм&#45;пульс боевой симуляции: accumulator&#45;паттерн на Time.unscaledDeltaTime." alt="" coords="177,5,384,45"/>
+<area shape="poly" id="edge426_Node000000_Node000001" title=" " alt="" coords="143,23,177,23,177,28,143,28"/>
 </map>

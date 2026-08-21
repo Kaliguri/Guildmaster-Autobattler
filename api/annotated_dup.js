@@ -238,6 +238,7 @@ var annotated_dup =
         ] ],
         [ "Flow", "namespaceGuildmaster_1_1Core_1_1Flow.html", [
           [ "BusyRequest", "structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest" ],
+          [ "BusyStageChanged", "structGuildmaster_1_1Core_1_1Flow_1_1BusyStageChanged.html", "structGuildmaster_1_1Core_1_1Flow_1_1BusyStageChanged" ],
           [ "GoToModeRequest", "structGuildmaster_1_1Core_1_1Flow_1_1GoToModeRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1GoToModeRequest" ],
           [ "IRunControl", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl.html", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IRunControl" ],
           [ "IScreenTransition", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IScreenTransition.html", "interfaceGuildmaster_1_1Core_1_1Flow_1_1IScreenTransition" ],

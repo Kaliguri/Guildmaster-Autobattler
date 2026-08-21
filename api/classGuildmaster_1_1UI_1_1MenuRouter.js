@@ -17,6 +17,7 @@ var classGuildmaster_1_1UI_1_1MenuRouter =
     [ "OpenReward", "classGuildmaster_1_1UI_1_1MenuRouter.html#af504f46c2b15d531ee0a261b277deb5a", null ],
     [ "OpenShop", "classGuildmaster_1_1UI_1_1MenuRouter.html#a75745499df8add53b677b22b2ae1ef76", null ],
     [ "OpenTextEvent", "classGuildmaster_1_1UI_1_1MenuRouter.html#ad75cea58b1691f1375c50ddb27f6de9c", null ],
+    [ "SetBusyStage", "classGuildmaster_1_1UI_1_1MenuRouter.html#a358985900302fd28345c00673db1cdf9", null ],
     [ "ShowBusy", "classGuildmaster_1_1UI_1_1MenuRouter.html#a3462b80761f33c45ab5679982dc80f23", null ],
     [ "ShowContinue", "classGuildmaster_1_1UI_1_1MenuRouter.html#a942c0180c336aab815549a6de6b0f664", null ],
     [ "ShowInventory", "classGuildmaster_1_1UI_1_1MenuRouter.html#ade9fb89482262fa767da061055467b27", null ],

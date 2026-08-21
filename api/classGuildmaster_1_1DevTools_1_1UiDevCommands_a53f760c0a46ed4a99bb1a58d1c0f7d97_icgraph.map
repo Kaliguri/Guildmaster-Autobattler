@@ -1,5 +1,5 @@
 <map id="Guildmaster.DevTools.UiDevCommands.Busy" name="Guildmaster.DevTools.UiDevCommands.Busy">
-<area shape="rect" id="Node000001" title="Поднять экран ожидания. Повторный вызов снимает его досрочно." alt="" coords="261,5,469,45"/>
+<area shape="rect" id="Node000001" title="Поднять экран ожидания." alt="" coords="261,5,469,45"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1UiDevCommands.html#a13dd97408f654394bf3200ab5869f52f" title=" " alt="" coords="5,5,213,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,28,213,28,213,23,248,23"/>
 </map>
