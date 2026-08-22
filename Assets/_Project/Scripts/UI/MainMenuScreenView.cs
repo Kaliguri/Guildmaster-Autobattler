@@ -42,6 +42,7 @@ namespace Guildmaster.UI
             var version   = root.Q<Label>("menu-version");
             var create   = root.Q<Button>("btn-create");
             var join     = root.Q<Button>("btn-join");
+            var compendium = root.Q<Button>("btn-compendium");
             var profile  = root.Q<Button>("btn-profile");
             var settings = root.Q<Button>("btn-settings");
             var quit     = root.Q<Button>("btn-quit");
@@ -90,6 +91,15 @@ namespace Guildmaster.UI
                 join.text = L("ui.mainmenu.join", "ПРИСОЕДИНИТЬСЯ");
                 join.SetEnabled(canJoin);
                 join.clicked += () => onJoin?.Invoke();
+            }
+
+            // «Компендиум» ПОКА ПОГАШЕН (заказ Макса 22.08.2026): экрана за ним ещё нет. Кнопка
+            // стоит в колонке заранее, чтобы меню не перестраивалось у игрока на глазах в тот день,
+            // когда экран появится.
+            if (compendium != null)
+            {
+                compendium.text = L("ui.mainmenu.compendium", "КОМПЕНДИУМ");
+                compendium.SetEnabled(false);
             }
 
             if (settings != null)

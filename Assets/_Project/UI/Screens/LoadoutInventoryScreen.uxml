@@ -36,7 +36,7 @@
                             <!-- gm-button обязателен: без него кнопка достаётся дефолтной теме Unity —
                                  белая плашка, серое нажатие, синяя рамка фокуса. Так она и жила до
                                  06.08.2026, и увидел это контактный лист состояний, а не глаз. -->
-                            <ui:Button name="sort" text="Имя ↓" class="gm-button" />
+                            <ui:Button name="sort" text="Имя ↓" class="gm-button gm-button--sm" />
                         </ui:VisualElement>
 
                         <ui:ScrollView name="relic-grid" style="flex-grow: 1;" />

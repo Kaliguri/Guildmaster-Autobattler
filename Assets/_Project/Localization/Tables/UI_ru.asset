@@ -888,6 +888,14 @@ MonoBehaviour:
     m_Localized: "\u0412 \u0431\u043E\u0439!"
     m_Metadata:
       m_Items: []
+  - m_Id: 15439663944949760
+    m_Localized: "\u041A\u041E\u041C\u041F\u0415\u041D\u0414\u0418\u0423\u041C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15439664007864320
+    m_Localized: "\u041E\u0442\u0447\u0451\u0442 \u043E\u0431 \u043E\u0448\u0438\u0431\u043A\u0435"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

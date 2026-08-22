@@ -799,6 +799,14 @@ MonoBehaviour:
     m_Key: ui.title.to_battle
     m_Metadata:
       m_Items: []
+  - m_Id: 15439663944949760
+    m_Key: ui.mainmenu.compendium
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15439664007864320
+    m_Key: ui.community.bugreport
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

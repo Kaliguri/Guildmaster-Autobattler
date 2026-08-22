@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using UnityEngine.UIElements;
@@ -60,6 +60,7 @@ namespace Guildmaster.UI
             var headline = block.Q<Label>("community-headline");
             var body     = block.Q<VisualElement>("community-body");
             var links    = block.Q<VisualElement>("community-links");
+            var bug      = block.Q<Button>("btn-bugreport");
             var wishlist = block.Q<VisualElement>("community-wishlist");
             var caption  = block.Q<Label>("wishlist-caption");
             var button   = block.Q<Button>("btn-wishlist");
@@ -68,6 +69,15 @@ namespace Guildmaster.UI
 
             FillBody(body, config.Paragraphs, L);
             FillLinks(links, config.Links, L, onLink);
+
+            // «Отчёт об ошибке» ПОКА ПОГАШЕН (заказ Макса 22.08.2026: «завести кнопку, сделать не
+            // активной… но они у нас БУДУТ»). Собирать отчёт игра будет сама — своим окном с
+            // описанием, версией и логом; до тех пор кнопка занимает своё место и молчит.
+            if (bug != null)
+            {
+                bug.text = L("ui.community.bugreport", "Отчёт об ошибке");
+                bug.SetEnabled(false);
+            }
 
             bool wish = showWishlist && config.ShowWishlist;
             if (wishlist != null) wishlist.style.display = wish ? DisplayStyle.Flex : DisplayStyle.None;
@@ -107,7 +117,15 @@ namespace Guildmaster.UI
             }
         }
 
-        /// <summary>Ряд значков: по значку на канал, у которого есть адрес.</summary>
+        /// <summary>
+        /// Ряд значков: по значку на канал. Канал без адреса ПОКАЗЫВАЕТСЯ погашенным.
+        /// </summary>
+        /// <remarks>
+        /// Прятать было первым решением и оказалось хуже: «Я вообще НЕ увидел где тут иконки и места
+        /// для сообщение об ошибке и youtube» (Макс, 22.08.2026). Пустое место не говорит ничего, а
+        /// погашенный значок говорит «канал будет здесь» — ровно как неактивная кнопка компендиума
+        /// в колонке слева.
+        /// </remarks>
         private static void FillLinks(VisualElement row,
                                       IReadOnlyList<CommunityConfig.LinkEntry> entries,
                                       Func<string, string, string> L,
@@ -120,14 +138,16 @@ namespace Guildmaster.UI
             for (int i = 0; entries != null && i < entries.Count; i++)
             {
                 CommunityConfig.LinkEntry entry = entries[i];
-                if (string.IsNullOrWhiteSpace(entry.Url)) continue;
 
                 string url = entry.Url;
+                bool live = !string.IsNullOrWhiteSpace(url);
                 var link = new Components.PlateButton { name = "btn-link-" + entry.Id };
                 link.AddToClassList("gm-button");
                 link.AddToClassList("gm-button--icon");
+                link.AddToClassList("gm-button--sm");
                 link.tooltip = L(entry.LabelKey, entry.LabelFallback);
-                link.clicked += () => onLink?.Invoke(url);
+                link.SetEnabled(live);
+                if (live) link.clicked += () => onLink?.Invoke(url);
 
                 // Значок — ребёнок, а не background кнопки: фон пластины рисует сам контрол мешем,
                 // и картинка в background-image ушла бы ПОД него.
@@ -147,8 +167,8 @@ namespace Guildmaster.UI
                 shown++;
             }
 
-            // Ни одного адреса — прячем ряд целиком: пустая полоса под текстом читается как обрезанный
-            // элемент. Именно это состояние у нас сейчас и есть, пока каналов нет.
+            // Ряд прячется, только если каналов нет В САМОМ АССЕТЕ: показывать нечего вовсе. Пустой
+            // адрес — не это; такой значок стоит погашенным.
             row.style.display = shown > 0 ? DisplayStyle.Flex : DisplayStyle.None;
         }
     }

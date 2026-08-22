@@ -26,11 +26,16 @@
                  вёл в то же самое место — две двери в одну комнату.
                  Игровые пункты отделены от служебных зазором на «Профиле», без линии и подзаголовка. -->
             <ui:VisualElement class="gm-mainmenu__buttons">
-                <gm:PlateButton name="btn-create" text="Создать игру" class="gm-button gm-button--display gm-button--primary" />
-                <gm:PlateButton name="btn-join" text="Присоединиться" class="gm-button gm-button--display gm-button--primary" />
-                <gm:PlateButton name="btn-profile" text="Профиль" class="gm-button gm-button--display gm-mainmenu__group-start" />
-                <gm:PlateButton name="btn-settings" text="Настройки" class="gm-button gm-button--display" />
-                <gm:PlateButton name="btn-quit" text="Выход" class="gm-button gm-button--display" />
+                <gm:PlateButton name="btn-create" text="Создать игру" class="gm-button gm-button--lg gm-button--display gm-button--primary" />
+                <gm:PlateButton name="btn-join" text="Присоединиться" class="gm-button gm-button--lg gm-button--display gm-button--primary" />
+                <!-- Компендиум стоит в СЛУЖЕБНОЙ группе между профилем и настройками (порядок
+                     Макса 22.08.2026): он про справку о мире, а не про вход в игру. Пока НЕАКТИВЕН —
+                     экрана за ним ещё нет, но место в колонке занято уже сейчас, иначе меню
+                     перестроится у игрока на глазах в день, когда экран появится. -->
+                <gm:PlateButton name="btn-profile" text="Профиль" class="gm-button gm-button--lg gm-button--display gm-mainmenu__group-start" />
+                <gm:PlateButton name="btn-compendium" text="Компендиум" class="gm-button gm-button--lg gm-button--display" />
+                <gm:PlateButton name="btn-settings" text="Настройки" class="gm-button gm-button--lg gm-button--display" />
+                <gm:PlateButton name="btn-quit" text="Выход" class="gm-button gm-button--lg gm-button--display" />
             </ui:VisualElement>
         </ui:VisualElement>
 
@@ -45,14 +50,21 @@
                 <gm:PanelFrame name="community-frame" class="gm-panel__frame" corner="18" />
                 <ui:Label name="community-headline" class="gm-text-title gm-community__headline" />
                 <ui:VisualElement name="community-body" class="gm-community__body" />
+            </ui:VisualElement>
+
+            <!-- СЛУЖЕБНАЯ СТРОКА ПОД ПАНЕЛЬЮ — 1:1 приём Olden Era: слева «Отчёт об ошибке», справа
+                 круглые значки каналов. У рефа это единственное место, где живут ссылки, и стоит
+                 оно ровно под панелью обращения, а не внутри неё. -->
+            <ui:VisualElement name="community-service" class="gm-community__service">
+                <gm:PlateButton name="btn-bugreport" class="gm-button gm-button--sm gm-community__bug" />
                 <ui:VisualElement name="community-links" class="gm-community__links" />
             </ui:VisualElement>
 
-            <!-- Приглашение в желаемое стоит ПОД панелью и отдельным блоком, как у Guildrun: это не
+            <!-- Приглашение в желаемое стоит ПОД строкой отдельным блоком, как у Guildrun: это не
                  часть обращения, а просьба, и мешать её с «спасибо, что играете» нечестно. -->
             <ui:VisualElement name="community-wishlist" class="gm-community__wishlist">
                 <ui:Label name="wishlist-caption" class="gm-text-caption gm-community__wishlist-caption" />
-                <gm:PlateButton name="btn-wishlist" class="gm-button gm-button--primary gm-community__wishlist-button" />
+                <gm:PlateButton name="btn-wishlist" class="gm-button gm-button--sm gm-button--primary gm-community__wishlist-button" />
             </ui:VisualElement>
         </ui:VisualElement>
 

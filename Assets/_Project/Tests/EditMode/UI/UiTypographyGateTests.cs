@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -103,6 +103,9 @@ namespace Guildmaster.Tests.EditMode.UI
                 "разрядка и гарнитура здесь работают вместе и на одну строку",
             [".gm-select-row__dropdown .unity-base-popup-field__input"] =
                 "внутренность выпадающего списка Unity: свой элемент, роль туда не повесить",
+            [".gm-button--sm"] =
+                "мелкая ступень кнопки мелкая ЦЕЛИКОМ: кегль входит в размер, иначе каждое место, " +
+                "взявшее --sm, дописывало бы себе один и тот же --gm-font-xs",
             [".gm-title-reveal__line"] =
                 "титр крупнее вывески намеренно: --gm-font-reveal (96) — свой ярус на один элемент, " +
                 "роли под него нет и заводить её значит заводить роль под место",

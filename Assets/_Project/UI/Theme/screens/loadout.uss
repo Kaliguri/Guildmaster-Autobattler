@@ -1,4 +1,4 @@
-/* Выключенное поле ввода: то же тихое поле, курсор в него не встаёт — состояние должно читаться
+﻿/* Выключенное поле ввода: то же тихое поле, курсор в него не встаёт — состояние должно читаться
    до попытки клика. */
 .unity-base-field:disabled .unity-base-text-field__input,
 .unity-base-field.unity-disabled .unity-base-text-field__input,
@@ -108,7 +108,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    min-width: 220px;
     font-size: var(--gm-font-sm);
     padding: var(--gm-space-1) var(--gm-space-4);
     margin: 0;
@@ -304,7 +303,8 @@
     align-items: center;
     justify-content: center;
     font-size: var(--gm-font-xs);
-    height: 36px;
+    /* Высоты здесь нет с 22.08.2026: 36 переехало в мелкую ступень шкалы, кнопка носит
+       .gm-button--sm. Кегль остался — это ось подписи, а не размера. */
     margin: 0;
     padding-left: var(--gm-space-3);
     padding-right: var(--gm-space-3);
