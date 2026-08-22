@@ -1,0 +1,169 @@
+/* Страница «Отряд» (ГДД preparation-screens §2.1, раскладка «Витрина»).
+
+   Состав стоит ТЕЛАМИ на живой арене, поэтому экран не кладёт под себя сплошную поверхность:
+   зона сцены остаётся прозрачной, а интерфейс живёт по краям кадра. Отсюда и отсутствие
+   .gm-panel в разметке — панель закрыла бы то, ради чего эта раскладка выбрана.
+
+   Цвет только ролью, форма — вершинами (визуальный язык интерфейса). */
+
+.gm-party {
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+/* --- Шапка: имя экрана, лента страниц, счётчик --- */
+
+.gm-party__head {
+    flex-direction: row;
+    align-items: center;
+    padding: var(--gm-space-4) var(--gm-space-5);
+}
+
+.gm-party__title {
+    margin-right: var(--gm-space-5);
+}
+
+.gm-party__tabs {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.gm-party__capacity {
+    flex-shrink: 0;
+}
+
+/* --- Дырка под арену: тела видны, ввод проходит насквозь --- */
+
+.gm-party__stage {
+    flex-grow: 1;
+    justify-content: flex-end;
+}
+
+.gm-party__labels {
+    flex-direction: row;
+    justify-content: center;
+    padding-bottom: var(--gm-space-4);
+}
+
+.gm-party-label {
+    align-items: center;
+    width: 160px;
+}
+
+.gm-party-label__name {
+    -unity-font-style: bold;
+}
+
+.gm-party-label__relic {
+    color: var(--gm-color-accent);
+}
+
+/* --- Лента отряда: все места, включая закрытые --- */
+
+.gm-party__bench-block {
+    padding: var(--gm-space-3) var(--gm-space-5);
+    background-color: var(--gm-color-surface-sunken);
+    border-top-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+}
+
+.gm-party__bench-head {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-party__bench {
+    flex-direction: row;
+}
+
+.gm-party-slot {
+    width: 116px;
+    height: 132px;
+    margin-right: var(--gm-space-2);
+    padding: var(--gm-space-2);
+    align-items: center;
+    justify-content: flex-start;
+    background-color: var(--gm-color-surface-panel);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+}
+
+/* Выходящий в бой светится, а не заливается плашкой: состояние показывается светом
+   (план ui-uplift, пункт 2). */
+.gm-party-slot--battle {
+    border-color: var(--gm-outline-color-hover);
+}
+
+.gm-party-slot--empty {
+    background-color: rgba(0, 0, 0, 0);
+    border-color: var(--gm-color-border-subtle);
+}
+
+.gm-party-slot--locked {
+    background-color: rgba(0, 0, 0, 0);
+    border-color: var(--gm-color-border-subtle);
+    opacity: 0.6;
+}
+
+.gm-party-slot:hover {
+    border-color: var(--gm-outline-color-hover);
+}
+
+.gm-party-slot__portrait {
+    width: 56px;
+    height: 56px;
+    border-radius: 28px;
+    margin-bottom: var(--gm-space-1);
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+}
+
+.gm-party-slot__name {
+    -unity-font-style: bold;
+}
+
+.gm-party-slot__relic {
+    color: var(--gm-color-accent);
+}
+
+.gm-party-slot__mark {
+    color: var(--gm-color-text-muted);
+}
+
+/* --- Перетаскивание: общий контрол, классы из DragManipulator --- */
+
+.gm-drag--dragging {
+    opacity: 0.4;
+}
+
+.gm-drag__ghost {
+    padding: var(--gm-space-2);
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color-hover);
+    opacity: 0.9;
+}
+
+.gm-drop--valid {
+    border-color: var(--gm-outline-color-hover);
+}
+
+/* Недопустимая цель гаснет, но остаётся живой: мёртвый элемент читается как сломанный экран
+   (ui-feedback §1). */
+.gm-drop--invalid {
+    opacity: 0.5;
+}
+
+.gm-drop--hover {
+    background-color: var(--gm-color-surface-raised);
+}
+
+/* --- Действия --- */
+
+.gm-party__actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: var(--gm-space-3) var(--gm-space-5) var(--gm-space-4);
+}

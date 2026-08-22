@@ -26,6 +26,7 @@ namespace Guildmaster.DevTools
             ["reward"]       = BuildReward,
             ["event"]        = BuildEvent,
             ["loadout-inventory"] = BuildLoadoutInventory,
+            ["party"]        = BuildParty,
             ["settings"]     = BuildSettings,
             // "map" снят: карта больше не UITK-экран, она живёт в мире (см. WorldMapView) и в UI-стенде
             // не собирается. Смотреть её — дев-командами gm_map_* в игре.
@@ -126,6 +127,30 @@ namespace Guildmaster.DevTools
                 localize: RuValue,
                 onChosen: _ => { });
             root.Add(screen);
+        }
+
+        /// <summary>
+        /// Страница «Отряд». Состав тут выдуманный: экран собирается БЕЗ живого забега — иначе
+        /// посмотреть его можно было бы только в игре, а именно этого стенд и избегает.
+        /// </summary>
+        private static void BuildParty(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/PartyScreen.uxml");
+            if (uxml == null) { AddError(root, "PartyScreen.uxml не найден"); return; }
+
+            var slots = new List<Guildmaster.UI.PartySlotView>
+            {
+                new(0, "Ирма", "Клинок", inBattle: true,  open: true),
+                new(1, "Кай",  "Щит",    inBattle: true,  open: true),
+                new(2, "Дан",  "Посох",  inBattle: true,  open: true),
+                new(3, "Сув",  "Ветер",  inBattle: true,  open: true),
+                new(4, "Лех",  "Клинок", inBattle: false, open: true),
+                new(5, null,   null,     inBattle: false, open: true),
+                new(6, null,   null,     inBattle: false, open: false),
+                new(7, null,   null,     inBattle: false, open: false),
+            };
+
+            root.Add(Guildmaster.UI.PartyScreenView.Build(uxml, slots, actions: null, localize: RuValue));
         }
 
         private static void BuildLoadoutInventory(VisualElement root)

@@ -43,6 +43,7 @@
 /* --- Экраны. Идут ПОСЛЕ компонентов: экран уточняет общий вид, а не наоборот. --- */
 @import url("screens/settings.uss");
 @import url("screens/loadout.uss");
+@import url("screens/party.uss");
 @import url("screens/reward.uss");
 @import url("screens/event.uss");
 @import url("screens/continue.uss");
