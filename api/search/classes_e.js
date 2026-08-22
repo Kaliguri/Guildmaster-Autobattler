@@ -20,7 +20,8 @@ var searchData=
   ['outcomepresenter_17',['OutcomePresenter',['../classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html',1,'Guildmaster::Game::Flow']]],
   ['outcomescreenview_18',['OutcomeScreenView',['../classGuildmaster_1_1UI_1_1OutcomeScreenView.html',1,'Guildmaster::UI']]],
   ['outcomestage_19',['OutcomeStage',['../structGuildmaster_1_1Game_1_1Session_1_1Net_1_1OutcomeStage.html',1,'Guildmaster::Game::Session::Net']]],
-  ['outfitdata_20',['OutfitData',['../classGuildmaster_1_1Data_1_1Definitions_1_1OutfitData.html',1,'Guildmaster::Data::Definitions']]],
-  ['outfitpiece_21',['OutfitPiece',['../structGuildmaster_1_1Data_1_1Definitions_1_1OutfitPiece.html',1,'Guildmaster::Data::Definitions']]],
-  ['overloadstrikecomponent_22',['OverloadStrikeComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1OverloadStrikeComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
+  ['outcomesummaryrow_20',['OutcomeSummaryRow',['../structGuildmaster_1_1Guild_1_1OutcomeSummaryRow.html',1,'Guildmaster::Guild']]],
+  ['outfitdata_21',['OutfitData',['../classGuildmaster_1_1Data_1_1Definitions_1_1OutfitData.html',1,'Guildmaster::Data::Definitions']]],
+  ['outfitpiece_22',['OutfitPiece',['../structGuildmaster_1_1Data_1_1Definitions_1_1OutfitPiece.html',1,'Guildmaster::Data::Definitions']]],
+  ['overloadstrikecomponent_23',['OverloadStrikeComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1OverloadStrikeComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
 ];

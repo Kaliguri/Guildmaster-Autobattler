@@ -1,3 +1,5 @@
 <map id="Guildmaster.Guild.OpenOutcomeRequest" name="Guildmaster.Guild.OpenOutcomeRequest">
-<area shape="rect" id="Node000001" title="Запрос показать экран исхода (план [[act&#45;map&#45;run&#45;loop]] §4 C2): победа (босс пройден) или поражение (..." alt="" coords="5,5,233,165"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,133,233,293"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="88,5,151,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,71,122,117,117,117,117,71"/>
 </map>

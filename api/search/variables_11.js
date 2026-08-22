@@ -42,7 +42,7 @@ var searchData=
   ['speedpersecond_39',['SpeedPerSecond',['../structGuildmaster_1_1Combat_1_1DisplaceRequest.html#ae6b98eeeb71c4a9d52c3327f63889bd6',1,'Guildmaster::Combat::DisplaceRequest']]],
   ['sprintentergap_40',['SprintEnterGap',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#ab71c1225fcdd037c0dec5bbc430e5440',1,'Guildmaster::Core::Simulation::SimTuning']]],
   ['sprintexitgap_41',['SprintExitGap',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a97a4c177d34d0b575d5f00664cabe6ef',1,'Guildmaster::Core::Simulation::SimTuning']]],
-  ['sprintramp_42',['sprintramp',['../structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#a0480cecc43e6ad8c1310359a3555ba5a',1,'Guildmaster.Combat.Tape.UnitSnapshot.SprintRamp'],['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae517b9898a466d005a66443081e7d549',1,'Guildmaster.Combat.RuntimeUnit.SprintRamp'],['../classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkFormat_1_1UnitField.html#a95728e9bf8d10a5931975e3a7e59e0b8',1,'Guildmaster.Net.Tape.TapeChunkFormat.UnitField.SprintRamp']]],
+  ['sprintramp_42',['sprintramp',['../structGuildmaster_1_1Combat_1_1Tape_1_1UnitSnapshot.html#a0480cecc43e6ad8c1310359a3555ba5a',1,'Guildmaster.Combat.Tape.UnitSnapshot.SprintRamp'],['../classGuildmaster_1_1Net_1_1Tape_1_1TapeChunkFormat_1_1UnitField.html#a95728e9bf8d10a5931975e3a7e59e0b8',1,'Guildmaster.Net.Tape.TapeChunkFormat.UnitField.SprintRamp'],['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae517b9898a466d005a66443081e7d549',1,'Guildmaster.Combat.RuntimeUnit.SprintRamp']]],
   ['sprintrampseconds_43',['SprintRampSeconds',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a3ab063e615bdf9cb95044378c0fd3f42',1,'Guildmaster::Core::Simulation::SimTuning']]],
   ['sprintspeedmult_44',['SprintSpeedMult',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a0e38503a48b482d0967a03d6e11eed0a',1,'Guildmaster::Core::Simulation::SimTuning']]],
   ['sprintwalkseconds_45',['SprintWalkSeconds',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#ad2795ce2b056d77e885026ba4205f9c7',1,'Guildmaster::Core::Simulation::SimTuning']]],
@@ -70,11 +70,12 @@ var searchData=
   ['subject_67',['Subject',['../structGuildmaster_1_1Core_1_1Flow_1_1BusyRequest.html#a4c90ce3cf78e0c8513c00a288d9c3a4d',1,'Guildmaster::Core::Flow::BusyRequest']]],
   ['subkey_68',['SubKey',['../structGuildmaster_1_1Core_1_1Flow_1_1TitleRevealRequest.html#a51ae5a880aafeca3fab3f0cdc2a67271',1,'Guildmaster::Core::Flow::TitleRevealRequest']]],
   ['subtick_69',['SubTick',['../structGuildmaster_1_1Combat_1_1Tape_1_1TapeEvent.html#adff174e9d3439062a9312cd0acbca41c',1,'Guildmaster::Combat::Tape::TapeEvent']]],
-  ['summonabilityid_70',['SummonAbilityId',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a5412a3b395f96507c6889fc68a2a7ecd',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['summoner_71',['Summoner',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a63a978e65a14a27b189472c3216d4704',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['summonlifetimeremaining_72',['SummonLifetimeRemaining',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af485caa51003b8b2ebe46fe4aaa93fc6',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['swatch_73',['Swatch',['../structGuildmaster_1_1UI_1_1Components_1_1PickerButton_1_1Option.html#a9afff03ee00820dd0e158c2fa941eeb6',1,'Guildmaster::UI::Components::PickerButton::Option']]],
-  ['swingcontacts_74',['SwingContacts',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a7e8a9c6b626d0c0f9926659a92c0a6cf',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['swinghitindex_75',['SwingHitIndex',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a280cfc88019b8b12ab1bc88f65809530',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['swingrecoveryspeed_76',['SwingRecoverySpeed',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a2af384a50f18cebe35c762778f76faa2',1,'Guildmaster::Combat::RuntimeUnit']]]
+  ['summary_70',['Summary',['../structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#a107055611a4c0fd8bbad12e736472508',1,'Guildmaster::Guild::OpenOutcomeRequest']]],
+  ['summonabilityid_71',['SummonAbilityId',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a5412a3b395f96507c6889fc68a2a7ecd',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['summoner_72',['Summoner',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a63a978e65a14a27b189472c3216d4704',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['summonlifetimeremaining_73',['SummonLifetimeRemaining',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af485caa51003b8b2ebe46fe4aaa93fc6',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['swatch_74',['Swatch',['../structGuildmaster_1_1UI_1_1Components_1_1PickerButton_1_1Option.html#a9afff03ee00820dd0e158c2fa941eeb6',1,'Guildmaster::UI::Components::PickerButton::Option']]],
+  ['swingcontacts_75',['SwingContacts',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a7e8a9c6b626d0c0f9926659a92c0a6cf',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['swinghitindex_76',['SwingHitIndex',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a280cfc88019b8b12ab1bc88f65809530',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['swingrecoveryspeed_77',['SwingRecoverySpeed',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a2af384a50f18cebe35c762778f76faa2',1,'Guildmaster::Combat::RuntimeUnit']]]
 ];

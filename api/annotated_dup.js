@@ -648,6 +648,7 @@ var annotated_dup =
         [ "OpenProfileRequest", "structGuildmaster_1_1Guild_1_1OpenProfileRequest.html", "structGuildmaster_1_1Guild_1_1OpenProfileRequest" ],
         [ "OpenShopRequest", "structGuildmaster_1_1Guild_1_1OpenShopRequest.html", "structGuildmaster_1_1Guild_1_1OpenShopRequest" ],
         [ "OpenTitleCardRequest", "structGuildmaster_1_1Guild_1_1OpenTitleCardRequest.html", "structGuildmaster_1_1Guild_1_1OpenTitleCardRequest" ],
+        [ "OutcomeSummaryRow", "structGuildmaster_1_1Guild_1_1OutcomeSummaryRow.html", "structGuildmaster_1_1Guild_1_1OutcomeSummaryRow" ],
         [ "ProfileState", "classGuildmaster_1_1Guild_1_1ProfileState.html", "classGuildmaster_1_1Guild_1_1ProfileState" ],
         [ "RosterSlot", "classGuildmaster_1_1Guild_1_1RosterSlot.html", "classGuildmaster_1_1Guild_1_1RosterSlot" ],
         [ "RunRecord", "classGuildmaster_1_1Guild_1_1RunRecord.html", "classGuildmaster_1_1Guild_1_1RunRecord" ],

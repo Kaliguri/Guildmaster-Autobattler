@@ -110,8 +110,8 @@ var NAVTREEINDEX =
 "structGuildmaster_1_1Data_1_1Definitions_1_1ProvingGroundsSetupRequest.html",
 "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1ActivityState.html#ae8d50e69bbf2fc160f7723eb89079c51",
 "structGuildmaster_1_1Guild_1_1OpenHubRequest.html",
-"structGuildmaster_1_1Presentation_1_1Body_1_1PartMask.html#acf4495225f4b8f7a335c3152e35a927c",
-"structGuildmaster_1_1UI_1_1ModeChoiceView_1_1Card.html#affd8dbc15b209adc753f4635e5701ab2"
+"structGuildmaster_1_1Presentation_1_1Body_1_1PartMask.html#a51e98de51909b5ba3babcdec17a7cd60",
+"structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html#ab527c02d1431a43e5e284079b399c77b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

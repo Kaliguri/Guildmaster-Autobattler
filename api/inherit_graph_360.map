@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classGuildmaster_1_1Presentation_1_1Body_1_1RigNaming.html" title="Конвенция имён рига: кость зовётся как сустав, который она вращает (LowerArm_R), сторона живёт суффик..." alt="" coords="5,5,196,45"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Presentation_1_1Body_1_1IUnitPartLookup.html" title="Запрос к частям тела юнита: «что у тебя в правой руке», «дай щит», «дай голову», «дай правую ногу»,..." alt="" coords="5,5,196,45"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Presentation_1_1Body_1_1UnitPartRegistry.html" title="Реестр частей тела, выведенный ИЗ КОНВЕНЦИИ РИГА: кто чем является, читается из иерархии (RigNaming),..." alt="" coords="244,5,435,45"/>
+<area shape="poly" id="edge417_Node000000_Node000001" title=" " alt="" coords="210,23,244,23,244,28,210,28"/>
 </map>

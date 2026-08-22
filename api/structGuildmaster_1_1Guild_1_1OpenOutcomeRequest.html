@@ -98,25 +98,25 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Guild_1_1OpenOutc
   <div class="headertitle"><div class="title">Guildmaster.Guild.OpenOutcomeRequest Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>Запрос показать экран исхода (план [[act-map-run-loop]] §4 C2): победа (босс пройден) или поражение (пул перезапусков пуст).  
- <a href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.OpenOutcomeRequest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest__coll__graph.svg" width="239" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest__coll__graph.svg" width="239" height="299"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6cef63a9c66311ee52f8546857638ae9" id="r_a6cef63a9c66311ee52f8546857638ae9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#a6cef63a9c66311ee52f8546857638ae9">OpenOutcomeRequest</a> (bool victory, Action onToMenu, Action onContinue=null, Action onRestart=null, Action onToGuild=null)</td></tr>
-<tr class="separator:a6cef63a9c66311ee52f8546857638ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba59ffb072e896de39659db46db3ab3b" id="r_aba59ffb072e896de39659db46db3ab3b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#aba59ffb072e896de39659db46db3ab3b">OpenOutcomeRequest</a> (bool victory, Action onToMenu, Action onContinue=null, Action onRestart=null, Action onToGuild=null, System.Collections.Generic.IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OutcomeSummaryRow.html">OutcomeSummaryRow</a> &gt; summary=null)</td></tr>
+<tr class="separator:aba59ffb072e896de39659db46db3ab3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a9b2bc44d58074bc4b19b9aa0af057edc" id="r_a9b2bc44d58074bc4b19b9aa0af057edc"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#a9b2bc44d58074bc4b19b9aa0af057edc">Victory</a></td></tr>
 <tr class="memdesc:a9b2bc44d58074bc4b19b9aa0af057edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">true = победа, false = поражение.  <br /></td></tr>
 <tr class="separator:a9b2bc44d58074bc4b19b9aa0af057edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a107055611a4c0fd8bbad12e736472508" id="r_a107055611a4c0fd8bbad12e736472508"><td class="memItemLeft" align="right" valign="top">readonly System.Collections.Generic.IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OutcomeSummaryRow.html">OutcomeSummaryRow</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#a107055611a4c0fd8bbad12e736472508">Summary</a></td></tr>
+<tr class="memdesc:a107055611a4c0fd8bbad12e736472508"><td class="mdescLeft">&#160;</td><td class="mdescRight">Чем кончился забег: строки итогов под знаком (вердикт Макса 22.08.2026, вариант III-Б).  <br /></td></tr>
+<tr class="separator:a107055611a4c0fd8bbad12e736472508"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c40bca1b23c4c91882a2bd7e0baa0ca" id="r_a9c40bca1b23c4c91882a2bd7e0baa0ca"><td class="memItemLeft" align="right" valign="top">readonly Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#a9c40bca1b23c4c91882a2bd7e0baa0ca">OnToMenu</a></td></tr>
 <tr class="memdesc:a9c40bca1b23c4c91882a2bd7e0baa0ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Колбэк «В меню» (ровно один вызов). Личный: голосовать не за что.  <br /></td></tr>
 <tr class="separator:a9c40bca1b23c4c91882a2bd7e0baa0ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,14 +130,9 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:afce80b20940fe66042681bc5cb6019e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Голос за «Во двор гильдии»; <code>null</code> — кнопки нет.  <br /></td></tr>
 <tr class="separator:afce80b20940fe66042681bc5cb6019e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Запрос показать экран исхода (план [[act-map-run-loop]] §4 C2): победа (босс пройден) или поражение (пул перезапусков пуст). </p>
-<p>Экран объявляется шагом узла, показывают его обе роли.</p>
-<p><b>Экран один, а кнопок на нём разное число.</b> После забега это «заново», «во двор» и «в меню»; на площадке — «продолжить» и «в меню». Разницу задаёт вызывающий, передавая <code>null</code> вместо действия: кнопки тогда не будет вовсе, а не будет погашенной, обещающей возможность. </p>
-<p><b>«В меню» — личная кнопка, остальные общие</b> (вердикт Макса 08.08.2026). Общие ходят одним решением с вариантами — см. <code>DecisionKeys.RunAfter</code>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6cef63a9c66311ee52f8546857638ae9" name="a6cef63a9c66311ee52f8546857638ae9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6cef63a9c66311ee52f8546857638ae9">&#9670;&#160;</a></span>OpenOutcomeRequest()</h2>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aba59ffb072e896de39659db46db3ab3b" name="aba59ffb072e896de39659db46db3ab3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba59ffb072e896de39659db46db3ab3b">&#9670;&#160;</a></span>OpenOutcomeRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,7 +168,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onToGuild</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>onToGuild</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">System::Collections::Generic::IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OutcomeSummaryRow.html">OutcomeSummaryRow</a> &gt;&#160;</td>
+          <td class="paramname"><em>summary</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -253,6 +254,24 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Колбэк «В меню» (ровно один вызов). Личный: голосовать не за что. </p>
+
+</div>
+</div>
+<a id="a107055611a4c0fd8bbad12e736472508" name="a107055611a4c0fd8bbad12e736472508"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a107055611a4c0fd8bbad12e736472508">&#9670;&#160;</a></span>Summary</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly System.Collections.Generic.IReadOnlyList&lt;<a class="el" href="structGuildmaster_1_1Guild_1_1OutcomeSummaryRow.html">OutcomeSummaryRow</a>&gt; Guildmaster.Guild.OpenOutcomeRequest.Summary</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Чем кончился забег: строки итогов под знаком (вердикт Макса 22.08.2026, вариант III-Б). </p>
+<p>Пусто — экран покажет только знак и подпись, как раньше.</p>
+<p>Итоги собирает тот, у кого есть состояние забега, а не экран: у гостя своего RunState нет вовсе, и посчитать он ничего не может — ему приезжают готовые строки. </p>
 
 </div>
 </div>

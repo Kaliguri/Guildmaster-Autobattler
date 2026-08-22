@@ -826,6 +826,7 @@ var hierarchy =
     [ "Guildmaster.Presentation.Editor.FrameSheet.Options", "classGuildmaster_1_1Presentation_1_1Editor_1_1FrameSheet_1_1Options.html", null ],
     [ "Guildmaster.UI.OutcomeScreenView", "classGuildmaster_1_1UI_1_1OutcomeScreenView.html", null ],
     [ "Guildmaster.Game.Session.Net.OutcomeStage", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1OutcomeStage.html", null ],
+    [ "Guildmaster.Guild.OutcomeSummaryRow", "structGuildmaster_1_1Guild_1_1OutcomeSummaryRow.html", null ],
     [ "Guildmaster.Data.Definitions.OutfitPiece", "structGuildmaster_1_1Data_1_1Definitions_1_1OutfitPiece.html", null ],
     [ "Guildmaster.Balance.Editor.PairSynergyBench", "classGuildmaster_1_1Balance_1_1Editor_1_1PairSynergyBench.html", null ],
     [ "Guildmaster.Data.Editor.PaletteSnapshotBuilder", "classGuildmaster_1_1Data_1_1Editor_1_1PaletteSnapshotBuilder.html", null ],

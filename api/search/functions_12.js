@@ -177,7 +177,7 @@ var searchData=
   ['sliderrow_174',['SliderRow',['../classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html#a19ce5d67ec21f5676cc0f4760280d3b0',1,'Guildmaster::UI::Components::SliderRow']]],
   ['slot_175',['Slot',['../classGuildmaster_1_1UI_1_1Components_1_1Slot.html#a9871f94718355c99d9d826b79af77338',1,'Guildmaster::UI::Components::Slot']]],
   ['slotcreationrequest_176',['SlotCreationRequest',['../structGuildmaster_1_1Core_1_1Persistence_1_1SlotCreationRequest.html#acf4c72e91be93fd6fa59b120551e6937',1,'Guildmaster::Core::Persistence::SlotCreationRequest']]],
-  ['slotentry_177',['SlotEntry',['../structGuildmaster_1_1UI_1_1ProfileScreenView_1_1SlotEntry.html#a8e75777a7252dc7d59e7caf36b283844',1,'Guildmaster::UI::ProfileScreenView::SlotEntry']]],
+  ['slotentry_177',['SlotEntry',['../structGuildmaster_1_1UI_1_1ProfileScreenView_1_1SlotEntry.html#abd2798b19e7d5abe5b8a9eb6d7e308ad',1,'Guildmaster::UI::ProfileScreenView::SlotEntry']]],
   ['slotof_178',['SlotOf',['../classGuildmaster_1_1Core_1_1Players_1_1PlayerColors.html#ac42117d3921c46b3a43383a6d4c3b7a0',1,'Guildmaster::Core::Players::PlayerColors']]],
   ['slotsof_179',['SlotsOf',['../classGuildmaster_1_1Guild_1_1InjuryLedger.html#a888023f7952fcc8cb63c940c21e6246c',1,'Guildmaster::Guild::InjuryLedger']]],
   ['snapshot_180',['snapshot',['../interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html#a99ff1884837b9f0e3e7afec18b957e06',1,'Guildmaster.Core.Random.IRngService.Snapshot()'],['../classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#ac6da0a245ae4168f6db592d8aa142d57',1,'Guildmaster.Core.Random.XorShiftRng.Snapshot()']]],
