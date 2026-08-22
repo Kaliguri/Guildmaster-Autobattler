@@ -1099,7 +1099,8 @@ namespace Guildmaster.UI
                 for (int i = 0; i < _profiles.Profiles.Count; i++)
                 {
                     Core.Persistence.ProfileSummary p = _profiles.Profiles[i];
-                    slots.Add(new ProfileScreenView.SlotEntry(p.Id, p.Name, p.Id == activeId, p.Stats));
+                    slots.Add(new ProfileScreenView.SlotEntry(p.Id, p.Name, p.Id == activeId, p.Stats,
+                                                             p.EmblemId, p.EmblemColorIndex));
                 }
             }
 
@@ -1139,7 +1140,12 @@ namespace Guildmaster.UI
 
                     Pop();
                     onClosed?.Invoke();
-                }));
+                },
+                emblemOf: id => _guildEmblems?.Resolve(id),
+                shadeOf: index => _palette != null &&
+                                  _palette.TryGet(Core.Players.PlayerColors.TokenOf(index), out UnityEngine.Color shade)
+                                      ? shade
+                                      : UnityEngine.Color.white));
         }
 
         /// <summary>

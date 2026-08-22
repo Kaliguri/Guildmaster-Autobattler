@@ -32,13 +32,20 @@ namespace Guildmaster.UI
             /// <summary>Чем профиль жил: наиграно, дома, забеги, открытия. У пустого слота — ноль.</summary>
             public readonly Core.Persistence.ProfileStats Stats;
 
+            /// <summary>Знак профиля и его цвет — их рисует строка списка рядом с именем.</summary>
+            public readonly string EmblemId;
+            public readonly int    EmblemColorIndex;
+
             public SlotEntry(string id, string name, bool isActive,
-                             Core.Persistence.ProfileStats stats = default)
+                             Core.Persistence.ProfileStats stats = default,
+                             string emblemId = null, int emblemColorIndex = 0)
             {
-                Id       = id;
-                Name     = name;
-                IsActive = isActive;
-                Stats    = stats;
+                Id               = id;
+                Name             = name;
+                IsActive         = isActive;
+                Stats            = stats;
+                EmblemId         = emblemId ?? string.Empty;
+                EmblemColorIndex = emblemColorIndex;
             }
 
             /// <summary>Пустой слот: место есть, профиля нет.</summary>
@@ -62,7 +69,9 @@ namespace Guildmaster.UI
             Action<string> onDelete,
             Action<ProfileIdentity> onSave,
             Action<ProfileIdentity> onPreview,
-            Action onBack)
+            Action onBack,
+            Func<string, UnityEngine.Texture2D> emblemOf = null,
+            Func<int, UnityEngine.Color> shadeOf = null)
         {
             string L(string key, string fallback)
             {
@@ -164,7 +173,7 @@ namespace Guildmaster.UI
                 if (drop != null) drop.style.display = found ? DisplayStyle.Flex : DisplayStyle.None;
             }
 
-            BuildSlots(slotList, slots, slotLimit, L, ShowSide, onCreate);
+            BuildSlots(slotList, slots, slotLimit, L, ShowSide, onCreate, emblemOf, shadeOf);
 
             if (pick != null)
             {
@@ -349,7 +358,9 @@ namespace Guildmaster.UI
         /// </summary>
         private static void BuildSlots(VisualElement list, IReadOnlyList<SlotEntry> slots, int slotLimit,
                                        Func<string, string, string> L,
-                                       Action<string> onSelect, Action onCreate)
+                                       Action<string> onSelect, Action onCreate,
+                                       Func<string, UnityEngine.Texture2D> emblemOf = null,
+                                       Func<int, UnityEngine.Color> shadeOf = null)
         {
             if (list == null) return;
             list.Clear();
@@ -370,6 +381,20 @@ namespace Guildmaster.UI
                     // здесь одно и то же, и отдельный класс означал бы то же самое вторым способом.
                     if (slot.IsActive) pick.AddToClassList("gm-button--primary");
                     pick.clicked += () => onSelect?.Invoke(slot.Id);
+
+                    // Знак профиля — слева от имени, своим цветом; ровно как у дома в списке гильдий:
+                    // выбирают его на одном экране, значит и видно его должно быть одинаково.
+                    UnityEngine.Texture2D emblem = emblemOf?.Invoke(slot.EmblemId);
+                    if (emblem != null)
+                    {
+                        var mark = new VisualElement { pickingMode = PickingMode.Ignore };
+                        mark.AddToClassList("gm-profile__emblem");
+                        mark.style.backgroundImage = new StyleBackground(emblem);
+                        if (shadeOf != null)
+                            mark.style.unityBackgroundImageTintColor = shadeOf(slot.EmblemColorIndex);
+                        pick.Insert(0, mark);
+                    }
+
                     row.Add(pick);
                 }
                 else

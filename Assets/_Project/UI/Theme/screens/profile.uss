@@ -39,3 +39,14 @@
 .gm-profile__actions {
     flex-direction: row;
 }
+
+/* Знак профиля в строке списка — тот же вид, что у знака дома (guilds.uss): выбирают их одним
+   экраном, значит и читаться они обязаны одинаково. */
+.gm-profile__emblem {
+    width: 28px;
+    height: 28px;
+    margin-right: var(--gm-space-1);
+    background-size: 100% 100%;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+}
