@@ -81,6 +81,15 @@ namespace Guildmaster.Guild.Commands
         public bool SetSlotRelic(int slotIndex, string relicId) =>
             Submit(Next(RunCommandKind.SetSlotRelic, slotIndex: slotIndex, text: relicId));
 
+        public bool SetSlotInBattle(int slotIndex, bool inBattle) =>
+            Submit(Next(RunCommandKind.SetSlotInBattle, slotIndex: slotIndex, amount: inBattle ? 1 : 0));
+
+        public bool SwapSlots(int a, int b) =>
+            Submit(Next(RunCommandKind.SwapSlots, slotIndex: a, amount: b));
+
+        public bool SetSlotItem(int slotIndex, int itemSlot, string itemId) =>
+            Submit(Next(RunCommandKind.SetSlotItem, slotIndex: slotIndex, amount: itemSlot, text: itemId));
+
         public void AddGold(int delta) => Submit(Next(RunCommandKind.AddGold, amount: delta));
 
         public void RemoveRelic(string relicId) => Submit(Next(RunCommandKind.RemoveRelic, text: relicId));

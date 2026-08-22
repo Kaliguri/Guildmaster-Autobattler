@@ -30,6 +30,15 @@ namespace Guildmaster.Game.Session
         public bool SetSlotRelic(int slotIndex, string relicId)
             => _sessions.Commands?.SetSlotRelic(slotIndex, relicId) ?? false;
 
+        public bool SetSlotInBattle(int slotIndex, bool inBattle)
+            => _sessions.Commands?.SetSlotInBattle(slotIndex, inBattle) ?? false;
+
+        public bool SwapSlots(int a, int b)
+            => _sessions.Commands?.SwapSlots(a, b) ?? false;
+
+        public bool SetSlotItem(int slotIndex, int itemSlot, string itemId)
+            => _sessions.Commands?.SetSlotItem(slotIndex, itemSlot, itemId) ?? false;
+
         public void AddGold(int delta) => _sessions.Commands?.AddGold(delta);
 
         public void RemoveRelic(string relicId) => _sessions.Commands?.RemoveRelic(relicId);

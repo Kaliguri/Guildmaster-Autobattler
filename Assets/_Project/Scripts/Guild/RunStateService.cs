@@ -116,18 +116,33 @@ namespace Guildmaster.Guild
                 relicId = ContentIds.BaseRelic;
             }
 
+            // В бой выходят не все: мест в отряде до восьми, на арену идут четверо
+            // (ГДД preparation-screens §2.1). Позиции центруются по БОЕВЫМ, а не по всему отряду —
+            // иначе колонка старта уезжала бы вверх от числа запасных, которых на арене нет.
+            int battle = _config.BattleSlots;
+            if (battle <= 0)
+            {
+                UnityEngine.Debug.LogError($"[RunStateService] - GameConfig.BattleSlots = {battle}: беру 4, но это незаполненный ассет");
+                battle = 4;
+            }
+            if (battle > size) battle = size;
+
             var guild = new RosterSlot[size];
-            float top = (size - 1) * 0.5f; // центрируем колонку по вертикали
+            float top = (battle - 1) * 0.5f;
             for (int i = 0; i < size; i++)
             {
                 guild[i] = new RosterSlot
                 {
                     VesselId      = string.Empty,
                     RelicId       = relicId,
+                    InBattle      = i < battle,
                     SavedPosition = new UnityEngine.Vector2(-6f, (top - i) * 1.5f),
                 };
             }
-            return NewRun(seed, guild);
+
+            RunState run = NewRun(seed, guild);
+            run.OpenSlots = ResolveOpenSlots(_config.GuildSlotsOpenAtStart, size);
+            return run;
         }
 
         /// <summary>
@@ -143,10 +158,78 @@ namespace Guildmaster.Guild
             SaveLoadResult<RunState> result = _save.TryLoad<RunState>(key);
             if (result.IsOk)
             {
+                Normalize(result.Value, _config);
                 Current = result.Value;
                 Committed?.Invoke(Current);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Дочитать забег, сохранённый до того, как отряд вырос с четырёх мест до восьми. Версия схемы
+        /// ради этого НЕ поднимается (решение 2026-08-22): и недостающие места, и признак «в бою»
+        /// выводятся из того, что в файле уже есть, — миграция писала бы то же самое дороже.
+        /// <list type="bullet">
+        /// <item>мест меньше потолка — массив дописывается пустыми слотами с базовым китом;</item>
+        /// <item>никто не помечен «в бою» — боевыми становятся первые <c>BattleSlots</c> занятых мест;</item>
+        /// <item><see cref="RunState.OpenSlots"/> нулевой — берётся база из конфига.</item>
+        /// </list>
+        /// Идемпотентна: свежий забег проходит через неё без изменений.
+        /// </summary>
+        public static void Normalize(RunState run, GameConfig config)
+        {
+            if (run == null || config == null) return;
+
+            int size = config.GuildSize > 0 ? config.GuildSize : 4;
+            int battle = config.BattleSlots > 0 ? config.BattleSlots : 4;
+            if (battle > size) battle = size;
+
+            RosterSlot[] guild = run.Guild ?? System.Array.Empty<RosterSlot>();
+            if (guild.Length < size)
+            {
+                var grown = new RosterSlot[size];
+                for (int i = 0; i < size; i++)
+                    grown[i] = i < guild.Length && guild[i] != null
+                        ? guild[i]
+                        : new RosterSlot { RelicId = ContentIds.BaseRelic };
+                guild = grown;
+                run.Guild = guild;
+            }
+
+            bool anyInBattle = false;
+            for (int i = 0; i < guild.Length; i++)
+                if (guild[i] != null && guild[i].InBattle) { anyInBattle = true; break; }
+
+            if (!anyInBattle)
+            {
+                // Старый сейв: в бой шёл весь ростер, поэтому «кто выходит» восстанавливаем по порядку —
+                // первые занятые места. Пустые пропускаются: иначе четвёрка боя набралась бы дырами.
+                int taken = 0;
+                for (int i = 0; i < guild.Length && taken < battle; i++)
+                {
+                    if (guild[i] == null) continue;
+                    guild[i].InBattle = true;
+                    taken++;
+                }
+            }
+
+            if (run.OpenSlots <= 0)
+                run.OpenSlots = ResolveOpenSlots(config.GuildSlotsOpenAtStart, size);
+        }
+
+        /// <summary>
+        /// Сколько мест отряда открыто: база из конфига, зажатая потолком. Пустое поле ассета — не
+        /// «дефолт», а незаполненный ассет, поэтому подстановка кричит в лог (политика фолбэков).
+        /// </summary>
+        private static int ResolveOpenSlots(int fromConfig, int size)
+        {
+            if (fromConfig <= 0)
+            {
+                UnityEngine.Debug.LogError(
+                    $"[RunStateService] - GameConfig.GuildSlotsOpenAtStart = {fromConfig}: беру {size}, но это незаполненный ассет");
+                return size;
+            }
+            return fromConfig > size ? size : fromConfig;
         }
 
         /// <summary>
@@ -378,6 +461,125 @@ namespace Guildmaster.Guild
             if (slot == null || string.IsNullOrEmpty(relicId)) return false;
             slot.RelicId = relicId;
             return true;
+        }
+
+        /// <summary>
+        /// Вывести «Сосуда» на арену или увести в запас. Больше <c>GameConfig.BattleSlots</c> бойцов в
+        /// бой не пускает, пустое место — тоже: выводить в бой некого.
+        /// <para><b>internal:</b> снаружи через <c>IRunCommands.SetSlotInBattle</c>.</para>
+        /// </summary>
+        internal bool SetSlotInBattle(int slotIndex, bool inBattle)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            if (slot == null) return false;
+            if (slot.InBattle == inBattle) return false;
+
+            if (inBattle)
+            {
+                if (string.IsNullOrEmpty(slot.VesselId)) return false; // некого выводить
+                if (slotIndex >= OpenSlotCount) return false;          // место ещё не открыто
+                if (CountInBattle() >= BattleSlotCount) return false;  // на арене больше не помещается
+            }
+
+            slot.InBattle = inBattle;
+            return true;
+        }
+
+        /// <summary>
+        /// Поменять местами два места отряда — сортировка ленты, не смена состава. Слоты меняются
+        /// целиком, поэтому «в бою» едет ВМЕСТЕ с человеком: признак принадлежит бойцу, а не позиции.
+        /// <para>Иначе один и тот же жест значил бы две вещи разом — и порядок, и состав арены, — а
+        /// ради устранения этой двусмысленности признак и сделали полем вместо позиции в массиве
+        /// (журнал 2026-08-22 «The Battle Four Gets A Flag»). Вывод в бой — свой жест.</para>
+        /// <para><b>internal:</b> снаружи через <c>IRunCommands.SwapSlots</c>.</para>
+        /// </summary>
+        internal bool SwapSlots(int a, int b)
+        {
+            if (a == b) return false;
+            RosterSlot first = SlotAt(a);
+            RosterSlot second = SlotAt(b);
+            if (first == null || second == null) return false;
+            if (a >= OpenSlotCount || b >= OpenSlotCount) return false; // закрытое место не участвует
+
+            Current.Guild[a] = second;
+            Current.Guild[b] = first;
+            return true;
+        }
+
+        /// <summary>
+        /// Положить вещь в слот «Сосуда» или снять её (пустой <paramref name="itemId"/>). Снятое уходит
+        /// в склад забега, надетое уходит оттуда — вещь ни в один момент не существует в двух местах и
+        /// не исчезает вовсе.
+        /// <para>Надеть можно только то, что лежит в складе: иначе UI, отставший на снимок, наплодил бы
+        /// копии предмета в коопе.</para>
+        /// <para><b>internal:</b> снаружи через <c>IRunCommands.SetSlotItem</c>.</para>
+        /// </summary>
+        internal bool SetSlotItem(int slotIndex, int itemSlot, string itemId)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            if (slot == null) return false;
+            if (itemSlot < 0 || itemSlot >= _config.VesselItemSlots) return false;
+
+            string[] worn = slot.VesselItemIds ?? System.Array.Empty<string>();
+            if (worn.Length < _config.VesselItemSlots)
+            {
+                var grown = new string[_config.VesselItemSlots];
+                for (int i = 0; i < grown.Length; i++)
+                    grown[i] = i < worn.Length ? worn[i] : string.Empty;
+                worn = grown;
+                slot.VesselItemIds = worn;
+            }
+
+            string previous = worn[itemSlot] ?? string.Empty;
+            bool equipping = !string.IsNullOrEmpty(itemId);
+            if (!equipping && string.IsNullOrEmpty(previous)) return false; // снимать нечего
+
+            var stash = new List<string>(Current.ItemInventory ?? System.Array.Empty<string>());
+            if (equipping)
+            {
+                if (!stash.Remove(itemId)) return false; // в складе такой вещи нет
+            }
+            if (!string.IsNullOrEmpty(previous)) stash.Add(previous);
+
+            worn[itemSlot] = equipping ? itemId : string.Empty;
+            Current.ItemInventory = stash.ToArray();
+            return true;
+        }
+
+        /// <summary>Сколько мест отряда открыто сейчас. Ноль в состоянии читается как «все».</summary>
+        private int OpenSlotCount
+        {
+            get
+            {
+                if (Current == null) return 0;
+                int open = Current.OpenSlots;
+                int size = Current.Guild?.Length ?? 0;
+                if (open <= 0 || open > size) return size;
+                return open;
+            }
+        }
+
+        /// <summary>Сколько «Сосудов» помещается на арену. Пустое поле ассета — не дефолт, а ошибка.</summary>
+        private int BattleSlotCount
+        {
+            get
+            {
+                int battle = _config.BattleSlots;
+                if (battle > 0) return battle;
+                UnityEngine.Debug.LogError($"[RunStateService] - GameConfig.BattleSlots = {battle}: беру 4, но это незаполненный ассет");
+                return 4;
+            }
+        }
+
+        /// <summary>Сколько «Сосудов» сейчас помечено «в бою».</summary>
+        private int CountInBattle()
+        {
+            RosterSlot[] guild = Current?.Guild;
+            if (guild == null) return 0;
+            int n = 0;
+            for (int i = 0; i < guild.Length; i++)
+                if (guild[i] != null && guild[i].InBattle) n++;
+            return n;
         }
 
         // ── Последствия боёв (травмы и закалка, ГДД injuries-mettle) ──

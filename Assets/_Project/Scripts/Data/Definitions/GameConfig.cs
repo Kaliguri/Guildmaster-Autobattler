@@ -66,8 +66,16 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private int _restartsPerAct;
 
         [Header("Guild (starting run)")]
-        [Tooltip("Размер стартовой гильдии игрока (стандартных сосудов). GDD: 4.")]
+        [Tooltip("ПОТОЛОК мест в отряде забега (ГДД preparation-screens §2.1: 8). Сколько из них " +
+                 "открыто сейчас — в RunState.OpenSlots: вместимость добывается наградой забега.")]
         [SerializeField] private int _guildSize;
+
+        [Tooltip("Сколько мест отряда открыто на старте забега (ГДД: 6). Остальные до потолка " +
+                 "открываются наградой внутри забега и сгорают вместе с ним.")]
+        [SerializeField] private int _guildSlotsOpenAtStart;
+
+        [Tooltip("Сколько «Сосудов» выходит в бой одновременно (ГДД: 4). Остальные ждут в запасе.")]
+        [SerializeField] private int _battleSlots;
 
         [Tooltip("Релик на стартовом сосуде (пустой кит) — игрок навешивает собранное в лоадауте.")]
         [SerializeField] private string _startingRelicId;
@@ -130,7 +138,14 @@ namespace Guildmaster.Data.Definitions
         public int    ShopRerollCost      => _shopRerollCost;
         public int    RestartsPerAct      => _restartsPerAct;
 
+        /// <summary>Потолок мест в отряде. Открытых может быть меньше — см. <c>RunState.OpenSlots</c>.</summary>
         public int    GuildSize           => _guildSize;
+
+        /// <summary>Сколько мест отряда открыто на старте забега.</summary>
+        public int    GuildSlotsOpenAtStart => _guildSlotsOpenAtStart;
+
+        /// <summary>Сколько «Сосудов» выходит в бой одновременно.</summary>
+        public int    BattleSlots         => _battleSlots;
         public string StartingRelicId     => _startingRelicId;
 
         public int    MaxProfiles         => _maxProfiles;
@@ -193,7 +208,9 @@ namespace Guildmaster.Data.Definitions
             c._sellPercent         = 0.25f;
             c._shopRerollCost      = 50;
             c._restartsPerAct      = 2;
-            c._guildSize           = 4;
+            c._guildSize           = 8;
+            c._guildSlotsOpenAtStart = 6;
+            c._battleSlots         = 4;
             c._startingRelicId     = ContentIds.BaseRelic;
             c._maxProfiles         = 4;
             c._maxGuildsPerProfile = 8;

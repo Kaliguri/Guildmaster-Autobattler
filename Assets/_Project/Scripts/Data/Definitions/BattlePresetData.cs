@@ -34,6 +34,12 @@ namespace Guildmaster.Data.Definitions
                  "здесь задаются, чтобы дев-бой можно было прогнать раненым отрядом. Опц.")]
         [SerializeField] private ConsequenceData[] _consequences;
 
+        [Tooltip("Индекс места в RunState.Guild, откуда собран слот. Нужен, чтобы расстановка писала " +
+                 "позицию НЕ тому, кто стоит рядом: в бой выходят не все места отряда, и порядок " +
+                 "боевого ростера больше не совпадает с гильдией. Дев-пресет оставляет 0 — там " +
+                 "запись в сейв всё равно не срабатывает.")]
+        [HideInInspector] [SerializeField] private int _guildIndex;
+
         public RelicData  Relic    => _relic;
         public VesselData Vessel   => _vessel;
         public Vector2    Position => _position;
@@ -42,15 +48,23 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Травмы и закалки «Сосуда» (ГДД <c>injuries-mettle</c>). Пусто = цел.</summary>
         public IReadOnlyList<ConsequenceData> Consequences => _consequences;
 
+        /// <summary>
+        /// Место в <c>RunState.Guild</c>, из которого собран слот. Единственный способ дописать
+        /// позицию и надетый кит обратно тому же «Сосуду»: боевой ростер собирается ТОЛЬКО из
+        /// помеченных «в бою», поэтому его индексы гильдии больше не повторяют.
+        /// </summary>
+        public int GuildIndex => _guildIndex;
+
         /// <summary>Рантайм-слот (бридж гильдии игрока в бой): собирается из <c>RunState</c>, не из инспектора.</summary>
         public PlayerSlot(RelicData relic, VesselData vessel, Vector2 position, ItemData[] items = null,
-                          ConsequenceData[] consequences = null)
+                          ConsequenceData[] consequences = null, int guildIndex = 0)
         {
             _relic        = relic;
             _vessel       = vessel;
             _position     = position;
             _items        = items;
             _consequences = consequences;
+            _guildIndex   = guildIndex;
         }
     }
 

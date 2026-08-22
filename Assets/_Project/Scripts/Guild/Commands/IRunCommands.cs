@@ -19,6 +19,22 @@ namespace Guildmaster.Guild.Commands
         /// <summary>Поставить кит на сосуд напрямую, минуя запас (drag реликвии на юнита в расстановке).</summary>
         bool SetSlotRelic(int slotIndex, string relicId);
 
+        /// <summary>
+        /// Вывести «Сосуда» на арену или увести в запас. В отряде мест больше, чем выходит в бой
+        /// (ГДД <c>preparation-screens</c> §2.1), поэтому «кто дерётся» — отдельное решение игрока.
+        /// </summary>
+        bool SetSlotInBattle(int slotIndex, bool inBattle);
+
+        /// <summary>Поменять местами два места отряда (перетаскивание в ленте).</summary>
+        bool SwapSlots(int a, int b);
+
+        /// <summary>
+        /// Положить предмет в слот «Сосуда»; пустой <paramref name="itemId"/> снимает вещь. Снятое
+        /// уходит в склад забега, надетое уходит оттуда — вещь ни в один момент не висит в воздухе,
+        /// поэтому «переложить от одного к другому» это снятие плюс надевание.
+        /// </summary>
+        bool SetSlotItem(int slotIndex, int itemSlot, string itemId);
+
         /// <summary>Изменить золото забега (±).</summary>
         void AddGold(int delta);
 

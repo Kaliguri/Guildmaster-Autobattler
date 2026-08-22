@@ -43,6 +43,17 @@ namespace Guildmaster.Game.Session.Net
         public bool SetSlotRelic(int slotIndex, string relicId)
             => Send(Next(RunCommandKind.SetSlotRelic, slotIndex: slotIndex, text: relicId));
 
+        // Состав отряда и вещи гость меняет ТЕМИ ЖЕ командами, что и хозяин: жест публикуется
+        // одинаково у обеих ролей, исполняет владелец состояния (правило равенства ролей).
+        public bool SetSlotInBattle(int slotIndex, bool inBattle)
+            => Send(Next(RunCommandKind.SetSlotInBattle, slotIndex: slotIndex, amount: inBattle ? 1 : 0));
+
+        public bool SwapSlots(int a, int b)
+            => Send(Next(RunCommandKind.SwapSlots, slotIndex: a, amount: b));
+
+        public bool SetSlotItem(int slotIndex, int itemSlot, string itemId)
+            => Send(Next(RunCommandKind.SetSlotItem, slotIndex: slotIndex, amount: itemSlot, text: itemId));
+
         public void AddGold(int delta) => Send(Next(RunCommandKind.AddGold, amount: delta));
 
         public void RemoveRelic(string relicId) => Send(Next(RunCommandKind.RemoveRelic, text: relicId));

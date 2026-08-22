@@ -44,6 +44,17 @@ namespace Guildmaster.Guild.Commands
                 case RunCommandKind.SetSlotRelic:
                     return _state.SetSlotRelic(command.SlotIndex, command.Text);
 
+                // Все три проверяются ЗДЕСЬ, а не у нажавшего: сколько бойцов уже на арене и что лежит
+                // в складе, знает только владелец состояния. У напарника его снимок мог отстать.
+                case RunCommandKind.SetSlotInBattle:
+                    return _state.SetSlotInBattle(command.SlotIndex, command.Amount != 0);
+
+                case RunCommandKind.SwapSlots:
+                    return _state.SwapSlots(command.SlotIndex, command.Amount);
+
+                case RunCommandKind.SetSlotItem:
+                    return _state.SetSlotItem(command.SlotIndex, command.Amount, command.Text);
+
                 case RunCommandKind.AddGold:
                     if (_state.Current == null || command.Amount == 0) return false;
                     _state.AddGold(command.Amount);

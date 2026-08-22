@@ -27,7 +27,9 @@ MonoBehaviour:
   _sellPercent: 0.25
   _shopRerollCost: 50
   _restartsPerAct: 2
-  _guildSize: 4
+  _guildSize: 8
+  _guildSlotsOpenAtStart: 6
+  _battleSlots: 4
   _startingRelicId: relic.base
   _maxProfiles: 4
   _maxGuildsPerProfile: 8

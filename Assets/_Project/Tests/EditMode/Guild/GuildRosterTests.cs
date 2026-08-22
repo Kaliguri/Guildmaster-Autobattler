@@ -13,10 +13,10 @@ using UnityEngine.TestTools;
 namespace Guildmaster.Tests.EditMode.Guild
 {
     /// <summary>
-    /// Стартовая гильдия + мост гильдия→ростер боя (уточн. Макса 2026-07-17): <see cref="RunStateService.NewDefaultRun"/>
-    /// даёт 4 стандартных сосуда с базовым реликом; <see cref="GuildRoster.Resolve"/> резолвит слоты в
-    /// <see cref="PlayerSlot"/> по контент-БД (пропуская несуществующие релики); фабрика транзиентного пресета
-    /// собирает Free-бой из ростера. Так узел забега деплоит СВОЮ четвёрку, а не канон-ростер пресета.
+    /// Стартовая гильдия + мост гильдия→ростер боя: <see cref="RunStateService.NewDefaultRun"/> даёт
+    /// отряд в <c>GuildSize</c> мест, из которых на арену выходят <c>BattleSlots</c> помеченных;
+    /// <see cref="GuildRoster.Resolve"/> резолвит ТОЛЬКО боевых и несёт их место в гильдии в
+    /// <see cref="PlayerSlot.GuildIndex"/>; фабрика транзиентного пресета собирает Free-бой из ростера.
     /// </summary>
     public sealed class GuildRosterTests
     {
@@ -35,8 +35,13 @@ namespace Guildmaster.Tests.EditMode.Guild
         {
             RunState run = _runStates.NewDefaultRun(1L);
 
-            Assert.AreEqual(_config.GuildSize, run.Guild.Length, "Гильдия = GuildSize сосудов.");
-            Assert.AreEqual(4, run.Guild.Length, "Дефолт GDD = 4.");
+            Assert.AreEqual(_config.GuildSize, run.Guild.Length, "Гильдия = GuildSize мест.");
+            Assert.AreEqual(8, run.Guild.Length, "Дефолт ГДД: восемь мест отряда.");
+            Assert.AreEqual(6, run.OpenSlots, "На старте открыто шесть мест, остальные — награда забега.");
+
+            int inBattle = 0;
+            foreach (RosterSlot s2 in run.Guild) if (s2.InBattle) inBattle++;
+            Assert.AreEqual(_config.BattleSlots, inBattle, "На арену выходят BattleSlots «Сосудов», не весь отряд.");
             foreach (RosterSlot s in run.Guild)
             {
                 Assert.AreEqual("relic.base", s.RelicId, "Стартовый сосуд несёт базовый релик (пустой кит).");
@@ -61,9 +66,11 @@ namespace Guildmaster.Tests.EditMode.Guild
 
             PlayerSlot[] roster = GuildRoster.Resolve(run, content);
 
-            Assert.AreEqual(4, roster.Length);
+            Assert.AreEqual(_config.BattleSlots, roster.Length, "В бой идут только помеченные, а не весь отряд.");
             Assert.AreEqual("relic.druid", roster[0].Relic.Id);
             Assert.AreEqual("relic.base",  roster[1].Relic.Id);
+            for (int i = 0; i < roster.Length; i++)
+                Assert.AreEqual(i, roster[i].GuildIndex, "Место в гильдии едет вместе со слотом — по нему пишется позиция.");
         }
 
         [Test]
@@ -78,9 +85,9 @@ namespace Guildmaster.Tests.EditMode.Guild
             LogAssert.Expect(LogType.Warning, new Regex("relic\\.ghost"));
             PlayerSlot[] roster = GuildRoster.Resolve(run, content);
 
-            // Ростер идёт слот-в-слот с гильдией: по индексу расстановка пишет обратно позиции и киты,
-            // поэтому «плохой» сосуд не выпадает, а откатывается на базовый кит.
-            Assert.AreEqual(4, roster.Length, "Слот не должен выпадать — индексы гильдии обязаны совпадать.");
+            // «Плохой» сосуд не выпадает, а откатывается на базовый кит: иначе опечатка в id молча
+            // уводила бы бойца с арены. Место в гильдии при этом едет в GuildIndex.
+            Assert.AreEqual(_config.BattleSlots, roster.Length, "Слот не должен выпадать из-за неизвестного кита.");
             Assert.AreEqual("relic.base", roster[0].Relic.Id);
         }
 

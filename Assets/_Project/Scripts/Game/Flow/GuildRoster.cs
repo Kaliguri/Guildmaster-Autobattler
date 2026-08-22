@@ -13,27 +13,33 @@ namespace Guildmaster.Game.Flow
     /// </summary>
     public static class GuildRoster
     {
-        /// <summary>Гильдия забега → слоты player-ростера. Пустая/отсутствующая гильдия → пустой массив.</summary>
+        /// <summary>
+        /// Гильдия забега → слоты player-ростера. Берутся ТОЛЬКО помеченные
+        /// <see cref="RosterSlot.InBattle"/>: в отряде до восьми мест, на арену выходят четверо
+        /// (ГДД <c>preparation-screens</c> §2.1). Пустая/отсутствующая гильдия → пустой массив.
+        /// <para>Из-за этого длина результата больше НЕ совпадает с гильдией, и место каждого слота
+        /// едет в <see cref="PlayerSlot.GuildIndex"/> — по нему расстановка пишет позицию обратно.</para>
+        /// </summary>
         public static PlayerSlot[] Resolve(RunState run, IContentDatabase content)
         {
             if (run?.Guild == null || run.Guild.Length == 0 || content == null)
                 return System.Array.Empty<PlayerSlot>();
 
-            // ПОРЯДОК И ДЛИНА совпадают с run.Guild слот-в-слот: по индексу этого массива фаза расстановки
-            // пишет назад позиции и надетые релики. Поэтому «плохой» слот не выпадает, а откатывается на
-            // базовый кит — иначе одна опечатка в id сдвигала бы всю запись на соседний сосуд.
-            // Выпасть слот может ровно в двух аварийных случаях — пустая запись в гильдии и отсутствие
-            // даже базового кита в БД; оба означают битые данные и оба кричат в лог, потому что дальше
-            // расстановка будет писать правки не тому сосуду.
+            // «Плохой» слот не выпадает, а откатывается на базовый кит: иначе одна опечатка в id
+            // уводила бы бойца с арены молча. Выпасть слот может в двух аварийных случаях — пустая
+            // запись в гильдии и отсутствие даже базового кита в БД; оба означают битые данные и оба
+            // кричат в лог. Место в гильдии при этом не теряется: оно едет в PlayerSlot.GuildIndex.
             var slots = new List<PlayerSlot>(run.Guild.Length);
-            foreach (RosterSlot rs in run.Guild)
+            for (int i = 0; i < run.Guild.Length; i++)
             {
+                RosterSlot rs = run.Guild[i];
                 if (rs == null)
                 {
-                    Debug.LogWarning("[GuildRoster] - пустая запись в run.Guild → слот пропущен "
-                                     + "(индексы гильдии разъедутся)");
+                    Debug.LogWarning("[GuildRoster] - пустая запись в run.Guild → слот пропущен");
                     continue;
                 }
+
+                if (!rs.InBattle) continue; // в запасе: на арену не выходит
 
                 string relicId = string.IsNullOrEmpty(rs.RelicId) ? ContentIds.BaseRelic : rs.RelicId;
                 if (!content.TryGet(relicId, out RelicData relic)
@@ -51,7 +57,8 @@ namespace Guildmaster.Game.Flow
 
                 slots.Add(new PlayerSlot(relic, vessel, rs.SavedPosition,
                                          ResolveItems(rs.VesselItemIds, content),
-                                         ResolveConsequences(rs.Injuries, content)));
+                                         ResolveConsequences(rs.Injuries, content),
+                                         i));
             }
             return slots.ToArray();
         }

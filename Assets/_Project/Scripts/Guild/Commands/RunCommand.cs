@@ -61,6 +61,21 @@ namespace Guildmaster.Guild.Commands
         /// и старый лог, воспроизведённый после правки баланса, списал бы вчерашнее золото.</para>
         /// </remarks>
         HealInjury = 8,
+        /// <summary>
+        /// Поставить «Сосуда» в бой или увести в запас: <c>SlotIndex</c> — чьё место, <c>Amount</c> —
+        /// 1 «в бой», 0 «в запас». Применитель следит, чтобы боевых не стало больше, чем мест на арене.
+        /// </summary>
+        SetSlotInBattle = 9,
+
+        /// <summary>Поменять местами два места отряда: <c>SlotIndex</c> и <c>Amount</c> — индексы.</summary>
+        SwapSlots = 10,
+
+        /// <summary>
+        /// Надеть предмет из склада: <c>SlotIndex</c> — чей «Сосуд», <c>Amount</c> — номер слота
+        /// предмета, <c>Text</c> — id вещи. Пустой <c>Text</c> снимает вещь в склад.
+        /// </summary>
+        SetSlotItem = 11,
+
     }
 
     /// <summary>
