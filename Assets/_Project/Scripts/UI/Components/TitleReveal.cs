@@ -37,6 +37,7 @@ namespace Guildmaster.UI.Components
             Defeat,
         }
 
+        private readonly Spot _spot;
         private readonly VisualElement _glyph;
         private readonly Label _line;
         private readonly Label _sub;
@@ -45,6 +46,12 @@ namespace Guildmaster.UI.Components
         {
             AddToClassList("gm-title-reveal");
             pickingMode = PickingMode.Ignore;   // титр не ловит ввод: он ничего не решает
+
+            // ПЯТНО ПОД ТИТРОМ, а не сплошная заслонка (выбор Макса 22.08.2026: «Затемнение сильное
+            // пятном (но не цельная) за текстом»). Радиального градиента USS не умеет вовсе, поэтому
+            // пятно рисуется мешем — тем же приёмом, что вуаль под колонкой меню.
+            _spot = new Spot();
+            Add(_spot);
 
             _glyph = new VisualElement { name = "title-glyph", pickingMode = PickingMode.Ignore };
             _glyph.AddToClassList("gm-title-reveal__glyph");
@@ -128,5 +135,123 @@ namespace Guildmaster.UI.Components
 
         /// <summary>Класс «титр уходит».</summary>
         private const string GoneClass = "gm-title-reveal--gone";
+
+        /// <summary>
+        /// Тёмное пятно под титром: плотное в середине, растворяется к краям.
+        /// </summary>
+        /// <remarks>
+        /// <b>Мешем, потому что USS не умеет радиальных градиентов</b> — ни одного, и не планирует.
+        /// Тем же приёмом живёт вуаль под колонкой меню (<see cref="EdgeVeil"/>), и цвет сюда, как и
+        /// туда, приходит ТОЛЬКО из темы: своего у пятна нет, иначе у токена появился бы второй
+        /// владелец.
+        /// <para>Вложенный класс, а не отдельный контрол набора: пятно не самостоятельная вещь, его
+        /// не поставить никуда, кроме титра. Понадобится второму месту — тогда и выносить.</para>
+        /// </remarks>
+        private sealed class Spot : VisualElement
+        {
+            /// <summary>Сколько лучей у веера. 48 хватает: край пятна и так размыт затуханием.</summary>
+            private const int Rays = 48;
+
+            private static readonly CustomStyleProperty<Color> ColorProp =
+                new CustomStyleProperty<Color>("--gm-title-spot-color");
+
+            private static readonly CustomStyleProperty<float> RadiusXProp =
+                new CustomStyleProperty<float>("--gm-title-spot-radius-x");
+
+            private static readonly CustomStyleProperty<float> RadiusYProp =
+                new CustomStyleProperty<float>("--gm-title-spot-radius-y");
+
+            private Color _color = Color.clear;   // не пришёл цвет — пятна нет, и это видно сразу
+            private float _radiusX = 0.42f;
+            private float _radiusY = 0.34f;
+
+            public Spot()
+            {
+                name = "title-spot";
+                AddToClassList("gm-title-reveal__spot");
+                pickingMode = PickingMode.Ignore;
+                generateVisualContent += OnGenerate;
+                RegisterCallback<GeometryChangedEvent>(_ => MarkDirtyRepaint());
+                RegisterCallback<CustomStyleResolvedEvent>(OnCustomStyleResolved);
+            }
+
+            private void OnCustomStyleResolved(CustomStyleResolvedEvent evt)
+            {
+                if (evt.customStyle.TryGetValue(ColorProp, out Color c)) _color = c;
+                if (evt.customStyle.TryGetValue(RadiusXProp, out float rx)) _radiusX = Mathf.Clamp01(rx);
+                if (evt.customStyle.TryGetValue(RadiusYProp, out float ry)) _radiusY = Mathf.Clamp01(ry);
+                MarkDirtyRepaint();
+            }
+
+            /// <summary>
+            /// Доля радиуса, до которой пятно держит ПОЛНУЮ плотность, — его ядро.
+            /// </summary>
+            /// <remarks>
+            /// Без ядра пятно линейно тает от самой середины и читается «дымкой», а не затемнением:
+            /// цвет между вершинами треугольника интерполируется линейно, другого спада меш не знает.
+            /// Просьба Макса 22.08.2026 была именно «сильное пятном» — значит плотная середина и
+            /// растворение только по краю.
+            /// </remarks>
+            private const float Core = 0.5f;
+
+            private void OnGenerate(MeshGenerationContext ctx)
+            {
+                float w = localBound.width;
+                float h = localBound.height;
+                if (w <= 0f || h <= 0f || _color.a <= 0f) return;
+
+                float cx = w * 0.5f;
+                float cy = h * 0.5f;
+                float rx = w * _radiusX;
+                float ry = h * _radiusY;
+
+                Color rgb = PlateButton.VertexColor(_color);
+                var solid = new Color(rgb.r, rgb.g, rgb.b, _color.a);
+                var clear = new Color(rgb.r, rgb.g, rgb.b, 0f);
+
+                // Центр + ДВА кольца: ядро полной плотности и внешний край в прозрачность. Треугольников
+                // Rays (веер ядра) + Rays * 2 (полоса затухания).
+                int ring = Rays + 1;
+                MeshWriteData mesh = ctx.Allocate(1 + ring * 2, Rays * 9);
+                var verts = new Vertex[1 + ring * 2];
+
+                verts[0].position = new Vector3(cx, cy, Vertex.nearZ);
+                verts[0].tint = solid;
+
+                for (int i = 0; i <= Rays; i++)
+                {
+                    float angle = Mathf.PI * 2f * i / Rays;
+                    float dx = Mathf.Cos(angle);
+                    float dy = Mathf.Sin(angle);
+
+                    verts[1 + i].position = new Vector3(cx + dx * rx * Core, cy + dy * ry * Core, Vertex.nearZ);
+                    verts[1 + i].tint = solid;
+
+                    verts[1 + ring + i].position = new Vector3(cx + dx * rx, cy + dy * ry, Vertex.nearZ);
+                    verts[1 + ring + i].tint = clear;
+                }
+
+                mesh.SetAllVertices(verts);
+
+                // Намотка ПО ЧАСОВОЙ в экранных координатах (ось Y вниз): угол растёт, синус кладёт
+                // точку ниже — обход выходит по часовой сам. Против часовой меш молча не рисуется.
+                var indices = new ushort[Rays * 9];
+                for (int i = 0; i < Rays; i++)
+                {
+                    ushort inner = (ushort)(1 + i);
+                    ushort innerNext = (ushort)(1 + i + 1);
+                    ushort outer = (ushort)(1 + ring + i);
+                    ushort outerNext = (ushort)(1 + ring + i + 1);
+
+                    int o = i * 9;
+                    indices[o] = 0; indices[o + 1] = inner; indices[o + 2] = innerNext;
+
+                    indices[o + 3] = inner; indices[o + 4] = outer;     indices[o + 5] = outerNext;
+                    indices[o + 6] = inner; indices[o + 7] = outerNext; indices[o + 8] = innerNext;
+                }
+
+                mesh.SetAllIndices(indices);
+            }
+        }
     }
 }
