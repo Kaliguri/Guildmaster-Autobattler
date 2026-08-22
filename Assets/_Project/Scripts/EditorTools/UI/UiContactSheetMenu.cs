@@ -1,4 +1,4 @@
-using Guildmaster.DevTools;
+﻿using Guildmaster.DevTools;
 using UnityEditor;
 using UnityEngine;
 
@@ -64,6 +64,28 @@ namespace Guildmaster.UI.EditorTools
             }
 
             Run(UiContactSheetRunner.Job.LightnessLadder);
+        }
+
+        /// <summary>
+        /// Кадры экранов: по одному снимку на каждый экран каталога превью.
+        /// </summary>
+        /// <remarks>
+        /// Отдельным пунктом от контактного листа, потому что вопрос другой. Лист отвечает «как
+        /// выглядит элемент», этот прогон — «как выглядит экран целиком»: разбор 23.08.2026 показал,
+        /// что регрессии уровня экрана (пропал задник, разъехалась метрика, не отработан реф) не
+        /// ловятся ни одним статическим гейтом и видны только на кадре.
+        /// </remarks>
+        [MenuItem("Alebardium/UI/Screen Sheet", priority = 103)]
+        public static void CaptureScreens()
+        {
+            if (!EditorApplication.isPlaying)
+            {
+                Debug.LogError("[ScreenSheet] Нужен play mode: экраны снимаются на живой панели, " +
+                               "поверх настоящего задника.");
+                return;
+            }
+
+            Run(UiContactSheetRunner.Job.ScreenSheet);
         }
 
         private static void Run(UiContactSheetRunner.Job job)

@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Guildmaster.DevTools
@@ -14,12 +14,13 @@ namespace Guildmaster.DevTools
     /// </remarks>
     public sealed class UiContactSheetRunner : MonoBehaviour
     {
-        /// <summary>Что снимать: полный лист состояний или лестницу громкости фона.</summary>
+        /// <summary>Что снимать: лист состояний, лестницы фона или кадры экранов.</summary>
         public enum Job
         {
             ContactSheet,
             ColourLadder,
             LightnessLadder,
+            ScreenSheet,
         }
 
         private Job _job;
@@ -37,6 +38,9 @@ namespace Guildmaster.DevTools
             {
                 if (_job == Job.ColourLadder) await UiColourLadder.Capture(this);
                 else if (_job == Job.LightnessLadder) await UiColourLadder.CaptureLightness(this);
+#if UNITY_EDITOR
+                else if (_job == Job.ScreenSheet) await UiScreenSheet.Capture(this);
+#endif
                 else await UiContactSheet.Capture(this);
             }
             finally

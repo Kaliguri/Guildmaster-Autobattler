@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -161,8 +161,10 @@ namespace Guildmaster.DevTools
         /// Брать «любой <see cref="UIDocument"/>» нельзя, и это ловилось живьём: в CoreScene их два, и
         /// первым отдавался дев-оверлей «Dev Encounter Panel» с меньшим порядком сортировки. Лист лёг
         /// бы ПОД игровой интерфейс и снял бы кадр, на котором его почти не видно.
+        /// <para>Открыт наружу для <see cref="UiScreenSheet"/>: кадры экранов снимаются на той же
+        /// панели и с той же оговоркой.</para>
         /// </remarks>
-        private static UIDocument FindGameUi()
+        internal static UIDocument FindGameUi()
         {
             var bootstrap = UnityEngine.Object.FindAnyObjectByType<Guildmaster.UI.UiRootBootstrap>();
             if (bootstrap != null) return bootstrap.GetComponent<UIDocument>();
@@ -501,7 +503,10 @@ namespace Guildmaster.DevTools
             }
         }
 
-        private static void SaveFrame(string path)
+        /// <summary>Кладёт текущий кадр экрана в PNG по указанному пути.</summary>
+        /// <remarks>Открыт наружу для <see cref="UiScreenSheet"/> — снимок берётся одинаково,
+        /// и второй такой же метод разошёлся бы с этим на первой же готче.</remarks>
+        internal static void SaveFrame(string path)
         {
             Texture2D frame = ScreenCapture.CaptureScreenshotAsTexture();
             try
