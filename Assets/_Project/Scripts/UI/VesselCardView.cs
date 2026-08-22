@@ -155,7 +155,11 @@ namespace Guildmaster.UI
             if (!string.IsNullOrEmpty(s.RelicId))
             {
                 string relicId = s.RelicId;
-                var toRelic = new PlateButton { text = string.Format(L("ui.vcard.to_relic", "Реликвия «{0}» →"), relicId) };
+                // Титул арканы, а не строковый id: до 23.08.2026 кнопка звалась «Реликвия «relic.bulwark» →».
+                var toRelic = new PlateButton
+                {
+                    text = string.Format(L("ui.vcard.to_relic", "Реликвия «{0}» →"), ContentTitle.Arcana(relicId)),
+                };
                 toRelic.AddToClassList("gm-vcard__to-relic");
                 toRelic.clicked += () => onRelic?.Invoke(relicId);
                 gear.Add(toRelic);

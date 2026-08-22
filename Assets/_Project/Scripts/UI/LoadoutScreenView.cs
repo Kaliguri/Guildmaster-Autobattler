@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using Guildmaster.UI.Components;
@@ -91,7 +91,16 @@ namespace Guildmaster.UI
                 view._cards.Add((relic, card));
             }
 
-            // Табы-заглушки (кроме Релик) — недоступны (структура на будущее: Предметы/Улучшения/AI).
+            // Заголовок и табы: разметка несёт RU-запас, ключ проводится здесь. До 23.08.2026 они
+            // стояли латиницей прямо в UXML («Loadout», «Relic/Items/Upgrades/AI») — мимо ключей и
+            // мимо языка игрока.
+            Localize(tree.Q<Label>("loadout-title"), "ui.loadout.title", localize);
+            Localize(tree.Q<Button>("tab-relic"),    "ui.loadout.tab.relic", localize);
+            Localize(tree.Q<Button>("tab-items"),    "ui.loadout.tab.items", localize);
+            Localize(tree.Q<Button>("tab-upgrades"), "ui.loadout.tab.upgrades", localize);
+            Localize(tree.Q<Button>("tab-ai"),       "ui.loadout.tab.ai", localize);
+
+            // Табы-заглушки (кроме Реликвии) — недоступны (структура на будущее).
             Disable(tree.Q<Button>("tab-items"));
             Disable(tree.Q<Button>("tab-upgrades"));
             Disable(tree.Q<Button>("tab-ai"));
@@ -132,5 +141,22 @@ namespace Guildmaster.UI
         public RelicData FirstRelic => _cards.Count > 0 ? _cards[0].Relic : null;
 
         private static void Disable(Button b) { if (b != null) b.SetEnabled(false); }
+
+        /// <summary>
+        /// Ставит перевод, оставляя написанное в разметке как RU-запас.
+        /// </summary>
+        /// <remarks>
+        /// Пустой ответ локализатора означает «перевода нет» — тогда на экране остаётся то, что
+        /// лежит в UXML. Затирать запас пустой строкой значило бы получить безымянный элемент там,
+        /// где перевод просто не завели.
+        /// </remarks>
+        private static void Localize(VisualElement element, string key, Func<string, string> localize)
+        {
+            string value = localize?.Invoke(key);
+            if (string.IsNullOrEmpty(value)) return;
+
+            if (element is Button button) button.text = value;
+            else if (element is Label label) label.text = value;
+        }
     }
 }

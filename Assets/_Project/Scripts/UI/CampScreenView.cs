@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Guild;
 using Guildmaster.UI.Components;
 using UnityEngine.UIElements;
@@ -115,7 +115,9 @@ namespace Guildmaster.UI
             CampAction.Empower    => "Усилиться",
             CampAction.CopyRelic  => "Получить копию реликвии",
             CampAction.Cleanse    => "Снять негативное последствие",
-            CampAction.HireVessel => "Нанять сосуда (или заменить старого)",
+            // Скобка про замену — ПОЯСНЕНИЕ, и в подпись кнопки оно не помещалось: текст выходил за
+            // пластину и рисовался поверх соседей (кадр 23.08.2026). Место пояснению — тултип.
+            CampAction.HireVessel => "Нанять Сосуда",
             _                     => "Пройти мимо",
         };
     }

@@ -1,13 +1,13 @@
 ﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel" style="min-width: 560px; max-width: 600px;">
-            <ui:Label text="Loadout" class="gm-text-title gm-panel__title" />
+            <ui:Label name="loadout-title" text="Расстановка" class="gm-text-title gm-panel__title" />
 
             <ui:VisualElement class="gm-tabbar">
-                <gm:PlateButton name="tab-relic" text="Relic" class="gm-tab gm-tab--active" />
-                <gm:PlateButton name="tab-items" text="Items" class="gm-tab" />
-                <gm:PlateButton name="tab-upgrades" text="Upgrades" class="gm-tab" />
-                <gm:PlateButton name="tab-ai" text="AI" class="gm-tab" />
+                <gm:PlateButton name="tab-relic" text="Реликвия" class="gm-tab gm-tab--active" />
+                <gm:PlateButton name="tab-items" text="Предметы" class="gm-tab" />
+                <gm:PlateButton name="tab-upgrades" text="Улучшения" class="gm-tab" />
+                <gm:PlateButton name="tab-ai" text="Поведение" class="gm-tab" />
             </ui:VisualElement>
             <ui:VisualElement class="gm-tabbar__rail" />
 
