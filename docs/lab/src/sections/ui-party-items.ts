@@ -369,7 +369,7 @@ function partyCockpit(ctx: CanvasRenderingContext2D, width: number, height: numb
 }
 
 /** I-Г · Витрина: четвёрка стоит на живой арене, лента отряда — полка снизу. */
-function partyStage(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+export function partyStage(ctx: CanvasRenderingContext2D, width: number, height: number): void {
   w.screen(ctx, width, height);
   w.worldBehind(ctx, width, height);
   w.scrim(ctx, width, height, 0.35);
@@ -405,7 +405,7 @@ function partyStage(ctx: CanvasRenderingContext2D, width: number, height: number
 /* ══ Страница «Предметы» ═══════════════════════════════════════════════════ */
 
 /** II-А · Строки: «Сосуд» строкой, четыре квадратных слота в ряд, склад под ними. */
-function itemsRows(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+export function itemsRows(ctx: CanvasRenderingContext2D, width: number, height: number): void {
   w.screen(ctx, width, height);
   w.scrim(ctx, width, height, 0.75);
   header(ctx, width, height, 1);

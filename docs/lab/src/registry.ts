@@ -284,6 +284,14 @@ export const PAGES: PageDef[] = [
     icon: "⚔"
   },
   {
+    id: "ui-prep-final",
+    area: "ui",
+    title: "Подготовка: итог",
+    blurb: "Семь принятых экранов в порядке пути игрока: отряд телами, предметы строками, панель по ЛКМ, разворот по ПКМ двумя табами и та же книга у Реликвии.",
+    load: () => import("./sections/ui-prep-final.js"),
+    icon: "★"
+  },
+  {
     id: "ui-party-items",
     area: "ui",
     title: "Отряд и предметы",

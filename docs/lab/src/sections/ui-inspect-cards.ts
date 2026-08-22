@@ -155,7 +155,7 @@ function stageBehind(ctx: CanvasRenderingContext2D, width: number, height: numbe
 }
 
 /** III-А · Колонка у кромки: узкая панель во всю высоту, всё списком, скролл. */
-function panelColumn(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+export function panelColumn(ctx: CanvasRenderingContext2D, width: number, height: number): void {
   stageBehind(ctx, width, height);
 
   const r: w.Rect = { x: 0.72, y: 0.08, w: 0.23, h: 0.84 };
@@ -801,7 +801,7 @@ function bookHalves(ctx: CanvasRenderingContext2D, width: number, height: number
 }
 
 /** VI-В · Клетки на развороте: облик колонкой, остальное — четыре секции в рамках. */
-function bookCells(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+export function bookCells(ctx: CanvasRenderingContext2D, width: number, height: number): void {
   const b = book(ctx, width, height, "КАЙ, СЫН КАМЕНОТЁСА", "Сосуд гильдии · Реликвия «Щит» · Танк · уровень 3", 0);
 
   figure(ctx, { x: b.left.x, y: b.left.y, w: b.left.w * 0.42, h: b.left.h }, width, height, "вид в облачении");
@@ -840,7 +840,7 @@ function bookCells(ctx: CanvasRenderingContext2D, width: number, height: number)
 }
 
 /** VII-А · Дополнительно, лор и статистика: слева кто он и откуда, справа числа забегов. */
-function bookLore(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+export function bookLore(ctx: CanvasRenderingContext2D, width: number, height: number): void {
   const b = book(ctx, width, height, "КАЙ, СЫН КАМЕНОТЁСА", "Сосуд гильдии · Реликвия «Щит» · Танк · уровень 3", 1);
 
   section(ctx, "КТО И ОТКУДА", { x: b.left.x, y: b.left.y + 0.03 }, width, height);
@@ -949,7 +949,7 @@ function bookChronicle(ctx: CanvasRenderingContext2D, width: number, height: num
 }
 
 /** VIII-А · Реликвия, «Основное»: слева знак и облачение, справа кит строками. */
-function relicBookMain(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+export function relicBookMain(ctx: CanvasRenderingContext2D, width: number, height: number): void {
   const b = book(ctx, width, height, "THE BULWARK", "Стандартная · Обычная · класс Танк · уровень 2 · носит Кай", 0);
 
   figure(ctx, { x: b.left.x, y: b.left.y, w: b.left.w * 0.55, h: b.left.h * 0.62 }, width, height, "знак и облачение");
@@ -1000,7 +1000,7 @@ function relicBookMain(ctx: CanvasRenderingContext2D, width: number, height: num
 }
 
 /** VIII-Б · Реликвия, «Дополнительно»: лор кита и его история в гильдии. */
-function relicBookLore(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+export function relicBookLore(ctx: CanvasRenderingContext2D, width: number, height: number): void {
   const b = book(ctx, width, height, "THE BULWARK", "Стандартная · Обычная · класс Танк · уровень 2 · носит Кай", 1);
 
   section(ctx, "ЧЕЙ БЫЛ", { x: b.left.x, y: b.left.y + 0.03 }, width, height);
