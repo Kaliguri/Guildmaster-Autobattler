@@ -144,7 +144,6 @@ namespace Guildmaster.UI
                 var link = new Components.PlateButton { name = "btn-link-" + entry.Id };
                 link.AddToClassList("gm-button");
                 link.AddToClassList("gm-button--icon");
-                link.AddToClassList("gm-button--sm");
                 link.tooltip = L(entry.LabelKey, entry.LabelFallback);
                 link.SetEnabled(live);
                 if (live) link.clicked += () => onLink?.Invoke(url);

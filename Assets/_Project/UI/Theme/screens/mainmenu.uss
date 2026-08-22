@@ -229,9 +229,6 @@
 .gm-community__bug {
     flex-grow: 1;
     flex-shrink: 1;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
 }
 
 /* Значок жука ВНУТРИ кнопки отчёта — справа от подписи, как у рефа. Картинка приходит из темы, а

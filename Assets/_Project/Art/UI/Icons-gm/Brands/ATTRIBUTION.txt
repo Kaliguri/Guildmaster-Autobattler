@@ -1,19 +1,20 @@
-Brand icons in this folder are from Simple Icons (https://simpleicons.org/).
+Brand glyphs in this folder are from Tabler Icons (https://tabler.io/icons).
 
-License: CC0 1.0 Universal (public domain dedication)
-https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md
-
-No attribution is legally required; this note records the source so the next person knows where the
-files came from and how to fetch more of them.
+License: MIT
+https://github.com/tabler/tabler-icons/blob/main/LICENSE
 
 Downloaded 2026-08-22 from
-https://raw.githubusercontent.com/simple-icons/simple-icons/master/icons/<slug>.svg
+https://raw.githubusercontent.com/tabler/tabler-icons/main/icons/outline/<name>.svg
 
-Files: steam.svg, discord.svg, youtube.svg, telegram.svg
+Files: youtube.svg (brand-youtube).
 
-The icons are single-path monochrome glyphs on a transparent 24x24 viewBox, exactly like the guild
-emblems: the interface tints them, so the source must stay one flat colour.
+ONE SET FOR THE WHOLE SERVICE ROW. The bug glyph next to these came from Tabler as well, and mixing
+line icons with the solid silhouettes of game-icons in one row reads as two different interfaces.
+The earlier Simple Icons versions (steam, discord, telegram, youtube) were removed for that reason.
 
-BRAND MARKS ARE NOT COVERED BY CC0. The dedication applies to the SVG files, not to the trademarks
-they depict. Use each mark only to point at our own presence on that service (a link to our Discord,
-our Steam page), never as decoration and never in a way that suggests endorsement.
+`stroke="currentColor"` is rewritten to `#ffffff` on import: Unity does not resolve currentColor,
+and the interface tints these glyphs, so the source must be white.
+
+BRAND MARKS ARE NOT COVERED BY THE MIT LICENCE. It applies to the SVG files, not to the trademarks
+they depict. Use each mark only to point at our own presence on that service, never as decoration
+and never in a way that suggests endorsement.

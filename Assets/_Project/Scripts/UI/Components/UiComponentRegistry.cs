@@ -261,7 +261,8 @@ namespace Guildmaster.UI.Components
                 // Кегль подписи остаётся своей осью (--display): настройки просят крупную подпись
                 // при средней мере, лента забега — среднюю меру при мелкой подписи.
                 "gm-button--display", "gm-button--danger", "gm-button--unaffordable", "gm-button--back",
-                "gm-button--icon", "gm-button--sm", "gm-button--lg", "gm-button--block"),
+                "gm-button--icon", "gm-button--icon-label",
+                "gm-button--sm", "gm-button--lg", "gm-button--block"),
             New("Кнопка (Главная) — Вариация 1", "gm-button--primary", UiComponentGroup.Buttons,
                 Interactive, OfButton, "главное действие экрана: начать забег, принять, продолжить"),
             NewTechnical("Пластина (форма, не элемент набора)", "gm-plate-button", UiComponentGroup.Buttons,

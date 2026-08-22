@@ -56,7 +56,7 @@
                  круглые значки каналов. У рефа это единственное место, где живут ссылки, и стоит
                  оно ровно под панелью обращения, а не внутри неё. -->
             <ui:VisualElement name="community-service" class="gm-community__service">
-                <gm:PlateButton name="btn-bugreport" class="gm-button gm-button--sm gm-community__bug">
+                <gm:PlateButton name="btn-bugreport" class="gm-button gm-button--icon-label gm-community__bug">
                     <ui:VisualElement class="gm-button__icon gm-community__bug-icon" picking-mode="Ignore" />
                 </gm:PlateButton>
                 <ui:VisualElement name="community-links" class="gm-community__links" />
@@ -66,7 +66,7 @@
                  часть обращения, а просьба, и мешать её с «спасибо, что играете» нечестно. -->
             <ui:VisualElement name="community-wishlist" class="gm-community__wishlist">
                 <ui:Label name="wishlist-caption" class="gm-text-caption gm-community__wishlist-caption" />
-                <gm:PlateButton name="btn-wishlist" class="gm-button gm-button--sm gm-button--block gm-button--primary" />
+                <gm:PlateButton name="btn-wishlist" class="gm-button gm-button--block" />
             </ui:VisualElement>
         </ui:VisualElement>
 
