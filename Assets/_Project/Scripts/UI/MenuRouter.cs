@@ -952,7 +952,7 @@ namespace Guildmaster.UI
             if (CannotShow("Профиль (_profileScreen)", _profileUxml)) { req.OnClosed?.Invoke(); return; }
 
             PushScreen(() => BuildProfileScreen(req.Required, req.OnClosed),
-                       ScreenKind.Modal, scrimless: _mainMenuOpen);
+                       ScreenKind.Page, requiresBackdrop: true);
         }
 
         /// <summary>
@@ -962,6 +962,11 @@ namespace Guildmaster.UI
         /// Заказ Макса 21.08.2026 по рефу Heroes Olden Era: кнопка меню открывает не список, а две
         /// крупные двери. Обе ведут на ОДИН экран в разных лицах — разметка у них общая, а вопрос
         /// разный.
+        /// <para><b>За дверью — Page, а не Modal</b> (правило Макса 22.08.2026: «У нас должен быть лишь
+        /// 1 основной экран одновременно»). Модалка нижнее не прячет по устройству навигатора, поэтому
+        /// развилка оставалась видна за экраном, который сама и открыла, и два разных вопроса читались
+        /// одним слипшимся листом. Страницу навигатор прячет под собой сам — ровно как цепочку поверх
+        /// главного меню.</para>
         /// </remarks>
         private VisualElement BuildProfileHub()
         {
@@ -969,10 +974,10 @@ namespace Guildmaster.UI
                 key => _loc?.GetString(key),
                 onSelectProfile: () => PushScreen(
                     () => BuildProfileScreen(required: false, onClosed: null, customize: false),
-                    ScreenKind.Modal, scrimless: true),
+                    ScreenKind.Page, requiresBackdrop: true),
                 onCustomize: () => PushScreen(
                     () => BuildProfileScreen(required: false, onClosed: null, customize: true),
-                    ScreenKind.Modal, scrimless: true),
+                    ScreenKind.Page, requiresBackdrop: true),
                 onBack: Pop));
         }
 
@@ -983,7 +988,8 @@ namespace Guildmaster.UI
                 // Список слотов и активный профиль поменялись — экран пересобирается целиком. Точечная
                 // правка строк стоила бы своего кода ради экрана, который открывают раз в сессию.
                 Pop();
-                PushScreen(() => BuildProfileScreen(required, onClosed, customize), ScreenKind.Modal, scrimless: _mainMenuOpen);
+                PushScreen(() => BuildProfileScreen(required, onClosed, customize),
+                           ScreenKind.Page, requiresBackdrop: true);
             }
 
             var slots = new List<ProfileScreenView.SlotEntry>();
