@@ -20,13 +20,14 @@ namespace Guildmaster.Balance.Editor
         public static (string csv, string md) Run()
         {
             StatsConfig config = BalanceAssets.LoadStatsConfig();
+            ClassBalanceConfig classes = BalanceAssets.LoadClassBalanceConfig();
             int cap = SimBench.TicksFromSeconds(CapSeconds);
             List<RelicData> relics = BalanceAssets.LoadRelics();
 
             var headers = new List<string>
             {
                 "Relic", "DPS_solo", "DPS_summons", "DPS_with_summons", "DPS_aoe", "AoE_ratio",
-                "ControlSec", "ControlScore", "ControlShare%", "DmgControlled%",
+                "ControlSec", "ControlScore", "EffDPS", "ControlShare%", "DmgControlled%",
                 "AutoPhys%", "AutoMagic%", "Ability%", "DoT%", "React%", "Vuln%", "SelfDmg%",
                 "aoe_AutoPhys%", "aoe_AutoMagic%", "aoe_Ability%", "aoe_DoT%", "aoe_React%",
             };
@@ -63,6 +64,7 @@ namespace Guildmaster.Balance.Editor
                     relic.name, solo, summonDps, solo + summonDps, aoe, ratio,
                     a?.ControlSecondsDealt ?? 0.0,
                     a?.ControlScore ?? 0.0,
+                    EffectiveDps(solo + summonDps, a?.ControlScore ?? 0.0, soloReport.Seconds, classes),
                     soloReport.Seconds > 0 ? 100.0 * (a?.ControlSecondsDealt ?? 0.0) / soloReport.Seconds : 0.0,
                     Share(a?.DamageOnControlled ?? 0.0),
                     Share(a?.DamageAutoPhysical ?? 0.0),
@@ -96,6 +98,9 @@ namespace Guildmaster.Balance.Editor
                 "Колонки **aoe_\\*** — та же разбивка, но по AoE-прогону: у кита, чья способность требует нескольких " +
                 "целей, в solo она не кастуется вовсе, и её доля там ноль по отсутствию, а не по слабости. " +
                 "Сравнивать solo- и aoe-доли имеет смысл только с оглядкой на AoE_ratio — знаменатели разные. " +
+                "**EffDPS** — свой урон плюс тот, что кит НЕ ДАЛ нанести врагу: счёт контроля, " +
+                "умноженный на базовый DPS эталона. Сравнивать с классовой нормой надо именно его — " +
+                "контроллер вправе недодать урона ровно настолько, насколько отнял его у противника. " +
                 "**Контроль — четыре колонки, и они не про урон.** ControlSec — сколько секунд контроля кит " +
                 "наложил на цель (сон, оглушение, заморозка, подброс), **ControlScore** — те же секунды, " +
                 "взвешенные ценой эффекта (1.0 полный запрет, 0.5 частичный, 0.166 замедление), " +
@@ -108,10 +113,32 @@ namespace Guildmaster.Balance.Editor
                 "Фикс-HP цели (не 1e9) — чтобы механики «% от HP» не взрывали цифру. Чувствительно к расстановке; " +
                 "wind-up первых кадров занижает DPS. Способности/on-hit учтены (полный сим). DPS=0 — кит не бьёт цель (напр. хилер).";
 
+
+
             string csv = ReportWriter.WriteCsv("bench_dps", headers, table);
             string md = ReportWriter.WriteMarkdown("bench_dps", "SimBench — DPS-бенч (Фаза 1)", headers, table, notes);
             ReportWriter.WriteJson("bench_dps", "SimBench — DPS-бенч (Фаза 1)", headers, table, notes);
             return (csv, md);
+        }
+
+        /// <summary>
+        /// Эффективный урон: свой плюс тот, что кит НЕ ДАЛ нанести противнику, держа его под контролем.
+        /// </summary>
+        /// <remarks>
+        /// Курс один и выводится, а не назначается: счёт контроля 1.0 по построению означает «цель
+        /// выключена целиком на секунду», а выключенная цель не наносит своего урона — значит секунда
+        /// полного контроля стоит ровно столько, сколько цель успела бы ударить, то есть
+        /// <see cref="ClassBalanceConfig.BaseDps"/>. Второго числа заводить не нужно, и в этом весь
+        /// смысл: вес эффекта уже сказал, НАСКОЛЬКО цель выключена, курсу остаётся сказать, во что
+        /// обходится полное выключение.
+        /// <para>Сравнивать `EffDPS` надо с той же классовой нормой DPS: контроллер вправе недодать
+        /// урона ровно настолько, насколько отнял его у врага.</para>
+        /// </remarks>
+        private static double EffectiveDps(double ownDps, double controlScore, double seconds,
+            ClassBalanceConfig classes)
+        {
+            if (seconds <= 0.0 || classes == null) return ownDps;
+            return ownDps + controlScore * classes.BaseDps / seconds;
         }
 
         private static BattleReport RunDps(StatsConfig config, RelicData relic, bool aoe, int cap)
