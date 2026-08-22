@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Guild_1_1MapTraver
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.MapTraversal:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1MapTraversal__coll__graph.svg" width="234" height="176"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1MapTraversal__coll__graph.svg" width="234" height="196"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -126,6 +126,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a8a6be164460b2a811ef58aa85d70206e" id="r_a8a6be164460b2a811ef58aa85d70206e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapTraversal.html#a8a6be164460b2a811ef58aa85d70206e">IsActComplete</a> (<a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html">MapState</a> map)</td></tr>
 <tr class="memdesc:a8a6be164460b2a811ef58aa85d70206e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Акт пройден: игрок стоит на боссе и тот пройден.  <br /></td></tr>
 <tr class="separator:a8a6be164460b2a811ef58aa85d70206e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9520d3c5cd4ed04efb155160874c8a3" id="r_ad9520d3c5cd4ed04efb155160874c8a3"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapTraversal.html#ad9520d3c5cd4ed04efb155160874c8a3">ClearedCount</a> (<a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html">MapState</a> map)</td></tr>
+<tr class="memdesc:ad9520d3c5cd4ed04efb155160874c8a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько узлов группа прошла своими ногами: длина забега для статистики профиля.  <br /></td></tr>
+<tr class="separator:ad9520d3c5cd4ed04efb155160874c8a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Хелперы обхода карты акта (план [[act-map-run-loop]] §3.2). </p>
@@ -259,6 +262,36 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1MapTraversal_a0b7dacdd34d805731328312e97fa6857_icgraph.svg" width="100%" height="424"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<a id="ad9520d3c5cd4ed04efb155160874c8a3" name="ad9520d3c5cd4ed04efb155160874c8a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9520d3c5cd4ed04efb155160874c8a3">&#9670;&#160;</a></span>ClearedCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Guildmaster.Guild.MapTraversal.ClearedCount </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html">MapState</a>&#160;</td>
+          <td class="paramname"><em>map</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько узлов группа прошла своими ногами: длина забега для статистики профиля. </p>
+<p><b>СТАРТ НЕ СЧИТАЕТСЯ.</b> Генератор помечает стартовый узел пройденным сразу при создании карты (там никто не дрался), поэтому простой счёт <code>Cleared</code> завышал бы длину любого забега на единицу — в том числе брошенного на первом же шаге, где пройдено ноль. Отбрасывается он по этажу: старт единственный на нулевом, это свойство генератора карты. </p>
+<p>Счёт живёт здесь, у владельца топологии, а не у того, кто пишет статистику: «что значит пройденный узел» — вопрос карты, и второе мнение о нём разошлось бы с первым в тот день, когда у карты появятся ответвления.</p>
 
 </div>
 </div>

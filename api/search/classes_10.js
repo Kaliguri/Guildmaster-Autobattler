@@ -53,7 +53,8 @@ var searchData=
   ['runstate_50',['RunState',['../classGuildmaster_1_1Guild_1_1RunState.html',1,'Guildmaster::Guild']]],
   ['runstatebroadcast_51',['RunStateBroadcast',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RunStateBroadcast.html',1,'Guildmaster::Game::Session::Net']]],
   ['runstateservice_52',['RunStateService',['../classGuildmaster_1_1Guild_1_1RunStateService.html',1,'Guildmaster::Guild']]],
-  ['runtimeeffect_53',['RuntimeEffect',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html',1,'Guildmaster::Combat::Effects']]],
-  ['runtimeunit_54',['RuntimeUnit',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html',1,'Guildmaster::Combat']]],
-  ['runtimeunitfactory_55',['RuntimeUnitFactory',['../classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html',1,'Guildmaster::Combat']]]
+  ['runstatsrecorder_53',['RunStatsRecorder',['../classGuildmaster_1_1Game_1_1Session_1_1RunStatsRecorder.html',1,'Guildmaster::Game::Session']]],
+  ['runtimeeffect_54',['RuntimeEffect',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html',1,'Guildmaster::Combat::Effects']]],
+  ['runtimeunit_55',['RuntimeUnit',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html',1,'Guildmaster::Combat']]],
+  ['runtimeunitfactory_56',['RuntimeUnitFactory',['../classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html',1,'Guildmaster::Combat']]]
 ];

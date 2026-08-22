@@ -18,6 +18,7 @@ var namespaceGuildmaster_1_1Game_1_1Services =
     [ "LocalizationService", "classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html", "classGuildmaster_1_1Game_1_1Services_1_1LocalizationService" ],
     [ "LocalJsonFileSaveService", "classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService.html", "classGuildmaster_1_1Game_1_1Services_1_1LocalJsonFileSaveService" ],
     [ "NetPauseBridge", "classGuildmaster_1_1Game_1_1Services_1_1NetPauseBridge.html", "classGuildmaster_1_1Game_1_1Services_1_1NetPauseBridge" ],
+    [ "PlayTimeTracker", "classGuildmaster_1_1Game_1_1Services_1_1PlayTimeTracker.html", "classGuildmaster_1_1Game_1_1Services_1_1PlayTimeTracker" ],
     [ "ProfileService", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService" ],
     [ "RunAudioPresenter", "classGuildmaster_1_1Game_1_1Services_1_1RunAudioPresenter.html", "classGuildmaster_1_1Game_1_1Services_1_1RunAudioPresenter" ],
     [ "SaveJson", "classGuildmaster_1_1Game_1_1Services_1_1SaveJson.html", "classGuildmaster_1_1Game_1_1Services_1_1SaveJson" ],

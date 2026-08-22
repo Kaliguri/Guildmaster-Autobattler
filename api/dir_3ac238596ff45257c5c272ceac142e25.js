@@ -17,6 +17,7 @@ var dir_3ac238596ff45257c5c272ceac142e25 =
     [ "LocalizationService.cs", "LocalizationService_8cs.html", "LocalizationService_8cs" ],
     [ "LocalJsonFileSaveService.cs", "LocalJsonFileSaveService_8cs.html", "LocalJsonFileSaveService_8cs" ],
     [ "NetPauseBridge.cs", "NetPauseBridge_8cs.html", "NetPauseBridge_8cs" ],
+    [ "PlayTimeTracker.cs", "PlayTimeTracker_8cs.html", "PlayTimeTracker_8cs" ],
     [ "ProfileService.cs", "ProfileService_8cs.html", "ProfileService_8cs" ],
     [ "RunAudioPresenter.cs", "RunAudioPresenter_8cs.html", "RunAudioPresenter_8cs" ],
     [ "SaveJson.cs", "SaveJson_8cs.html", "SaveJson_8cs" ],

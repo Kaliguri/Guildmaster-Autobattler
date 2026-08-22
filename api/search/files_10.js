@@ -56,7 +56,8 @@ var searchData=
   ['runstate_2ecs_53',['RunState.cs',['../RunState_8cs.html',1,'']]],
   ['runstatebroadcast_2ecs_54',['RunStateBroadcast.cs',['../RunStateBroadcast_8cs.html',1,'']]],
   ['runstateservice_2ecs_55',['RunStateService.cs',['../RunStateService_8cs.html',1,'']]],
-  ['runtimeeffect_2ecs_56',['RuntimeEffect.cs',['../RuntimeEffect_8cs.html',1,'']]],
-  ['runtimeunit_2ecs_57',['RuntimeUnit.cs',['../RuntimeUnit_8cs.html',1,'']]],
-  ['runtimeunitfactory_2ecs_58',['RuntimeUnitFactory.cs',['../RuntimeUnitFactory_8cs.html',1,'']]]
+  ['runstatsrecorder_2ecs_56',['RunStatsRecorder.cs',['../RunStatsRecorder_8cs.html',1,'']]],
+  ['runtimeeffect_2ecs_57',['RuntimeEffect.cs',['../RuntimeEffect_8cs.html',1,'']]],
+  ['runtimeunit_2ecs_58',['RuntimeUnit.cs',['../RuntimeUnit_8cs.html',1,'']]],
+  ['runtimeunitfactory_2ecs_59',['RuntimeUnitFactory.cs',['../RuntimeUnitFactory_8cs.html',1,'']]]
 ];

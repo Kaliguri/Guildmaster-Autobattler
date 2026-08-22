@@ -5,6 +5,7 @@ var namespaceGuildmaster_1_1Game_1_1Session =
     [ "CoopSessionPresenter", "classGuildmaster_1_1Game_1_1Session_1_1CoopSessionPresenter.html", "classGuildmaster_1_1Game_1_1Session_1_1CoopSessionPresenter" ],
     [ "ILocalWhereabouts", "interfaceGuildmaster_1_1Game_1_1Session_1_1ILocalWhereabouts.html", "interfaceGuildmaster_1_1Game_1_1Session_1_1ILocalWhereabouts" ],
     [ "LocalWhereabouts", "classGuildmaster_1_1Game_1_1Session_1_1LocalWhereabouts.html", "classGuildmaster_1_1Game_1_1Session_1_1LocalWhereabouts" ],
+    [ "RunStatsRecorder", "classGuildmaster_1_1Game_1_1Session_1_1RunStatsRecorder.html", "classGuildmaster_1_1Game_1_1Session_1_1RunStatsRecorder" ],
     [ "SessionCommandRouter", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter" ],
     [ "SessionContext", "classGuildmaster_1_1Game_1_1Session_1_1SessionContext.html", "classGuildmaster_1_1Game_1_1Session_1_1SessionContext" ],
     [ "SessionHost", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost.html", "classGuildmaster_1_1Game_1_1Session_1_1SessionHost" ],

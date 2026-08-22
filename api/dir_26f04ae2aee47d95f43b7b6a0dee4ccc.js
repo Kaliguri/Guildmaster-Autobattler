@@ -4,6 +4,7 @@ var dir_26f04ae2aee47d95f43b7b6a0dee4ccc =
     [ "CoopJoinInterrupt.cs", "CoopJoinInterrupt_8cs.html", "CoopJoinInterrupt_8cs" ],
     [ "CoopSessionPresenter.cs", "CoopSessionPresenter_8cs.html", "CoopSessionPresenter_8cs" ],
     [ "LocalWhereabouts.cs", "LocalWhereabouts_8cs.html", "LocalWhereabouts_8cs" ],
+    [ "RunStatsRecorder.cs", "RunStatsRecorder_8cs.html", "RunStatsRecorder_8cs" ],
     [ "SessionCommandRouter.cs", "SessionCommandRouter_8cs.html", "SessionCommandRouter_8cs" ],
     [ "SessionContext.cs", "SessionContext_8cs.html", "SessionContext_8cs" ],
     [ "SessionHost.cs", "SessionHost_8cs.html", "SessionHost_8cs" ],

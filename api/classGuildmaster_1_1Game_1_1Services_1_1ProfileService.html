@@ -152,6 +152,7 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a842d09f69a582ec95e0c613d409ab4fe" id="r_a842d09f69a582ec95e0c613d409ab4fe"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html">ProfileSummary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a842d09f69a582ec95e0c613d409ab4fe">Profiles</a><code> [get]</code></td></tr>
+<tr class="memdesc:a842d09f69a582ec95e0c613d409ab4fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Все профили сводками.  <br /></td></tr>
 <tr class="separator:a842d09f69a582ec95e0c613d409ab4fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf2a2da8fb2e5f82058bb1fba1cd65e6" id="r_adf2a2da8fb2e5f82058bb1fba1cd65e6"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html">ProfileSummary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#adf2a2da8fb2e5f82058bb1fba1cd65e6">Guilds</a><code> [get]</code></td></tr>
 <tr class="memdesc:adf2a2da8fb2e5f82058bb1fba1cd65e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гильдии активного профиля.  <br /></td></tr>
@@ -761,6 +762,10 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Все профили сводками. </p>
+<p>У АКТИВНОГО статистика пересчитывается на месте.</p>
+<p>Список собран чтением диска, а правда активного профиля живёт в памяти: наигранное копится там и попадает в файл раз в минуту. Без пересчёта экран показывал бы состояние на момент запуска игры — то есть ноль наигранного у того, кто играет второй час. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#a51bfa1045b3268b3c341477144e177c8">Guildmaster.Core.Persistence.IProfileService</a>.</p>
 

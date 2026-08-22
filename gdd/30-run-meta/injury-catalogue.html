@@ -123,6 +123,17 @@ pre:hover > .expand-button {
 <p>Заведено 2026-08-21. <strong>Все числа <code>proposed</code></strong> до замера смертности бенчем забега.</p>
 </blockquote>
 <hr/>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Тон закрыт: рана — это медкарта </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Имена медицинские, описания числовые («−35% к дальности атаки»). Пересказ ран в голосе мира
+отвергнут 2026-08-21: рана — счёт, который игрок оплачивает, и читаться должна как счёт.</p>
+</div>
+</blockquote>
 <h2 id="три-правила-по-которым-собран-каталог">Три правила, по которым собран каталог<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#три-правила-по-которым-собран-каталог" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
 <p><strong>1. Рана меняет РОЛЬ, а не просто режет числа.</strong> Реф — <em>Battle Brothers</em>: там ранение ноги мешает
 двигаться, ранение руки — бить, повреждённый глаз — видеть. Разница принципиальная: «−10% ко всему»
@@ -286,11 +297,91 @@ pre:hover > .expand-button {
 <p>Тяжёлых намеренно <strong>три, а не шесть</strong>: слот один, встречаются они редко, и каждое должно быть
 узнаваемым событием, а не строкой из длинного списка.</p>
 <hr/>
+<h2 id="цена-снятия-и-имена-ассетов">Цена снятия и имена ассетов<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#цена-снятия-и-имена-ассетов" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Ассеты заведены 2026-08-21. <strong>Цена снятия — одна на ступень</strong> (принято Максом в тот же день,
+<a href="../../gdd/00-meta/journal-adr" class="internal" data-slug="gdd/00-meta/journal-adr">journal-adr</a> §2026-08-21 (9)): Ушиб <strong>30</strong>, Рана <strong>80</strong>, Увечье <strong>200</strong> золота при
+награде за бой 20 и предметах по 55-90. Внутри ступени цена одна на всех: раны различаются эффектом,
+а не ценником, и три числа читаются с одного взгляда.</p>
+<p>Веса ролла — по единице у всех: внутри ступени раны равновероятны, пока замер не скажет иначе.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Ушиб</th><th>Ассет</th><th>Рана</th><th>Ассет</th><th>Увечье</th><th>Ассет</th></tr></thead><tbody><tr><td>Подвёрнутая нога</td><td><code>SprainedLeg</code></td><td>Разорванное сухожилие</td><td><code>TornTendon</code></td><td>Раздробленная нога</td><td><code>ShatteredLeg</code></td></tr><tr><td>Отбитое плечо</td><td><code>BruisedShoulder</code></td><td>Перебитая рука</td><td><code>BrokenArm</code></td><td>Отнятая рука</td><td><code>SeveredArm</code></td></tr><tr><td>Треснувшее ребро</td><td><code>CrackedRib</code></td><td>Пробитый бок</td><td><code>PiercedSide</code></td><td>Пробитое лёгкое</td><td><code>PiercedLung</code></td></tr><tr><td>Рассечённая бровь</td><td><code>SplitBrow</code></td><td>Гниющая рана</td><td><code>FesteringWound</code></td><td></td><td></td></tr><tr><td>Помятый доспех</td><td><code>DentedArmor</code></td><td>Отнявшийся глаз</td><td><code>BlindedEye</code></td><td></td><td></td></tr><tr><td>Дрожь в руках</td><td><code>ShakingHands</code></td><td></td><td></td><td></td><td></td></tr></tbody></table></div>
 <h2 id="как-это-ложится-на-движок">Как это ложится на движок<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#как-это-ложится-на-движок" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
 <p>Раны — <strong>слоистые стат-модификаторы с источником</strong> (<code>source = &quot;injury&quot;</code>), ровно тот же механизм, что
 у перков (<a href="../../gdd/30-run-meta/injuries-mettle" class="internal" data-slug="gdd/30-run-meta/injuries-mettle">injuries-mettle</a> §Общая модель). Новой машинерии не требуется. Операция —
 <code>PercentMult</code>: раны обязаны множиться между собой, а не складываться, иначе три ушиба скорости
 дали бы минус девяносто процентов и бойца, стоящего на месте.</p>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>В ассете лежит ДЕЛЬТА, а не множитель </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Таблицы выше пишут «<code>MoveSpeed</code> ×0.7», а в поле <code>Value</code> кладётся <strong>−0.3</strong>: движок считает
+<code>Π(1 + Value)</code> (<code>Stats.cs</code>). Записать туда 0.7 значит выдать бойцу <strong>+70%</strong> к скорости —
+рана превратится в награду, и ни один тест этого не заметит.</p>
+</div>
+</blockquote>
 <p>Что реализуемо прямо сейчас, а что ждёт кода:</p>
 <p>Тип ассета — <strong><code>ConsequenceData</code></strong> (полярность «травма/закалка», ступень, моды, срок истечения,
 цена снятия). Отдельного типа под раны не заводили: он уже существовал под последствия боя, а второй
@@ -356,12 +447,9 @@ pre:hover > .expand-button {
 
 
 
-<div class="table-container"><table><thead><tr><th>Нужно</th><th>Состояние</th></tr></thead><tbody><tr><td>стат-модификаторы по всем статам каталога</td><td><strong>есть</strong> — все статы фазы 1</td></tr><tr><td>ступень травмы в данных</td><td><strong>есть</strong> — <code>InjuryGrade</code> (Ушиб / Рана / Увечье)</td></tr><tr><td>хранение ран на «Сосуде» в <code>RunState</code></td><td><strong>есть</strong> — <code>RosterSlot.InjuryIds</code></td></tr><tr><td>каскад переполнения</td><td><strong>есть</strong> — <code>InjuryCascade</code>, тесты <code>InjuryCascadeTests</code></td></tr><tr><td>стат стартового HP</td><td><strong>есть</strong> — <code>StatType.StartHpPct</code> (рамка выше)</td></tr><tr><td>раны применяются в бою</td><td><strong>есть</strong> — последним слоем каскада, тесты <code>InjuriesInBattleTests</code></td></tr><tr><td>истечение мелких по узлам</td><td><strong>есть</strong> — <code>InjuryLedger.AdvanceNode</code>, зовётся при прохождении узла</td></tr><tr><td>выдача раны за смерть в бою</td><td><strong>есть</strong> — команда <code>InflictInjury</code>, ролл по весам от сида</td></tr><tr><td>снятие у торговца и на привале</td><td><strong>есть</strong> — команда <code>HealInjury</code>, оплата золотом или действием привала</td></tr><tr><td>выбывание «Сосуда» при переполнении всех шести слотов</td><td><strong>нет</strong> — каскад исход сообщает, механики нет</td></tr><tr><td>условие «нельзя во фронт»</td><td><strong>нет</strong> механики запрета зон</td></tr><tr><td>ассеты четырнадцати последствий</td><td><strong>нет</strong> — заводятся в редакторе</td></tr><tr><td>экраны: занятые слоты, полка лекаря, выбор раны на привале</td><td><strong>нет</strong> — контракты готовы (<code>ShopInjury</code>)</td></tr></tbody></table></div>
+<div class="table-container"><table><thead><tr><th>Нужно</th><th>Состояние</th></tr></thead><tbody><tr><td>стат-модификаторы по всем статам каталога</td><td><strong>есть</strong> — все статы фазы 1</td></tr><tr><td>ступень травмы в данных</td><td><strong>есть</strong> — <code>InjuryGrade</code> (Ушиб / Рана / Увечье)</td></tr><tr><td>хранение ран на «Сосуде» в <code>RunState</code></td><td><strong>есть</strong> — <code>RosterSlot.Injuries</code></td></tr><tr><td>каскад переполнения</td><td><strong>есть</strong> — <code>InjuryCascade</code>, тесты <code>InjuryCascadeTests</code></td></tr><tr><td>стат стартового HP</td><td><strong>есть</strong> — <code>StatType.StartHpPct</code> (рамка выше)</td></tr><tr><td>раны применяются в бою</td><td><strong>есть</strong> — последним слоем каскада, тесты <code>InjuriesInBattleTests</code></td></tr><tr><td>истечение мелких по узлам</td><td><strong>есть</strong> — <code>InjuryLedger.AdvanceNode</code>, зовётся при прохождении узла</td></tr><tr><td>выдача раны за смерть в бою</td><td><strong>есть</strong> — команда <code>InflictInjury</code>, ролл по весам от сида</td></tr><tr><td>снятие у торговца и на привале</td><td><strong>есть</strong> — команда <code>HealInjury</code>, оплата золотом или действием привала</td></tr><tr><td>выбывание «Сосуда» при переполнении всех шести слотов</td><td><strong>нет</strong> — каскад исход сообщает, механики нет</td></tr><tr><td>условие «нельзя во фронт»</td><td><strong>нет</strong> механики запрета зон</td></tr><tr><td>ассеты четырнадцати последствий</td><td><strong>есть</strong> — <code>ScriptableObjects/Consequences/</code>, домен <code>consequence.*</code>, лок-ключи RU заведены</td></tr><tr><td>экраны: занятые слоты, полка лекаря, выбор раны на привале</td><td><strong>нет</strong> — контракты готовы (<code>ShopInjury</code>)</td></tr></tbody></table></div>
 <h2 id="открытые-вопросы">Открытые вопросы<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#открытые-вопросы" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
 <ul>
-<li><strong>Имена.</strong> Выше — рабочие; нарративный тон за <a href="../../gdd/60-narrative/" class="internal alias" data-slug="gdd/60-narrative/index">нарративом</a>, и там же
-решается, звучат ли раны сухо-медицински или в голосе мира.</li>
-<li><strong>Лок-ключи</strong> — заводить сразу при создании ассетов (HARD: текст только через ключи).</li>
 <li>Видит ли игрок, <strong>какая именно</strong> рана прилетит, до входа в бой, или только ступень.</li>
 <li>Нужны ли раны с <strong>плюсом</strong> — вроде «сросшаяся кость: −20% скорости, +15% брони». Это уже почти
 Закалка, и граница между ними требует вердикта.</li>
@@ -375,6 +463,6 @@ pre:hover > .expand-button {
                 C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
                 S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
                 s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
-                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-49" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#каталог-ран" data-for="каталог-ран">Каталог ран</a></li><li class="depth-1"><a href="#три-правила-по-которым-собран-каталог" data-for="три-правила-по-которым-собран-каталог">Три правила, по которым собран каталог</a></li><li class="depth-1"><a href="#ушибы--мелкие-3-слота" data-for="ушибы--мелкие-3-слота">Ушибы — мелкие, 3 слота</a></li><li class="depth-1"><a href="#раны--средние-2-слота" data-for="раны--средние-2-слота">Раны — средние, 2 слота</a></li><li class="depth-1"><a href="#увечья--тяжёлые-1-слот" data-for="увечья--тяжёлые-1-слот">Увечья — тяжёлые, 1 слот</a></li><li class="depth-1"><a href="#как-это-ложится-на-движок" data-for="как-это-ложится-на-движок">Как это ложится на движок</a></li><li class="depth-1"><a href="#открытые-вопросы" data-for="открытые-вопросы">Открытые вопросы</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../../gdd/30-run-meta/injuries-mettle" class="internal">Run - Injuries &amp; Mettle</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-49" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#каталог-ран" data-for="каталог-ран">Каталог ран</a></li><li class="depth-1"><a href="#три-правила-по-которым-собран-каталог" data-for="три-правила-по-которым-собран-каталог">Три правила, по которым собран каталог</a></li><li class="depth-1"><a href="#ушибы--мелкие-3-слота" data-for="ушибы--мелкие-3-слота">Ушибы — мелкие, 3 слота</a></li><li class="depth-1"><a href="#раны--средние-2-слота" data-for="раны--средние-2-слота">Раны — средние, 2 слота</a></li><li class="depth-1"><a href="#увечья--тяжёлые-1-слот" data-for="увечья--тяжёлые-1-слот">Увечья — тяжёлые, 1 слот</a></li><li class="depth-1"><a href="#цена-снятия-и-имена-ассетов" data-for="цена-снятия-и-имена-ассетов">Цена снятия и имена ассетов</a></li><li class="depth-1"><a href="#как-это-ложится-на-движок" data-for="как-это-ложится-на-движок">Как это ложится на движок</a></li><li class="depth-1"><a href="#открытые-вопросы" data-for="открытые-вопросы">Открытые вопросы</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../../gdd/00-meta/journal-adr" class="internal">Meta - Decision Journal</a></li><li><a href="../../gdd/30-run-meta/injuries-mettle" class="internal">Run - Injuries &amp; Mettle</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
 </script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
 </script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>
