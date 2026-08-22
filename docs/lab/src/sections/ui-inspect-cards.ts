@@ -955,11 +955,20 @@ function relicBookMain(ctx: CanvasRenderingContext2D, width: number, height: num
   figure(ctx, { x: b.left.x, y: b.left.y, w: b.left.w * 0.55, h: b.left.h * 0.62 }, width, height, "знак и облачение");
   section(ctx, "АВТОАТАКА", { x: b.left.x + b.left.w * 0.6, y: b.left.y + 0.03 }, width, height);
   lines(ctx, ["удар щитом", "41 урона · 1.2 с"], { x: b.left.x + b.left.w * 0.6, y: b.left.y + 0.065 }, width, height, 0.035);
-  section(ctx, "ПАССИВКИ", { x: b.left.x, y: b.left.y + b.left.h * 0.68 }, width, height);
+  section(ctx, "УРОВЕНЬ И КОПИИ", { x: b.left.x, y: b.left.y + b.left.h * 0.66 }, width, height);
+  lines(
+    ctx,
+    ["уровень 2 · копий собрано 2 / 3"],
+    { x: b.left.x, y: b.left.y + b.left.h * 0.66 + 0.035 },
+    width,
+    height,
+    0.035
+  );
+  section(ctx, "ПАССИВКИ", { x: b.left.x, y: b.left.y + b.left.h * 0.78 }, width, height);
   lines(
     ctx,
     ["+15% брони соседям в строю", "Уровень 2: барьер держится дольше"],
-    { x: b.left.x, y: b.left.y + b.left.h * 0.68 + 0.035 },
+    { x: b.left.x, y: b.left.y + b.left.h * 0.78 + 0.035 },
     width,
     height,
     0.035
@@ -1025,8 +1034,8 @@ function relicBookLore(ctx: CanvasRenderingContext2D, width: number, height: num
     ["боёв с ней", "31"],
     ["побед", "27"],
     ["носителей было", "3"],
-    ["копий собрано", "2 / 3"],
-    ["урона принято", "241 800"]
+    ["урона принято", "241 800"],
+    ["походов с ней", "5"]
   ];
   rows.forEach(([k, v], i) => {
     const y = b.right.y + 0.075 + i * 0.045;
@@ -1164,7 +1173,7 @@ const section_: SectionDef = {
       items: [
         {
           id: "book-figure",
-          status: "waiting",
+          status: "rejected",
           title: "VI-А · Портрет и лист",
           tag: "таб I · Основное",
           note: "Левая страница целиком под облик, правая — всё боевое подряд: статы, перки, снаряжение, травмы.",
@@ -1181,7 +1190,7 @@ const section_: SectionDef = {
         },
         {
           id: "book-halves",
-          status: "waiting",
+          status: "rejected",
           title: "VI-Б · Человек и боец",
           tag: "таб I · Основное",
           note: "Слева облик и то, что делает его собой — перки, Судьба, Обеты. Справа — чем он дерётся.",
@@ -1198,7 +1207,7 @@ const section_: SectionDef = {
         },
         {
           id: "book-cells",
-          status: "waiting",
+          status: "accepted",
           title: "VI-В · Клетки на развороте",
           tag: "таб I · Основное",
           note: "Облик узкой колонкой, остальное — четыре секции в рамках, по две на страницу.",
@@ -1215,7 +1224,7 @@ const section_: SectionDef = {
         },
         {
           id: "book-lore",
-          status: "waiting",
+          status: "accepted",
           title: "VII-А · Лор и статистика",
           tag: "таб II · Дополнительно",
           note: "Слева кто и откуда плюс как выглядит, справа — числа забегов и строка летописи.",
@@ -1232,7 +1241,7 @@ const section_: SectionDef = {
         },
         {
           id: "book-chronicle",
-          status: "waiting",
+          status: "rejected",
           title: "VII-Б · Летопись лентой",
           tag: "таб II · Дополнительно",
           note: "Слева облик и краткое досье с цифрами, справа — подвиги записями по походам.",
@@ -1249,7 +1258,7 @@ const section_: SectionDef = {
         },
         {
           id: "relic-book-main",
-          status: "waiting",
+          status: "accepted",
           title: "VIII-А · Реликвия, «Основное»",
           tag: "тот же каркас",
           note: "Слева знак и облачение плюс автоатака и пассивки, справа — три способности строками с ценой и условием.",
@@ -1266,7 +1275,7 @@ const section_: SectionDef = {
         },
         {
           id: "relic-book-lore",
-          status: "waiting",
+          status: "accepted",
           title: "VIII-Б · Реликвия, «Дополнительно»",
           tag: "тот же каркас",
           note: "Слева чей был щит и как он меняет носителя, справа — статистика Реликвии и список её носителей.",
