@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
 using Guildmaster.UI.Components;
@@ -92,6 +92,10 @@ namespace Guildmaster.UI
 
                     var buy = new PlateButton { text = L("ui.shop.buy", "Купить") };
                     buy.AddToClassList("gm-button");
+                    // Карточка товара уже узкой средней ступени, и кнопка в ней вылезала за края,
+                    // наезжая на соседний товар. Ступень --block — штатный отказ от собственной меры
+                    // в пользу контейнера; задавать ширину правилом экрана нельзя (ControlSizeGate).
+                    buy.AddToClassList("gm-button--block");
                     int index = i;
                     buy.clicked += () => { if (shop.Buy(index) == ShopBuyOutcome.NoSpace) ShowNoSpace(); };
                     buy.SetEnabled(!item.Sold && shop.Gold >= item.Price);

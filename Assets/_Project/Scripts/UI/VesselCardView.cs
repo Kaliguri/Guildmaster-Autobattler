@@ -133,7 +133,7 @@ namespace Guildmaster.UI
                     var row = new VisualElement();
                     row.AddToClassList("gm-vcard__stat");
                     row.Add(SpreadCard.Label(label, "gm-vcard__stat-label"));
-                    row.Add(SpreadCard.Label(value, null));
+                    row.Add(SpreadCard.Label(value, "gm-vcard__stat-value"));
                     stats.Add(row);
                 }
             left.Add(stats);
@@ -188,7 +188,7 @@ namespace Guildmaster.UI
                     var row = new VisualElement();
                     row.AddToClassList("gm-vcard__stat");
                     row.Add(SpreadCard.Label(label, "gm-vcard__stat-label"));
-                    row.Add(SpreadCard.Label(value, null));
+                    row.Add(SpreadCard.Label(value, "gm-vcard__stat-value"));
                     right.Add(row);
                 }
             else

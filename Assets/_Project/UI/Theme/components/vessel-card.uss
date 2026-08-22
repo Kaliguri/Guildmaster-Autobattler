@@ -1,4 +1,4 @@
-/* Содержимое карточки «Сосуда» поверх общего разворота. */
+﻿/* Содержимое карточки «Сосуда» поверх общего разворота. */
 
 .gm-vcard__figure {
     height: 40%;
@@ -21,6 +21,11 @@
 
 .gm-vcard__stat-label {
     color: var(--gm-color-text-muted);
+}
+
+/* Пара к подписи: число громче. См. тот же разбор в inspect.uss. */
+.gm-vcard__stat-value {
+    color: var(--gm-color-text);
 }
 
 .gm-vcard__trait {
