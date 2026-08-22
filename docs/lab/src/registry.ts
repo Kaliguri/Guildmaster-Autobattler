@@ -383,17 +383,9 @@ export const PAGES: PageDef[] = [
     id: "ui-uplift",
     area: "ui",
     title: "Догнать рефы",
-    blurb: "Чем Heroes Olden Era и Guildrun сильнее нас, экран за экраном: кадры рядом и предложения макетами.",
+    blurb: "План работ по UI: семь пунктов приём за приёмом плюс раскладки пяти экранов — кадры рефов рядом с нашими.",
     load: () => import("./sections/ui-uplift.js"),
     icon: "△"
-  },
-  {
-    id: "ui-uplift-steps",
-    area: "ui",
-    title: "Догнать рефы: семь пунктов",
-    blurb: "План приём за приёмом: концы, свечение, паузы, заголовки секций, углы кадра, обрамление арены, знак исхода.",
-    load: () => import("./sections/ui-uplift-steps.js"),
-    icon: "≡"
   },
   {
     id: "ui-notice",
