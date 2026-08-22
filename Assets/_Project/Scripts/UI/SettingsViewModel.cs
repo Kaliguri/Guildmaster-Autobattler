@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Settings;
 using UnityEngine;
@@ -146,6 +146,38 @@ namespace Guildmaster.UI
         public void SetCardAnimations(bool v) => _settings.SetCardAnimations(v);
         public void SetCardAttackAnimation(bool v) => _settings.SetCardAttackAnimation(v);
         public void SetAlwaysDetailedTooltips(bool v) => _settings.SetAlwaysDetailedTooltips(v);
+
+        /// <summary>
+        /// Есть ли правки, которых нет на диске, — то, о чём предупреждают на выходе.
+        /// </summary>
+        /// <remarks>
+        /// Считается сравнением с точкой отката, а не отдельным флагом «трогали»: игрок, вернувший
+        /// ползунок туда, откуда начал, ничего не менял, и спрашивать его не о чем. Флаг такой разницы
+        /// не видит и превращает предупреждение в шум, который перестают читать.
+        /// </remarks>
+        public bool HasUnsavedChanges
+        {
+            get
+            {
+                AudioVolumeSettings audio = _settings.Audio;
+                GameplaySettings play = _settings.Gameplay;
+
+                bool audioSame = Mathf.Approximately(audio.Master, _baseline.Master)
+                                 && Mathf.Approximately(audio.Music, _baseline.Music)
+                                 && Mathf.Approximately(audio.Sfx, _baseline.Sfx);
+
+                bool playSame = play.CardAnimations == _baselineGameplay.CardAnimations
+                                && play.CardAttackAnimation == _baselineGameplay.CardAttackAnimation
+                                && play.AlwaysDetailedTooltips == _baselineGameplay.AlwaysDetailedTooltips;
+
+                bool displaySame = _display.Width == _baselineDisplay.Width
+                                   && _display.Height == _baselineDisplay.Height
+                                   && _display.Mode == _baselineDisplay.Mode
+                                   && _display.RefreshRate.Equals(_baselineDisplay.Rate);
+
+                return !(audioSame && playSame && displaySame);
+            }
+        }
 
         /// <summary>Сохранить на диск и обновить точку отката. Два хранилища — два вызова.</summary>
         public void Save()

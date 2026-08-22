@@ -933,9 +933,12 @@ namespace Guildmaster.UI
                 consequence: consequence,
                 options: new System.Collections.Generic.List<Core.Flow.NoticeOption>
                 {
+                    // ПОДТВЕРДИТЬ СЛЕВА, ОТМЕНА СПРАВА (правило Макса 22.08.2026). Порядок ответов
+                    // задаётся здесь, потому что окно рисует их в порядке списка — и это
+                    // единственное место, где вопрос собирается.
+                    new Core.Flow.NoticeOption(null, confirmText, () => answered.TrySetResult(true)),
                     new Core.Flow.NoticeOption("ui.confirm.cancel", "Отмена",
                                                () => answered.TrySetResult(false), primary: true),
-                    new Core.Flow.NoticeOption(null, confirmText, () => answered.TrySetResult(true)),
                 }));
 
             return answered.Task;
@@ -1075,6 +1078,43 @@ namespace Guildmaster.UI
             return $"Вместе с ним пропадут {homes} и все их забеги. Это необратимо.";
         }
 
+        /// <summary>
+        /// Уйти из настроек. С несохранёнными правками сперва спрашиваем — и только «да» их теряет.
+        /// </summary>
+        /// <remarks>
+        /// Откат зовётся ПОСЛЕ согласия, а не до вопроса: настройки применяются живьём, и откатить их
+        /// на время диалога значило бы показать игроку чужую громкость и чужое разрешение ровно в тот
+        /// момент, когда он решает, терять ли свои.
+        /// </remarks>
+        private async UniTaskVoid LeaveSettingsAsync()
+        {
+            if (_settingsVm.HasUnsavedChanges)
+            {
+                bool leave = await ConfirmAsync(
+                    Loc("ui.settings.leave.title", "Выйти из настроек?"),
+                    Loc("ui.settings.leave.body", "Несохранённые изменения будут потеряны."),
+                    consequence: null,
+                    Loc("ui.settings.leave.confirm", "Выйти"));
+
+                if (!leave) return;
+            }
+
+            _settingsVm.Cancel();
+            Pop();
+        }
+
+        /// <summary>Сбросить настройки к начальным — с вопросом: отменить это нечем, кроме памяти игрока.</summary>
+        private async UniTaskVoid ResetSettingsAsync()
+        {
+            bool reset = await ConfirmAsync(
+                Loc("ui.settings.reset.title", "Сбросить настройки?"),
+                Loc("ui.settings.reset.body", "Все значения вернутся к начальным."),
+                consequence: null,
+                Loc("ui.settings.reset.confirm", "Сбросить"));
+
+            if (reset) _settingsVm.ResetToDefaults();
+        }
+
         private VisualElement BuildSettingsScreen()
         {
             var screen = FillRoot(_settingsUxml.CloneTree());
@@ -1195,8 +1235,15 @@ namespace Guildmaster.UI
             });
 
             screen.Q<Button>("btn-save").clicked += () => { _settingsVm.Save(); Pop(); };
-            screen.Q<Button>("btn-cancel").clicked += () => { _settingsVm.Cancel(); Pop(); };
-            screen.Q<Button>("btn-defaults").clicked += () => _settingsVm.ResetToDefaults();
+
+            // Уход с несохранёнными правками и сброс к начальным — оба необратимы для того, что игрок
+            // только что крутил, и оба спрашивают (правило Макса 22.08.2026). Уход БЕЗ правок не
+            // спрашивает ничего: вопрос без последствий приучает жать «да» не читая.
+            Components.BackButton leave = screen.Q<Components.BackButton>("btn-cancel");
+            leave?.Localize(key => _loc?.GetString(key));
+            if (leave != null) leave.clicked += () => LeaveSettingsAsync().Forget();
+
+            screen.Q<Button>("btn-defaults").clicked += () => ResetSettingsAsync().Forget();
 
             WireSettingsTabs(screen);
             return screen;
