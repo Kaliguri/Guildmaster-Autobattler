@@ -31,6 +31,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Слотов предметов на персонажа (Vessel-скоуп, вики «13» §3.2 ItemData.Scope). GDD 16: 3, не 4.")]
         [SerializeField] private int _vesselItemSlots;
 
+        [Tooltip("ПОТОЛОК слотов предмета у «Сосуда» (ГДД: 4). Сверх базы открывается наградой " +
+                 "внутри забега и сгорает вместе с ним — как и места отряда.")]
+        [SerializeField] private int _vesselItemSlotsMax;
+
         [Tooltip("Стартовая вместимость коллекции реликов гильдии (запас ненадетых, план 11 §5.4).")]
         [SerializeField] private int _relicCapacityBase;
 
@@ -124,7 +128,11 @@ namespace Guildmaster.Data.Definitions
         public float  DefaultMasterVolume => _defaultMasterVolume;
         public float  DefaultMusicVolume  => _defaultMusicVolume;
         public float  DefaultSfxVolume    => _defaultSfxVolume;
+        /// <summary>База слотов предмета у «Сосуда». Сколько открыто сейчас — в <c>RunState.OpenItemSlots</c>.</summary>
         public int    VesselItemSlots     => _vesselItemSlots;
+
+        /// <summary>Потолок слотов предмета: четвёртый открывается наградой забега и сгорает с ним.</summary>
+        public int    VesselItemSlotsMax  => _vesselItemSlotsMax;
         public int    RelicCapacityBase   => _relicCapacityBase;
         public int    RelicCapacityMax    => _relicCapacityMax;
 
@@ -208,6 +216,7 @@ namespace Guildmaster.Data.Definitions
             c._sellPercent         = 0.25f;
             c._shopRerollCost      = 50;
             c._restartsPerAct      = 2;
+            c._vesselItemSlotsMax  = 4;
             c._guildSize           = 8;
             c._guildSlotsOpenAtStart = 6;
             c._battleSlots         = 4;

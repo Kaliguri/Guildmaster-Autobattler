@@ -141,7 +141,8 @@ namespace Guildmaster.Guild
             }
 
             RunState run = NewRun(seed, guild);
-            run.OpenSlots = ResolveOpenSlots(_config.GuildSlotsOpenAtStart, size);
+            run.OpenSlots     = ResolveOpenSlots(_config.GuildSlotsOpenAtStart, size);
+            run.OpenItemSlots = _config.VesselItemSlots > 0 ? _config.VesselItemSlots : 3;
             return run;
         }
 
@@ -215,6 +216,9 @@ namespace Guildmaster.Guild
 
             if (run.OpenSlots <= 0)
                 run.OpenSlots = ResolveOpenSlots(config.GuildSlotsOpenAtStart, size);
+
+            if (run.OpenItemSlots <= 0)
+                run.OpenItemSlots = config.VesselItemSlots > 0 ? config.VesselItemSlots : 3;
         }
 
         /// <summary>
@@ -518,12 +522,12 @@ namespace Guildmaster.Guild
         {
             RosterSlot slot = SlotAt(slotIndex);
             if (slot == null) return false;
-            if (itemSlot < 0 || itemSlot >= _config.VesselItemSlots) return false;
+            if (itemSlot < 0 || itemSlot >= OpenItemSlotCount) return false;
 
             string[] worn = slot.VesselItemIds ?? System.Array.Empty<string>();
-            if (worn.Length < _config.VesselItemSlots)
+            if (worn.Length < OpenItemSlotCount)
             {
-                var grown = new string[_config.VesselItemSlots];
+                var grown = new string[OpenItemSlotCount];
                 for (int i = 0; i < grown.Length; i++)
                     grown[i] = i < worn.Length ? worn[i] : string.Empty;
                 worn = grown;
@@ -556,6 +560,26 @@ namespace Guildmaster.Guild
                 int size = Current.Guild?.Length ?? 0;
                 if (open <= 0 || open > size) return size;
                 return open;
+            }
+        }
+
+        /// <summary>
+        /// Сколько слотов предмета открыто сейчас. Как и места отряда, число живёт в состоянии забега:
+        /// четвёртый слот добывается наградой и сгорает вместе с забегом.
+        /// </summary>
+        private int OpenItemSlotCount
+        {
+            get
+            {
+                int max = _config.VesselItemSlotsMax > 0 ? _config.VesselItemSlotsMax : _config.VesselItemSlots;
+                int open = Current?.OpenItemSlots ?? 0;
+                if (open <= 0) open = _config.VesselItemSlots;
+                if (open <= 0)
+                {
+                    UnityEngine.Debug.LogError("[RunStateService] - GameConfig.VesselItemSlots не заполнен: беру 3");
+                    open = 3;
+                }
+                return open > max ? max : open;
             }
         }
 

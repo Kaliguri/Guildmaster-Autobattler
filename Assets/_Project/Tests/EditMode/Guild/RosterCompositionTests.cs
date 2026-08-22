@@ -179,9 +179,15 @@ namespace Guildmaster.Tests.EditMode.Guild
             RunState run = _runStates.NewDefaultRun(1L);
             run.ItemInventory = new[] { "item.boots" };
 
-            Assert.IsFalse(_bus.SetSlotItem(0, _config.VesselItemSlots, "item.boots"),
+            Assert.AreEqual(_config.VesselItemSlots, run.OpenItemSlots, "На старте открыта база слотов.");
+            Assert.IsFalse(_bus.SetSlotItem(0, run.OpenItemSlots, "item.boots"),
                            "Четвёртый слот закрыт, пока его не открыла награда забега.");
             Assert.AreEqual(1, run.ItemInventory.Length, "Отказ не съедает вещь со склада.");
+
+            run.OpenItemSlots = _config.VesselItemSlotsMax; // награда забега открыла четвёртый
+            Assert.IsTrue(_bus.SetSlotItem(0, _config.VesselItemSlotsMax - 1, "item.boots"),
+                          "Открытый наградой слот принимает вещь.");
+            Assert.AreEqual(0, run.ItemInventory.Length, "Надетое ушло со склада.");
         }
     }
 }
