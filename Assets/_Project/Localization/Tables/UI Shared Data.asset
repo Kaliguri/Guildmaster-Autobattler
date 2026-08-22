@@ -587,6 +587,218 @@ MonoBehaviour:
     m_Key: ui.coop.connecting.state
     m_Metadata:
       m_Items: []
+  - m_Id: 15425324198387712
+    m_Key: ui.common.back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690880
+    m_Key: ui.community.headline
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690881
+    m_Key: ui.community.wishlist.button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690882
+    m_Key: ui.community.wishlist.caption
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690883
+    m_Key: ui.guilds.create.ask.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690884
+    m_Key: ui.guilds.create.ask.confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690885
+    m_Key: ui.guilds.create.ask.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690886
+    m_Key: ui.guilds.create.default_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690887
+    m_Key: ui.guilds.delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690888
+    m_Key: ui.guilds.delete.consequence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690889
+    m_Key: ui.guilds.delete.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690890
+    m_Key: ui.guilds.empty_slot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690891
+    m_Key: ui.guilds.meta.fresh
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690892
+    m_Key: ui.guilds.meta.in_run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690893
+    m_Key: ui.guilds.none.hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690894
+    m_Key: ui.guilds.none.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690895
+    m_Key: ui.guilds.play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690896
+    m_Key: ui.guilds.stat.run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690897
+    m_Key: ui.guilds.stat.run.no
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690898
+    m_Key: ui.guilds.stat.run.yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324269690899
+    m_Key: ui.hub.act
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885184
+    m_Key: ui.hub.level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885185
+    m_Key: ui.outcome.summary.act
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885186
+    m_Key: ui.outcome.summary.gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885187
+    m_Key: ui.outcome.summary.nodes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885188
+    m_Key: ui.outcome.summary.relics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885189
+    m_Key: ui.outcome.summary.wounds
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885190
+    m_Key: ui.profile.create.ask.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885191
+    m_Key: ui.profile.create.ask.confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885192
+    m_Key: ui.profile.create.ask.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885193
+    m_Key: ui.profile.create.default_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885194
+    m_Key: ui.profile.empty_slot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885195
+    m_Key: ui.settings.leave.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885196
+    m_Key: ui.settings.leave.confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885197
+    m_Key: ui.settings.leave.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885198
+    m_Key: ui.settings.reset.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885199
+    m_Key: ui.settings.reset.confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885200
+    m_Key: ui.settings.reset.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885201
+    m_Key: ui.slot.create.confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885202
+    m_Key: ui.slot.create.emblem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885203
+    m_Key: ui.slot.create.emblem_color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885204
+    m_Key: ui.slot.create.guild.hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885205
+    m_Key: ui.slot.create.guild.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885206
+    m_Key: ui.slot.create.guild.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885207
+    m_Key: ui.slot.create.profile.hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885208
+    m_Key: ui.slot.create.profile.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885209
+    m_Key: ui.slot.create.profile.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885210
+    m_Key: ui.title.battle_won
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885211
+    m_Key: ui.title.defeat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885212
+    m_Key: ui.title.defeat.run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885213
+    m_Key: ui.title.run_won
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885214
+    m_Key: ui.title.run_won.sub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15425324273885215
+    m_Key: ui.title.to_battle
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

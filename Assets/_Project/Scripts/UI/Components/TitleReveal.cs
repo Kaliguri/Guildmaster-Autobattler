@@ -65,6 +65,9 @@ namespace Guildmaster.UI.Components
 
             _sub = new Label { name = "title-sub", pickingMode = PickingMode.Ignore };
             _sub.AddToClassList("gm-text-caption");
+            // Приглушённость — МЕТКА поверх роли, а не цвет в правиле титра: цвет текста в теме
+            // задаётся только метками (гейт UiTypographyGateTests).
+            _sub.AddToClassList("gm-text--muted");
             _sub.AddToClassList("gm-title-reveal__sub");
             Add(_sub);
         }

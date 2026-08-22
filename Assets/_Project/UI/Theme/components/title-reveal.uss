@@ -80,10 +80,11 @@
     letter-spacing: 8px;
 }
 
+/* Цвета здесь НЕТ намеренно: приглушённость подписи ставится меткой gm-text--muted в контроле —
+   цвет текста в теме принадлежит меткам, а не правилам мест. */
 .gm-title-reveal__sub {
     -unity-text-align: middle-center;
     margin-top: var(--gm-space-1);
-    color: var(--gm-color-text-muted);
 }
 
 /* --- ТОНА: разница между случаями идёт цветом, а не второй анимацией --- */
