@@ -15,7 +15,10 @@
             <ui:Label name="slots-note" text="" class="gm-text-caption gm-text--muted" />
         </ui:VisualElement>
 
-        <ui:VisualElement name="rows" class="gm-items__rows" />
+        <ui:VisualElement class="gm-items__middle">
+            <ui:VisualElement name="rows" class="gm-items__rows" />
+            <ui:VisualElement name="inspect-host" class="gm-items__inspect" />
+        </ui:VisualElement>
 
         <ui:VisualElement class="gm-items__stash-block">
             <ui:VisualElement class="gm-items__stash-head">

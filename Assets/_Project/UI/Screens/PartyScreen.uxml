@@ -15,9 +15,14 @@
             <ui:Label name="capacity" text="в отряде 5 / 6" class="gm-text-caption gm-text--muted gm-party__capacity" />
         </ui:VisualElement>
 
-        <!-- Дырка под живую арену: тут стоят тела, интерфейс её не закрывает. -->
-        <ui:VisualElement name="stage" class="gm-party__stage" picking-mode="Ignore">
-            <ui:VisualElement name="stage-labels" class="gm-party__labels" picking-mode="Ignore" />
+        <ui:VisualElement class="gm-party__middle" picking-mode="Ignore">
+            <!-- Дырка под живую арену: тут стоят тела, интерфейс её не закрывает. -->
+            <ui:VisualElement name="stage" class="gm-party__stage" picking-mode="Ignore">
+                <ui:VisualElement name="stage-labels" class="gm-party__labels" picking-mode="Ignore" />
+            </ui:VisualElement>
+
+            <!-- Дом панели осмотра. Пустой, пока никого не выбрали: панель сама скажет об этом. -->
+            <ui:VisualElement name="inspect-host" class="gm-party__inspect" />
         </ui:VisualElement>
 
         <ui:VisualElement name="bench-block" class="gm-party__bench-block">

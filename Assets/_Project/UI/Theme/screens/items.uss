@@ -25,7 +25,18 @@
 
 /* --- Строка носителя --- */
 
+.gm-items__middle {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.gm-items__inspect {
+    flex-shrink: 0;
+    padding-right: var(--gm-space-5);
+}
+
 .gm-items__rows {
+    flex-grow: 1;
     padding: 0 var(--gm-space-5);
 }
 

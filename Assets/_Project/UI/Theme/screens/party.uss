@@ -34,6 +34,16 @@
 
 /* --- Дырка под арену: тела видны, ввод проходит насквозь --- */
 
+.gm-party__middle {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.gm-party__inspect {
+    flex-shrink: 0;
+    padding: var(--gm-space-3) var(--gm-space-5) var(--gm-space-3) 0;
+}
+
 .gm-party__stage {
     flex-grow: 1;
     justify-content: flex-end;

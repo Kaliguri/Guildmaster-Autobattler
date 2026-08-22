@@ -1,0 +1,128 @@
+/* Панель осмотра (ГДД preparation-screens §3, раскладка III-А «Колонка у кромки»).
+
+   Компонент, а не экран: один жест даёт один ответ во всей игре, поэтому стили живут среди
+   компонентов и не принадлежат ни одному экрану. */
+
+.gm-inspect {
+    width: 23%;
+    min-width: 260px;
+    flex-shrink: 0;
+    padding: var(--gm-space-3);
+    background-color: var(--gm-color-surface-panel);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+}
+
+.gm-inspect__hint {
+    color: var(--gm-color-text-muted);
+}
+
+.gm-inspect__head {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--gm-space-3);
+}
+
+.gm-inspect__portrait {
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+    margin-right: var(--gm-space-3);
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+}
+
+.gm-inspect__name {
+    -unity-font-style: bold;
+}
+
+.gm-inspect__subtitle {
+    color: var(--gm-color-accent);
+}
+
+/* Скролл — принятая цена узкой колонки: содержимое длиннее её всегда. */
+.gm-inspect__body {
+    flex-grow: 1;
+}
+
+.gm-inspect__section {
+    margin-top: var(--gm-space-3);
+    margin-bottom: var(--gm-space-1);
+    color: var(--gm-color-accent);
+}
+
+.gm-inspect__stat {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.gm-inspect__stat-label {
+    color: var(--gm-color-text-muted);
+}
+
+/* Перк — имя со знаком; что он делает, рассказывает тултип. */
+
+.gm-inspect__trait {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--gm-space-1);
+    padding: var(--gm-space-1) var(--gm-space-2);
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-subtle);
+}
+
+.gm-inspect__trait:hover {
+    border-color: var(--gm-outline-color-hover);
+}
+
+.gm-inspect__trait-sign {
+    width: 16px;
+}
+
+.gm-inspect__trait--plus .gm-inspect__trait-sign {
+    color: var(--gm-color-accent);
+}
+
+.gm-inspect__gear {
+    flex-direction: row;
+}
+
+.gm-inspect__gear-slot {
+    width: 44px;
+    height: 44px;
+    margin-right: var(--gm-space-2);
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-subtle);
+}
+
+.gm-inspect__gear-slot--filled {
+    border-color: var(--gm-outline-color);
+}
+
+.gm-inspect__gear-slot--locked {
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 0.6;
+}
+
+.gm-inspect__behaviour {
+    color: var(--gm-color-text-muted);
+}
+
+.gm-inspect__buttons {
+    flex-direction: row;
+    margin-top: var(--gm-space-3);
+}
+
+.gm-inspect__buttons > * {
+    flex-grow: 1;
+    margin-right: var(--gm-space-2);
+}
+
+/* Недоступная кнопка гаснет ТЕКСТОМ и остаётся живой: отклик подтверждает, что нажатие увидено
+   (ui-feedback §1 — HARD). Отключать элемент средствами движка правило запрещает. */
+.gm-inspect__button--off {
+    color: var(--gm-color-disabled-text);
+}

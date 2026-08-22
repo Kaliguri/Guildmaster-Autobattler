@@ -151,7 +151,28 @@ namespace Guildmaster.DevTools
                 new(7, null,   null,     inBattle: false, open: false),
             };
 
-            root.Add(Guildmaster.UI.PartyScreenView.Build(uxml, slots, actions: null, localize: RuValue));
+            VisualElement screen = Guildmaster.UI.PartyScreenView.Build(uxml, slots, actions: null, localize: RuValue);
+            MountSampleInspect(screen);
+            root.Add(screen);
+        }
+
+        /// <summary>
+        /// Панель осмотра на стенде: она общая для всех экранов, и смотреть её отдельно нет смысла —
+        /// важно, сколько места она отнимает у состава.
+        /// </summary>
+        private static void MountSampleInspect(VisualElement screen)
+        {
+            VisualElement host = screen.Q<VisualElement>("inspect-host");
+            if (host == null) return;
+
+            var subject = new Guildmaster.UI.Components.InspectSubject(
+                "Кай", "Щит · в бою",
+                new[] { ("HP", "820"), ("броня", "24"), ("урон", "41"), ("скорость", "3.2") },
+                new[] { ("trait.steady", "Стойкий", true), ("trait.slow", "Тугодум", false) },
+                new[] { "item.boots", string.Empty, string.Empty, null },
+                "держит строй", "relic.bulwark");
+
+            host.Add(Guildmaster.UI.Components.InspectPanel.Build(subject, localize: RuValue));
         }
 
         /// <summary>Страница «Предметы» на выдуманном составе — по той же причине, что и «Отряд».</summary>
@@ -169,7 +190,9 @@ namespace Guildmaster.DevTools
             };
             var stash = new List<string> { "item.rune_frost", "item.potion_health", "item.cloak" };
 
-            root.Add(Guildmaster.UI.ItemsScreenView.Build(uxml, rows, stash, actions: null, localize: RuValue));
+            VisualElement screen = Guildmaster.UI.ItemsScreenView.Build(uxml, rows, stash, actions: null, localize: RuValue);
+            MountSampleInspect(screen);
+            root.Add(screen);
         }
 
         private static void BuildLoadoutInventory(VisualElement root)
