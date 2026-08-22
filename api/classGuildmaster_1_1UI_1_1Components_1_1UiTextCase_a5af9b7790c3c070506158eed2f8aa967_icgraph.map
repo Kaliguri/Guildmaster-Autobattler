@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.Components.UiTextCase.Bind" name="Guildmaster.UI.Components.UiTextCase.Bind">
+<area shape="rect" id="Node000001" title="Привязать голый Label к правилу регистра из USS." alt="" coords="263,5,472,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Components_1_1TitleReveal.html#aee38db1caa51ac3c161a26431c5e230e" title=" " alt="" coords="5,5,215,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="249,28,215,28,215,23,249,23"/>
+</map>

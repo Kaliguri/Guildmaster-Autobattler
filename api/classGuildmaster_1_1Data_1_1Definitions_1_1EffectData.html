@@ -106,12 +106,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Data_1_1Definition
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Data.Definitions.EffectData:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData__inherit__graph.svg" width="218" height="578"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData__inherit__graph.svg" width="218" height="598"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Data.Definitions.EffectData:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData__coll__graph.svg" width="218" height="578"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData__coll__graph.svg" width="218" height="598"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -141,6 +141,9 @@ Properties</h2></td></tr>
 <tr class="separator:a357421c130b9662bde3b3671e68e36b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad7c6e860dcf1e5e21f8bb31119d6476" id="r_aad7c6e860dcf1e5e21f8bb31119d6476"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#aad7c6e860dcf1e5e21f8bb31119d6476">Tags</a><code> [get]</code></td></tr>
 <tr class="separator:aad7c6e860dcf1e5e21f8bb31119d6476"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8d01ebf0438150f4e409b183e89cea4" id="r_ad8d01ebf0438150f4e409b183e89cea4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#ad8d01ebf0438150f4e409b183e89cea4">ControlWeight</a><code> [get]</code></td></tr>
+<tr class="memdesc:ad8d01ebf0438150f4e409b183e89cea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько стоит секунда этого эффекта в счёте контроля (<code>0</code> — эффект не контроль).  <br /></td></tr>
+<tr class="separator:ad8d01ebf0438150f4e409b183e89cea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d6c4b554fe357c4b6fd3fc279719816" id="r_a1d6c4b554fe357c4b6fd3fc279719816"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a1d6c4b554fe357c4b6fd3fc279719816">BaseDuration</a><code> [get]</code></td></tr>
 <tr class="separator:a1d6c4b554fe357c4b6fd3fc279719816"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af111af562686db26ff155f6f6c180d51" id="r_af111af562686db26ff155f6f6c180d51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021c">StackRule</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#af111af562686db26ff155f6f6c180d51">Stacking</a><code> [get]</code></td></tr>
@@ -351,6 +354,32 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad8d01ebf0438150f4e409b183e89cea4" name="ad8d01ebf0438150f4e409b183e89cea4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8d01ebf0438150f4e409b183e89cea4">&#9670;&#160;</a></span>ControlWeight</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Data.Definitions.EffectData.ControlWeight</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько стоит секунда этого эффекта в счёте контроля (<code>0</code> — эффект не контроль). </p>
+<p>Число живёт НА ЭФФЕКТЕ, а не выводится из его содержимого (решение Макса 2026-08-22, <code>gdd/00-meta/journal-adr</code> §2026-08-22 (2)): контроль бывает разного уровня, и общий курс приравнял бы замедление к оглушению, хотя замедленная цель продолжает бить. Шкала взята у Crowd Control Score из League of Legends, где она обкатана годами: <b>1.0</b> — полный запрет действий (оглушение, сон, корень), <b>0.5</b> — частичный (не бьёт, но ходит), <b>0.166</b> — замедление. Замедление стоит ШЕСТУЮ часть оглушения, а не половину — это и есть то, ради чего шкала списана, а не придумана. </p>
+<p>Читает его только стенд (<code>MetricCollector.ControlScore</code>); в бой число не подставляется.</p>
 
 </div>
 </div>

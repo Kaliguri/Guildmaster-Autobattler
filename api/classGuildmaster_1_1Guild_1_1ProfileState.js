@@ -6,6 +6,8 @@ var classGuildmaster_1_1Guild_1_1ProfileState =
     [ "CreatedUtc", "classGuildmaster_1_1Guild_1_1ProfileState.html#a7520f0b9579a4820e3ddc62738e068aa", null ],
     [ "CursorSkinId", "classGuildmaster_1_1Guild_1_1ProfileState.html#a60a1e4986c3aafec4136c15710e1f456", null ],
     [ "DisplayName", "classGuildmaster_1_1Guild_1_1ProfileState.html#aaa34a6235f263b5d4b13a2669f6fe60a", null ],
+    [ "EmblemColorIndex", "classGuildmaster_1_1Guild_1_1ProfileState.html#aec84171efed80f0fc015196ae52f18df", null ],
+    [ "EmblemId", "classGuildmaster_1_1Guild_1_1ProfileState.html#a451005589f9d24f9a318680208865319", null ],
     [ "Id", "classGuildmaster_1_1Guild_1_1ProfileState.html#a7964a313b4f31060ead76b402f02553c", null ],
     [ "LastGuildId", "classGuildmaster_1_1Guild_1_1ProfileState.html#a0d8fdc07c5b9456ce7a3ac9bdfbbc500", null ],
     [ "LastPlayedUtc", "classGuildmaster_1_1Guild_1_1ProfileState.html#a127c996a0dd731b310edb2f2369231a2", null ],

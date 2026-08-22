@@ -1,8 +1,8 @@
 var interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService =
 [
     [ "AddPlayedTime", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#ac79af8faaa3ad8d1c0a934836aaeca44", null ],
-    [ "CreateGuild", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#aaf5e0cd2cfd1135fe10bde8e8211b6b9", null ],
-    [ "CreateProfile", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#a0689f22bf3b8c128fa809aaa2652e273", null ],
+    [ "CreateGuild", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#aab956e62f9c3c1a3f53f1f3b1e82bf42", null ],
+    [ "CreateProfile", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#aed24f6c5108f73dcb983ba391f238de5", null ],
     [ "DeleteGuild", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#a25fd31bd796426c6725031b880107594", null ],
     [ "DeleteProfile", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#ac8d22569370186a16cc98410293e3266", null ],
     [ "RecordRunFinished", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#ad40b52054ed4eac95c36b4323322149b", null ],

@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.Components.PickerButton.SetOptions" name="Guildmaster.UI.Components.PickerButton.SetOptions">
+<area shape="rect" id="Node000001" title="Задать набор и текущий выбор." alt="" coords="5,5,215,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Components_1_1PickerButton.html#aa692ef8ebb5d891fe49680babe371022" title="Выбрать вариант по id. notify &#160;— сообщать ли заказчику." alt="" coords="263,5,472,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="215,23,249,23,249,28,215,28"/>
+</map>

@@ -86,7 +86,7 @@ var sectionId = 'dynsection-2';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1UI_1_1GuildSelectScreenView.html#a0d76027e54de01b808c456c771c789d9" target="_top" xlink:title="Собрать список домов из профиля: имя плюс ответ на вопрос «идёт ли там забег».">
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1UI_1_1GuildSelectScreenView.html#a0d76027e54de01b808c456c771c789d9" target="_top" xlink:title="Собрать список домов из профиля: имя, знак и ответ на вопрос «идёт ли там забег».">
 <polygon fill="white" stroke="#666666" points="148,-30 0,-30 0,0 148,0 148,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.UI.GuildSelect</text>
 <text text-anchor="middle" x="74" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ScreenView.ReadGuilds</text>

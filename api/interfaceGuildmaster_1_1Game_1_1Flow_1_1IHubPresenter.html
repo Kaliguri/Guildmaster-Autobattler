@@ -113,15 +113,15 @@ Collaboration diagram for Guildmaster.Game.Flow.IHubPresenter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a486f0ac23e8c209847d09b86de183aed" id="r_a486f0ac23e8c209847d09b86de183aed"><td class="memItemLeft" align="right" valign="top">UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IHubPresenter.html#a486f0ac23e8c209847d09b86de183aed">ShowAsync</a> ()</td></tr>
-<tr class="memdesc:a486f0ac23e8c209847d09b86de183aed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть двор выбранного дома. Возвращается, когда в забег согласились ВСЕ.  <br /></td></tr>
-<tr class="separator:a486f0ac23e8c209847d09b86de183aed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0c62b091505d80ea66bccfca10d0fb1" id="r_ac0c62b091505d80ea66bccfca10d0fb1"><td class="memItemLeft" align="right" valign="top">UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IHubPresenter.html#ac0c62b091505d80ea66bccfca10d0fb1">ShowAsync</a> (System.Threading.CancellationToken leaving=default)</td></tr>
+<tr class="memdesc:ac0c62b091505d80ea66bccfca10d0fb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть двор выбранного дома.  <br /></td></tr>
+<tr class="separator:ac0c62b091505d80ea66bccfca10d0fb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Показ Двора гильдии и ожидание, пока группа не сойдётся идти в забег. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a486f0ac23e8c209847d09b86de183aed" name="a486f0ac23e8c209847d09b86de183aed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a486f0ac23e8c209847d09b86de183aed">&#9670;&#160;</a></span>ShowAsync()</h2>
+<a id="ac0c62b091505d80ea66bccfca10d0fb1" name="ac0c62b091505d80ea66bccfca10d0fb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c62b091505d80ea66bccfca10d0fb1">&#9670;&#160;</a></span>ShowAsync()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -129,15 +129,17 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">UniTask Guildmaster.Game.Flow.IHubPresenter.ShowAsync </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">System.Threading.CancellationToken&#160;</td>
+          <td class="paramname"><em>leaving</em> = <code>default</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Открыть двор выбранного дома. Возвращается, когда в забег согласились ВСЕ. </p>
+<p>Открыть двор выбранного дома. </p>
+<p>Возвращается, когда в забег согласились ВСЕ; отмена <em>leaving</em>  означает, что игрок ушёл со двора, и бросает System.OperationCanceledException. </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#a58e2c35b9a5063a701ff55cebcca1cb8">Guildmaster.Game.Flow.HubPresenter</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#a4c6a352c879d33e3c2043732c0508d86">Guildmaster.Game.Flow.HubPresenter</a>.</p>
 
 </div>
 </div>

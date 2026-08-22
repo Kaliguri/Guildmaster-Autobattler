@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Game_1_1Session_1_1Net_1_1DeploymentIntentCodec.html" target="_top" xlink:title="Как намерение выглядит на проводе.">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Game_1_1Services_1_1SaveJson.html" target="_top" xlink:title="Правила сериализации durable&#45;состояния — один владелец на все дороги, по которым оно уезжает из памят...">
 <polygon fill="white" stroke="#666666" points="155,-30 0,-30 0,0 155,0 155,-30"/>
-<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Session.</text>
-<text text-anchor="middle" x="77.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Net.DeploymentIntentCodec</text>
+<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Services.</text>
+<text text-anchor="middle" x="77.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">SaveJson</text>
 </a>
 </g>
 </g>

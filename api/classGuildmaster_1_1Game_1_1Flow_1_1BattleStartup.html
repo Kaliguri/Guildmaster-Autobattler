@@ -113,8 +113,8 @@ Collaboration diagram for Guildmaster.Game.Flow.BattleStartup:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3a465b2a9d015b17ea27b3a52b5ba305" id="r_a3a465b2a9d015b17ea27b3a52b5ba305"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleStartup.html#a3a465b2a9d015b17ea27b3a52b5ba305">BattleStartup</a> (<a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html">IBattleSession</a> session, <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleScopeParams.html">BattleScopeParams</a> parameters, <a class="el" href="classGuildmaster_1_1Combat_1_1EncounterLoader.html">EncounterLoader</a> loader, <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> sim, <a class="el" href="interfaceGuildmaster_1_1Guild_1_1IRunStateView.html">IRunStateView</a> runStates, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">BattleEndedEvent</a> &gt; endedSub, <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html">Services.TimeScaleService</a> time)</td></tr>
-<tr class="separator:a3a465b2a9d015b17ea27b3a52b5ba305"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a430621364c3bd2f61d6278d89ead57ee" id="r_a430621364c3bd2f61d6278d89ead57ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleStartup.html#a430621364c3bd2f61d6278d89ead57ee">BattleStartup</a> (<a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html">IBattleSession</a> session, <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleScopeParams.html">BattleScopeParams</a> parameters, <a class="el" href="classGuildmaster_1_1Combat_1_1EncounterLoader.html">EncounterLoader</a> loader, <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> sim, <a class="el" href="interfaceGuildmaster_1_1Guild_1_1IRunStateView.html">IRunStateView</a> runStates, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">BattleEndedEvent</a> &gt; endedSub, <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html">Services.TimeScaleService</a> time, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1TitleRevealRequest.html">Core.Flow.TitleRevealRequest</a> &gt; titlePub, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html">Core.Players.ILocalPlayer</a> localPlayer)</td></tr>
+<tr class="separator:a430621364c3bd2f61d6278d89ead57ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e7e15ee23fa9959af890318ca1908e9" id="r_a6e7e15ee23fa9959af890318ca1908e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleStartup.html#a6e7e15ee23fa9959af890318ca1908e9">Start</a> ()</td></tr>
 <tr class="separator:a6e7e15ee23fa9959af890318ca1908e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afde8f0993973216e8219a5c1544ac3c6" id="r_afde8f0993973216e8219a5c1544ac3c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleStartup.html#afde8f0993973216e8219a5c1544ac3c6">Dispose</a> ()</td></tr>
@@ -126,8 +126,8 @@ Public Member Functions</h2></td></tr>
 <p><b>Границы боя здесь больше нет</b> — «когда бой начинается и кончается» знает BattleHost в мире, а этот энтрипоинт знает только «как бой собрать». Пока обе роли жили в одном классе (<code>BattleBootstrap</code>), скоуп был вечным, и каждый переход приходилось доводить руками: чистить арену сбросом, пересевать генератор, пере-ставить отряд. Теперь переход — это рождение и смерть скоупа, а всё перечисленное случается само. </p>
 <p><b>Бой стартует на паузе</b>: сначала расстановка (враги видны, отряд двигается), и только «Начать» из панели снимает паузу. Пресет с <code>DeploymentMode.Fixed</code> проходит ту же дорогу — за него кнопку нажмёт <code>DeploymentController</code>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3a465b2a9d015b17ea27b3a52b5ba305" name="a3a465b2a9d015b17ea27b3a52b5ba305"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a465b2a9d015b17ea27b3a52b5ba305">&#9670;&#160;</a></span>BattleStartup()</h2>
+<a id="a430621364c3bd2f61d6278d89ead57ee" name="a430621364c3bd2f61d6278d89ead57ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a430621364c3bd2f61d6278d89ead57ee">&#9670;&#160;</a></span>BattleStartup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -181,7 +181,19 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html">Services::TimeScaleService</a>&#160;</td>
-          <td class="paramname"><em>time</em>&#160;</td>
+          <td class="paramname"><em>time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1TitleRevealRequest.html">Core::Flow::TitleRevealRequest</a> &gt;&#160;</td>
+          <td class="paramname"><em>titlePub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html">Core::Players::ILocalPlayer</a>&#160;</td>
+          <td class="paramname"><em>localPlayer</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -213,6 +225,11 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Flow_1_1BattleStartup_afde8f0993973216e8219a5c1544ac3c6_cgraph.svg" width="479" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

@@ -115,15 +115,15 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af3651ad978d4e8797f83fe81cd3b128a" id="r_af3651ad978d4e8797f83fe81cd3b128a"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1ModeChoiceView.html#af3651ad978d4e8797f83fe81cd3b128a">Build</a> (string name, string title, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1ModeChoiceView_1_1Card.html">Card</a> &gt; cards, string backText, Action onBack, VisualElement footerExtra=null)</td></tr>
-<tr class="memdesc:af3651ad978d4e8797f83fe81cd3b128a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
+<tr class="memitem:aff637dda734efeee5cc4e616d42dd552" id="r_aff637dda734efeee5cc4e616d42dd552"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1ModeChoiceView.html#aff637dda734efeee5cc4e616d42dd552">Build</a> (string name, string title, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1ModeChoiceView_1_1Card.html">Card</a> &gt; cards, Func&lt; string, string &gt; localize, Action onBack, VisualElement footerExtra=null)</td></tr>
+<tr class="memdesc:aff637dda734efeee5cc4e616d42dd552"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">footerExtra</td><td>Необязательный довесок футера слева от «Назад» — то, что относится ко всему экрану, а не к отдельной двери (галочка лобби у «Создать игру»). </td></tr>
   </table>
   </dd>
 </dl>
  <br /></td></tr>
-<tr class="separator:af3651ad978d4e8797f83fe81cd3b128a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:aff637dda734efeee5cc4e616d42dd552"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Экран-развилка: несколько крупных дверей в ряд, у каждой знак, заголовок и описание. </p>
@@ -132,8 +132,8 @@ Static Public Member Functions</h2></td></tr>
 <p><b>Подсказки «нажмите, чтобы выбрать» здесь нет</b> (снята по слову Макса 21.08.2026: «мы игроков за дурочков не держим»). Ряд крупных дверей и так читается как выбор — подпись объясняла бы жест, который экран показывает собой.</p>
 <p><b>Карточка — это кнопка</b> (Components.PlateButton): фаска, состояния наведения и фокус клавиатуры приходят от контрола, а не пишутся заново.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="af3651ad978d4e8797f83fe81cd3b128a" name="af3651ad978d4e8797f83fe81cd3b128a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3651ad978d4e8797f83fe81cd3b128a">&#9670;&#160;</a></span>Build()</h2>
+<a id="aff637dda734efeee5cc4e616d42dd552" name="aff637dda734efeee5cc4e616d42dd552"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff637dda734efeee5cc4e616d42dd552">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -162,8 +162,8 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>backText</em>, </td>
+          <td class="paramtype">Func&lt; string, string &gt;&#160;</td>
+          <td class="paramname"><em>localize</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -198,10 +198,16 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 </p>
 <p>Общий вид о его содержимом не знает. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">localize</td><td>Служба перевода — нужна ровно для подписи возврата: ключ у неё один на всю игру и живёт в самом контроле Components.BackButton, а не в вызывающем экране. </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1ModeChoiceView_af3651ad978d4e8797f83fe81cd3b128a_icgraph.svg" width="496" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1ModeChoiceView_aff637dda734efeee5cc4e616d42dd552_icgraph.svg" width="496" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

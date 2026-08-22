@@ -1,9 +1,11 @@
 var namespaceGuildmaster_1_1UI_1_1Components =
 [
     [ "AspectBox", "classGuildmaster_1_1UI_1_1Components_1_1AspectBox.html", "classGuildmaster_1_1UI_1_1Components_1_1AspectBox" ],
+    [ "BackButton", "classGuildmaster_1_1UI_1_1Components_1_1BackButton.html", "classGuildmaster_1_1UI_1_1Components_1_1BackButton" ],
     [ "Chip", "classGuildmaster_1_1UI_1_1Components_1_1Chip.html", "classGuildmaster_1_1UI_1_1Components_1_1Chip" ],
     [ "EdgeVeil", "classGuildmaster_1_1UI_1_1Components_1_1EdgeVeil.html", "classGuildmaster_1_1UI_1_1Components_1_1EdgeVeil" ],
     [ "PanelFrame", "classGuildmaster_1_1UI_1_1Components_1_1PanelFrame.html", "classGuildmaster_1_1UI_1_1Components_1_1PanelFrame" ],
+    [ "PickerButton", "classGuildmaster_1_1UI_1_1Components_1_1PickerButton.html", "classGuildmaster_1_1UI_1_1Components_1_1PickerButton" ],
     [ "PlateButton", "classGuildmaster_1_1UI_1_1Components_1_1PlateButton.html", "classGuildmaster_1_1UI_1_1Components_1_1PlateButton" ],
     [ "RelicCard", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard" ],
     [ "RelicCardVisualRig", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig" ],
@@ -12,6 +14,7 @@ var namespaceGuildmaster_1_1UI_1_1Components =
     [ "SlantedPanel", "classGuildmaster_1_1UI_1_1Components_1_1SlantedPanel.html", "classGuildmaster_1_1UI_1_1Components_1_1SlantedPanel" ],
     [ "SliderRow", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow" ],
     [ "Slot", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html", "classGuildmaster_1_1UI_1_1Components_1_1Slot" ],
+    [ "TitleReveal", "classGuildmaster_1_1UI_1_1Components_1_1TitleReveal.html", "classGuildmaster_1_1UI_1_1Components_1_1TitleReveal" ],
     [ "ToggleRow", "classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html", "classGuildmaster_1_1UI_1_1Components_1_1ToggleRow" ],
     [ "TooltipCard", "classGuildmaster_1_1UI_1_1Components_1_1TooltipCard.html", "classGuildmaster_1_1UI_1_1Components_1_1TooltipCard" ],
     [ "UiComponentEntry", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentEntry.html", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentEntry" ],

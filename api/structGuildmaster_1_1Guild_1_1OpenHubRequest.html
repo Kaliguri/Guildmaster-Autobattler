@@ -104,13 +104,13 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Guild_1_1OpenHubR
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.OpenHubRequest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenHubRequest__coll__graph.svg" width="206" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Guild_1_1OpenHubRequest__coll__graph.svg" width="206" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a23dcd3b93b5b7288575737494fbb6e99" id="r_a23dcd3b93b5b7288575737494fbb6e99"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenHubRequest.html#a23dcd3b93b5b7288575737494fbb6e99">OpenHubRequest</a> (string guildName, Action onStartRun, CancellationToken cancellation=default)</td></tr>
-<tr class="separator:a23dcd3b93b5b7288575737494fbb6e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6a1103be608009a604e75a5eb876cbd" id="r_ad6a1103be608009a604e75a5eb876cbd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenHubRequest.html#ad6a1103be608009a604e75a5eb876cbd">OpenHubRequest</a> (string guildName, Action onStartRun, CancellationToken cancellation=default, int actNumber=0, int level=0, string actTitleKey=null, Action onLeave=null)</td></tr>
+<tr class="separator:ad6a1103be608009a604e75a5eb876cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -123,14 +123,26 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a6ccce82279e1443f9037d5cc19275ec4" id="r_a6ccce82279e1443f9037d5cc19275ec4"><td class="memItemLeft" align="right" valign="top">readonly CancellationToken&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenHubRequest.html#a6ccce82279e1443f9037d5cc19275ec4">Cancellation</a></td></tr>
 <tr class="memdesc:a6ccce82279e1443f9037d5cc19275ec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Двор закрылся: группа сошлась и уходит в забег (у гостя — объявлением хоста).  <br /></td></tr>
 <tr class="separator:a6ccce82279e1443f9037d5cc19275ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa8a0893da7aca4938c307a4de803e8a" id="r_afa8a0893da7aca4938c307a4de803e8a"><td class="memItemLeft" align="right" valign="top">readonly int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenHubRequest.html#afa8a0893da7aca4938c307a4de803e8a">ActNumber</a></td></tr>
+<tr class="memdesc:afa8a0893da7aca4938c307a4de803e8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Номер акта (1..N) и ступень, на которой стоит забег, — чтобы двор говорил, ГДЕ мы, а не «IN PROGRESS».  <br /></td></tr>
+<tr class="separator:afa8a0893da7aca4938c307a4de803e8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c55091a9d81c82865bf0849cf6106b3" id="r_a1c55091a9d81c82865bf0849cf6106b3"><td class="memItemLeft" align="right" valign="top">readonly int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenHubRequest.html#a1c55091a9d81c82865bf0849cf6106b3">Level</a></td></tr>
+<tr class="memdesc:a1c55091a9d81c82865bf0849cf6106b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ступень маршрута (этаж карты, 1 = вход в акт).  <br /></td></tr>
+<tr class="separator:a1c55091a9d81c82865bf0849cf6106b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0b9dd4aeec5640ca3d1bb5c641ea4e0" id="r_af0b9dd4aeec5640ca3d1bb5c641ea4e0"><td class="memItemLeft" align="right" valign="top">readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenHubRequest.html#af0b9dd4aeec5640ca3d1bb5c641ea4e0">ActTitleKey</a></td></tr>
+<tr class="memdesc:af0b9dd4aeec5640ca3d1bb5c641ea4e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ключ имени акта; пусто — имени ещё нет, и двор скажет просто «Акт I».  <br /></td></tr>
+<tr class="separator:af0b9dd4aeec5640ca3d1bb5c641ea4e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af749f74ffc415b6f8878c430ad2ff0cf" id="r_af749f74ffc415b6f8878c430ad2ff0cf"><td class="memItemLeft" align="right" valign="top">readonly Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenHubRequest.html#af749f74ffc415b6f8878c430ad2ff0cf">OnLeave</a></td></tr>
+<tr class="memdesc:af749f74ffc415b6f8878c430ad2ff0cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Уйти со двора: у хозяина — бросить забег и вернуться в главное меню, у гостя — покинуть чужой сеанс.  <br /></td></tr>
+<tr class="separator:af749f74ffc415b6f8878c430ad2ff0cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Запрос показать Двор гильдии — дом, из которого группа уходит в забег. </p>
 <p><b>Хаб стоит МЕЖДУ выбором дома и забегом,</b> а не вместо одного из них: дом отвечает на вопрос «чей прогресс», забег — «куда идём», и склеенные в один шаг они не оставляли места ничему, что живёт между забегами (ростер, найм, лавка двора — ГДД [[guild-hub-courtyard]]). </p>
 <p>Пока это заглушка с единственной кнопкой, поэтому OnStartRun — весь его контракт. Появятся занятия двора — появятся и соседние исходы; отдельного «в главное меню» здесь намеренно нет, чтобы заглушка не притворялась готовым экраном.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a23dcd3b93b5b7288575737494fbb6e99" name="a23dcd3b93b5b7288575737494fbb6e99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23dcd3b93b5b7288575737494fbb6e99">&#9670;&#160;</a></span>OpenHubRequest()</h2>
+<a id="ad6a1103be608009a604e75a5eb876cbd" name="ad6a1103be608009a604e75a5eb876cbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6a1103be608009a604e75a5eb876cbd">&#9670;&#160;</a></span>OpenHubRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -154,7 +166,31 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">CancellationToken&#160;</td>
-          <td class="paramname"><em>cancellation</em> = <code>default</code>&#160;</td>
+          <td class="paramname"><em>cancellation</em> = <code>default</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>actNumber</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>level</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>actTitleKey</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>onLeave</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -172,6 +208,39 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="afa8a0893da7aca4938c307a4de803e8a" name="afa8a0893da7aca4938c307a4de803e8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa8a0893da7aca4938c307a4de803e8a">&#9670;&#160;</a></span>ActNumber</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly int Guildmaster.Guild.OpenHubRequest.ActNumber</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Номер акта (1..N) и ступень, на которой стоит забег, — чтобы двор говорил, ГДЕ мы, а не «IN PROGRESS». </p>
+<p>Заказ Макса 22.08.2026: «И не понятно вообще что за In Progress или "Забег идет". Скорее пиши прям стадию забега - Акт I - Его название, Уровень 8». </p>
+
+</div>
+</div>
+<a id="af0b9dd4aeec5640ca3d1bb5c641ea4e0" name="af0b9dd4aeec5640ca3d1bb5c641ea4e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0b9dd4aeec5640ca3d1bb5c641ea4e0">&#9670;&#160;</a></span>ActTitleKey</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly string Guildmaster.Guild.OpenHubRequest.ActTitleKey</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ключ имени акта; пусто — имени ещё нет, и двор скажет просто «Акт I». </p>
+
+</div>
+</div>
 <a id="a6ccce82279e1443f9037d5cc19275ec4" name="a6ccce82279e1443f9037d5cc19275ec4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6ccce82279e1443f9037d5cc19275ec4">&#9670;&#160;</a></span>Cancellation</h2>
 
@@ -201,6 +270,39 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Имя дома, в котором мы стоим, — заглушке нужно показать, чей это двор. </p>
+
+</div>
+</div>
+<a id="a1c55091a9d81c82865bf0849cf6106b3" name="a1c55091a9d81c82865bf0849cf6106b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c55091a9d81c82865bf0849cf6106b3">&#9670;&#160;</a></span>Level</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly int Guildmaster.Guild.OpenHubRequest.Level</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ступень маршрута (этаж карты, 1 = вход в акт). </p>
+
+</div>
+</div>
+<a id="af749f74ffc415b6f8878c430ad2ff0cf" name="af749f74ffc415b6f8878c430ad2ff0cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af749f74ffc415b6f8878c430ad2ff0cf">&#9670;&#160;</a></span>OnLeave</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly Action Guildmaster.Guild.OpenHubRequest.OnLeave</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Уйти со двора: у хозяина — бросить забег и вернуться в главное меню, у гостя — покинуть чужой сеанс. </p>
+<p>Ролям это разводит <code>IRunControl</code>, двору знать о разнице нечего. </p>
 
 </div>
 </div>

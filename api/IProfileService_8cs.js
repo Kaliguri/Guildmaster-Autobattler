@@ -1,5 +1,6 @@
 var IProfileService_8cs =
 [
+    [ "Guildmaster.Core.Persistence.SlotCreationRequest", "structGuildmaster_1_1Core_1_1Persistence_1_1SlotCreationRequest.html", "structGuildmaster_1_1Core_1_1Persistence_1_1SlotCreationRequest" ],
     [ "Guildmaster.Core.Persistence.ProfileSummary", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary" ],
     [ "Guildmaster.Core.Persistence.ProfileStats", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileStats.html", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileStats" ],
     [ "Guildmaster.Core.Persistence.ProfileIdentity", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity" ],

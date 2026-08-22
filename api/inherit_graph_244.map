@@ -1,5 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IProfilePresenter.html" title="Показ экрана профиля и ожидание, пока игрок его закроет." alt="" coords="5,5,232,45"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Flow_1_1ProfilePresenter.html" title="Презентер профиля — тем же образцом, что MainMenuPresenter: публикует запрос и ждёт ответа UI." alt="" coords="280,5,503,45"/>
-<area shape="poly" id="edge367_Node000000_Node000001" title=" " alt="" coords="246,23,280,23,280,28,246,28"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IMapNodeChooser.html" title="Шов выбора следующего узла на карте (план [[act&#45;map&#45;run&#45;loop]] §3.2)." alt="" coords="5,37,220,77"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Flow_1_1AutoFirstNodeChooser.html" title="A2&#45;реализация: авто&#45;выбор первого доступного узла (без UI) — забег проходится headless по «верхнему» ..." alt="" coords="271,5,483,45"/>
+<area shape="poly" id="edge361_Node000000_Node000001" title=" " alt="" coords="233,40,271,36,271,41,234,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1WorldMapNodeChooser.html" title="Выбор узла на world&#45;карте: зажигает достижимые узлы и ждёт, пока выбор не появится В СОСТОЯНИИ забега..." alt="" coords="268,69,487,109"/>
+<area shape="poly" id="edge362_Node000000_Node000002" title=" " alt="" coords="234,69,268,73,268,79,233,75"/>
 </map>

@@ -1,7 +1,7 @@
 <map id="Guildmaster.Core.Net.ISharedDecision.Unbind" name="Guildmaster.Core.Net.ISharedDecision.Unbind">
 <area shape="rect" id="Node000001" title="Снять связанное действие: экран, который его заказывал, уходит." alt="" coords="295,37,509,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#a58e2c35b9a5063a701ff55cebcca1cb8" title="Открыть двор выбранного дома. Возвращается, когда в забег согласились ВСЕ." alt="" coords="22,5,230,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="281,46,230,40,231,35,281,41"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#a1f0826571f7ad41449dc676fab2cdff6" title="Показать исход и дождаться общего выхода: во двор или новый забег." alt="" coords="5,69,247,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="282,74,247,78,247,73,281,69"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#a1f0826571f7ad41449dc676fab2cdff6" title="Показать исход и дождаться общего выхода: во двор или новый забег." alt="" coords="5,5,247,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="281,46,247,42,247,37,282,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#a4c6a352c879d33e3c2043732c0508d86" title="Открыть двор выбранного дома." alt="" coords="22,69,230,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="281,74,231,80,230,75,281,69"/>
 </map>

@@ -18,9 +18,10 @@ var searchData=
   ['guestsessionstage_2ecs_15',['GuestSessionStage.cs',['../GuestSessionStage_8cs.html',1,'']]],
   ['guestshareddecision_2ecs_16',['GuestSharedDecision.cs',['../GuestSharedDecision_8cs.html',1,'']]],
   ['guildbook_2ecs_17',['GuildBook.cs',['../GuildBook_8cs.html',1,'']]],
-  ['guildmastercommands_2ecs_18',['GuildmasterCommands.cs',['../GuildmasterCommands_8cs.html',1,'']]],
-  ['guildmasterdata_2ecs_19',['GuildmasterData.cs',['../GuildmasterData_8cs.html',1,'']]],
-  ['guildmasterpalette_2ecs_20',['GuildmasterPalette.cs',['../GuildmasterPalette_8cs.html',1,'']]],
-  ['guildroster_2ecs_21',['GuildRoster.cs',['../GuildRoster_8cs.html',1,'']]],
-  ['guildselectscreenview_2ecs_22',['GuildSelectScreenView.cs',['../GuildSelectScreenView_8cs.html',1,'']]]
+  ['guildemblemcatalog_2ecs_18',['GuildEmblemCatalog.cs',['../GuildEmblemCatalog_8cs.html',1,'']]],
+  ['guildmastercommands_2ecs_19',['GuildmasterCommands.cs',['../GuildmasterCommands_8cs.html',1,'']]],
+  ['guildmasterdata_2ecs_20',['GuildmasterData.cs',['../GuildmasterData_8cs.html',1,'']]],
+  ['guildmasterpalette_2ecs_21',['GuildmasterPalette.cs',['../GuildmasterPalette_8cs.html',1,'']]],
+  ['guildroster_2ecs_22',['GuildRoster.cs',['../GuildRoster_8cs.html',1,'']]],
+  ['guildselectscreenview_2ecs_23',['GuildSelectScreenView.cs',['../GuildSelectScreenView_8cs.html',1,'']]]
 ];

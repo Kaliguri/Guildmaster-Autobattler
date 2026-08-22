@@ -1,17 +1,17 @@
 <map id="Guildmaster.Game.Flow.BattleHost.Close" name="Guildmaster.Game.Flow.BattleHost.Close">
-<area shape="rect" id="Node000001" title="Закрыть бой: скоуп уходит вместе со всем, что в нём жило, и арена возвращается миру." alt="" coords="840,149,1061,189"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a2a41e0a7570a3678859589523da263da" title=" " alt="" coords="571,56,792,96"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="888,147,791,111,754,99,756,94,793,105,890,142"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a1662ac4d792e7ef488e347dd9962dcda" title="Открыть бой: родить скоуп со всем боевым внутри." alt="" coords="571,120,792,160"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="826,158,792,155,793,149,827,153"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a8d94e1846cab44422a938b6625e53c88" title=" " alt="" coords="5,63,227,103"/>
-<area shape="poly" id="edge8_Node000001_Node000005" title=" " alt="" coords="827,191,709,203,569,208,495,206,420,201,346,190,274,175,236,161,200,143,141,105,144,100,202,138,238,156,275,169,347,185,421,195,496,201,569,203,708,198,826,186"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a4e996de02abf01246da5a70105ddd415" title="Открыть арену БЕЗ пресета: скоуп боя есть, состава нет." alt="" coords="571,235,792,275"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="875,196,746,237,744,232,873,191"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#aa084209cf04b1262532cf710b70caab7" title="Перезапустить тот же бой (ретрай узла, dev&#45;R): новый скоуп на тот же пресет." alt="" coords="288,5,509,45"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="583,117,569,110,554,99,545,88,535,77,521,66,480,48,482,43,524,62,539,73,549,84,558,95,572,106,585,112"/>
-<area shape="poly" id="edge6_Node000003_Node000005" title=" " alt="" coords="579,120,522,111,368,96,227,88,227,83,368,90,523,105,580,115"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab565e7b0719ecbd4cf5289726e9ec43b" title="Задать «последний бой» для R извне (dev&#45;панель энкаунтеров) — единый владелец R остаётся здесь,..." alt="" coords="275,120,523,160"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="557,143,523,143,523,137,557,137"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="286,51,216,65,215,60,285,46"/>
+<area shape="rect" id="Node000001" title="Закрыть бой: скоуп уходит вместе со всем, что в нём жило, и арена возвращается миру." alt="" coords="840,69,1061,109"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a911681154455a61ff905e4b7cb424b9d" title=" " alt="" coords="5,37,227,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="898,65,848,44,791,27,715,16,637,10,559,8,482,10,339,23,221,39,220,34,338,17,481,5,559,3,638,4,716,11,793,22,849,39,901,60"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a2a41e0a7570a3678859589523da263da" title=" " alt="" coords="571,37,792,77"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="826,77,792,73,793,67,827,71"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a1662ac4d792e7ef488e347dd9962dcda" title="Открыть бой: родить скоуп со всем боевым внутри." alt="" coords="571,101,792,141"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="827,106,793,110,792,105,826,101"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a4e996de02abf01246da5a70105ddd415" title="Открыть арену БЕЗ пресета: скоуп боя есть, состава нет." alt="" coords="571,165,792,205"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="892,117,793,155,756,167,755,162,791,150,890,112"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="597,100,522,85,368,68,227,61,227,56,368,63,523,79,598,95"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#aa084209cf04b1262532cf710b70caab7" title="Перезапустить тот же бой (ретрай узла, dev&#45;R): новый скоуп на тот же пресет." alt="" coords="288,94,509,134"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="557,121,509,119,509,114,557,115"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab565e7b0719ecbd4cf5289726e9ec43b" title="Задать «последний бой» для R извне (dev&#45;панель энкаунтеров) — единый владелец R остаётся здесь,..." alt="" coords="275,158,523,198"/>
+<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="569,146,498,161,497,155,568,141"/>
+<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="285,94,215,79,216,74,286,89"/>
 </map>

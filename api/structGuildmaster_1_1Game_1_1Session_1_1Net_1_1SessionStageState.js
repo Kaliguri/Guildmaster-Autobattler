@@ -4,7 +4,7 @@ var structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState =
     [ "Equals", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#aa67c7bb8a532692fc55c8514dc1f08cd", null ],
     [ "Equals", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#a667c5daec6ddfd407090b61c631f9099", null ],
     [ "GetHashCode", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#ace2c78019dc00ea07ba6c82f9c37acd2", null ],
-    [ "Hub", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#af3bebe29dd00a176614f31a5af231bb0", null ],
+    [ "Hub", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#a6f33fdd6c521d2d472563168c44e4f94", null ],
     [ "Outcome", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#a6b7a36b55ab6932b5cc3b74ace906e2e", null ],
     [ "Reward", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#a6e2aba77cd55eeab16e8ae684c2e3f16", null ],
     [ "TextEvent", "structGuildmaster_1_1Game_1_1Session_1_1Net_1_1SessionStageState.html#a8a1e7ca0255c3f3a8dc972946437a9a9", null ],

@@ -115,8 +115,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aeb5af2bb8a45b0924edbd6eec28c4940" id="r_aeb5af2bb8a45b0924edbd6eec28c4940"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1ProfileScreenView.html#aeb5af2bb8a45b0924edbd6eec28c4940">Build</a> (VisualTreeAsset uxml, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1ProfileScreenView_1_1SlotEntry.html">SlotEntry</a> &gt; slots, int slotLimit, <a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html">ProfileIdentity</a> identity, string steamName, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1CursorSkinData.html">CursorSkinData</a> &gt; skins, int colorCount, bool canLeave, bool customize, Func&lt; string, string &gt; localize, Action&lt; string &gt; onSelect, Action onCreate, Action&lt; string &gt; onDelete, Action&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html">ProfileIdentity</a> &gt; onSave, Action onBack)</td></tr>
-<tr class="separator:aeb5af2bb8a45b0924edbd6eec28c4940"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dc88d8fc80baec49794bc7628ab2469" id="r_a1dc88d8fc80baec49794bc7628ab2469"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1ProfileScreenView.html#a1dc88d8fc80baec49794bc7628ab2469">Build</a> (VisualTreeAsset uxml, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1ProfileScreenView_1_1SlotEntry.html">SlotEntry</a> &gt; slots, int slotLimit, <a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html">ProfileIdentity</a> identity, string steamName, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1CursorSkinData.html">CursorSkinData</a> &gt; skins, int colorCount, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html">GuildmasterPalette</a> palette, bool canLeave, bool customize, Func&lt; string, string &gt; localize, Action&lt; string &gt; onSelect, Action onCreate, Action&lt; string &gt; onDelete, Action&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html">ProfileIdentity</a> &gt; onSave, Action&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html">ProfileIdentity</a> &gt; onPreview, Action onBack)</td></tr>
+<tr class="separator:a1dc88d8fc80baec49794bc7628ab2469"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Экран «Профиль»: в каком слоте играем и как нас видят остальные. </p>
@@ -124,8 +124,8 @@ Static Public Member Functions</h2></td></tr>
 <p><b>Кнопки «Назад» может не быть.</b> На чистой установке профиля нет вовсе, и уходить с экрана некуда: писать забег без профиля некуда, а молчаливое создание за игрока мы убрали (решение Макса 03.08.2026). В этом случае экран показывает только слоты и ждёт создания.</p>
 <p><b>Цвет и курсор выбираются образцами, а не списком:</b> их узнают глазом, и подпись «Лазурный» рядом с кружком лазурного цвета — это лишнее слово, а не помощь.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aeb5af2bb8a45b0924edbd6eec28c4940" name="aeb5af2bb8a45b0924edbd6eec28c4940"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb5af2bb8a45b0924edbd6eec28c4940">&#9670;&#160;</a></span>Build()</h2>
+<a id="a1dc88d8fc80baec49794bc7628ab2469" name="a1dc88d8fc80baec49794bc7628ab2469"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1dc88d8fc80baec49794bc7628ab2469">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,6 +178,12 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html">GuildmasterPalette</a>&#160;</td>
+          <td class="paramname"><em>palette</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>canLeave</em>, </td>
         </tr>
@@ -220,6 +226,12 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">Action&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Persistence_1_1ProfileIdentity.html">ProfileIdentity</a> &gt;&#160;</td>
+          <td class="paramname"><em>onPreview</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">Action&#160;</td>
           <td class="paramname"><em>onBack</em>&#160;</td>
         </tr>
@@ -235,6 +247,11 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1ProfileScreenView_a1dc88d8fc80baec49794bc7628ab2469_cgraph.svg" width="482" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

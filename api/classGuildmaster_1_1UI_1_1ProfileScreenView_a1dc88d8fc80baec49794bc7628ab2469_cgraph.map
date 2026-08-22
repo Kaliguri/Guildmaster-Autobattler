@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.ProfileScreenView.Build" name="Guildmaster.UI.ProfileScreenView.Build">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,213,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html#a0b09e616d51b0ad39f8d5855d860516a" title="Цвет по имени токена (–gm&#45;color&#45;map&#45;node&#45;rim)." alt="" coords="261,5,476,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="214,23,247,23,247,28,214,28"/>
+</map>

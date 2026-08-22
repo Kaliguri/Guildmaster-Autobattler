@@ -110,32 +110,33 @@ Collaboration diagram for Guildmaster.UI.GuildSelectScreenView:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html">GuildEntry</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что показывать про дом: имя и идёт ли в нём забег.  <a href="structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Что показывать про дом: имя, знак и идёт ли в нём забег.  <a href="structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a0c0c37aac21efa8810c4d9bb02f6f321" id="r_a0c0c37aac21efa8810c4d9bb02f6f321"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1GuildSelectScreenView.html#a0c0c37aac21efa8810c4d9bb02f6f321">Build</a> (VisualTreeAsset uxml, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html">GuildEntry</a> &gt; guilds, int slotLimit, Func&lt; string, string &gt; localize, Action&lt; string &gt; onPick, Action onBack)</td></tr>
-<tr class="memdesc:a0c0c37aac21efa8810c4d9bb02f6f321"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
+<tr class="memitem:acc5c934438d21caa2cb67b2c19a77e9b" id="r_acc5c934438d21caa2cb67b2c19a77e9b"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1GuildSelectScreenView.html#acc5c934438d21caa2cb67b2c19a77e9b">Build</a> (VisualTreeAsset uxml, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html">GuildEntry</a> &gt; guilds, int slotLimit, Func&lt; string, string &gt; localize, Action&lt; string &gt; onPick, Action onBack, Action onCreate=null, Action&lt; string &gt; onDelete=null, Func&lt; string, UnityEngine.Texture2D &gt; emblemOf=null, Func&lt; int, UnityEngine.Color &gt; shadeOf=null)</td></tr>
+<tr class="memdesc:acc5c934438d21caa2cb67b2c19a77e9b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">onPick</td><td>Выбран дом; <code>null</code> — завести новый в свободном слоте.</td></tr>
+    <tr><td class="paramname">onPick</td><td>Играть в этом доме. </td></tr>
   </table>
   </dd>
 </dl>
  <br /></td></tr>
-<tr class="separator:a0c0c37aac21efa8810c4d9bb02f6f321"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:acc5c934438d21caa2cb67b2c19a77e9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d76027e54de01b808c456c771c789d9" id="r_a0d76027e54de01b808c456c771c789d9"><td class="memItemLeft" align="right" valign="top">static List&lt; <a class="el" href="structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html">GuildEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1GuildSelectScreenView.html#a0d76027e54de01b808c456c771c789d9">ReadGuilds</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a> profiles, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html">ISaveService</a> save)</td></tr>
-<tr class="memdesc:a0d76027e54de01b808c456c771c789d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать список домов из профиля: имя плюс ответ на вопрос «идёт ли там забег».  <br /></td></tr>
+<tr class="memdesc:a0d76027e54de01b808c456c771c789d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать список домов из профиля: имя, знак и ответ на вопрос «идёт ли там забег».  <br /></td></tr>
 <tr class="separator:a0d76027e54de01b808c456c771c789d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Экран выбора дома: в какой гильдии играем Кампанию. </p>
 <p><b>Свой экран, а не блок внутри «Создать игру»</b> (модель Макса 04.08.2026): дом нужен только Кампании, и на общем экране его список то появлялся, то исчезал вслед за режимом — то есть половина листа отвечала на вопрос, которого при двух режимах из трёх не существует. </p>
-<p><b>Слоты показываются ВСЕ, включая пустые</b> — тем же приёмом, что на экране профиля: игрок видит, сколько домов ему полагается, а не только те, что успел завести. Число слотов приходит из <code>GameConfig.MaxGuildsPerProfile</code>, а не из разметки.</p>
-<p><b>Пары «Начать / Продолжить» здесь нет:</b> гильдия и есть слот сохранения (ТЗ [[save-system]] §3), поэтому игрок выбирает дом, а забег в нём либо уже идёт, либо начнётся. Строка дома сама говорит, что там внутри.</p>
+<p><b>Каркас — тот же, что у профиля</b> (заказ Макса 22.08.2026: «делаем UI выбора гильдии, создания и удаления в духе профиля»): список слева, выбранный дом справа, под ним «Играть» и «Удалить». Подсветка и вход разведены — посмотреть чужой дом, не начав в нём играть, раньше было нельзя.</p>
+<p><b>Слоты показываются ВСЕ, включая пустые</b> — игрок видит, сколько домов ему полагается, а не только те, что успел завести. Число слотов приходит из <code>GameConfig.MaxGuildsPerProfile</code>, а не из разметки.</p>
+<p><b>Пары «Начать / Продолжить» здесь нет:</b> гильдия и есть слот сохранения (ТЗ [[save-system]] §3), поэтому игрок выбирает дом, а забег в нём либо уже идёт, либо начнётся.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0c0c37aac21efa8810c4d9bb02f6f321" name="a0c0c37aac21efa8810c4d9bb02f6f321"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c0c37aac21efa8810c4d9bb02f6f321">&#9670;&#160;</a></span>Build()</h2>
+<a id="acc5c934438d21caa2cb67b2c19a77e9b" name="acc5c934438d21caa2cb67b2c19a77e9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc5c934438d21caa2cb67b2c19a77e9b">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,7 +178,31 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onBack</em>&#160;</td>
+          <td class="paramname"><em>onBack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>onCreate</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&lt; string &gt;&#160;</td>
+          <td class="paramname"><em>onDelete</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Func&lt; string, UnityEngine::Texture2D &gt;&#160;</td>
+          <td class="paramname"><em>emblemOf</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Func&lt; int, UnityEngine::Color &gt;&#160;</td>
+          <td class="paramname"><em>shadeOf</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -194,11 +219,18 @@ Static Public Member Functions</h2></td></tr>
 
 <p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">onPick</td><td>Выбран дом; <code>null</code> — завести новый в свободном слоте.</td></tr>
+    <tr><td class="paramname">onPick</td><td>Играть в этом доме. </td></tr>
   </table>
   </dd>
 </dl>
 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">onCreate</td><td>Завести дом в свободном слоте — через экран заведения.</td></tr>
+    <tr><td class="paramname">onDelete</td><td>Снести дом. Спрашивает подтверждение тот, кто сносит.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -236,7 +268,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Собрать список домов из профиля: имя плюс ответ на вопрос «идёт ли там забег». </p>
+<p>Собрать список домов из профиля: имя, знак и ответ на вопрос «идёт ли там забег». </p>
 <p>Наличие забега спрашивается у ДИСКА по ключу каждой гильдии, а не у держателя состояния: меню живёт вне сеанса, и держателя в этот момент не существует. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>

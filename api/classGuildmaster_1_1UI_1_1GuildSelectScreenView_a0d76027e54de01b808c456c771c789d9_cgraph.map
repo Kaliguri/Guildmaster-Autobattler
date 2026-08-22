@@ -1,5 +1,5 @@
 <map id="Guildmaster.UI.GuildSelectScreenView.ReadGuilds" name="Guildmaster.UI.GuildSelectScreenView.ReadGuilds">
-<area shape="rect" id="Node000001" title="Собрать список домов из профиля: имя плюс ответ на вопрос «идёт ли там забег»." alt="" coords="5,69,203,109"/>
+<area shape="rect" id="Node000001" title="Собрать список домов из профиля: имя, знак и ответ на вопрос «идёт ли там забег»." alt="" coords="5,69,203,109"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RunSaves.html#acaf686179bcb091c42a149da678e7d13" title="Есть ли автосейв забега на диске — вопрос меню про «Продолжить»." alt="" coords="255,37,465,77"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,74,241,70,241,75,203,80"/>
 <area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#a264887e32f19c52e3fc6bdfc8b627fdd" title="Переключиться на гильдию активного профиля. false = гильдии нет." alt="" coords="251,101,469,141"/>

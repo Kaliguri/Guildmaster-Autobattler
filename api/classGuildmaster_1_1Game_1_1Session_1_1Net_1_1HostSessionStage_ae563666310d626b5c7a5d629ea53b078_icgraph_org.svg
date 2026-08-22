@@ -21,9 +21,9 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#a58e2c35b9a5063a701ff55cebcca1cb8" target="_top" xlink:title="Открыть двор выбранного дома. Возвращается, когда в забег согласились ВСЕ.">
-<polygon fill="white" stroke="#666666" points="168.5,-78 12.5,-78 12.5,-48 168.5,-48 168.5,-78"/>
-<text text-anchor="start" x="20.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.Hub</text>
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#a1f0826571f7ad41449dc676fab2cdff6" target="_top" xlink:title="Показать исход и дождаться общего выхода: во двор или новый забег.">
+<polygon fill="white" stroke="#666666" points="181,-78 0,-78 0,-48 181,-48 181,-78"/>
+<text text-anchor="start" x="8" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.Outcome</text>
 <text text-anchor="middle" x="90.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Presenter.ShowAsync</text>
 </a>
 </g>
@@ -32,7 +32,7 @@
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M206.73,-49.99C193.92,-51.43 180.94,-52.9 168.53,-54.3"/>
+<path fill="none" stroke="#63b8ff" d="M206.93,-49.96C198.35,-50.93 189.68,-51.91 181.17,-52.87"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="207.41,-53.43 216.95,-48.83 206.63,-46.48 207.41,-53.43"/>
 </a>
 </g>
@@ -40,9 +40,9 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html#a1f0826571f7ad41449dc676fab2cdff6" target="_top" xlink:title="Показать исход и дождаться общего выхода: во двор или новый забег.">
-<polygon fill="white" stroke="#666666" points="181,-30 0,-30 0,0 181,0 181,-30"/>
-<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.Outcome</text>
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1HubPresenter.html#a4c6a352c879d33e3c2043732c0508d86" target="_top" xlink:title="Открыть двор выбранного дома.">
+<polygon fill="white" stroke="#666666" points="168.5,-30 12.5,-30 12.5,0 168.5,0 168.5,-30"/>
+<text text-anchor="start" x="20.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.Hub</text>
 <text text-anchor="middle" x="90.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Presenter.ShowAsync</text>
 </a>
 </g>
@@ -51,7 +51,7 @@
 <g id="edge2_Node000001_Node000003" class="edge">
 <title>Node1&#45;&gt;Node3</title>
 <g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M206.93,-28.04C198.35,-27.07 189.68,-26.09 181.17,-25.13"/>
+<path fill="none" stroke="#63b8ff" d="M206.73,-28.01C193.92,-26.57 180.94,-25.1 168.53,-23.7"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="206.63,-31.52 216.95,-29.17 207.41,-24.57 206.63,-31.52"/>
 </a>
 </g>

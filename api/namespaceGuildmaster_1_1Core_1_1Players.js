@@ -5,6 +5,7 @@ var namespaceGuildmaster_1_1Core_1_1Players =
     [ "IPlatformIdentity", "interfaceGuildmaster_1_1Core_1_1Players_1_1IPlatformIdentity.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1IPlatformIdentity" ],
     [ "IPresenceView", "interfaceGuildmaster_1_1Core_1_1Players_1_1IPresenceView.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1IPresenceView" ],
     [ "ISessionRoster", "interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster" ],
+    [ "PlayerColors", "classGuildmaster_1_1Core_1_1Players_1_1PlayerColors.html", "classGuildmaster_1_1Core_1_1Players_1_1PlayerColors" ],
     [ "RemoteCursor", "structGuildmaster_1_1Core_1_1Players_1_1RemoteCursor.html", "structGuildmaster_1_1Core_1_1Players_1_1RemoteCursor" ],
     [ "SessionPlayer", "structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html", "structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer" ],
     [ "PlayerGesture", "namespaceGuildmaster_1_1Core_1_1Players.html#ae9938a0845bd10fbb697cc0e83b1ec80", [

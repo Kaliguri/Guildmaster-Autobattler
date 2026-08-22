@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" title=" " alt="" coords="5,45,96,70"/>
 <area shape="rect" id="Node000001" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipHideEvent.html" title="«Курсор ушёл с элемента с тултипом» — просьба убрать окно (если оно про этот якорь)." alt="" coords="144,5,321,45"/>
-<area shape="poly" id="edge7_Node000000_Node000001" title=" " alt="" coords="109,44,143,38,144,44,110,50"/>
+<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="109,44,143,38,144,44,110,50"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipShowEvent.html" title="«Наведено на элемент, у которого есть тултип» — всплывающее событие панели." alt="" coords="144,69,321,109"/>
-<area shape="poly" id="edge8_Node000000_Node000002" title=" " alt="" coords="110,65,144,71,143,76,109,70"/>
+<area shape="poly" id="edge9_Node000000_Node000002" title=" " alt="" coords="110,65,144,71,143,76,109,70"/>
 </map>

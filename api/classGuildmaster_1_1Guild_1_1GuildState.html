@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Guild_1_1GuildStat
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.GuildState:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1GuildState__coll__graph.svg" width="214" height="276"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1GuildState__coll__graph.svg" width="214" height="316"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -113,6 +113,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a5feb11da0a042d542a57ef4f91c74592" id="r_a5feb11da0a042d542a57ef4f91c74592"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1GuildState.html#a5feb11da0a042d542a57ef4f91c74592">Name</a> = string.Empty</td></tr>
 <tr class="memdesc:a5feb11da0a042d542a57ef4f91c74592"><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя дома, которое видит игрок.  <br /></td></tr>
 <tr class="separator:a5feb11da0a042d542a57ef4f91c74592"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace0c10fc212c02b36316f1d801928140" id="r_ace0c10fc212c02b36316f1d801928140"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1GuildState.html#ace0c10fc212c02b36316f1d801928140">EmblemId</a> = string.Empty</td></tr>
+<tr class="memdesc:ace0c10fc212c02b36316f1d801928140"><td class="mdescLeft">&#160;</td><td class="mdescRight">Знак дома (<code>emblem.*</code>) и его цвет — тем же набором, что у профиля.  <br /></td></tr>
+<tr class="separator:ace0c10fc212c02b36316f1d801928140"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f336365246bb2df31085ff260e62b10" id="r_a5f336365246bb2df31085ff260e62b10"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1GuildState.html#a5f336365246bb2df31085ff260e62b10">EmblemColorIndex</a></td></tr>
+<tr class="memdesc:a5f336365246bb2df31085ff260e62b10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цвет знака — место в наборе мейн-цветов (<code>PlayerColors</code>).  <br /></td></tr>
+<tr class="separator:a5f336365246bb2df31085ff260e62b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2fc4baed5e428481ff6185ef1388bae" id="r_ae2fc4baed5e428481ff6185ef1388bae"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1GuildState.html#ae2fc4baed5e428481ff6185ef1388bae">CreatedUtc</a> = string.Empty</td></tr>
 <tr class="separator:ae2fc4baed5e428481ff6185ef1388bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46521bf0309e69ba05e09ac3d37abe3b" id="r_a46521bf0309e69ba05e09ac3d37abe3b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1GuildState.html#a46521bf0309e69ba05e09ac3d37abe3b">Currency</a></td></tr>
@@ -206,6 +212,38 @@ Public Attributes</h2></td></tr>
 
 <p>Казна дома. </p>
 <p><b>Принадлежит гильдии, а не игроку</b>, и в коопе тратить может каждый участник без гейта прав (реш. 2026-07-27/10). Не путать с золотом забега: то сгорает в конце похода, эта копится (реш. 2026-07-27/11). </p>
+
+</div>
+</div>
+<a id="a5f336365246bb2df31085ff260e62b10" name="a5f336365246bb2df31085ff260e62b10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f336365246bb2df31085ff260e62b10">&#9670;&#160;</a></span>EmblemColorIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Guild.GuildState.EmblemColorIndex</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Цвет знака — место в наборе мейн-цветов (<code>PlayerColors</code>). </p>
+
+</div>
+</div>
+<a id="ace0c10fc212c02b36316f1d801928140" name="ace0c10fc212c02b36316f1d801928140"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace0c10fc212c02b36316f1d801928140">&#9670;&#160;</a></span>EmblemId</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Guildmaster.Guild.GuildState.EmblemId = string.Empty</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Знак дома (<code>emblem.*</code>) и его цвет — тем же набором, что у профиля. </p>
 
 </div>
 </div>

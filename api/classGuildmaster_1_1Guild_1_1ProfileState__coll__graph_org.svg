@@ -32,10 +32,10 @@
 <text text-anchor="start" x="8" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="25" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">CursorSkinId</text>
 <text text-anchor="start" x="8" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">UnlockedPregenIds</text>
+<text text-anchor="start" x="25" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">EmblemId</text>
 <text text-anchor="start" x="8" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">UnlockedFateIds</text>
-<text text-anchor="start" x="25" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">and 9 more...</text>
+<text text-anchor="start" x="25" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">EmblemColorIndex</text>
+<text text-anchor="start" x="25" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">and 11 more...</text>
 <text text-anchor="start" x="64" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
 <polygon fill="#666666" stroke="#666666" points="0,-182 0,-182 132,-182 132,-182 0,-182"/>
 <polygon fill="#666666" stroke="#666666" points="0,-17 0,-17 23,-17 23,-17 0,-17"/>

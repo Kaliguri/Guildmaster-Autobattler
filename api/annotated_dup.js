@@ -249,7 +249,8 @@ var annotated_dup =
           [ "OpenProvingGroundsRequest", "structGuildmaster_1_1Core_1_1Flow_1_1OpenProvingGroundsRequest.html", null ],
           [ "ScreenBackdropChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent.html", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent" ],
           [ "ScreenFadeChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenFadeChangedEvent.html", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenFadeChangedEvent" ],
-          [ "ScreenTransitionShape", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenTransitionShape.html", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenTransitionShape" ]
+          [ "ScreenTransitionShape", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenTransitionShape.html", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenTransitionShape" ],
+          [ "TitleRevealRequest", "structGuildmaster_1_1Core_1_1Flow_1_1TitleRevealRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1TitleRevealRequest" ]
         ] ],
         [ "Input", "namespaceGuildmaster_1_1Core_1_1Input.html", [
           [ "IInputService", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService" ],
@@ -277,7 +278,8 @@ var annotated_dup =
           [ "ProfileSummary", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary.html", "structGuildmaster_1_1Core_1_1Persistence_1_1ProfileSummary" ],
           [ "SaveLoadResult", "structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult.html", "structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult" ],
           [ "SaveSchema", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchema.html", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchema" ],
-          [ "SaveSchemaAttribute", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute.html", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute" ]
+          [ "SaveSchemaAttribute", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute.html", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute" ],
+          [ "SlotCreationRequest", "structGuildmaster_1_1Core_1_1Persistence_1_1SlotCreationRequest.html", "structGuildmaster_1_1Core_1_1Persistence_1_1SlotCreationRequest" ]
         ] ],
         [ "Players", "namespaceGuildmaster_1_1Core_1_1Players.html", [
           [ "ICursorSkinControl", "interfaceGuildmaster_1_1Core_1_1Players_1_1ICursorSkinControl.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1ICursorSkinControl" ],
@@ -285,6 +287,7 @@ var annotated_dup =
           [ "IPlatformIdentity", "interfaceGuildmaster_1_1Core_1_1Players_1_1IPlatformIdentity.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1IPlatformIdentity" ],
           [ "IPresenceView", "interfaceGuildmaster_1_1Core_1_1Players_1_1IPresenceView.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1IPresenceView" ],
           [ "ISessionRoster", "interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1ISessionRoster" ],
+          [ "PlayerColors", "classGuildmaster_1_1Core_1_1Players_1_1PlayerColors.html", "classGuildmaster_1_1Core_1_1Players_1_1PlayerColors" ],
           [ "RemoteCursor", "structGuildmaster_1_1Core_1_1Players_1_1RemoteCursor.html", "structGuildmaster_1_1Core_1_1Players_1_1RemoteCursor" ],
           [ "SessionPlayer", "structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html", "structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer" ]
         ] ],
@@ -340,6 +343,7 @@ var annotated_dup =
           [ "EventChoice", "classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice" ],
           [ "EventEffect", "classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect" ],
           [ "GameConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig" ],
+          [ "GuildEmblemCatalog", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildEmblemCatalog.html", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildEmblemCatalog" ],
           [ "GuildmasterData", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData" ],
           [ "GuildmasterPalette", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette" ],
           [ "IActivityView", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IActivityView.html", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IActivityView" ],
@@ -828,9 +832,11 @@ var annotated_dup =
       [ "UI", "namespaceGuildmaster_1_1UI.html", [
         [ "Components", "namespaceGuildmaster_1_1UI_1_1Components.html", [
           [ "AspectBox", "classGuildmaster_1_1UI_1_1Components_1_1AspectBox.html", "classGuildmaster_1_1UI_1_1Components_1_1AspectBox" ],
+          [ "BackButton", "classGuildmaster_1_1UI_1_1Components_1_1BackButton.html", "classGuildmaster_1_1UI_1_1Components_1_1BackButton" ],
           [ "Chip", "classGuildmaster_1_1UI_1_1Components_1_1Chip.html", "classGuildmaster_1_1UI_1_1Components_1_1Chip" ],
           [ "EdgeVeil", "classGuildmaster_1_1UI_1_1Components_1_1EdgeVeil.html", "classGuildmaster_1_1UI_1_1Components_1_1EdgeVeil" ],
           [ "PanelFrame", "classGuildmaster_1_1UI_1_1Components_1_1PanelFrame.html", "classGuildmaster_1_1UI_1_1Components_1_1PanelFrame" ],
+          [ "PickerButton", "classGuildmaster_1_1UI_1_1Components_1_1PickerButton.html", "classGuildmaster_1_1UI_1_1Components_1_1PickerButton" ],
           [ "PlateButton", "classGuildmaster_1_1UI_1_1Components_1_1PlateButton.html", "classGuildmaster_1_1UI_1_1Components_1_1PlateButton" ],
           [ "RelicCard", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard" ],
           [ "RelicCardVisualRig", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig" ],
@@ -839,6 +845,7 @@ var annotated_dup =
           [ "SlantedPanel", "classGuildmaster_1_1UI_1_1Components_1_1SlantedPanel.html", "classGuildmaster_1_1UI_1_1Components_1_1SlantedPanel" ],
           [ "SliderRow", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow" ],
           [ "Slot", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html", "classGuildmaster_1_1UI_1_1Components_1_1Slot" ],
+          [ "TitleReveal", "classGuildmaster_1_1UI_1_1Components_1_1TitleReveal.html", "classGuildmaster_1_1UI_1_1Components_1_1TitleReveal" ],
           [ "ToggleRow", "classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html", "classGuildmaster_1_1UI_1_1Components_1_1ToggleRow" ],
           [ "TooltipCard", "classGuildmaster_1_1UI_1_1Components_1_1TooltipCard.html", "classGuildmaster_1_1UI_1_1Components_1_1TooltipCard" ],
           [ "UiComponentEntry", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentEntry.html", "classGuildmaster_1_1UI_1_1Components_1_1UiComponentEntry" ],
@@ -894,6 +901,7 @@ var annotated_dup =
         [ "RunModeBarView", "classGuildmaster_1_1UI_1_1RunModeBarView.html", "classGuildmaster_1_1UI_1_1RunModeBarView" ],
         [ "SettingsViewModel", "classGuildmaster_1_1UI_1_1SettingsViewModel.html", "classGuildmaster_1_1UI_1_1SettingsViewModel" ],
         [ "ShopScreenView", "classGuildmaster_1_1UI_1_1ShopScreenView.html", "classGuildmaster_1_1UI_1_1ShopScreenView" ],
+        [ "SlotCreateView", "classGuildmaster_1_1UI_1_1SlotCreateView.html", "classGuildmaster_1_1UI_1_1SlotCreateView" ],
         [ "TitleCardScreenView", "classGuildmaster_1_1UI_1_1TitleCardScreenView.html", "classGuildmaster_1_1UI_1_1TitleCardScreenView" ],
         [ "ToastLayerView", "classGuildmaster_1_1UI_1_1ToastLayerView.html", "classGuildmaster_1_1UI_1_1ToastLayerView" ],
         [ "UiNavigator", "classGuildmaster_1_1UI_1_1UiNavigator.html", "classGuildmaster_1_1UI_1_1UiNavigator" ],

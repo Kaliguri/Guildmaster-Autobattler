@@ -2,8 +2,8 @@ var classGuildmaster_1_1Game_1_1Services_1_1ProfileService =
 [
     [ "ProfileService", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#adf495d50f3d2df78a30b47c16e2d49a6", null ],
     [ "AddPlayedTime", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a47a848a686a72bb33f5e3ac2e9dc95e9", null ],
-    [ "CreateGuild", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#ad309387449e8ac3a361c248528ca8469", null ],
-    [ "CreateProfile", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a1ed9736804f98cee9f5a4f79cd25ba22", null ],
+    [ "CreateGuild", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a3c74cdc06ff434545a2d96c429b7381d", null ],
+    [ "CreateProfile", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#aaca2add414f3ee156897f68648352ec3", null ],
     [ "DeleteGuild", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a3b15046b9f18095b5ef6bb045f9cbc59", null ],
     [ "DeleteProfile", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a7f84f0d344102b43ce971e9f4eb33b00", null ],
     [ "Initialize", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a9691b45c86b777b0da8c6880967b14a6", null ],

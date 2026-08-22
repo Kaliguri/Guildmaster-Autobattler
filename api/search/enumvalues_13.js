@@ -15,6 +15,7 @@ var searchData=
   ['toonew_12',['toonew',['../namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90a13ccd8b0552f185d8f2b245224b2c16c',1,'Guildmaster.Core.Persistence.TooNew'],['../namespaceGuildmaster_1_1Net_1_1Tape.html#a04d45969aca30b6f6f49a3d45c654bb6a13ccd8b0552f185d8f2b245224b2c16c',1,'Guildmaster.Net.Tape.TooNew']]],
   ['top_13',['Top',['../namespaceGuildmaster_1_1UI_1_1Components.html#a371f2ba0574e09679920e35ecf165de5aa4ffdcf0dc1f31b9acaf295d75b51d00',1,'Guildmaster::UI::Components']]],
   ['trash_14',['Trash',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a925db2d2a0c45c6708446a8c78dce0a6aa7e253cd8dd95da3e20daf45519a8dc2',1,'Guildmaster::Data::Definitions']]],
-  ['true_15',['True',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52af827cf462f62848df37c5e1e94a4da74',1,'Guildmaster::Data::Definitions']]],
-  ['typography_16',['Typography',['../namespaceGuildmaster_1_1UI_1_1Components.html#a40024d8e3e6267abfe69e1a3863108a7a603850e072131401265c4fc01027db93',1,'Guildmaster::UI::Components']]]
+  ['triumph_15',['triumph',['../classGuildmaster_1_1UI_1_1Components_1_1TitleReveal.html#a285965a098d6801781a060fda247c79aa34237f856215e643cdbbd1494b4502de',1,'Guildmaster.UI.Components.TitleReveal.Triumph'],['../namespaceGuildmaster_1_1Core_1_1Flow.html#af7a7a3b166db582651edf7a3d2ea810aa34237f856215e643cdbbd1494b4502de',1,'Guildmaster.Core.Flow.Triumph']]],
+  ['true_16',['True',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52af827cf462f62848df37c5e1e94a4da74',1,'Guildmaster::Data::Definitions']]],
+  ['typography_17',['Typography',['../namespaceGuildmaster_1_1UI_1_1Components.html#a40024d8e3e6267abfe69e1a3863108a7a603850e072131401265c4fc01027db93',1,'Guildmaster::UI::Components']]]
 ];

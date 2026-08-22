@@ -34,6 +34,7 @@ var dir_a273d6f87b7944d96df82aad1465245a =
     [ "EncounterData.cs", "EncounterData_8cs.html", "EncounterData_8cs" ],
     [ "EnemyData.cs", "EnemyData_8cs.html", "EnemyData_8cs" ],
     [ "GameConfig.cs", "GameConfig_8cs.html", "GameConfig_8cs" ],
+    [ "GuildEmblemCatalog.cs", "GuildEmblemCatalog_8cs.html", "GuildEmblemCatalog_8cs" ],
     [ "GuildmasterData.cs", "GuildmasterData_8cs.html", "GuildmasterData_8cs" ],
     [ "GuildmasterPalette.cs", "GuildmasterPalette_8cs.html", "GuildmasterPalette_8cs" ],
     [ "IContentDatabase.cs", "IContentDatabase_8cs.html", "IContentDatabase_8cs" ],

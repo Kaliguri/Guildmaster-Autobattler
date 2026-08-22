@@ -13,6 +13,7 @@ var namespaceGuildmaster_1_1Core_1_1Flow =
     [ "ScreenBackdropChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent.html", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent" ],
     [ "ScreenFadeChangedEvent", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenFadeChangedEvent.html", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenFadeChangedEvent" ],
     [ "ScreenTransitionShape", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenTransitionShape.html", "structGuildmaster_1_1Core_1_1Flow_1_1ScreenTransitionShape" ],
+    [ "TitleRevealRequest", "structGuildmaster_1_1Core_1_1Flow_1_1TitleRevealRequest.html", "structGuildmaster_1_1Core_1_1Flow_1_1TitleRevealRequest" ],
     [ "NoticeKind", "namespaceGuildmaster_1_1Core_1_1Flow.html#afc3d09b0f7d57f1b9c1cb1d1328986b4", [
       [ "Info", "namespaceGuildmaster_1_1Core_1_1Flow.html#afc3d09b0f7d57f1b9c1cb1d1328986b4a4059b0251f66a18cb56f544728796875", null ],
       [ "Warning", "namespaceGuildmaster_1_1Core_1_1Flow.html#afc3d09b0f7d57f1b9c1cb1d1328986b4a0eaadb4fcb48a0a0ed7bc9868be9fbaa", null ],
@@ -22,5 +23,10 @@ var namespaceGuildmaster_1_1Core_1_1Flow =
       [ "Map", "namespaceGuildmaster_1_1Core_1_1Flow.html#a0cdcc2aadbac96b1bb243da32b844b8ea46f3ea056caa3126b91f3f70beea068c", null ],
       [ "Battle", "namespaceGuildmaster_1_1Core_1_1Flow.html#a0cdcc2aadbac96b1bb243da32b844b8ea747d99f92ee9c080ba26108ac5d26488", null ],
       [ "Inventory", "namespaceGuildmaster_1_1Core_1_1Flow.html#a0cdcc2aadbac96b1bb243da32b844b8ea4d604dd8f008145471dc845683399189", null ]
+    ] ],
+    [ "TitleRevealTone", "namespaceGuildmaster_1_1Core_1_1Flow.html#af7a7a3b166db582651edf7a3d2ea810a", [
+      [ "Call", "namespaceGuildmaster_1_1Core_1_1Flow.html#af7a7a3b166db582651edf7a3d2ea810aac3755e61202abd74da5885d2e9c9160e", null ],
+      [ "Triumph", "namespaceGuildmaster_1_1Core_1_1Flow.html#af7a7a3b166db582651edf7a3d2ea810aa34237f856215e643cdbbd1494b4502de", null ],
+      [ "Defeat", "namespaceGuildmaster_1_1Core_1_1Flow.html#af7a7a3b166db582651edf7a3d2ea810aa570e9d24849e2161b5a969599fb03446", null ]
     ] ]
 ];

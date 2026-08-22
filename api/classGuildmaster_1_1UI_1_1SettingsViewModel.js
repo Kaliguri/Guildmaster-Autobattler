@@ -20,6 +20,7 @@ var classGuildmaster_1_1UI_1_1SettingsViewModel =
     [ "CardAttackAnimation", "classGuildmaster_1_1UI_1_1SettingsViewModel.html#a73c9a7458547ca7f9f92e422ac38ba1b", null ],
     [ "Changed", "classGuildmaster_1_1UI_1_1SettingsViewModel.html#a0f38f62f25e485913a5910d870f642a8", null ],
     [ "DisplayChanged", "classGuildmaster_1_1UI_1_1SettingsViewModel.html#adfc1fb638051204a8adfa93b33117924", null ],
+    [ "HasUnsavedChanges", "classGuildmaster_1_1UI_1_1SettingsViewModel.html#ad958d70ccfe1c131db1b47b5d18dc565", null ],
     [ "Master", "classGuildmaster_1_1UI_1_1SettingsViewModel.html#aad3ef5a9466cb4d3083f1d888eddf2c8", null ],
     [ "Music", "classGuildmaster_1_1UI_1_1SettingsViewModel.html#ad349a222a93be968677c18cbc1fc1444", null ],
     [ "RefreshRateIndex", "classGuildmaster_1_1UI_1_1SettingsViewModel.html#a57609453f4f28ecd79d7cd5ea2cd2deb", null ],

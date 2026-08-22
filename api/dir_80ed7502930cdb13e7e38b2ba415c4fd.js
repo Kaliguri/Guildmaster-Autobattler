@@ -6,5 +6,6 @@ var dir_80ed7502930cdb13e7e38b2ba415c4fd =
     [ "MenuBattleMessages.cs", "MenuBattleMessages_8cs.html", "MenuBattleMessages_8cs" ],
     [ "MenuVisibilityMessages.cs", "MenuVisibilityMessages_8cs.html", "MenuVisibilityMessages_8cs" ],
     [ "NoticeMessages.cs", "NoticeMessages_8cs.html", "NoticeMessages_8cs" ],
-    [ "ProvingGroundsMessages.cs", "ProvingGroundsMessages_8cs.html", "ProvingGroundsMessages_8cs" ]
+    [ "ProvingGroundsMessages.cs", "ProvingGroundsMessages_8cs.html", "ProvingGroundsMessages_8cs" ],
+    [ "TitleRevealMessages.cs", "TitleRevealMessages_8cs.html", "TitleRevealMessages_8cs" ]
 ];

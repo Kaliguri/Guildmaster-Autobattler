@@ -31,10 +31,10 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a8d94e1846cab44422a938b6625e53c88" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a911681154455a61ff905e4b7cb424b9d" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="166,-30 0,-30 0,0 166,0 166,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.Battle</text>
-<text text-anchor="middle" x="83" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Host.Start</text>
+<text text-anchor="middle" x="83" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Host.BattleHost</text>
 </a>
 </g>
 </g>

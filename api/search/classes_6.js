@@ -18,11 +18,12 @@ var searchData=
   ['guestsessionstage_15',['GuestSessionStage',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSessionStage.html',1,'Guildmaster::Game::Session::Net']]],
   ['guestshareddecision_16',['GuestSharedDecision',['../classGuildmaster_1_1Game_1_1Session_1_1Net_1_1GuestSharedDecision.html',1,'Guildmaster::Game::Session::Net']]],
   ['guildbook_17',['GuildBook',['../classGuildmaster_1_1Guild_1_1GuildBook.html',1,'Guildmaster::Guild']]],
-  ['guildentry_18',['GuildEntry',['../structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html',1,'Guildmaster::UI::GuildSelectScreenView']]],
-  ['guildmastercommands_19',['GuildmasterCommands',['../classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html',1,'Guildmaster::DevTools']]],
-  ['guildmasterdata_20',['GuildmasterData',['../classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html',1,'Guildmaster::Data::Definitions']]],
-  ['guildmasterpalette_21',['GuildmasterPalette',['../classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html',1,'Guildmaster::Data::Definitions']]],
-  ['guildroster_22',['GuildRoster',['../classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html',1,'Guildmaster::Game::Flow']]],
-  ['guildselectscreenview_23',['GuildSelectScreenView',['../classGuildmaster_1_1UI_1_1GuildSelectScreenView.html',1,'Guildmaster::UI']]],
-  ['guildstate_24',['GuildState',['../classGuildmaster_1_1Guild_1_1GuildState.html',1,'Guildmaster::Guild']]]
+  ['guildemblemcatalog_18',['GuildEmblemCatalog',['../classGuildmaster_1_1Data_1_1Definitions_1_1GuildEmblemCatalog.html',1,'Guildmaster::Data::Definitions']]],
+  ['guildentry_19',['GuildEntry',['../structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html',1,'Guildmaster::UI::GuildSelectScreenView']]],
+  ['guildmastercommands_20',['GuildmasterCommands',['../classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html',1,'Guildmaster::DevTools']]],
+  ['guildmasterdata_21',['GuildmasterData',['../classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html',1,'Guildmaster::Data::Definitions']]],
+  ['guildmasterpalette_22',['GuildmasterPalette',['../classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html',1,'Guildmaster::Data::Definitions']]],
+  ['guildroster_23',['GuildRoster',['../classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html',1,'Guildmaster::Game::Flow']]],
+  ['guildselectscreenview_24',['GuildSelectScreenView',['../classGuildmaster_1_1UI_1_1GuildSelectScreenView.html',1,'Guildmaster::UI']]],
+  ['guildstate_25',['GuildState',['../classGuildmaster_1_1Guild_1_1GuildState.html',1,'Guildmaster::Guild']]]
 ];

@@ -132,6 +132,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a60a1e4986c3aafec4136c15710e1f456" id="r_a60a1e4986c3aafec4136c15710e1f456"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1ProfileState.html#a60a1e4986c3aafec4136c15710e1f456">CursorSkinId</a> = string.Empty</td></tr>
 <tr class="memdesc:a60a1e4986c3aafec4136c15710e1f456"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выбранный скин курсора (<code>cursor.*</code>). Пусто — умолчание набора.  <br /></td></tr>
 <tr class="separator:a60a1e4986c3aafec4136c15710e1f456"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a451005589f9d24f9a318680208865319" id="r_a451005589f9d24f9a318680208865319"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1ProfileState.html#a451005589f9d24f9a318680208865319">EmblemId</a> = string.Empty</td></tr>
+<tr class="memdesc:a451005589f9d24f9a318680208865319"><td class="mdescLeft">&#160;</td><td class="mdescRight">Знак профиля (<code>emblem. </code> <br /></td></tr>
+<tr class="separator:a451005589f9d24f9a318680208865319"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec84171efed80f0fc015196ae52f18df" id="r_aec84171efed80f0fc015196ae52f18df"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1ProfileState.html#aec84171efed80f0fc015196ae52f18df">EmblemColorIndex</a></td></tr>
+<tr class="memdesc:aec84171efed80f0fc015196ae52f18df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цвет знака — тот же набор, что у мейн-цвета игрока (<code>PlayerColors</code>).  <br /></td></tr>
+<tr class="separator:aec84171efed80f0fc015196ae52f18df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83a9af1381b14342680fcfe7cc72e0b8" id="r_a83a9af1381b14342680fcfe7cc72e0b8"><td class="memItemLeft" align="right" valign="top">List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1ProfileState.html#a83a9af1381b14342680fcfe7cc72e0b8">UnlockedPregenIds</a> = new()</td></tr>
 <tr class="memdesc:a83a9af1381b14342680fcfe7cc72e0b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открытые прегены: доступны любому дому этого профиля (реш. 2026-07-27/14-15).  <br /></td></tr>
 <tr class="separator:a83a9af1381b14342680fcfe7cc72e0b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -269,6 +275,40 @@ Public Attributes</h2></td></tr>
 <p>Ник для игры, если игрок захотел свой. </p>
 <p>Пусто и UseSteamName — берём имя из Steam.</p>
 <p><b>Идентичность живёт в профиле, а настройки клиента — нет</b> (уточнение к ТЗ сейвов, 03.08.2026). Громкость и разрешение принадлежат машине и не должны прыгать при смене профиля; ник, цвет и курсор — наоборот, это и есть «кем я играю», и профиль ровно за это отвечает. </p>
+
+</div>
+</div>
+<a id="aec84171efed80f0fc015196ae52f18df" name="aec84171efed80f0fc015196ae52f18df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec84171efed80f0fc015196ae52f18df">&#9670;&#160;</a></span>EmblemColorIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Guild.ProfileState.EmblemColorIndex</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Цвет знака — тот же набор, что у мейн-цвета игрока (<code>PlayerColors</code>). </p>
+
+</div>
+</div>
+<a id="a451005589f9d24f9a318680208865319" name="a451005589f9d24f9a318680208865319"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a451005589f9d24f9a318680208865319">&#9670;&#160;</a></span>EmblemId</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Guildmaster.Guild.ProfileState.EmblemId = string.Empty</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Знак профиля (<code>emblem. </code></p>
+<p>*) и его цвет — место в наборе мейн-цветов. Пусто — знака нет, и в списке слот подписан одним именем.</p>
+<p>Заказ Макса 22.08.2026: профиль заводят экраном, где выбирают имя и знак. Поля необязательные — старый сейв читается как «знака не выбирали», и версию схемы это не двигает. </p>
 
 </div>
 </div>

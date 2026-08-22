@@ -6,6 +6,7 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1EffectData =
     [ "BaseDuration", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a1d6c4b554fe357c4b6fd3fc279719816", null ],
     [ "CleanseTier", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a59bb05962bd41a29606938b69ec75519", null ],
     [ "Components", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a5a5e39f4549e0caa9e9b9caf273038d8", null ],
+    [ "ControlWeight", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#ad8d01ebf0438150f4e409b183e89cea4", null ],
     [ "Icon", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a56ea92bb51adf9fa3bc6348efe2bfc47", null ],
     [ "InfoTags", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a3825802d5497c79fed18584fc8d70167", null ],
     [ "IsRuntime", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#acdca2b2598d912d6da00721b9092daaf", null ],

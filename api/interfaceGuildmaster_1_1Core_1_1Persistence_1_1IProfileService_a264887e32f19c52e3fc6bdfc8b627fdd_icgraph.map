@@ -1,5 +1,5 @@
 <map id="Guildmaster.Core.Persistence.IProfileService.SelectGuild" name="Guildmaster.Core.Persistence.IProfileService.SelectGuild">
 <area shape="rect" id="Node000001" title="Переключиться на гильдию активного профиля. false = гильдии нет." alt="" coords="251,5,469,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1GuildSelectScreenView.html#a0d76027e54de01b808c456c771c789d9" title="Собрать список домов из профиля: имя плюс ответ на вопрос «идёт ли там забег»." alt="" coords="5,5,203,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1GuildSelectScreenView.html#a0d76027e54de01b808c456c771c789d9" title="Собрать список домов из профиля: имя, знак и ответ на вопрос «идёт ли там забег»." alt="" coords="5,5,203,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,28,203,28,203,23,237,23"/>
 </map>

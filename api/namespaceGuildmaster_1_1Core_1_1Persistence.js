@@ -10,6 +10,7 @@ var namespaceGuildmaster_1_1Core_1_1Persistence =
     [ "SaveLoadResult", "structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult.html", "structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult" ],
     [ "SaveSchema", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchema.html", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchema" ],
     [ "SaveSchemaAttribute", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute.html", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute" ],
+    [ "SlotCreationRequest", "structGuildmaster_1_1Core_1_1Persistence_1_1SlotCreationRequest.html", "structGuildmaster_1_1Core_1_1Persistence_1_1SlotCreationRequest" ],
     [ "SaveLoadStatus", "namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90", [
       [ "Ok", "namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90aa60852f204ed8028c1c58808b746d115", null ],
       [ "Missing", "namespaceGuildmaster_1_1Core_1_1Persistence.html#a5e3962a921c4fe1cfd4e40adaaba6a90a2aee0be2678ee90fd327cc186826438e", null ],

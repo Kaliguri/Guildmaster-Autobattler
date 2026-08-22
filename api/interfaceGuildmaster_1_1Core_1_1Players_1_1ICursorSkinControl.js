@@ -1,4 +1,4 @@
 var interfaceGuildmaster_1_1Core_1_1Players_1_1ICursorSkinControl =
 [
-    [ "Apply", "interfaceGuildmaster_1_1Core_1_1Players_1_1ICursorSkinControl.html#ae02d1643336c2ef3b73989340bd378a2", null ]
+    [ "Apply", "interfaceGuildmaster_1_1Core_1_1Players_1_1ICursorSkinControl.html#a9a8e0a667c04d0f06b9651fc74ee0612", null ]
 ];

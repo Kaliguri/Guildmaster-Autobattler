@@ -113,16 +113,16 @@ Collaboration diagram for Guildmaster.Core.Players.ICursorSkinControl:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae02d1643336c2ef3b73989340bd378a2" id="r_ae02d1643336c2ef3b73989340bd378a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ICursorSkinControl.html#ae02d1643336c2ef3b73989340bd378a2">Apply</a> (string skinId)</td></tr>
-<tr class="memdesc:ae02d1643336c2ef3b73989340bd378a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Надеть скин по id. Неизвестный id даёт умолчание набора.  <br /></td></tr>
-<tr class="separator:ae02d1643336c2ef3b73989340bd378a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a8e0a667c04d0f06b9651fc74ee0612" id="r_a9a8e0a667c04d0f06b9651fc74ee0612"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ICursorSkinControl.html#a9a8e0a667c04d0f06b9651fc74ee0612">Apply</a> (string skinId, int colorIndex)</td></tr>
+<tr class="memdesc:a9a8e0a667c04d0f06b9651fc74ee0612"><td class="mdescLeft">&#160;</td><td class="mdescRight">Надеть скин по id, покрасив его мейн-цветом игрока.  <br /></td></tr>
+<tr class="separator:a9a8e0a667c04d0f06b9651fc74ee0612"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Смена скина курсора. </p>
 <p>Узкий шов вместо доступа к сервису: интерфейсу нужно ровно одно действие — «надень вот этот», чтобы игрок увидел выбор сразу, а не после перезахода. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae02d1643336c2ef3b73989340bd378a2" name="ae02d1643336c2ef3b73989340bd378a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae02d1643336c2ef3b73989340bd378a2">&#9670;&#160;</a></span>Apply()</h2>
+<a id="a9a8e0a667c04d0f06b9651fc74ee0612" name="a9a8e0a667c04d0f06b9651fc74ee0612"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a8e0a667c04d0f06b9651fc74ee0612">&#9670;&#160;</a></span>Apply()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -131,15 +131,27 @@ Public Member Functions</h2></td></tr>
           <td class="memname">void Guildmaster.Core.Players.ICursorSkinControl.Apply </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>skinId</em></td><td>)</td>
+          <td class="paramname"><em>skinId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>colorIndex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Надеть скин по id. Неизвестный id даёт умолчание набора. </p>
+<p>Надеть скин по id, покрасив его мейн-цветом игрока. </p>
+<p>Неизвестный id даёт умолчание набора, индекс цвета заворачивается по набору (PlayerColors) — оба приходят снаружи, а игрок без курсора остаться не может.</p>
+<p>Цвет здесь не украшение: свой курсор обязан выглядеть так же, как его видит напарник (заказ Макса 22.08.2026: «Цвет курсора должен меняться от выбранного цвета в профиле»). Чужие курсоры красятся тинтом в UI-слое с первого дня, а свой — системный, и красить его приходится самим, готовой текстурой. </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1CursorSkinService.html#a9d0ceb555d070b0d1f0d6fee0f214cae">Guildmaster.Game.Services.CursorSkinService</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1CursorSkinService.html#ae9ba7e7fc41a84eea11f09175b4bf62d">Guildmaster.Game.Services.CursorSkinService</a>.</p>
 
 </div>
 </div>

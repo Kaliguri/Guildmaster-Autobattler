@@ -30,6 +30,7 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
     [ "EventChoice", "classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice" ],
     [ "EventEffect", "classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect" ],
     [ "GameConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig" ],
+    [ "GuildEmblemCatalog", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildEmblemCatalog.html", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildEmblemCatalog" ],
     [ "GuildmasterData", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData" ],
     [ "GuildmasterPalette", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette" ],
     [ "IActivityView", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IActivityView.html", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IActivityView" ],

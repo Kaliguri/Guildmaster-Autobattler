@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"CombatCategories_8cs.html#aa46c443b657817183811b564b53f74a1afcbd772e48c4b07d7d3be13b37a82f5e":[2,0,0,0,0,3,0,16,0,0],
 "CombatCategories_8cs.html#abefdaf8dabc6adb7c9017704d2fad3e0":[2,0,0,0,0,3,0,16,5],
 "CombatCategories_8cs.html#abefdaf8dabc6adb7c9017704d2fad3e0a02fcc64668dd1b6a85e60ac9797f2dc7":[2,0,0,0,0,3,0,16,5,1],
 "CombatCategories_8cs.html#abefdaf8dabc6adb7c9017704d2fad3e0a6adf97f83acf6453d4a6a4b1070f3754":[2,0,0,0,0,3,0,16,5,0],
@@ -238,16 +239,15 @@ var NAVTREEINDEX1 =
 "DpsBench_8cs.html":[2,0,0,0,0,0,0,1,0],
 "DuelDamageBonusComponent_8cs.html":[2,0,0,0,0,1,3,0,20],
 "DuelMatrixBench_8cs.html":[2,0,0,0,0,0,0,1,1],
-"EdgeVeil_8cs.html":[2,0,0,0,0,10,0,2],
-"EdgeVeil_8cs.html#a371f2ba0574e09679920e35ecf165de5":[2,0,0,0,0,10,0,2,1],
-"EdgeVeil_8cs.html#a371f2ba0574e09679920e35ecf165de5a2ad9d63b69c4a10a5cc9cad923133bc4":[2,0,0,0,0,10,0,2,1,3],
-"EdgeVeil_8cs.html#a371f2ba0574e09679920e35ecf165de5a92b09c7c48c520c3c55e497875da437c":[2,0,0,0,0,10,0,2,1,1],
-"EdgeVeil_8cs.html#a371f2ba0574e09679920e35ecf165de5a945d5e233cf7d6240f6b783b36a374ff":[2,0,0,0,0,10,0,2,1,0],
-"EdgeVeil_8cs.html#a371f2ba0574e09679920e35ecf165de5aa4ffdcf0dc1f31b9acaf295d75b51d00":[2,0,0,0,0,10,0,2,1,2],
+"EdgeVeil_8cs.html":[2,0,0,0,0,10,0,3],
+"EdgeVeil_8cs.html#a371f2ba0574e09679920e35ecf165de5":[2,0,0,0,0,10,0,3,1],
+"EdgeVeil_8cs.html#a371f2ba0574e09679920e35ecf165de5a2ad9d63b69c4a10a5cc9cad923133bc4":[2,0,0,0,0,10,0,3,1,3],
+"EdgeVeil_8cs.html#a371f2ba0574e09679920e35ecf165de5a92b09c7c48c520c3c55e497875da437c":[2,0,0,0,0,10,0,3,1,1],
+"EdgeVeil_8cs.html#a371f2ba0574e09679920e35ecf165de5a945d5e233cf7d6240f6b783b36a374ff":[2,0,0,0,0,10,0,3,1,0],
+"EdgeVeil_8cs.html#a371f2ba0574e09679920e35ecf165de5aa4ffdcf0dc1f31b9acaf295d75b51d00":[2,0,0,0,0,10,0,3,1,2],
 "EffectContext_8cs.html":[2,0,0,0,0,1,3,3],
 "EffectData_8cs.html":[2,0,0,0,0,3,0,29],
 "EffectSystem_8cs.html":[2,0,0,0,0,1,3,4],
 "EffectTag_8cs.html":[2,0,0,0,0,3,0,30],
-"EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438":[2,0,0,0,0,3,0,30,0],
-"EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a11635778f116ce6922f6068638a39028":[2,0,0,0,0,3,0,30,0,11]
+"EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438":[2,0,0,0,0,3,0,30,0]
 };

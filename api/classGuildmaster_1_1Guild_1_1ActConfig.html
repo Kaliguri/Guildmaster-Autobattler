@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Guild_1_1ActConfig
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Guild_1_1ActConfig-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Guild.ActConfig Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -116,6 +117,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae0284d201e6c065dd8bd6ddabfadb59c" id="r_ae0284d201e6c065dd8bd6ddabfadb59c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html">MapGenConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1ActConfig.html#ae0284d201e6c065dd8bd6ddabfadb59c">ToGenConfig</a> ()</td></tr>
 <tr class="memdesc:ae0284d201e6c065dd8bd6ddabfadb59c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Валидированный конфиг генерации карты для MapGenerator.  <br /></td></tr>
 <tr class="separator:ae0284d201e6c065dd8bd6ddabfadb59c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:acfba1d93e82f09b4573771c9495d6ee1" id="r_acfba1d93e82f09b4573771c9495d6ee1"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1ActConfig.html#acfba1d93e82f09b4573771c9495d6ee1">TitleKey</a><code> [get]</code></td></tr>
+<tr class="memdesc:acfba1d93e82f09b4573771c9495d6ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ключ имени акта — по нему двор и карта подписывают, где мы.  <br /></td></tr>
+<tr class="separator:acfba1d93e82f09b4573771c9495d6ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Авторинг-обёртка параметров генерации акта (MapGenConfig) как ScriptableObject — дизайнер крутит глубину/ширину/зоны/якоря в инспекторе, не трогая код. </p>
@@ -137,6 +144,33 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Валидированный конфиг генерации карты для MapGenerator. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="acfba1d93e82f09b4573771c9495d6ee1" name="acfba1d93e82f09b4573771c9495d6ee1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfba1d93e82f09b4573771c9495d6ee1">&#9670;&#160;</a></span>TitleKey</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Guildmaster.Guild.ActConfig.TitleKey</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Ключ имени акта — по нему двор и карта подписывают, где мы. </p>
+<p>Пусто = имени ещё нет.</p>
+<p>КЛЮЧ, а не готовая строка: имя едет к напарнику по сети, а переводит его каждый у себя — иначе гость с другим языком читал бы чужую локаль. </p>
 
 </div>
 </div>

@@ -1,5 +1,5 @@
 <map id="Guildmaster.Game.Flow.BattleHost.Restart" name="Guildmaster.Game.Flow.BattleHost.Restart">
 <area shape="rect" id="Node000001" title="Перезапустить тот же бой (ретрай узла, dev&#45;R): новый скоуп на тот же пресет." alt="" coords="275,5,496,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a8d94e1846cab44422a938b6625e53c88" title=" " alt="" coords="5,5,227,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleHost.html#a911681154455a61ff905e4b7cb424b9d" title=" " alt="" coords="5,5,227,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="261,28,227,28,227,23,261,23"/>
 </map>

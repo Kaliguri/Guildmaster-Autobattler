@@ -15,7 +15,7 @@ var searchData=
   ['hitfunction_12',['HitFunction',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a742468eb1671fee16474f55b2c6d7a8c',1,'Guildmaster::Data::Definitions::ClipMarkers']]],
   ['hitsmade_13',['HitsMade',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a568a226a9ef8971ceb899405df46c66e',1,'Guildmaster::Combat::RuntimeUnit']]],
   ['hitstaken_14',['HitsTaken',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#affd09f100f320cd6ae59c9d03614d18d',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['holdseconds_15',['HoldSeconds',['../structGuildmaster_1_1Core_1_1Flow_1_1ScreenTransitionShape.html#a44d16528bccbd51de75d82c03125af56',1,'Guildmaster::Core::Flow::ScreenTransitionShape']]],
+  ['holdseconds_15',['holdseconds',['../structGuildmaster_1_1Core_1_1Flow_1_1ScreenTransitionShape.html#a44d16528bccbd51de75d82c03125af56',1,'Guildmaster.Core.Flow.ScreenTransitionShape.HoldSeconds'],['../structGuildmaster_1_1Core_1_1Flow_1_1TitleRevealRequest.html#a3bd81090f094f4f34a2631aa7700b4f8',1,'Guildmaster.Core.Flow.TitleRevealRequest.HoldSeconds']]],
   ['holo_16',['Holo',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#abf688568eb9ac8100db9c1b7ff51345a',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
   ['holoalpha_17',['HoloAlpha',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#a8ec34d78fda0e9b5f159c9372e9f9588',1,'Guildmaster::Presentation::Body::BodyVisualState']]],
   ['holocolor_18',['HoloColor',['../structGuildmaster_1_1Presentation_1_1Body_1_1BodyVisualState.html#a07cc90f47dab7c4a79801628ed6758a9',1,'Guildmaster::Presentation::Body::BodyVisualState']]],

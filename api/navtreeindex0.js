@@ -119,6 +119,7 @@ var NAVTREEINDEX0 =
 "AudioResolver_8cs.html":[2,0,0,0,0,9,1,3],
 "AudioVolumeSettings_8cs.html":[2,0,0,0,0,2,11,0],
 "AutoAttackSystem_8cs.html":[2,0,0,0,0,1,7,1],
+"BackButton_8cs.html":[2,0,0,0,0,10,0,1],
 "BalanceAgentTools_8cs.html":[2,0,0,0,0,0,0,0,0],
 "BalanceAssets_8cs.html":[2,0,0,0,0,0,0,4],
 "BalanceCli_8cs.html":[2,0,0,0,0,0,0,5],
@@ -225,7 +226,7 @@ var NAVTREEINDEX0 =
 "ChestFlow_8cs.html":[2,0,0,0,0,6,2,9],
 "ChestMessages_8cs.html":[2,0,0,0,0,7,5],
 "ChestScreenView_8cs.html":[2,0,0,0,0,10,6],
-"Chip_8cs.html":[2,0,0,0,0,10,0,1],
+"Chip_8cs.html":[2,0,0,0,0,10,0,2],
 "ClassBalanceConfig_8cs.html":[2,0,0,0,0,3,0,14],
 "ClassBaseline_8cs.html":[2,0,0,0,0,1,6,0],
 "ClipMarkers_8cs.html":[2,0,0,0,0,3,0,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "CombatCategories_8cs.html#aa46c443b657817183811b564b53f74a1":[2,0,0,0,0,3,0,16,0],
 "CombatCategories_8cs.html#aa46c443b657817183811b564b53f74a1a8bbf55183f7d11e74da28d738216036a":[2,0,0,0,0,3,0,16,0,2],
 "CombatCategories_8cs.html#aa46c443b657817183811b564b53f74a1a94eb18b9ccde1a738aa52a4576bcf84e":[2,0,0,0,0,3,0,16,0,3],
-"CombatCategories_8cs.html#aa46c443b657817183811b564b53f74a1ac2f329a17c18a701dbe1e96e03858728":[2,0,0,0,0,3,0,16,0,1],
-"CombatCategories_8cs.html#aa46c443b657817183811b564b53f74a1afcbd772e48c4b07d7d3be13b37a82f5e":[2,0,0,0,0,3,0,16,0,0]
+"CombatCategories_8cs.html#aa46c443b657817183811b564b53f74a1ac2f329a17c18a701dbe1e96e03858728":[2,0,0,0,0,3,0,16,0,1]
 };
