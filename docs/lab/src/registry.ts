@@ -284,6 +284,14 @@ export const PAGES: PageDef[] = [
     icon: "⚔"
   },
   {
+    id: "ui-party-items",
+    area: "ui",
+    title: "Отряд и предметы",
+    blurb: "Две страницы одного экрана подготовки: состав из четырёх на каждой, восемь мест отряда, три слота предмета и четвёртый закрытый. По четыре раскладки на страницу.",
+    load: () => import("./sections/ui-party-items.js"),
+    icon: "◫"
+  },
+  {
     id: "ui-lobby",
     area: "ui",
     title: "Создать игру и лобби",

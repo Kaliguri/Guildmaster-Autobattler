@@ -256,3 +256,54 @@ export function scrim(ctx: CanvasRenderingContext2D, w: number, h: number, alpha
   ctx.fillStyle = `rgba(12,12,14,${alpha})`;
   ctx.fillRect(0, 0, w, h);
 }
+
+/** Круглый портрет: место под лицо. Отдельный примитив, а не блок со скруглением, потому что
+ *  круг у нас несёт смысл — «это человек», в отличие от квадрата слота под вещь. */
+export function disc(
+  ctx: CanvasRenderingContext2D,
+  at: { x: number; y: number; r: number },
+  w: number,
+  h: number,
+  opts: { label?: string; lit?: boolean; dashed?: boolean } = {}
+): void {
+  const cx = at.x * w;
+  const cy = at.y * h;
+  const rad = at.r * h;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+  ctx.fillStyle = opts.lit ? WIRE.fillLit : WIRE.fill;
+  ctx.fill();
+  if (opts.dashed) ctx.setLineDash([4, 3]);
+  ctx.strokeStyle = opts.lit ? WIRE.lineLit : WIRE.line;
+  ctx.lineWidth = opts.lit ? 1.6 : 1;
+  ctx.stroke();
+  ctx.restore();
+
+  if (opts.label) {
+    ctx.fillStyle = WIRE.dim;
+    ctx.font = "7px ui-monospace, monospace";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(opts.label, cx, cy);
+  }
+}
+
+/** Замок на закрытом слоте: дужка и корпус линиями. Как и корзина, рисуется вершинами —
+ *  моноширинная гарнитура чертежа глифа замка не содержит и печатает пустой квадрат. */
+export function lock(ctx: CanvasRenderingContext2D, r: Rect, w: number, h: number): void {
+  const [x, y, bw, bh] = px(r, w, h);
+  const cx = x + bw / 2;
+  const cy = y + bh / 2;
+  const s = Math.min(bw, bh) * 0.22;
+
+  ctx.save();
+  ctx.strokeStyle = WIRE.dim;
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.arc(cx, cy - s * 0.35, s * 0.6, Math.PI, 0);
+  ctx.stroke();
+  ctx.strokeRect(cx - s * 0.9, cy - s * 0.35, s * 1.8, s * 1.3);
+  ctx.restore();
+}
