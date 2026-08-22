@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 
 namespace Guildmaster.Guild
@@ -33,11 +33,39 @@ namespace Guildmaster.Guild
         /// <summary>Двор закрылся: группа сошлась и уходит в забег (у гостя — объявлением хоста).</summary>
         public readonly CancellationToken Cancellation;
 
-        public OpenHubRequest(string guildName, Action onStartRun, CancellationToken cancellation = default)
+        /// <summary>
+        /// Номер акта (1..N) и ступень, на которой стоит забег, — чтобы двор говорил, ГДЕ мы, а не
+        /// «IN PROGRESS».
+        /// </summary>
+        /// <remarks>
+        /// Заказ Макса 22.08.2026: «И не понятно вообще что за In Progress или "Забег идет". Скорее
+        /// пиши прям стадию забега - Акт I - Его название, Уровень 8».
+        /// </remarks>
+        public readonly int ActNumber;
+
+        /// <summary>Ступень маршрута (этаж карты, 1 = вход в акт).</summary>
+        public readonly int Level;
+
+        /// <summary>Ключ имени акта; пусто — имени ещё нет, и двор скажет просто «Акт I».</summary>
+        public readonly string ActTitleKey;
+
+        /// <summary>
+        /// Уйти со двора: у хозяина — бросить забег и вернуться в главное меню, у гостя — покинуть
+        /// чужой сеанс. Ролям это разводит <c>IRunControl</c>, двору знать о разнице нечего.
+        /// </summary>
+        public readonly Action OnLeave;
+
+        public OpenHubRequest(string guildName, Action onStartRun, CancellationToken cancellation = default,
+                              int actNumber = 0, int level = 0, string actTitleKey = null,
+                              Action onLeave = null)
         {
             GuildName    = guildName;
             OnStartRun   = onStartRun;
             Cancellation = cancellation;
+            ActNumber    = actNumber;
+            Level        = level;
+            ActTitleKey  = actTitleKey;
+            OnLeave      = onLeave;
         }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using Guildmaster.Core.Flow;
@@ -185,7 +185,13 @@ namespace Guildmaster.Game.Session.Net
             _hubPub?.Publish(new OpenHubRequest(
                 hub.GuildName,
                 () => _decision?.ToggleLocal(),
-                alive));
+                alive,
+                hub.ActNumber,
+                hub.Level,
+                hub.ActTitleKey,
+                // Уход со двора — тот же путь, что «В главное меню» из паузы: хозяину он рвёт забег,
+                // гостю — чужой сеанс. Разводит роли IRunControl, двору о разнице знать нечего.
+                () => _runControl?.RequestReturnToMainMenu()));
         }
 
         /// <summary>Закрытый сундук: клик по крышке — голос, крышку открывает вся группа.</summary>

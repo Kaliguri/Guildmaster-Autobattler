@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI
@@ -20,12 +20,16 @@ namespace Guildmaster.UI
         /// там, где голосовать физически некуда. Кнопка при этом остаётся на месте: пропавшая читается
         /// как «экран не догрузился», погашенная — как «сейчас нельзя».
         /// </param>
+        /// <param name="stage">Где стоит забег: номер акта, ступень маршрута и ключ имени акта.</param>
+        /// <param name="onLeave">Уйти со двора. <c>null</c> — уходить некуда, и двери не будет.</param>
         public static VisualElement Build(
             VisualTreeAsset uxml,
             string guildName,
             Func<string, string> localize,
             Action onStartRun,
-            bool canStartRun = true)
+            bool canStartRun = true,
+            (int Act, int Level, string TitleKey) stage = default,
+            Action onLeave = null)
         {
             string L(string key, string fallback)
             {
@@ -39,6 +43,8 @@ namespace Guildmaster.UI
 
             var title = root.Q<Label>("hub-title");
             var stub  = root.Q<Label>("hub-stub");
+            var where = root.Q<Label>("hub-stage");
+            var leave = root.Q<Components.BackButton>("btn-leave");
             var start = root.Q<Button>("btn-start-run");
 
             // Титул — имя дома, а не слово «Двор»: игрок вернулся к СВОЕЙ гильдии, и первым делом
@@ -48,7 +54,18 @@ namespace Guildmaster.UI
                     ? L("ui.hub.title", "Двор гильдии")
                     : guildName;
 
-            if (stub != null) stub.text = L("ui.hub.stub", "IN PROGRESS");
+            if (stub != null) stub.text = L("ui.hub.stub", "Двор ещё обустраивают");
+
+            // ГДЕ СТОИТ ЗАБЕГ. Строка собирается здесь, а не приезжает готовой: имя акта приходит
+            // ключом, и переводит его каждый у себя (иначе гость с другим языком читал бы чужую локаль).
+            if (where != null) where.text = StageLine(stage, localize, L);
+
+            if (leave != null)
+            {
+                leave.Localize(localize);
+                if (onLeave != null) leave.clicked += () => onLeave.Invoke();
+                else                 leave.style.display = DisplayStyle.None;
+            }
 
             if (start != null)
             {
@@ -58,6 +75,37 @@ namespace Guildmaster.UI
             }
 
             return root;
+        }
+
+        /// <summary>
+        /// «Акт II — Пепельный тракт · Уровень 8». Имени нет — остаётся «Акт II · Уровень 8»; нет и
+        /// акта (двор открыт вне забега) — строка пустая, и место под неё не занимается.
+        /// </summary>
+        /// <remarks>
+        /// «Уровень», а не «этаж» и не «ступень» — слово Макса 22.08.2026: «можем мб назвать то как
+        /// далеко прошли - просто "уровнями"? Просто и понятно. Как этажи в STS». Совпадение с
+        /// «Уровнем Сосуда» он признал безобидным: «Ясно что и чей уровень и так».
+        /// </remarks>
+        private static string StageLine((int Act, int Level, string TitleKey) stage,
+                                        Func<string, string> localize,
+                                        Func<string, string, string> L)
+        {
+            if (stage.Act <= 0) return string.Empty;
+
+            string act = string.Format(L("ui.hub.act", "Акт {0}"), Roman(stage.Act));
+
+            string name = string.IsNullOrEmpty(stage.TitleKey) ? null : localize?.Invoke(stage.TitleKey);
+            if (!string.IsNullOrEmpty(name)) act += " — " + name;
+
+            if (stage.Level <= 0) return act;
+            return act + " · " + string.Format(L("ui.hub.level", "Уровень {0}"), stage.Level);
+        }
+
+        /// <summary>Номер акта римской цифрой. Актов у нас единицы, поэтому и таблица короткая.</summary>
+        private static string Roman(int number)
+        {
+            string[] digits = { "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
+            return number > 0 && number < digits.Length ? digits[number] : number.ToString();
         }
 
         /// <summary>

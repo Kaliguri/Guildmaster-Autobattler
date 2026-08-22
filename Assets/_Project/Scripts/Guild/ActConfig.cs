@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Guildmaster.Guild
 {
@@ -14,7 +14,21 @@ namespace Guildmaster.Guild
         [Tooltip("Параметры генерации карты: глубина (Start + испытания + Boss), ширина колонок, зоны этажей и якоря.")]
         [SerializeField] private MapGenConfig _map = new MapGenConfig();
 
+        [Header("Как акт называется")]
+        [Tooltip("Ключ локализации имени акта (например ui.act.1.title). Пусто — игрок увидит просто " +
+                 "«Акт I» без названия; имя актов не утверждено (открытая развилка ГДД).")]
+        [SerializeField] private string _titleKey = string.Empty;
+
         /// <summary>Валидированный конфиг генерации карты для <see cref="MapGenerator"/>.</summary>
         public MapGenConfig ToGenConfig() => (_map ?? new MapGenConfig()).Validated();
+
+        /// <summary>
+        /// Ключ имени акта — по нему двор и карта подписывают, где мы. Пусто = имени ещё нет.
+        /// </summary>
+        /// <remarks>
+        /// КЛЮЧ, а не готовая строка: имя едет к напарнику по сети, а переводит его каждый у себя —
+        /// иначе гость с другим языком читал бы чужую локаль.
+        /// </remarks>
+        public string TitleKey => _titleKey;
     }
 }

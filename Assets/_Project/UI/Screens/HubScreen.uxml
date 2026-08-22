@@ -1,4 +1,4 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <gm:PanelFrame name="hub-frame" corner="0" />
@@ -8,11 +8,17 @@
             <ui:VisualElement class="gm-divider" />
 
             <ui:VisualElement class="gm-panel__body gm-hub__body">
-                <!-- Заглушка объявляет себя вслух: пустой двор с одной кнопкой без метки читался бы
-                     как поломка, а не как «сюда ещё не завезли». Уйдёт вместе с содержимым двора
-                     (ГДД guild-hub-courtyard). -->
-                <ui:Label name="hub-stub" text="IN PROGRESS" class="gm-text--accent gm-hub__stub" />
+                <!-- ГДЕ СТОИТ ЗАБЕГ, а не «IN PROGRESS»: акт, его имя и ступень маршрута. Заказ Макса
+                     22.08.2026. Строку собирает код, потому что имя акта приходит ключом, а ступень —
+                     числом из состояния забега. -->
+                <ui:Label name="hub-stage" class="gm-text-subtitle gm-hub__stage" />
+                <ui:Label name="hub-stub" text="Двор ещё обустраивают" class="gm-text-caption gm-text--muted gm-hub__stub" />
                 <gm:PlateButton name="btn-start-run" text="Начать забег" class="gm-button gm-button--primary" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="gm-divider" />
+            <ui:VisualElement class="gm-hub__actions">
+                <gm:BackButton name="btn-leave" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

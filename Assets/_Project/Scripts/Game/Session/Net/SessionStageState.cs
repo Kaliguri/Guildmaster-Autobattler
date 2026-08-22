@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Net;
 
@@ -125,7 +125,25 @@ namespace Guildmaster.Game.Session.Net
         /// <summary>Имя дома, из которого уходят в забег.</summary>
         public readonly string GuildName;
 
-        public HubStage(string guildName) => GuildName = guildName;
+        /// <summary>Номер акта (1..N) и ступень маршрута — двор говорит, где стоит забег.</summary>
+        public readonly int ActNumber;
+
+        /// <summary>Ступень маршрута: этаж карты, считая вход за первый.</summary>
+        public readonly int Level;
+
+        /// <summary>
+        /// Ключ имени акта. Ключ, а не строка: переводит каждый у себя, иначе гость с другим языком
+        /// читал бы чужую локаль.
+        /// </summary>
+        public readonly string ActTitleKey;
+
+        public HubStage(string guildName, int actNumber = 0, int level = 0, string actTitleKey = null)
+        {
+            GuildName   = guildName;
+            ActNumber   = actNumber;
+            Level       = level;
+            ActTitleKey = actTitleKey ?? string.Empty;
+        }
     }
 
     /// <summary>
@@ -232,10 +250,14 @@ namespace Guildmaster.Game.Session.Net
         }
 
         /// <summary>Двор гильдии перед группой: дом, из которого уходят вместе.</summary>
-        public static SessionStageState Hub(string guildName)
+        public static SessionStageState Hub(string guildName, int actNumber = 0, int level = 0,
+                                            string actTitleKey = null)
         {
-            var writer = new NetByteWriter(64);
+            var writer = new NetByteWriter(96);
             writer.WriteString(guildName ?? string.Empty);
+            writer.WriteByte((byte)System.Math.Clamp(actNumber, 0, 255));
+            writer.WriteByte((byte)System.Math.Clamp(level, 0, 255));
+            writer.WriteString(actTitleKey ?? string.Empty);
 
             return new SessionStageState(SessionStageKind.Hub, Pack(writer));
         }
@@ -315,7 +337,7 @@ namespace Guildmaster.Game.Session.Net
             var bytes = new NetByteReader(Payload);
             try
             {
-                box = new HubStage(bytes.ReadString());
+                box = new HubStage(bytes.ReadString(), bytes.ReadByte(), bytes.ReadByte(), bytes.ReadString());
                 return true;
             }
             catch (InvalidOperationException) { return false; }

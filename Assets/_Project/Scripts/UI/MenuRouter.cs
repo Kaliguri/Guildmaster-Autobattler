@@ -790,7 +790,9 @@ namespace Guildmaster.UI
                     // кнопку гостю было нельзя — напарник остался бы стоять один.
                     built = HubScreenView.Build(_hubUxml, req.GuildName, key => _loc?.GetString(key),
                                                 onStartRun: () => req.OnStartRun?.Invoke(),
-                                                canStartRun: req.OnStartRun != null);
+                                                canStartRun: req.OnStartRun != null,
+                                                stage: (req.ActNumber, req.Level, req.ActTitleKey),
+                                                onLeave: req.OnLeave);
                     ApplyHubCount(built, _lastReady);
                     return built;
                 });
@@ -833,6 +835,14 @@ namespace Guildmaster.UI
         /// ровно та форма, из-за которой экраны узла разъезжались между ролями.
         /// </remarks>
         private RouterResultScreen<bool> _hubScreen;
+
+        /// <summary>
+        /// Стоим ли мы во дворе прямо сейчас. Спрашивает системное меню: ESC работает «внутри игры», а
+        /// двор идёт ДО открытия мероприятия — по признаку мероприятия он выглядел как главное меню, и
+        /// клавиша молча не делала ничего (наход. Макса 22.08.2026: «Не работает ESC меню (а должно,
+        /// вдруг хотим в настройки зайти пока игроков ждем?)»).
+        /// </summary>
+        public bool IsCourtyardOpen => _hubScreen != null;
 
         /// <summary>
         /// Показать сообщение игроку: что случилось, почему и что сказала система.

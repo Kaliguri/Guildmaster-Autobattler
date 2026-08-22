@@ -881,7 +881,10 @@ namespace Guildmaster.UI
             // «Внутри игры» = идёт мероприятие, любое. Ристалище тоже внутри, хотя забега там нет: с
             // площадки надо чем-то уходить, и уходят тем же системным меню. По одному лишь RunState
             // ESC на ней был мёртв, и выйти было нельзя вовсе (наход. Макса 2026-07-27).
-            if (_activities != null && _activities.Current.IsOpen) _router.ToggleSystemMenu();
+            // Двор идёт ДО открытия мероприятия, и по одному его признаку ESC там был мёртв — а уйти
+            // в настройки, пока ждёшь напарника, надо именно оттуда (наход. Макса 22.08.2026).
+            bool inActivity = _activities != null && _activities.Current.IsOpen;
+            if (inActivity || _router.IsCourtyardOpen) _router.ToggleSystemMenu();
         }
     }
 }

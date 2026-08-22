@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
@@ -277,7 +277,21 @@ namespace Guildmaster.Game.Services
             bool throughCourtyard = true;
             while (true)
             {
-                if (throughCourtyard && _hubPresenter != null) await _hubPresenter.ShowAsync();
+                if (throughCourtyard && _hubPresenter != null)
+                {
+                    // Токен взводим ДО двора, а не только на акт: со двора тоже уходят — кнопкой
+                    // «Вернуться» и системным меню, — а отменять в этот момент было нечего, и обе
+                    // двери молча не работали (наход. Макса 22.08.2026).
+                    _activityCts?.Dispose();
+                    _activityCts = new CancellationTokenSource();
+
+                    try { await _hubPresenter.ShowAsync(_activityCts.Token); }
+                    catch (OperationCanceledException)
+                    {
+                        Debug.Log("[GameFlow] - ушли со двора → возврат в главное меню");
+                        return true;
+                    }
+                }
 
                 // QA #18: «В главное меню» отменяет забег → OperationCanceledException всплывает из
                 // петли акта; ловим и уходим на новый виток while снаружи (показ главного меню). Сейв
