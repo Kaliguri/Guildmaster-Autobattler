@@ -84,6 +84,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Релик на стартовом сосуде (пустой кит) — игрок навешивает собранное в лоадауте.")]
         [SerializeField] private string _startingRelicId;
 
+        [Tooltip("Пул имён и прозвищ, из которого рождаются процедурные «Сосуды». Пусто — фабрика " +
+                 "закричит и выдаст технический ярлык: имена это контент, а не строки в коде.")]
+        [SerializeField] private VesselNamePool _vesselNamePool;
+
         [Header("Saves (профили и гильдии)")]
         [Tooltip("Сколько профилей аккаунта можно завести. Профиль — мета игрока (открытия), переключаемая: " +
                  "напр. отдельный профиль под игры с друзьями. Реш. Макса 2026-07-26: 4.")]
@@ -154,6 +158,9 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Сколько «Сосудов» выходит в бой одновременно.</summary>
         public int    BattleSlots         => _battleSlots;
+
+        /// <summary>Пул фрагментов имени для процедурных «Сосудов». Может быть пуст — это видно по логу.</summary>
+        public VesselNamePool VesselNamePool => _vesselNamePool;
         public string StartingRelicId     => _startingRelicId;
 
         public int    MaxProfiles         => _maxProfiles;

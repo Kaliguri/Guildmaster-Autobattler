@@ -31,6 +31,10 @@ namespace Guildmaster.Guild
         // Звук награды за бой. Опционален: сервис создают и в тестах, где звука нет вовсе.
         private readonly Core.Audio.IAudioService _audio;
 
+        // Люди дома. Опционален по той же причине: без него забег стартует с пустыми местами — это
+        // видно на экране отряда и честнее, чем выдуманные бойцы.
+        private readonly IGuildRosterView _roster;
+
         public RunState Current { get; private set; }
 
         /// <summary>
@@ -46,13 +50,14 @@ namespace Guildmaster.Guild
         public event Action<RunState> Committed;
 
         public RunStateService(ISaveService save, GameConfig config, IProfileService profiles,
-            IContentDatabase content, Core.Audio.IAudioService audio = null)
+            IContentDatabase content, Core.Audio.IAudioService audio = null, IGuildRosterView roster = null)
         {
             _save     = save;
             _config   = config;
             _profiles = profiles;
             _content  = content;
             _audio    = audio;
+            _roster   = roster;
         }
 
         /// <summary>
@@ -140,10 +145,34 @@ namespace Guildmaster.Guild
                 };
             }
 
+            SeatGuildPeople(guild, battle);
+
             RunState run = NewRun(seed, guild);
             run.OpenSlots     = ResolveOpenSlots(_config.GuildSlotsOpenAtStart, size);
             run.OpenItemSlots = _config.VesselItemSlots > 0 ? _config.VesselItemSlots : 3;
             return run;
+        }
+
+        /// <summary>
+        /// Посадить людей дома на боевые места. Забег ссылается на человека строковым id — сам он
+        /// принадлежит дому и переживает поход (<see cref="IGuildRosterView"/>).
+        /// <para>Дома может не быть вовсе (дев-путь, тесты): тогда места остаются пустыми, и это
+        /// видно на экране отряда. Молча выдумывать бойцов нельзя — игрок повёл бы в бой людей,
+        /// которых в его гильдии нет.</para>
+        /// </summary>
+        private void SeatGuildPeople(RosterSlot[] guild, int battle)
+        {
+            IReadOnlyList<VesselState> people = _roster?.Roster;
+            if (people == null || people.Count == 0) return;
+
+            int seated = 0;
+            for (int i = 0; i < guild.Length && seated < battle && seated < people.Count; i++)
+            {
+                VesselState person = people[seated];
+                if (person == null || string.IsNullOrEmpty(person.Id)) { seated++; continue; }
+                guild[i].VesselId = person.Id;
+                seated++;
+            }
         }
 
         /// <summary>

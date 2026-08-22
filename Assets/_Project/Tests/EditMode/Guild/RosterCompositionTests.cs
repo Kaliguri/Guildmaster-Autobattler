@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Guildmaster.Core.Persistence;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
@@ -137,6 +138,47 @@ namespace Guildmaster.Tests.EditMode.Guild
             for (int i = 0; i < run.Guild.Length; i++) if (run.Guild[i].InBattle) after++;
             Assert.AreEqual(before, after, "Повторная нормализация свежий забег не трогает.");
             Assert.AreEqual(_config.GuildSize, run.Guild.Length);
+        }
+
+        // ── Люди дома садятся на боевые места ────────────────────────────────
+
+        [Test]
+        public void NewRun_SeatsGuildPeople_OnBattlePlacesOnly()
+        {
+            var roster = new StubRoster("vessel.a", "vessel.b", "vessel.c", "vessel.d", "vessel.e");
+            var service = new RunStateService(new InMemorySaveService(), _config, new FixedProfileService(),
+                                              content: null, audio: null, roster: roster);
+
+            RunState run = service.NewDefaultRun(1L);
+
+            int seated = 0;
+            for (int i = 0; i < run.Guild.Length; i++)
+                if (!string.IsNullOrEmpty(run.Guild[i].VesselId)) seated++;
+
+            Assert.AreEqual(_config.BattleSlots, seated, "Садятся ровно те, кто выходит в бой, — не весь дом.");
+            Assert.AreEqual("vessel.a", run.Guild[0].VesselId);
+            Assert.IsTrue(run.Guild[0].InBattle, "Занятые места — боевые.");
+        }
+
+        [Test]
+        public void NewRun_WithoutGuild_LeavesPlacesEmpty()
+        {
+            RunState run = _runStates.NewDefaultRun(1L); // сервис поднят без дома
+
+            for (int i = 0; i < run.Guild.Length; i++)
+                Assert.IsEmpty(run.Guild[i].VesselId,
+                               "Без дома забег стартует с пустыми местами: выдумывать бойцов нельзя.");
+        }
+
+        /// <summary>Дом с людьми — ровно столько контракта, сколько нужно забегу.</summary>
+        private sealed class StubRoster : IGuildRosterView
+        {
+            private readonly List<VesselState> _people = new();
+            public StubRoster(params string[] ids)
+            {
+                foreach (string id in ids) _people.Add(new VesselState { Id = id, Name = id });
+            }
+            public IReadOnlyList<VesselState> Roster => _people;
         }
 
         // ── Путь вещи ────────────────────────────────────────────────────────

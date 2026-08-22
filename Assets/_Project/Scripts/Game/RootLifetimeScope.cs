@@ -198,7 +198,10 @@ namespace Guildmaster.Game
             builder.Register<LocalJsonFileSaveService>(Lifetime.Singleton).As<ILocalSaveService>();
             // Иерархия сохранений: профиль → гильдии → забег. Entry point поднимает прошлый выбор, а на
             // чистой установке заводит первый профиль с гильдией — иначе забегу некуда писаться.
-            builder.RegisterEntryPoint<ProfileService>(Lifetime.Singleton).As<IProfileService>();
+            // Он же отдаёт людей дома забегу: типы гильдии в ядро не тащим, поэтому шов объявлен в
+            // сборке Guild, а реализован здесь (см. IGuildRosterView).
+            builder.RegisterEntryPoint<ProfileService>(Lifetime.Singleton)
+                   .As<IProfileService>().As<Guildmaster.Guild.IGuildRosterView>();
             // Владелец жизненного цикла Сессии — сеанса владения состоянием игры. Само состояние забега
             // и шина команд живут в ЕГО скоупе, а не здесь: смена владельца (кооп-гость, другой профиль)
             // обязана уносить прошлое состояние с собой, а вечный объект в корне уносить нечему.

@@ -21,7 +21,7 @@ namespace Guildmaster.Game.Services
     /// профиль с первой гильдией — иначе забегу физически некуда писаться. Это не тихая подстановка:
     /// созданное сразу видно игроку в списке, и он волен переименовать или удалить.</para>
     /// </summary>
-    public sealed class ProfileService : IProfileService, IStartable
+    public sealed class ProfileService : IProfileService, Guildmaster.Guild.IGuildRosterView, IStartable
     {
         private const string ProfilesRoot = "profiles";
         private const string SessionKey   = "session";
@@ -237,6 +237,8 @@ namespace Guildmaster.Game.Services
                 RosterCapacity   = Math.Max(1, _config.StartingRosterCapacity),
             };
 
+            PopulateFoundingRoster(guild);
+
             _save.Save(GuildKey(_activeProfile.Id, guild.Id), guild);
             // Книга заводится сразу и пустой: дом без памяти невозможен, а отдельный ключ бережёт
             // экран казарм от чтения всей истории (реш. 2026-07-27/19).
@@ -246,6 +248,48 @@ namespace Guildmaster.Game.Services
 
             Changed?.Invoke();
             return new ProfileSummary(guild.Id, guild.Name);
+        }
+
+        /// <summary>
+        /// Первые люди дома. Дом основывается СРАЗУ с отрядом (решение Макса 22.08.2026): пустой дом
+        /// означал бы, что первый забег выходит без бойцов, и экран отряда показывал бы одни свободные
+        /// места.
+        /// <para>Столько, сколько выходит в бой (<c>GameConfig.BattleSlots</c>): дальше отряд растёт
+        /// наймом внутри забега, до шести и восьми (ГДД <c>guild-development</c>).</para>
+        /// <para>Сид рождения выводится из id дома и порядкового номера, поэтому один и тот же дом
+        /// всегда рождает одних и тех же людей, а два дома — разных.</para>
+        /// </summary>
+        private void PopulateFoundingRoster(GuildState guild)
+        {
+            int count = _config.BattleSlots > 0 ? _config.BattleSlots : 4;
+            long baseSeed = guild.Id != null ? guild.Id.GetHashCode() : 0;
+
+            for (int i = 0; i < count; i++)
+            {
+                // Перков пока нет ни одного ассетом, поэтому пул пуст — фабрика об этом скажет сама.
+                Guildmaster.Guild.VesselState vessel =
+                    Guildmaster.Guild.VesselFactory.Create(unchecked(baseSeed * 397 + i), _config.VesselNamePool, traits: null);
+                guild.Roster.Add(vessel);
+            }
+        }
+
+        /// <summary>
+        /// Люди активного дома. Читается с диска на каждый вопрос: ростер спрашивают редко (вход в
+        /// забег, экран казарм), а держать его копию в памяти значило бы завести второго владельца —
+        /// и разойтись с файлом на первом же найме.
+        /// </summary>
+        public IReadOnlyList<Guildmaster.Guild.VesselState> Roster
+        {
+            get
+            {
+                if (_activeProfile == null || string.IsNullOrEmpty(ActiveGuild.Id))
+                    return Array.Empty<Guildmaster.Guild.VesselState>();
+
+                SaveLoadResult<GuildState> loaded = _save.TryLoad<GuildState>(GuildKey(_activeProfile.Id, ActiveGuild.Id));
+                return loaded.IsOk && loaded.Value?.Roster != null
+                    ? loaded.Value.Roster
+                    : (IReadOnlyList<Guildmaster.Guild.VesselState>)Array.Empty<Guildmaster.Guild.VesselState>();
+            }
         }
 
         public bool SelectGuild(string guildId)
