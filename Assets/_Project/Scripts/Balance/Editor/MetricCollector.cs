@@ -101,6 +101,17 @@ namespace Guildmaster.Balance.Editor
         public double ControlSecondsTaken;
 
         /// <summary>
+        /// Счёт контроля: сумма «секунды × <see cref="EffectData.ControlWeight"/>» по всем наложенным
+        /// на врагов эффектам с ненулевым весом.
+        /// </summary>
+        /// <remarks>
+        /// Рядом с <see cref="ControlSecondsDealt"/>, а не вместо: сырые секунды — факт («сколько цель
+        /// простояла»), счёт — оценка («сколько это стоило»). Замедление на четыре секунды и оглушение
+        /// на четыре секунды дают одинаковые секунды и вшестеро разный счёт.
+        /// </remarks>
+        public double ControlScore;
+
+        /// <summary>
         /// Урон, нанесённый по цели, которая В ЭТОТ МОМЕНТ под контролем (сон, оглушение, заморозка,
         /// подброс) — не важно, чьим.
         /// </summary>
@@ -352,6 +363,11 @@ namespace Guildmaster.Balance.Editor
 
                 if (_byId.TryGetValue(target.Id, out UnitMetric tmc)) tmc.ControlSecondsTaken += seconds;
             }
+
+            // Счёт контроля идёт по ВЕСУ, а не по тегам: замедление тега контроля не несёт (оно живёт
+            // модификатором скорости), но стоит своей доли — иначе кит, тормозящий врага весь бой,
+            // числился бы вовсе не контроллером.
+            if (onEnemy && def.ControlWeight > 0f) sm.ControlScore += seconds * def.ControlWeight;
 
             if (onEnemy && def.Polarity == EffectPolarity.Debuff)
             {

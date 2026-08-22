@@ -21,6 +21,11 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Категориальные теги: диспел по категории, AI-фильтры, битовая маска на юните.")]
         [SerializeField] private EffectTag _tags;
 
+        [Tooltip("Вес контроля для стенда: сколько стоит СЕКУНДА этого эффекта. 0 = не контроль. " +
+                 "Шкала (решение Макса 2026-08-22): 1.0 — полный запрет (оглушение, сон, корень); " +
+                 "0.5 — частичный (цель не бьёт, но ходит); 0.166 — замедление.")]
+        [SerializeField] private float _controlWeight;
+
         [Header("Timing")]
         [Tooltip("Базовая длительность, сек. 0 = мгновенный (один OnApply), -1 = постоянный (пассивка).")]
         [SerializeField] private float _baseDuration;
@@ -71,6 +76,22 @@ namespace Guildmaster.Data.Definitions
 
         public EffectPolarity Polarity => _polarity;
         public EffectTag Tags => _tags;
+
+        /// <summary>
+        /// Сколько стоит секунда этого эффекта в счёте контроля (<c>0</c> — эффект не контроль).
+        /// </summary>
+        /// <remarks>
+        /// Число живёт НА ЭФФЕКТЕ, а не выводится из его содержимого (решение Макса 2026-08-22,
+        /// <c>gdd/00-meta/journal-adr</c> §2026-08-22 (2)): контроль бывает разного уровня, и общий
+        /// курс приравнял бы замедление к оглушению, хотя замедленная цель продолжает бить. Шкала взята
+        /// у Crowd Control Score из League of Legends, где она обкатана годами: <b>1.0</b> — полный
+        /// запрет действий (оглушение, сон, корень), <b>0.5</b> — частичный (не бьёт, но ходит),
+        /// <b>0.166</b> — замедление. Замедление стоит ШЕСТУЮ часть оглушения, а не половину — это и
+        /// есть то, ради чего шкала списана, а не придумана.
+        /// <para>Читает его только стенд (<c>MetricCollector.ControlScore</c>); в бой число не
+        /// подставляется.</para>
+        /// </remarks>
+        public float ControlWeight => _controlWeight;
         public float BaseDuration => _baseDuration;
         public StackRule Stacking => _stacking;
         public int MaxStacks => _maxStacks;

@@ -26,7 +26,7 @@ namespace Guildmaster.Balance.Editor
             var headers = new List<string>
             {
                 "Relic", "DPS_solo", "DPS_summons", "DPS_with_summons", "DPS_aoe", "AoE_ratio",
-                "ControlSec", "ControlShare%", "DmgControlled%",
+                "ControlSec", "ControlScore", "ControlShare%", "DmgControlled%",
                 "AutoPhys%", "AutoMagic%", "Ability%", "DoT%", "React%", "Vuln%", "SelfDmg%",
                 "aoe_AutoPhys%", "aoe_AutoMagic%", "aoe_Ability%", "aoe_DoT%", "aoe_React%",
             };
@@ -62,6 +62,7 @@ namespace Guildmaster.Balance.Editor
                 {
                     relic.name, solo, summonDps, solo + summonDps, aoe, ratio,
                     a?.ControlSecondsDealt ?? 0.0,
+                    a?.ControlScore ?? 0.0,
                     soloReport.Seconds > 0 ? 100.0 * (a?.ControlSecondsDealt ?? 0.0) / soloReport.Seconds : 0.0,
                     Share(a?.DamageOnControlled ?? 0.0),
                     Share(a?.DamageAutoPhysical ?? 0.0),
@@ -95,9 +96,12 @@ namespace Guildmaster.Balance.Editor
                 "Колонки **aoe_\\*** — та же разбивка, но по AoE-прогону: у кита, чья способность требует нескольких " +
                 "целей, в solo она не кастуется вовсе, и её доля там ноль по отсутствию, а не по слабости. " +
                 "Сравнивать solo- и aoe-доли имеет смысл только с оглядкой на AoE_ratio — знаменатели разные. " +
-                "**Контроль — три колонки, и они не про урон.** ControlSec — сколько секунд контроля кит " +
-                "наложил на цель (сон, оглушение, заморозка, подброс), ControlShare% — какую долю боя цель " +
-                "простояла под ним, DmgControlled% — доля урона, попавшая в это окно. " +
+                "**Контроль — четыре колонки, и они не про урон.** ControlSec — сколько секунд контроля кит " +
+                "наложил на цель (сон, оглушение, заморозка, подброс), **ControlScore** — те же секунды, " +
+                "взвешенные ценой эффекта (1.0 полный запрет, 0.5 частичный, 0.166 замедление), " +
+                "ControlShare% — какую долю боя цель простояла под ним, DmgControlled% — доля урона, " +
+                "попавшая в это окно. Сравнивать китов надо по СЧЁТУ, а не по секундам: четыре секунды " +
+                "замедления и четыре секунды сна — это одни и те же секунды и вшестеро разная цена. " +
                 "Кит, у которого DPS ниже нормы, а DmgControlled% под сотню, — не слабый: он просто " +
                 "меряется не тем. Пожиратель снов по своей карточке в открытом размене не бьётся вовсе " +
                 "(`docs/balance-issues.md` §BAL-032). " +
