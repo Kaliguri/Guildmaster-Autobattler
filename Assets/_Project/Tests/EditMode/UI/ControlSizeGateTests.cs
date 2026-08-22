@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -91,6 +91,50 @@ namespace Guildmaster.Tests.EditMode.UI
                 "экране — это ступень, расписанная под место: именно так одна кнопка стала в проекте\n" +
                 "восемью разными размерами.\n" +
                 "Либо повесь ступень в разметке, либо впиши селектор в ExemptSelectors С ПРИЧИНОЙ.\n" +
+                string.Join("\n", complaints));
+        }
+
+        /// <summary>
+        /// Форма контрола задаётся ДОЛЕЙ его размера, а не абсолютным числом.
+        /// </summary>
+        /// <remarks>
+        /// <b>HARD-правило Макса 22.08.2026:</b> «Мы не можем автоматизировать подсчет значение
+        /// сколов и тп, просто скейлить как и кнопки? Чтобы не заниматься математикой каждый раз» —
+        /// и следом: «Тоже самое и с другими элементами. Возьми как хард правило».
+        ///
+        /// <para>Пока скол и концы стояли числами, каждая новая ступень размера требовала считать их
+        /// заново, а мелкая кнопка выходила грубее крупной: 9 пикселей конца на высоте 64 это 14%,
+        /// на высоте 43 — уже 21%. Теперь контрол считает форму от собственного роста, а тема держит
+        /// ОДНУ долю на всю игру.</para>
+        ///
+        /// <para><b>Ноль разрешён</b> — это не размер, а выключение: у видов со значком концов нет
+        /// вовсе. Разрешено и абсолютное значение там, где деталь принадлежит не силуэту, а рисунку;
+        /// такие места вписываются в исключения с причиной.</para>
+        /// </remarks>
+        [Test]
+        public void Форму_контрола_задаёт_доля_его_размера()
+        {
+            var shape = new Regex(@"(--gm-plate-chamfer|--gm-plate-cap|--gm-chip-slant|--gm-slant)\s*:\s*([0-9.]+)\s*;",
+                                  RegexOptions.Compiled);
+            var complaints = new List<string>();
+
+            foreach (string file in ThemeFiles())
+            {
+                string text = StripComments(File.ReadAllText(file));
+                foreach (Match m in shape.Matches(text))
+                {
+                    if (!float.TryParse(m.Groups[2].Value, System.Globalization.NumberStyles.Float,
+                                        System.Globalization.CultureInfo.InvariantCulture, out float value))
+                        continue;
+                    if (value == 0f) continue;   // ноль это выключение, а не размер
+                    complaints.Add($"  {Path.GetFileName(file)}: {m.Groups[1].Value}: {m.Groups[2].Value}");
+                }
+            }
+
+            Assert.IsEmpty(complaints,
+                "Скол, концы и скос задаются ДОЛЕЙ высоты (--gm-*-ratio), а не числом: контрол\n" +
+                "пересчитывает форму от собственного роста, и новая ступень размера не требует\n" +
+                "никакой арифметики. Ноль разрешён — это выключение детали.\n" +
                 string.Join("\n", complaints));
         }
 

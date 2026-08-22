@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI.Components
@@ -28,6 +28,13 @@ namespace Guildmaster.UI.Components
 
         private static readonly CustomStyleProperty<float> StrokeWidthProp = new("--gm-chip-stroke-width");
 
+        /// <summary>
+        /// Доля высоты, которую занимает скос. HARD-правило Макса 22.08.2026: всё, что элемент
+        /// рисует внутри себя, масштабируется вместе с ним — иначе каждый новый размер требует
+        /// пересчитывать форму руками, и мелкий чип выглядит грубее крупного.
+        /// </summary>
+        private static readonly CustomStyleProperty<float> SlantRatioProp = new("--gm-chip-slant-ratio");
+
         // Своих цветов нет — только из USS (--gm-chip-fill / --gm-chip-stroke). Значение то же, что
         // было, но записано именем: Color.clear читается как «цвет не пришёл», а new(0,0,0,0) — как
         // осмысленный чёрный прозрачный, и гейт эти два случая различать обязан.
@@ -35,6 +42,9 @@ namespace Guildmaster.UI.Components
         private Color _stroke = Color.clear;
         private float _strokeWidth = 2f;
         private float _slant = 12f;
+
+        // 0 — доля не задана, играет абсолютное значение (дорога для исключений).
+        private float _slantRatio;
         private Side _side = Side.Left;
 
         /// <summary>Горизонтальный вылет скоса в пикселях (0 — обычный прямоугольник).</summary>
@@ -72,6 +82,7 @@ namespace Guildmaster.UI.Components
             if (evt.customStyle.TryGetValue(FillProp, out Color fill)) _fill = fill;
             if (evt.customStyle.TryGetValue(StrokeProp, out Color stroke)) _stroke = stroke;
             if (evt.customStyle.TryGetValue(StrokeWidthProp, out float width)) _strokeWidth = width;
+            _slantRatio = evt.customStyle.TryGetValue(SlantRatioProp, out float sr) ? Mathf.Max(0f, sr) : 0f;
             MarkDirtyRepaint();
         }
 
@@ -85,7 +96,7 @@ namespace Guildmaster.UI.Components
             // Рисуем, если есть ЧТО рисовать: заливка состояния или постоянная обводка кнопки.
             if (_fill.a <= 0f && _stroke.a <= 0f) return;
 
-            float s = Mathf.Min(_slant, w * 0.5f);
+            float s = Mathf.Min(_slantRatio > 0f ? h * _slantRatio : _slant, w * 0.5f);
             float mid = h * 0.5f;
             // Отступ от торца: обводка ленты рисуется по её краю, и заливка вплотную ложилась бы
             // прямо на латунную линию, съедая её. Клин заканчивается чуть раньше — линия остаётся видна.

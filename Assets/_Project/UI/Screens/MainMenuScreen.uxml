@@ -47,14 +47,15 @@
              Тексты, ссылки и значки ставит View из ассета сообщества: здесь только каркас. -->
         <ui:VisualElement name="community" class="gm-community">
             <ui:VisualElement class="gm-panel gm-community__panel">
-                <gm:PanelFrame name="community-frame" class="gm-panel__frame" corner="18" />
+                <gm:PanelFrame name="community-frame" class="gm-panel__frame" />
                 <ui:Label name="community-headline" class="gm-text-title gm-community__headline" />
                 <ui:VisualElement name="community-body" class="gm-community__body" />
             </ui:VisualElement>
 
-            <!-- СЛУЖЕБНАЯ СТРОКА ПОД ПАНЕЛЬЮ — 1:1 приём Olden Era: слева «Отчёт об ошибке», справа
-                 круглые значки каналов. У рефа это единственное место, где живут ссылки, и стоит
-                 оно ровно под панелью обращения, а не внутри неё. -->
+            <!-- СЛУЖЕБНОЕ ПОД ПАНЕЛЬЮ — ДВЕ СТРОКИ (решение Макса 22.08.2026). В одну три меры не
+                 помещаются: столбец 380, а каждая кнопка держит меру набора 260. Первой строкой
+                 отчёт и значок канала, второй — приглашение в желаемое; зазор между строками тот
+                 же, что между пунктами меню. Подписи про Steam здесь нет намеренно. -->
             <ui:VisualElement name="community-service" class="gm-community__service">
                 <gm:PlateButton name="btn-bugreport" class="gm-button gm-button--icon-label gm-community__bug">
                     <ui:VisualElement class="gm-button__icon gm-community__bug-icon" picking-mode="Ignore" />
@@ -62,12 +63,7 @@
                 <ui:VisualElement name="community-links" class="gm-community__links" />
             </ui:VisualElement>
 
-            <!-- Приглашение в желаемое стоит ПОД строкой отдельным блоком, как у Guildrun: это не
-                 часть обращения, а просьба, и мешать её с «спасибо, что играете» нечестно. -->
-            <ui:VisualElement name="community-wishlist" class="gm-community__wishlist">
-                <ui:Label name="wishlist-caption" class="gm-text-caption gm-community__wishlist-caption" />
-                <gm:PlateButton name="btn-wishlist" class="gm-button gm-button--block" />
-            </ui:VisualElement>
+            <gm:PlateButton name="btn-wishlist" class="gm-button gm-button--block gm-community__wishlist-button" />
         </ui:VisualElement>
 
         <!-- Версия билда: угол экрана. Нижний правый — самое частое место у рефов (13 из 14 держат

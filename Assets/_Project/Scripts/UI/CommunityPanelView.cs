@@ -62,7 +62,7 @@ namespace Guildmaster.UI
             var links    = block.Q<VisualElement>("community-links");
             var bug      = block.Q<Button>("btn-bugreport");
             var wishlist = block.Q<VisualElement>("community-wishlist");
-            var caption  = block.Q<Label>("wishlist-caption");
+
             var button   = block.Q<Button>("btn-wishlist");
 
             if (headline != null) headline.text = L(config.HeadlineKey, config.HeadlineFallback);
@@ -84,9 +84,6 @@ namespace Guildmaster.UI
 
             if (wish)
             {
-                if (caption != null)
-                    caption.text = L("ui.community.wishlist.caption", "Понравилось? Отметьте в Steam");
-
                 if (button != null)
                 {
                     button.text = L("ui.community.wishlist.button", "В список желаемого");

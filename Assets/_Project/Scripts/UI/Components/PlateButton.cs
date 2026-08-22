@@ -72,6 +72,21 @@ namespace Guildmaster.UI.Components
         private static readonly CustomStyleProperty<float> ChamferProp = new("--gm-plate-chamfer");
         private static readonly CustomStyleProperty<float> CapProp = new("--gm-plate-cap");
 
+        /// <summary>
+        /// Доля высоты, которую занимают скол угла и конец пластины.
+        /// </summary>
+        /// <remarks>
+        /// <b>Форма считается от РОСТА КНОПКИ, а не задаётся числом на каждый размер</b> (решение
+        /// Макса 22.08.2026: «Мы не можем автоматизировать подсчет значение сколов и тп, просто
+        /// скейлить как и кнопки? Чтобы не заниматься математикой каждый раз»). Пока скол стоял
+        /// числом, мелкая кнопка выглядела грубее крупной, а каждая новая ступень требовала
+        /// пересчёта руками.
+        /// <para>Доли взяты у ЭТАЛОНА — пункта главного меню: при высоте 64 там скол 10 и конец 9,
+        /// то есть 0.156 и 0.14. Это единственные два числа формы на всю игру.</para>
+        /// </remarks>
+        private static readonly CustomStyleProperty<float> ChamferRatioProp = new("--gm-plate-chamfer-ratio");
+        private static readonly CustomStyleProperty<float> CapRatioProp = new("--gm-plate-cap-ratio");
+
         private readonly Label _label;
 
         // Подпись хранится ИСХОДНОЙ, а показывается по правилу регистра из USS. Инициализатор поля
@@ -91,6 +106,11 @@ namespace Guildmaster.UI.Components
         private float _strokeWidth = 2f;
         private PlateStroke _strokeMode = PlateStroke.Full;
         private float _chamfer = 10f;
+
+        // Доли формы; 0 — «доля не задана, играет абсолютное значение». Скол и конец пересчитываются
+        // от высоты в момент отрисовки, поэтому кнопка любого размера остаётся той же фигурой.
+        private float _chamferRatio;
+        private float _capRatio;
 
         // Размер КОНЦА пластины в пикселях; 0 — концов нет. Заведено 21.08.2026 по разбору Heroes
         // Olden Era: там каждая кнопка меню кончается шевроном с обеих сторон, и именно эта мелочь
@@ -162,6 +182,12 @@ namespace Guildmaster.UI.Components
             if (style.TryGetValue(ChamferProp, out float chamfer)) _chamfer = Mathf.Max(0f, chamfer);
             if (style.TryGetValue(CapProp, out float cap)) _cap = Mathf.Max(0f, cap);
 
+            // Доли сбрасываются ЯВНО, как и второй цвет заливки: правило, их не задающее, обязано
+            // вернуть кнопку к абсолютным значениям, а не унаследовать пропорцию от состояния,
+            // из которого она вышла.
+            _chamferRatio = style.TryGetValue(ChamferRatioProp, out float cr) ? Mathf.Max(0f, cr) : 0f;
+            _capRatio = style.TryGetValue(CapRatioProp, out float pr) ? Mathf.Max(0f, pr) : 0f;
+
             // Второй цвет сбрасывается ЯВНО, когда правило его не задаёт: без этого пластина,
             // унаследовавшая градиент от одного состояния, тащила бы его в состояние со сплошной
             // заливкой — значения custom-свойств переживают смену псевдокласса.
@@ -218,7 +244,7 @@ namespace Guildmaster.UI.Components
             float h = localBound.height;
             if (w <= 0f || h <= 0f) return;
 
-            float c = Mathf.Min(_chamfer, Mathf.Min(w, h) * 0.5f);
+            float c = Mathf.Min(Chamfer(h), Mathf.Min(w, h) * 0.5f);
             float inset = _strokeWidth * 0.5f; // обводка идёт по центру линии — поджимаем внутрь
             float left = inset, top = inset, right = w - inset, bottom = h - inset;
 
@@ -256,8 +282,21 @@ namespace Guildmaster.UI.Components
                 }
             }
 
-            if (_cap > 0f && _stroke.a > 0f) DrawCaps(ctx, w, h);
+            if (Cap(h) > 0f && _stroke.a > 0f) DrawCaps(ctx, w, h);
         }
+
+        /// <summary>
+        /// Скол угла для этой высоты: доля, если она задана, иначе абсолютное значение из USS.
+        /// </summary>
+        /// <remarks>
+        /// Доля важнее числа намеренно: кнопка любого роста остаётся ОДНОЙ И ТОЙ ЖЕ фигурой, и
+        /// новая ступень размера не требует ни пересчёта, ни правки темы. Абсолютное значение
+        /// остаётся дорогой для исключений — места, где фигура принадлежит не кнопке, а рисунку.
+        /// </remarks>
+        private float Chamfer(float height) => _chamferRatio > 0f ? height * _chamferRatio : _chamfer;
+
+        /// <summary>Размер конца пластины для этой высоты. Та же логика, что у скола.</summary>
+        private float Cap(float height) => _capRatio > 0f ? height * _capRatio : _cap;
 
         /// <summary>
         /// Концы пластины: по шеврону у левой и правой кромки, остриями внутрь.
@@ -276,12 +315,12 @@ namespace Guildmaster.UI.Components
         /// </remarks>
         private void DrawCaps(MeshGenerationContext ctx, float w, float h)
         {
-            float size = Mathf.Min(_cap, h * 0.30f);
+            float size = Mathf.Min(Cap(h), h * 0.30f);
             if (size <= 0.5f) return;
 
             // Отступ от кромки — фаска плюс половина размера: иначе шеврон садится на скос угла и
             // ломает силуэт, ради которого фаска и заведена.
-            float pad = Mathf.Min(_chamfer, Mathf.Min(w, h) * 0.5f) + size * 0.5f;
+            float pad = Mathf.Min(Chamfer(h), Mathf.Min(w, h) * 0.5f) + size * 0.5f;
             float midY = h * 0.5f;
 
             Painter2D p = ctx.painter2D;

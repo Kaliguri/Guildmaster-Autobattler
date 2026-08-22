@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI.Components
@@ -26,6 +26,18 @@ namespace Guildmaster.UI.Components
         private static readonly CustomStyleProperty<Color> InnerProp = new("--gm-frame-inner");
         private static readonly CustomStyleProperty<float> WidthProp = new("--gm-frame-width");
         private static readonly CustomStyleProperty<float> GapProp = new("--gm-frame-gap");
+
+        /// <summary>
+        /// Длина угловой накладки и её вылет за кромку — ПОСТОЯННЫЕ, из темы.
+        /// </summary>
+        /// <remarks>
+        /// <b>Здесь доля была бы ошибкой</b>, в отличие от скола кнопки (решение Макса 22.08.2026).
+        /// Накладка — оковка предмета, а оковка настоящей вещи не растёт вместе с доской: на широкой
+        /// панели пропорциональные уголки читались бы рамкой, а не деталью. Поэтому число, но ОДНО
+        /// на всю игру и в теме, а не по числу на каждое место разметки.
+        /// </remarks>
+        private static readonly CustomStyleProperty<float> CornerProp = new("--gm-frame-corner");
+        private static readonly CustomStyleProperty<float> OverhangProp = new("--gm-frame-overhang");
 
         // Своих цветов нет — только из USS (--gm-frame-line / --gm-frame-inner). Прежние латунные
         // дефолты были мёртвым дублем токенов: правится роль, а копия в коде остаётся прежней.
@@ -77,6 +89,8 @@ namespace Guildmaster.UI.Components
             if (style.TryGetValue(InnerProp, out Color inner)) _inner = inner;
             if (style.TryGetValue(WidthProp, out float w)) _width = w;
             if (style.TryGetValue(GapProp, out float g)) _gap = g;
+            if (style.TryGetValue(CornerProp, out float corner)) _corner = Mathf.Max(0f, corner);
+            if (style.TryGetValue(OverhangProp, out float over)) _overhang = Mathf.Max(0f, over);
             MarkDirtyRepaint();
         }
 
