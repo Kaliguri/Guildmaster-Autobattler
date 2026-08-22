@@ -77,6 +77,62 @@ function injuries(
   });
 }
 
+/** Чип: имя сущности без описания. Основная единица карточки после решения Макса 22.08.2026 —
+ *  описания живут в тултипах, на самой карточке остаются имена. */
+function chip(
+  ctx: CanvasRenderingContext2D,
+  r: w.Rect,
+  width: number,
+  height: number,
+  label: string,
+  opts: { lit?: boolean; sign?: string } = {}
+): void {
+  w.box(ctx, r, width, height, { lit: opts.lit });
+  const sx = opts.sign ? r.x + 0.012 : r.x + r.w / 2;
+  if (opts.sign) {
+    w.text(ctx, opts.sign, { x: sx, y: r.y + r.h / 2 }, width, height, {
+      size: 9,
+      color: opts.sign === "+" ? w.WIRE.accent : w.WIRE.danger
+    });
+  }
+  w.text(ctx, label, { x: opts.sign ? sx + 0.016 : sx, y: r.y + r.h / 2 }, width, height, {
+    align: opts.sign ? "left" : "center",
+    size: 8
+  });
+}
+
+/** Тултип: окно, которое и несёт все описания. Рисуется на чертеже нарочно — после того, как
+ *  описания ушли из карточки, тултип перестал быть удобством и стал несущей частью показа.
+ *  Механизм готов: цепочка до трёх окон, FIFO, Shift переключает подробность (решение 2026-08-06/9). */
+function tooltip(
+  ctx: CanvasRenderingContext2D,
+  at: { x: number; y: number; w: number },
+  width: number,
+  height: number,
+  title: string,
+  body: string[],
+  foot = "Shift — подробнее"
+): void {
+  const h = 0.075 + body.length * 0.032;
+  const r: w.Rect = { x: at.x, y: at.y, w: at.w, h };
+  const [bx, by, bw, bh] = w.px(r, width, height);
+  ctx.fillStyle = w.WIRE.frame;
+  ctx.fillRect(bx, by, bw, bh);
+  w.box(ctx, r, width, height, { lit: true });
+  w.text(ctx, title, { x: r.x + 0.012, y: r.y + 0.03 }, width, height, { size: 9 });
+  body.forEach((s, i) => {
+    w.text(ctx, s, { x: r.x + 0.012, y: r.y + 0.062 + i * 0.032 }, width, height, {
+      size: 7,
+      color: w.WIRE.dim
+    });
+  });
+  w.text(ctx, foot, { x: r.x + r.w - 0.012, y: r.y + h - 0.022 }, width, height, {
+    size: 6,
+    align: "right",
+    color: w.WIRE.accent
+  });
+}
+
 /** Ряд слотов предмета: три открытых, четвёртый закрыт. Тот же язык, что на страницах подготовки. */
 function itemRow(
   ctx: CanvasRenderingContext2D,
@@ -171,17 +227,28 @@ export function panelColumn(ctx: CanvasRenderingContext2D, width: number, height
   section(ctx, "СТАТЫ", { x: 0.74, y: 0.29 }, width, height);
   lines(ctx, ["HP 820", "броня 24 · маг. 12", "урон 41", "скорость 3.2"], { x: 0.74, y: 0.33 }, width, height);
 
-  section(ctx, "ПЕРКИ", { x: 0.74, y: 0.44 }, width, height);
-  lines(ctx, ["+ Стойкий: +8% брони", "− Тугодум: −10% каста"], { x: 0.74, y: 0.48 }, width, height);
+  // Перки — чипами с именем: описание ушло в тултип (решение Макса 22.08.2026).
+  section(ctx, "ПЕРКИ", { x: 0.74, y: 0.46 }, width, height);
+  chip(ctx, { x: 0.74, y: 0.485, w: 0.19, h: 0.045 }, width, height, "Стойкий", { sign: "+" });
+  chip(ctx, { x: 0.74, y: 0.54, w: 0.19, h: 0.045 }, width, height, "Тугодум", { sign: "−" });
 
-  section(ctx, "СНАРЯЖЕНИЕ", { x: 0.74, y: 0.56 }, width, height);
-  itemRow(ctx, { x: 0.74, y: 0.6 }, width, height, 0.06);
+  section(ctx, "СНАРЯЖЕНИЕ", { x: 0.74, y: 0.62 }, width, height);
+  itemRow(ctx, { x: 0.74, y: 0.65 }, width, height, 0.06);
 
-  section(ctx, "ПОВЕДЕНИЕ", { x: 0.74, y: 0.71 }, width, height);
-  w.box(ctx, { x: 0.74, y: 0.74, w: 0.19, h: 0.045 }, width, height, { label: "держит строй", size: 7 });
+  section(ctx, "ПОВЕДЕНИЕ", { x: 0.74, y: 0.75 }, width, height);
+  chip(ctx, { x: 0.74, y: 0.775, w: 0.19, h: 0.045 }, width, height, "держит строй");
 
   inspectButtons(ctx, { x: 0.74, y: 0.85, w: 0.19 }, width, height);
-  w.callout(ctx, { x: 0.72, y: 0.66 }, { x: 0.66, y: 0.72 }, "длинный список — нужен скролл", width, height, "right");
+
+  // Наведение на чип открывает окно цепочки: именно оно теперь несёт все описания.
+  tooltip(
+    ctx,
+    { x: 0.4, y: 0.46, w: 0.29 },
+    width,
+    height,
+    "Стойкий",
+    ["Положительный перк.", "+8% физической брони.", "Закреплён при найме."]
+  );
 }
 
 /** III-Б · Широкая карта: панель в две внутренние колонки, скролла нет. */
@@ -825,7 +892,14 @@ export function bookCells(ctx: CanvasRenderingContext2D, width: number, height: 
     if (title === "СТАТЫ") {
       lines(ctx, ["HP 820", "броня 24 · маг. 12", "урон 41 · скор. 3.2"], { x: cell.x + 0.012, y: cell.y + 0.07 }, width, height);
     } else if (title === "ПЕРКИ") {
-      lines(ctx, ["+ Стойкий: +8% брони", "− Тугодум: −10% каста"], { x: cell.x + 0.012, y: cell.y + 0.07 }, width, height);
+      // Имена чипами, описания в тултипе: перк «Стойкий» с расшифровкой занимал полстроки,
+      // а таких строк на карточке было восемь.
+      chip(ctx, { x: cell.x + 0.012, y: cell.y + 0.055, w: cell.w - 0.024, h: 0.05 }, width, height, "Стойкий", {
+        sign: "+"
+      });
+      chip(ctx, { x: cell.x + 0.012, y: cell.y + 0.115, w: cell.w - 0.024, h: 0.05 }, width, height, "Тугодум", {
+        sign: "−"
+      });
     } else if (title === "СНАРЯЖЕНИЕ") {
       itemRow(ctx, { x: cell.x + 0.012, y: cell.y + 0.055 }, width, height, 0.08);
       w.box(ctx, { x: cell.x + 0.012, y: cell.y + 0.16, w: cell.w - 0.024, h: 0.045 }, width, height, {
@@ -834,9 +908,30 @@ export function bookCells(ctx: CanvasRenderingContext2D, width: number, height: 
       });
     } else {
       injuries(ctx, { x: cell.x + 0.012, y: cell.y + 0.06 }, width, height);
-      lines(ctx, ["Ушиб колена · Рана плеча", "Закалка: Стойкость"], { x: cell.x + 0.012, y: cell.y + 0.13 }, width, height);
+      chip(ctx, { x: cell.x + 0.012, y: cell.y + 0.115, w: (cell.w - 0.03) / 2, h: 0.045 }, width, height, "Ушиб колена");
+      chip(
+        ctx,
+        { x: cell.x + 0.018 + (cell.w - 0.03) / 2, y: cell.y + 0.115, w: (cell.w - 0.03) / 2, h: 0.045 },
+        width,
+        height,
+        "Рана плеча"
+      );
+      w.text(ctx, "Закалка: Стойкость", { x: cell.x + 0.012, y: cell.y + 0.19 }, width, height, {
+        size: 7,
+        color: w.WIRE.dim
+      });
     }
   });
+
+  // Окно цепочки: описания живут здесь, а не на карточке.
+  tooltip(
+    ctx,
+    { x: b.left.x - 0.005, y: b.left.y + b.left.h * 0.55, w: 0.28 },
+    width,
+    height,
+    "Ушиб колена",
+    ["Мелкая травма, ступень 1 из 3.", "−30% скорости передвижения.", "Пройдёт через 3 узла пути."]
+  );
 }
 
 /** VII-А · Дополнительно, лор и статистика: слева кто он и откуда, справа числа забегов. */
@@ -1108,7 +1203,7 @@ function upgrades(
 }
 
 /** IX-А · Улучшения под способностями: место, предложенное Максом. */
-function relicUpgradesRight(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+export function relicUpgradesRight(ctx: CanvasRenderingContext2D, width: number, height: number): void {
   const b = book(ctx, width, height, "THE BULWARK", "Стандартная · Обычная · класс Танк · уровень 2 · носит Кай", 0);
 
   figure(ctx, { x: b.left.x, y: b.left.y, w: b.left.w * 0.55, h: b.left.h * 0.62 }, width, height, "знак и облачение");
@@ -1119,25 +1214,37 @@ function relicUpgradesRight(ctx: CanvasRenderingContext2D, width: number, height
   section(ctx, "ПАССИВКИ", { x: b.left.x, y: b.left.y + b.left.h * 0.78 }, width, height);
   lines(ctx, ["+15% брони соседям в строю"], { x: b.left.x, y: b.left.y + b.left.h * 0.78 + 0.035 }, width, height, 0.035);
 
-  // Способности ужимаются, чтобы под ними осталось место шестёрке.
+  // Способность — знак, имя и ЦЕНА. Что она делает, рассказывает тултип: описание в строке
+  // занимало столько же места, сколько сама способность, и на трёх строках карточка кончалась.
   section(ctx, "СПОСОБНОСТИ", { x: b.right.x, y: b.right.y + 0.03 }, width, height);
   for (let i = 0; i < 3; i++) {
-    const row: w.Rect = { x: b.right.x, y: b.right.y + 0.06 + i * 0.093, w: b.right.w, h: 0.08 };
+    const row: w.Rect = { x: b.right.x, y: b.right.y + 0.06 + i * 0.085, w: b.right.w, h: 0.072 };
     w.box(ctx, row, width, height, { hollow: true });
-    w.box(ctx, { x: row.x + 0.01, y: row.y + 0.014, w: 0.032, h: 0.052 }, width, height, {});
-    w.text(ctx, ["Стена", "Вызов", "Клятва"][i] ?? "", { x: row.x + 0.05, y: row.y + 0.028 }, width, height, { size: 8 });
+    w.box(ctx, { x: row.x + 0.01, y: row.y + 0.012, w: 0.03, h: 0.048 }, width, height, {});
+    w.text(ctx, ["Стена", "Вызов", "Клятва"][i] ?? "", { x: row.x + 0.048, y: row.y + row.h / 2 }, width, height, {
+      size: 9
+    });
     w.text(
       ctx,
-      ["40 маны · при HP < 50%", "25 маны · раз в 8 с", "60 маны · смерть союзника"][i] ?? "",
-      { x: row.x + 0.05, y: row.y + 0.056 },
+      ["40 маны", "25 маны", "60 маны"][i] ?? "",
+      { x: row.x + row.w - 0.012, y: row.y + row.h / 2 },
       width,
       height,
-      { size: 7, color: w.WIRE.dim }
+      { size: 7, align: "right", color: w.WIRE.accent }
     );
   }
 
-  section(ctx, "УЛУЧШЕНИЯ · 2 из 6", { x: b.right.x, y: b.right.y + 0.36 }, width, height);
-  upgrades(ctx, { x: b.right.x + 0.022, y: b.right.y + 0.39, w: b.right.w - 0.022 }, width, height, 0.055);
+  section(ctx, "УЛУЧШЕНИЯ · 2 из 6", { x: b.right.x, y: b.right.y + 0.34 }, width, height);
+  upgrades(ctx, { x: b.right.x + 0.022, y: b.right.y + 0.37, w: b.right.w - 0.022 }, width, height, 0.055);
+
+  tooltip(
+    ctx,
+    { x: b.left.x, y: b.left.y + 0.5, w: 0.32 },
+    width,
+    height,
+    "Стена",
+    ["40 маны · при HP ниже 50%.", "Барьер 180 на 6 секунд.", "Улучшено «Шипом»: бьёт в ответ."]
+  );
 }
 
 /** IX-Б · Улучшения на левой странице: рост кита собран в одном месте. */
@@ -1386,7 +1493,7 @@ const section_: SectionDef = {
         },
         {
           id: "relic-book-main",
-          status: "accepted",
+          status: "rejected",
           title: "VIII-А · Реликвия, «Основное»",
           tag: "тот же каркас",
           note: "Слева знак и облачение плюс автоатака и пассивки, справа — три способности строками с ценой и условием.",
@@ -1433,7 +1540,7 @@ const section_: SectionDef = {
       items: [
         {
           id: "relic-upgrades-right",
-          status: "waiting",
+          status: "accepted",
           title: "IX-А · Под способностями",
           tag: "место, предложенное Максом",
           note:
@@ -1452,7 +1559,7 @@ const section_: SectionDef = {
         },
         {
           id: "relic-upgrades-left",
-          status: "waiting",
+          status: "rejected",
           title: "IX-Б · На левой странице",
           tag: "рост кита в одном месте",
           note:
