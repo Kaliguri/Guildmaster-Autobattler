@@ -297,10 +297,10 @@ namespace Guildmaster.UI.Components
                 "gm-reward-drop__row--selected"),
             New("Ячейка стата", "gm-stat", UiComponentGroup.Cards, Interactive, null,
                 "статблок бойца в инвентаре"),
-            New("Цвет профиля", "gm-profile__swatch", UiComponentGroup.Cards, Interactive, null,
-                "профиль — выбор цвета игрока", "gm-profile__swatch--picked"),
-            New("Курсор профиля", "gm-profile__cursor", UiComponentGroup.Cards, Interactive, null,
-                "профиль — выбор скина курсора", "gm-profile__cursor--picked"),
+            // Образцы цвета и курсора СНЯТЫ 22.08.2026: оба набора переехали на общий «Выбор
+            // вариантом» (см. группу строк), и две записи «плитка цвета» / «плитка курсора» снова
+            // были бы переписью мест, а не набором.
+
             New("Крышка сундука", "gm-chest__lid", UiComponentGroup.Cards, Interactive, null,
                 "экран сундука — открывается кликом", "gm-chest__lid--open"),
 
@@ -315,6 +315,15 @@ namespace Guildmaster.UI.Components
                 RowInteractive | UiElementState.Checked, null, "настройки — да/нет"),
             New("Выбор", "gm-select-row", UiComponentGroup.Rows, RowInteractive, null,
                 "настройки — разрешение, режим окна, частота обновления"),
+            // ВЫБОР ОБРАЗЦОМ, а не строкой: цвет, курсор и знак гильдии узнают глазом, и список строк
+            // им не подходит. Одна кнопка на экране, набор всплывает окном только на время выбора
+            // (заказ Макса 22.08.2026).
+            // Блок записи — САМА КНОПКА (gm-picker__current), а не корень контрола: состояния носит
+            // она, а корень только раскладывает её рядом с окном набора. Модификатор gm-picker--open
+            // живёт на корне и потому в варианты этой записи не идёт — иначе гейт искал бы состояния
+            // не на том элементе.
+            New("Выбор вариантом", "gm-picker__current", UiComponentGroup.Rows, RowInteractive, null,
+                "профиль — цвет, курсор, знак гильдии"),
             New("Слайдер", "gm-slider-row", UiComponentGroup.Rows, RowInteractive, null,
                 "настройки — громкость и прочие доли"),
 

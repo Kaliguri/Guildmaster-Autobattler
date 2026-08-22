@@ -30,88 +30,12 @@
     margin-bottom: var(--gm-space-2);
 }
 
-/* --- Образцы цвета и курсора ---
-   Выбираются глазом, поэтому это плитки, а не выпадающий список: подпись «Лазурный» рядом с лазурным
-   кружком — лишнее слово, а не помощь. */
-.gm-profile__colors,
-.gm-profile__cursors {
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-bottom: var(--gm-space-2);
-}
-
-.gm-profile__swatch {
-    width: 36px;
-    height: 36px;
-    border-radius: 18px;
-    margin-right: var(--gm-space-1);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-swatch-outline);
-}
-
-/* Выбранное отмечено светлой оправой поверх тёмной: на образце любого цвета это читается одинаково. */
-.gm-profile__swatch--picked {
-    border-color: var(--gm-color-accent);
-    border-width: var(--gm-border-2);
-    scale: 1.1 1.1;
-}
-
-/* Образцы КРАСЯТСЯ ИЗ ПАЛИТРЫ КОДОМ, а не шестнадцатью классами-модификаторами: набор вырос до
-   шестнадцати (22.08.2026), и правило на каждый оттенок означало бы правку темы на всякое изменение
-   набора — при том что число оттенков живёт в PlayerColors, а сами оттенки в токенах. Единственный
-   владелец цвета при этом не меняется: экран спрашивает у палитры имя токена, а не литерал. */
-
-/* ФИГУРА ЛЕЖИТ В ЛЕВОМ ВЕРХНЕМ УГЛУ ХОЛСТА, а не по центру: скины собираются
-   `scripts/cursors-build.py` с общей диагональю, и остриё у них по построению в точке (0,0). При
-   вписывании целого холста 320x320 в плитку картинка занимала её угол, а три четверти плитки
-   оставались пустыми — «курсор не в центре выбранного квадратика» (наход. Макса 22.08.2026).
-   Показываем НЕ весь холст, а его занятую часть: замер альфы по всем пяти скинам даёт 196px из 320
-   (61%), отсюда увеличение до 163% и привязка к левому верхнему углу. Плитка при этом заполнена
-   фигурой, а не холстом.
-   `-unity-background-scale-mode` снят намеренно: он и background-size — два владельца одного
-   свойства, и вместе они не складываются. */
-.gm-profile__cursor {
-    width: 48px;
-    height: 48px;
-    margin-right: var(--gm-space-1);
-    padding: var(--gm-space-0);
-    background-size: 163% 163%;
-    background-position: 0% 0%;
-    background-repeat: no-repeat;
-    border-width: var(--gm-border-1);
-    border-color: rgba(0, 0, 0, 0);
-}
-
-.gm-profile__cursor--picked {
-    border-color: var(--gm-color-accent);
-    border-width: var(--gm-border-2);
-}
+/* --- Образцы цвета и курсора СНЯТЫ 22.08.2026 ---
+   Оба набора переехали на общий контрол выбора (`gm-picker`, components/picker.uss): на экране стоит
+   одна кнопка с выбранным, а весь набор всплывает окном только на время выбора. Правила рядов,
+   плиток и их состояний удалены вместе с рядами — держать стиль без потребителя запрещено гейтом
+   мёртвого, и это верно: мёртвое правило читается как живое решение. */
 
 .gm-profile__actions {
     flex-direction: row;
-    justify-content: flex-end;
-}
-
-/* === ОТКЛИК ОБРАЗЦОВ ЦВЕТА И КУРСОРА (06.08.2026) ===========================
- * Ни один из них не отвечал на курсор: выбранный отличался от невыбранного (--picked), а вот
- * «на что я сейчас смотрю» не читалось никак.
- * ========================================================================== */
-.gm-profile__swatch:hover,
-.gm-profile__cursor:hover {
-    border-color: var(--gm-color-hover-border);
-}
-
-.gm-profile__swatch:active,
-.gm-profile__cursor:active {
-    border-color: var(--gm-color-border-inner);
-}
-
-.gm-profile__swatch:focus,
-.gm-profile__cursor:focus {
-    border-color: var(--gm-color-hover-border);
-}
-
-.gm-profile__swatch:disabled,
-.gm-profile__cursor:disabled {
-    opacity: 0.5;
 }

@@ -73,11 +73,9 @@ namespace Guildmaster.DevTools
             ["gm-shop__stash-row"]     = () => StashRow(),                          // ShopScreenView.cs:106
             ["gm-reward-drop__row"]    = () => DropRow(),                           // RewardScreenView.cs:134
             ["gm-stat"]                = () => StatCell(),                          // LoadoutInventoryView.cs:515
-            // Свотч БЕЗ ЦВЕТА ПРОЗРАЧЕН, а в игре бесцветным не бывает никогда: с 22.08.2026 оттенок
-            // ему ставит экран из палитры (набор вырос до шестнадцати, и правил на каждый оттенок
-            // тема больше не держит), поэтому образец красится тем же первым цветом здесь.
-            ["gm-profile__swatch"]     = () => Swatch(),
-            ["gm-profile__cursor"]     = () => Box("gm-profile__cursor"),
+            // Выбор вариантом: без набора это пустая кнопка, поэтому образец сразу с цветами игроков —
+            // ровно так он и стоит в профиле.
+            ["gm-picker__current"]     = () => Picker(),
             ["gm-chest__lid"]          = () => Box("gm-chest__lid"),                // ChestScreen.uxml:9
 
             // Строки настроек. Значение и варианты — часть элемента, а не украшение: слайдер без
@@ -407,16 +405,23 @@ namespace Guildmaster.DevTools
             return cell;
         }
 
-        /// <summary>Образец цвета игрока: класс даёт форму, оттенок приходит из палитры — как в игре.</summary>
-        private static VisualElement Swatch()
+        /// <summary>Выбор вариантом с набором цветов игрока — тем же, что стоит в профиле.</summary>
+        private static VisualElement Picker()
         {
-            var box = Box("gm-profile__swatch");
+            var picker = new PickerButton();
             var palette = UnityEditor.AssetDatabase.LoadAssetAtPath<Guildmaster.Data.Definitions.GuildmasterPalette>(
                 "Assets/_Project/ScriptableObjects/Configs/GuildmasterPalette.asset");
-            if (palette != null &&
-                palette.TryGet(Guildmaster.Core.Players.PlayerColors.TokenOf(0), out UnityEngine.Color shade))
-                box.style.backgroundColor = shade;
-            return box;
+
+            var options = new List<PickerButton.Option>();
+            for (int i = 0; i < Guildmaster.Core.Players.PlayerColors.Count; i++)
+            {
+                UnityEngine.Color shade = UnityEngine.Color.white;
+                palette?.TryGet(Guildmaster.Core.Players.PlayerColors.TokenOf(i), out shade);
+                options.Add(new PickerButton.Option(i.ToString(), swatch: shade));
+            }
+
+            picker.SetOptions(options, "0", null);
+            return picker;
         }
 
         private static VisualElement Box(params string[] classes)

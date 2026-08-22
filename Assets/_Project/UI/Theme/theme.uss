@@ -1,4 +1,4 @@
-/* ============================================================================
+﻿/* ============================================================================
  * Агрегатор дизайн-системы. Экраны/тема ссылаются на ЭТОТ файл, а не на части.
  *
  * ПОРЯДОК НЕСУЩИЙ, и это не стилистика: при равной специфичности USS выигрывает импортированный
@@ -26,6 +26,7 @@
 @import url("components/tab.uss");
 @import url("components/unity.uss");
 @import url("components/row.uss");
+@import url("components/picker.uss");
 @import url("components/text.uss");
 @import url("components/wordmark.uss");
 @import url("components/card.uss");

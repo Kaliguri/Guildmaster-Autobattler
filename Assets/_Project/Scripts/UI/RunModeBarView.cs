@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.UI.Components;
 using UnityEngine.UIElements;
@@ -200,11 +200,17 @@ namespace Guildmaster.UI
         public void SetAct(int actNumber) => SetText(_act, "· " + L("ui.run.act", "Акт") + " " + actNumber);
 
         /// <summary>
-        /// Как далеко отряд ушёл по карте акта. В домене это <c>MapNode.Floor</c> (индекс колонки),
-        /// в интерфейсе — «Веха»: у нас поход по карте, а не подъём по башне, и «этаж» тут врал бы игроку.
+        /// Как далеко отряд ушёл по карте акта. В домене это <c>MapNode.Floor</c> (индекс колонки), в
+        /// интерфейсе — «Уровень».
         /// </summary>
+        /// <remarks>
+        /// Слово выбрал Макс 22.08.2026: «можем мб назвать то как далеко прошли - просто "уровнями"?
+        /// Просто и понятно. Как этажи в STS». Прежняя «Веха» отменена — не потому, что плоха, а потому
+        /// что двор и лента обязаны называть одно и то же одним словом. Совпадение с «Уровнем Сосуда»
+        /// он признал безобидным: «Ясно что и чей уровень и так».
+        /// </remarks>
         public void SetFloor(int floorNumber, int floorCount) =>
-            SetText(_floor, "· " + L("ui.run.floor", "Веха") + " " + floorNumber
+            SetText(_floor, "· " + L("ui.run.floor", "Уровень") + " " + floorNumber
                           + (floorCount > 0 ? "/" + floorCount : string.Empty));
 
         // Времени забега здесь нет (реш. 2026-07-20 — не показываем). Прежде лейбл был скрыт классом,

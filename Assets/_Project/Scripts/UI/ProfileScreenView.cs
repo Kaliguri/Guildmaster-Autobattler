@@ -89,9 +89,9 @@ namespace Guildmaster.UI
             var nameField  = root.Q<TextField>("field-name");
             var nameHint   = root.Q<Label>("name-hint");
             var colorCap   = root.Q<Label>("color-caption");
-            var colorRow   = root.Q<VisualElement>("color-row");
+            var colorPick  = root.Q<Components.PickerButton>("color-picker");
             var cursorCap  = root.Q<Label>("cursor-caption");
-            var cursorRow  = root.Q<VisualElement>("cursor-row");
+            var cursorPick = root.Q<Components.PickerButton>("cursor-picker");
             var save       = root.Q<Button>("btn-save");
             var back       = root.Q<Components.BackButton>("btn-back");
 
@@ -222,19 +222,47 @@ namespace Guildmaster.UI
 
             // Образцы курсора носят ВЫБРАННЫЙ цвет — тот же, каким курсор станет в игре и каким его
             // увидит напарник. Белые образцы рядом с цветным курсором читались бы как другой набор.
-            void PaintCursors(int index)
-            {
-                if (palette == null || cursorRow == null) return;
-                if (!palette.TryGet(Core.Players.PlayerColors.TokenOf(index), out UnityEngine.Color shade)) return;
+            UnityEngine.Color Shade(int index)
+                => palette != null && palette.TryGet(Core.Players.PlayerColors.TokenOf(index),
+                                                     out UnityEngine.Color found)
+                    ? found
+                    : UnityEngine.Color.white;
 
-                cursorRow.Query<VisualElement>(className: "gm-profile__cursor")
-                         .ForEach(tile => tile.style.unityBackgroundImageTintColor = shade);
+            void FillCursors()
+            {
+                if (cursorPick == null || skins == null) return;
+
+                var tiles = new List<Components.PickerButton.Option>(skins.Count);
+                for (int i = 0; i < skins.Count; i++)
+                {
+                    CursorSkinData skin = skins[i];
+                    if (skin == null) continue;
+                    tiles.Add(new Components.PickerButton.Option(skin.Id, image: skin.Texture,
+                                                                 tint: Shade(colorIndex)));
+                }
+
+                if (tiles.Count == 0) return;
+                if (string.IsNullOrEmpty(skinId)) skinId = tiles[0].Id;
+
+                cursorPick.SetOptions(tiles, skinId, id => { skinId = id; Preview(); });
             }
 
-            BuildColors(colorRow, colorCount, colorIndex, palette,
-                        index => { colorIndex = index; PaintCursors(index); Preview(); });
-            BuildCursors(cursorRow, skins, skinId, id => { skinId = id; Preview(); });
-            PaintCursors(colorIndex);
+            if (colorPick != null)
+            {
+                var shades = new List<Components.PickerButton.Option>(colorCount);
+                for (int i = 0; i < colorCount; i++)
+                    shades.Add(new Components.PickerButton.Option(i.ToString(), swatch: Shade(i)));
+
+                colorPick.SetOptions(shades, colorIndex.ToString(), id =>
+                {
+                    if (!int.TryParse(id, out int picked)) return;
+                    colorIndex = picked;
+                    FillCursors();   // курсоры перекрашиваются вслед за цветом
+                    Preview();
+                });
+            }
+
+            FillCursors();
 
             // ── Действия ────────────────────────────────────────────────────
             if (save != null)
@@ -357,71 +385,5 @@ namespace Guildmaster.UI
             }
         }
 
-        /// <summary>
-        /// Образцы цвета. Оттенок берётся у палитры по имени токена — она остаётся единственным
-        /// владельцем цвета, а правил на каждый из шестнадцати оттенков тема не заводит.
-        /// </summary>
-        private static void BuildColors(VisualElement row, int count, int selected,
-                                        GuildmasterPalette palette, Action<int> onPick)
-        {
-            if (row == null) return;
-            row.Clear();
-
-            var swatches = new List<VisualElement>(count);
-            for (int i = 0; i < count; i++)
-            {
-                int index = i;
-
-                var swatch = new VisualElement { name = $"color-{i}", focusable = true };
-                swatch.AddToClassList("gm-profile__swatch");
-                if (palette != null &&
-                    palette.TryGet(Core.Players.PlayerColors.TokenOf(i), out UnityEngine.Color shade))
-                    swatch.style.backgroundColor = shade;
-                if (i == selected) swatch.AddToClassList("gm-profile__swatch--picked");
-
-                swatch.RegisterCallback<ClickEvent>(_ =>
-                {
-                    for (int j = 0; j < swatches.Count; j++)
-                        swatches[j].EnableInClassList("gm-profile__swatch--picked", j == index);
-                    onPick?.Invoke(index);
-                });
-
-                swatches.Add(swatch);
-                row.Add(swatch);
-            }
-        }
-
-        private static void BuildCursors(VisualElement row, IReadOnlyList<CursorSkinData> skins,
-                                         string selectedId, Action<string> onPick)
-        {
-            if (row == null || skins == null) return;
-            row.Clear();
-
-            var tiles = new List<VisualElement>(skins.Count);
-            for (int i = 0; i < skins.Count; i++)
-            {
-                CursorSkinData skin = skins[i];
-                if (skin == null) continue;
-
-                int index = tiles.Count;
-
-                var tile = new VisualElement { name = $"cursor-{skin.Id}", focusable = true };
-                tile.AddToClassList("gm-profile__cursor");
-                if (skin.Texture != null) tile.style.backgroundImage = new StyleBackground(skin.Texture);
-
-                bool picked = string.IsNullOrEmpty(selectedId) ? index == 0 : skin.Id == selectedId;
-                if (picked) tile.AddToClassList("gm-profile__cursor--picked");
-
-                tile.RegisterCallback<ClickEvent>(_ =>
-                {
-                    for (int j = 0; j < tiles.Count; j++)
-                        tiles[j].EnableInClassList("gm-profile__cursor--picked", j == index);
-                    onPick?.Invoke(skin.Id);
-                });
-
-                tiles.Add(tile);
-                row.Add(tile);
-            }
-        }
     }
 }

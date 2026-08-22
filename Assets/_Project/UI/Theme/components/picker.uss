@@ -1,0 +1,106 @@
+/* ============================================================================
+ * ВЫБОР ВАРИАНТОМ — одна кнопка с выбранным, набор всплывает окном выше.
+ *
+ * Заказ Макса 22.08.2026: «Делаем так, чтобы вариации не жрали место и внимание». Ряд из шестнадцати
+ * образцов занимал строку экрана постоянно, хотя нужен ровно в тот момент, когда выбирают.
+ * ========================================================================== */
+
+.gm-picker {
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Кнопка «что выбрано»: та же пластина набора, но по содержимому — внутри образец, а не подпись. */
+.gm-picker__current {
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-frame);
+    border-radius: var(--gm-radius-0);
+    padding: var(--gm-space-1);
+    margin: 0;
+    min-width: 56px;
+    min-height: 56px;
+}
+
+.gm-picker__current:hover {
+    border-color: var(--gm-color-hover-border);
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-picker__current:active {
+    border-color: var(--gm-color-border-inner);
+    background-color: var(--gm-color-surface-sunken);
+}
+
+.gm-picker__current:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-picker__current:disabled {
+    opacity: 0.5;
+}
+
+/* Пока окно открыто, кнопка держит вид нажатой: иначе набор висит сам по себе, и непонятно, чей он. */
+.gm-picker--open > .gm-picker__current {
+    border-color: var(--gm-color-accent);
+}
+
+/* Окно набора. Своя поверхность и кайма — оно лежит ПОВЕРХ экрана и обязано от него отделяться. */
+.gm-picker__popover {
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 460px;
+    padding: var(--gm-space-1);
+    background-color: var(--gm-color-surface-panel);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-frame);
+    border-radius: var(--gm-radius-0);
+}
+
+.gm-picker__option {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: var(--gm-border-1);
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: var(--gm-radius-0);
+    padding: var(--gm-space-0);
+    margin: var(--gm-space-0);
+}
+
+.gm-picker__option:hover {
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-picker__option:active {
+    border-color: var(--gm-color-border-inner);
+}
+
+.gm-picker__option:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-picker__option:disabled {
+    opacity: 0.5;
+}
+
+/* Выбранный отмечен светлой оправой — тем же приёмом, что образцы цвета в профиле. */
+.gm-picker__option--picked {
+    border-color: var(--gm-color-accent);
+    border-width: var(--gm-border-2);
+}
+
+/* Образец внутри кнопки и плитки: квадрат под заливку или картинку.
+   Фигуры курсоров и знаков лежат в левом верхнем углу своего холста (см. profile.uss), поэтому
+   показываем занятую часть, а не весь холст. */
+.gm-picker__sample {
+    width: 40px;
+    height: 40px;
+    background-size: 163% 163%;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+}
+
+.gm-picker__label {
+    margin-left: var(--gm-space-1);
+}

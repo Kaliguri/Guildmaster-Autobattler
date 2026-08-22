@@ -47,14 +47,17 @@
                         <ui:Label name="name-hint" class="gm-text-caption gm-text--muted gm-profile__hint" />
                     </ui:VisualElement>
 
+                    <!-- ОДНА КНОПКА НА НАБОР, варианты всплывают окном выше (заказ Макса 22.08.2026:
+                         «Делаем так, чтобы вариации не жрали место и внимание»). Ряд из шестнадцати
+                         образцов занимал строку экрана постоянно, хотя нужен ровно в момент выбора. -->
                     <ui:VisualElement class="gm-section">
                         <ui:Label name="color-caption" text="Предпочтительный цвет" class="gm-text-subtitle gm-section__title" />
-                        <ui:VisualElement name="color-row" class="gm-profile__colors" />
+                        <gm:PickerButton name="color-picker" />
                     </ui:VisualElement>
 
                     <ui:VisualElement class="gm-section">
                         <ui:Label name="cursor-caption" text="Курсор" class="gm-text-subtitle gm-section__title" />
-                        <ui:VisualElement name="cursor-row" class="gm-profile__cursors" />
+                        <gm:PickerButton name="cursor-picker" />
                     </ui:VisualElement>
                 </ui:ScrollView>
             </ui:VisualElement>
