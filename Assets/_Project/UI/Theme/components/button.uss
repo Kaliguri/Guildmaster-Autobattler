@@ -437,3 +437,32 @@
 .gm-button--back {
     margin-right: auto;
 }
+
+/* --- ЗНАЧОК ВМЕСТО ПОДПИСИ ---
+   Квадратная пластина под один символ: ссылки сообщества в главном меню, где узнают бренд по
+   силуэту, а подпись только мешала бы (у рефов ровно так: Heroes держит два значка под панелью,
+   Guildrun — один в строке внизу). Это МОДИФИКАТОР существующей кнопки, а не вторая кнопка набора:
+   меняется размер и то, что внутри, — вид, отклик и фаска общие.
+   56px — тот же порядок, что у значков рефов (Heroes 34px при 720p = 4.7% высоты, у нас 5.2%). */
+.gm-button--icon {
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    margin-left: var(--gm-space-0);
+    margin-right: var(--gm-space-0);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Сам значок — РЕБЁНОК кнопки, а не её background-image: фон пластины рисует контрол мешем, и
+   картинка в фоне ушла бы под него. Красится тинтом, как знаки гильдии: исходники монохромные. */
+.gm-button__icon {
+    width: 28px;
+    height: 28px;
+    background-size: 28px 28px;
+    -unity-background-image-tint-color: var(--gm-color-text-muted);
+}
+
+.gm-button--icon:hover > .gm-button__icon {
+    -unity-background-image-tint-color: var(--gm-color-text);
+}

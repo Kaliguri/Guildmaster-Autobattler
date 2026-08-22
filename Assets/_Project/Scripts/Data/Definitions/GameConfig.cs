@@ -110,6 +110,9 @@ namespace Guildmaster.Data.Definitions
                  "экран создания просто не спросит про знак.")]
         [SerializeField] private GuildEmblemCatalog _guildEmblems;
 
+        [Tooltip("Обращение и ссылки сообщества для главного меню. Пусто — панели сообщества не будет.")]
+        [SerializeField] private CommunityConfig _community;
+
         public float  DefaultMasterVolume => _defaultMasterVolume;
         public float  DefaultMusicVolume  => _defaultMusicVolume;
         public float  DefaultSfxVolume    => _defaultSfxVolume;
@@ -160,6 +163,9 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Набор знаков профиля и дома. <c>null</c> — знак не выбирают, слоту хватает имени.</summary>
         public GuildEmblemCatalog GuildEmblems => _guildEmblems;
+
+        /// <summary>Обращение и ссылки сообщества. <c>null</c> — меню обходится без правой панели.</summary>
+        public CommunityConfig    Community    => _community;
 
         /// <summary>
         /// Заготовка значений: инстанс в памяти, заполненный тем, с чего начинают новый ассет. Нужна

@@ -1,0 +1,19 @@
+Brand icons in this folder are from Simple Icons (https://simpleicons.org/).
+
+License: CC0 1.0 Universal (public domain dedication)
+https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md
+
+No attribution is legally required; this note records the source so the next person knows where the
+files came from and how to fetch more of them.
+
+Downloaded 2026-08-22 from
+https://raw.githubusercontent.com/simple-icons/simple-icons/master/icons/<slug>.svg
+
+Files: steam.svg, discord.svg, youtube.svg, telegram.svg
+
+The icons are single-path monochrome glyphs on a transparent 24x24 viewBox, exactly like the guild
+emblems: the interface tints them, so the source must stay one flat colour.
+
+BRAND MARKS ARE NOT COVERED BY CC0. The dedication applies to the SVG files, not to the trademarks
+they depict. Use each mark only to point at our own presence on that service (a link to our Discord,
+our Steam page), never as decoration and never in a way that suggests endorsement.

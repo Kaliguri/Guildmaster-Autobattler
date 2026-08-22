@@ -254,7 +254,10 @@ namespace Guildmaster.UI.Components
                 // «Вернуться» — МЕТКА МЕСТА на обычной кнопке, а не третья роль: вид у неё базовый,
                 // особенное только одно — она всегда стоит в левом краю футера (правило Макса
                 // 22.08.2026). Своей записи набора ей поэтому не полагается.
-                "gm-button--display", "gm-button--danger", "gm-button--unaffordable", "gm-button--back"),
+                // «Значок» — тоже модификатор, а не своя кнопка: квадрат под один символ, всё
+                // остальное общее. Заведён 22.08.2026 под ссылки сообщества в меню.
+                "gm-button--display", "gm-button--danger", "gm-button--unaffordable", "gm-button--back",
+                "gm-button--icon"),
             New("Кнопка (Главная) — Вариация 1", "gm-button--primary", UiComponentGroup.Buttons,
                 Interactive, OfButton, "главное действие экрана: начать забег, принять, продолжить"),
             NewTechnical("Пластина (форма, не элемент набора)", "gm-plate-button", UiComponentGroup.Buttons,

@@ -23,7 +23,10 @@ namespace Guildmaster.UI
             Action onSettings,
             Action onQuit,
             bool canJoin = true,
-            Action onProfile = null)
+            Action onProfile = null,
+            Guildmaster.Data.Definitions.CommunityConfig community = null,
+            Action<string> onLink = null,
+            Action onWishlist = null)
         {
             string L(string key, string fallback)
             {
@@ -100,6 +103,11 @@ namespace Guildmaster.UI
                 quit.text = L("ui.mainmenu.quit", "ВЫХОД");
                 quit.clicked += () => onQuit?.Invoke();
             }
+
+            // ПАНЕЛЬ СООБЩЕСТВА — правая сторона кадра. Наполняется отдельным View: у неё свои данные
+            // (ассет сообщества) и своя дверь наружу, а меню про них знать не обязано — оно только
+            // передаёт то, что ему дали.
+            CommunityPanelView.Fill(root, community, localize, onLink, onWishlist);
 
             return root;
         }

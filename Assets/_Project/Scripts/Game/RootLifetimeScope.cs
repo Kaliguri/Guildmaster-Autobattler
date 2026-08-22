@@ -377,6 +377,12 @@ namespace Guildmaster.Game
                    .AsSelf().As<Guildmaster.Core.Players.ICursorSkinControl>()
                    .As<VContainer.Unity.IStartable>();
 
+            // Дверь наружу: страница игры в магазине и ссылки сообщества. Реализация знает про оверлей
+            // Steam, зовущие — нет: UI просит «открой», а чем это кончится (оверлей или браузер),
+            // решает служба.
+            builder.Register<Guildmaster.Net.Session.ExternalLinkService>(Lifetime.Singleton)
+                   .As<Guildmaster.Core.Platform.IExternalLinkService>();
+
             // Указатель в мировых координатах: один владелец перевода «экран → мир» на расстановку и на
             // присутствие. Камеру ищет лениво — сцена арены поднимается позже этого скоупа.
             builder.Register<Guildmaster.Presentation.PointerWorld>(Lifetime.Singleton)

@@ -34,6 +34,28 @@
             </ui:VisualElement>
         </ui:VisualElement>
 
+
+        <!-- ПАНЕЛЬ СООБЩЕСТВА — правая сторона кадра (заказ Макса 22.08.2026: «панель информации о
+             сообществе в духе Guildrun и Olden Era и кнока "добавить в список желаемого"»). Оба рефа
+             держат одну конструкцию: панель-обращение справа, ряд ссылок под ней, приглашение в
+             желаемое отдельным блоком в углу. Числа замера — в теме рядом с правилами.
+             Тексты, ссылки и значки ставит View из ассета сообщества: здесь только каркас. -->
+        <ui:VisualElement name="community" class="gm-community">
+            <ui:VisualElement class="gm-panel gm-panel--system gm-community__panel">
+                <gm:PanelFrame name="community-frame" class="gm-panel__frame" corner="18" />
+                <ui:Label name="community-headline" class="gm-text-title gm-community__headline" />
+                <ui:VisualElement name="community-body" class="gm-community__body" />
+                <ui:VisualElement name="community-links" class="gm-community__links" />
+            </ui:VisualElement>
+
+            <!-- Приглашение в желаемое стоит ПОД панелью и отдельным блоком, как у Guildrun: это не
+                 часть обращения, а просьба, и мешать её с «спасибо, что играете» нечестно. -->
+            <ui:VisualElement name="community-wishlist" class="gm-community__wishlist">
+                <ui:Label name="wishlist-caption" class="gm-text-caption gm-community__wishlist-caption" />
+                <gm:PlateButton name="btn-wishlist" class="gm-button gm-button--primary gm-community__wishlist-button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
         <!-- Версия билда: угол экрана. Нижний правый — самое частое место у рефов (13 из 14 держат
              версию мелким кеглем в углу), и единственный реф, поставивший её в центр верха, получил
              за это отдельный пункт в «чего избегать». Текст проставляется кодом. -->

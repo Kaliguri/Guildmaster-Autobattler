@@ -38,3 +38,4 @@ MonoBehaviour:
   _classBalanceConfig: {fileID: 11400000, guid: c346355e64f53d444b5cc7a9fe184c84, type: 2}
   _cursorSkins: {fileID: 11400000, guid: 2fe6a80922eebc24e8d2970da6275f77, type: 2}
   _guildEmblems: {fileID: 11400000, guid: 5e263600483a08940ba515fc7309d09c, type: 2}
+  _community: {fileID: 11400000, guid: 27013383bf068cd498242f3fceef7f8d, type: 2}

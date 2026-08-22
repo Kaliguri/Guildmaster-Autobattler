@@ -98,6 +98,12 @@ namespace Guildmaster.UI
 
         // Знаки профиля и дома: их предлагает экран создания. Пусто — про знак не спрашиваем вовсе.
         private readonly GuildEmblemCatalog _guildEmblems;
+
+        /// <summary>Обращение и ссылки сообщества для правой панели меню. <c>null</c> — панели нет.</summary>
+        private readonly CommunityConfig _community;
+
+        /// <summary>Дверь наружу: страница магазина и ссылки сообщества.</summary>
+        private readonly Core.Platform.IExternalLinkService _links;
         private readonly int               _profileSlotLimit;
         private readonly int               _guildSlotLimit;
         private readonly Func<string>      _steamName;
@@ -125,11 +131,14 @@ namespace Guildmaster.UI
                           Core.Players.IPlatformIdentity platform,
                           Core.Players.ICursorSkinControl cursors,
                           ISubscriber<Core.Net.SharedDecisionChangedEvent> readySub,
-                          Core.Players.ISessionRoster roster)
+                          Core.Players.ISessionRoster roster,
+                          Core.Platform.IExternalLinkService links)
         {
             _roster = roster;
+            _links           = links;
             _cursorSkins     = gameConfig?.CursorSkins;
             _guildEmblems    = gameConfig?.GuildEmblems;
+            _community       = gameConfig?.Community;
             _profileSlotLimit = gameConfig != null ? gameConfig.MaxProfiles : 1;
             _guildSlotLimit   = gameConfig != null ? gameConfig.MaxGuildsPerProfile : 1;
             _steamName       = () => platform != null ? platform.PlayerName : "Игрок";
@@ -1996,7 +2005,10 @@ namespace Guildmaster.UI
                         onSettings: () => OpenOverMenu(BuildSettingsScreen, requiresBackdrop: true),
                         onProfile:  () => OpenOverMenu(BuildProfileHub),
                         onQuit:     () => { ShowQuitVeil(); resolve(MainMenuOutcome.Quit); },
-                        canJoin:    _coop?.IsSteamReady ?? false);
+                        canJoin:    _coop?.IsSteamReady ?? false,
+                        community:  _community,
+                        onLink:     url => _links?.OpenUrl(url),
+                        onWishlist: () => _links?.OpenStorePage());
                 });
 
             // Забег кончился — UI прошлого забега кончается вместе с ним (QA #51). Инвентарь, карта и тест-зона
