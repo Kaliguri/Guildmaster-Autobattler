@@ -1,0 +1,80 @@
+/* Разворот книги: карточка «Сосуда» и карточка Реликвии (ГДД preparation-screens §4-5).
+
+   Форма общая у обеих, поэтому стили живут среди компонентов: два похожих окна, оформленных
+   врозь, разошлись бы на первой правке. */
+
+.gm-spread {
+    width: 86%;
+    height: 86%;
+    align-self: center;
+    padding: var(--gm-space-4);
+    background-color: var(--gm-color-surface-panel);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+}
+
+.gm-spread__head {
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.gm-spread__title {
+    -unity-font-style: bold;
+    flex-grow: 1;
+}
+
+.gm-spread__subtitle {
+    color: var(--gm-color-accent);
+}
+
+.gm-spread__close {
+    flex-shrink: 0;
+}
+
+.gm-spread__tabs {
+    flex-direction: row;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-3);
+}
+
+.gm-spread__tab {
+    margin-right: var(--gm-space-2);
+}
+
+.gm-spread__tab--on {
+    border-color: var(--gm-outline-color-hover);
+}
+
+/* Тело: две страницы и корешок между ними. Корешок — линия, а не зазор: зазор читался бы как
+   два отдельных окна. */
+
+.gm-spread__body {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.gm-spread__page {
+    width: 48%;
+    flex-grow: 1;
+}
+
+.gm-spread__spine {
+    width: 1px;
+    margin: 0 var(--gm-space-4);
+    background-color: var(--gm-color-border-subtle);
+}
+
+.gm-spread__section {
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-1);
+    color: var(--gm-color-accent);
+}
+
+/* Клетка-секция: своя рамка. Раскладка «Клетки на развороте» — травмы находятся мгновенно, и
+   пятую секцию можно добавить не переверстывая. */
+.gm-spread__cell {
+    margin-bottom: var(--gm-space-2);
+    padding: var(--gm-space-2);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-subtle);
+}

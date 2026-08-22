@@ -1,0 +1,100 @@
+/* Содержимое карточки «Сосуда» поверх общего разворота. */
+
+.gm-vcard__figure {
+    height: 40%;
+    margin-bottom: var(--gm-space-2);
+    align-items: center;
+    justify-content: center;
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-subtle);
+}
+
+.gm-vcard__figure-note,
+.gm-vcard__muted {
+    color: var(--gm-color-text-muted);
+}
+
+.gm-vcard__stat {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.gm-vcard__stat-label {
+    color: var(--gm-color-text-muted);
+}
+
+.gm-vcard__trait {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--gm-space-1);
+    padding: var(--gm-space-1) var(--gm-space-2);
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-subtle);
+}
+
+.gm-vcard__trait:hover {
+    border-color: var(--gm-outline-color-hover);
+}
+
+.gm-vcard__trait-sign {
+    width: 16px;
+    color: var(--gm-color-accent);
+}
+
+.gm-vcard__gear {
+    flex-direction: row;
+}
+
+.gm-vcard__gear-slot {
+    width: 48px;
+    height: 48px;
+    margin-right: var(--gm-space-2);
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-subtle);
+}
+
+.gm-vcard__gear-slot--filled {
+    border-color: var(--gm-outline-color);
+}
+
+.gm-vcard__gear-slot--locked {
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 0.6;
+}
+
+.gm-vcard__to-relic {
+    margin-top: var(--gm-space-2);
+}
+
+/* Шесть мест травм: три Ушиба, две Раны, одно Увечье. Ступень читается расстоянием между
+   группами — подписи в строку не влезают. */
+
+.gm-vcard__pips {
+    flex-direction: row;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-vcard__pip-group {
+    flex-direction: row;
+    margin-right: var(--gm-space-3);
+}
+
+.gm-vcard__pip {
+    width: 14px;
+    height: 14px;
+    margin-right: var(--gm-space-1);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-subtle);
+}
+
+.gm-vcard__pip--taken {
+    background-color: var(--gm-color-danger);
+    border-color: var(--gm-color-danger);
+}
+
+.gm-vcard__lore {
+    color: var(--gm-color-text-muted);
+    white-space: normal;
+}

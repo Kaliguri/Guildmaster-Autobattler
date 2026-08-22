@@ -40,6 +40,8 @@
 @import url("components/mode-card.uss");
 @import url("components/sheet.uss");
 @import url("components/inspect.uss");
+@import url("components/spread-card.uss");
+@import url("components/vessel-card.uss");
 
 /* --- Экраны. Идут ПОСЛЕ компонентов: экран уточняет общий вид, а не наоборот. --- */
 @import url("screens/settings.uss");

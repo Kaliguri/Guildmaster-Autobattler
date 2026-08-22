@@ -24,6 +24,9 @@ namespace Guildmaster.DevTools
         [MenuItem("Alebardium/UI Preview/Items (предметы, строки)", priority = 202)]
         private static void Items() => Open("items");
 
+        [MenuItem("Alebardium/UI Preview/Vessel Card (разворот с табами)", priority = 203)]
+        private static void VesselCard() => Open("vessel-card");
+
         [MenuItem("Alebardium/UI Preview/New Game (mode, lobby)", priority = 210)]
         private static void NewGame() => Open("newgame");
 

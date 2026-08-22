@@ -28,6 +28,7 @@ namespace Guildmaster.DevTools
             ["loadout-inventory"] = BuildLoadoutInventory,
             ["party"]        = BuildParty,
             ["items"]        = BuildItems,
+            ["vessel-card"]  = BuildVesselCard,
             ["settings"]     = BuildSettings,
             // "map" снят: карта больше не UITK-экран, она живёт в мире (см. WorldMapView) и в UI-стенде
             // не собирается. Смотреть её — дев-командами gm_map_* в игре.
@@ -193,6 +194,34 @@ namespace Guildmaster.DevTools
             VisualElement screen = Guildmaster.UI.ItemsScreenView.Build(uxml, rows, stash, actions: null, localize: RuValue);
             MountSampleInspect(screen);
             root.Add(screen);
+        }
+
+        /// <summary>Расширенная карточка «Сосуда»: разворот с табами, оба таба переключаются на стенде.</summary>
+        private static void BuildVesselCard(VisualElement root)
+        {
+            var subject = new Guildmaster.UI.VesselCardSubject(
+                "Кай, сын каменотёса", "Щит · в бою",
+                new[] { ("HP", "820"), ("броня", "24"), ("маг. броня", "12"), ("урон", "41") },
+                new[] { ("trait.steady", "Стойкий", true), ("trait.slow", "Тугодум", false) },
+                new[] { "item.boots", "item.amulet", string.Empty, null },
+                (2, 1, 0),
+                new[] { "Ушиб колена", "Рана плеча" },
+                "Стойкость",
+                new[] { "Пришёл из каменоломни у Серых Врат,", "когда гильдия взяла его отца." },
+                new[] { ("боёв", "48"), ("побед", "41"), ("смертей в бою", "2"), ("походов", "6") },
+                "relic.bulwark");
+
+            int tab = 0;
+            var host = new VisualElement();
+            host.style.flexGrow = 1;
+            void Draw()
+            {
+                host.Clear();
+                host.Add(Guildmaster.UI.VesselCardView.Build(
+                    subject, tab, onTab: i => { tab = i; Draw(); }, onClose: null, onRelic: null, localize: RuValue));
+            }
+            Draw();
+            root.Add(host);
         }
 
         private static void BuildLoadoutInventory(VisualElement root)
