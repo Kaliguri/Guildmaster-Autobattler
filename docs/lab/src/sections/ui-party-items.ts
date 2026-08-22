@@ -555,14 +555,14 @@ const section: SectionDef = {
       kind: "head",
       id: "party",
       title: "Страница «Отряд» — четыре раскладки",
-      lede: "Вопрос страницы: кто выйдет в бой. Доли — от кадра 1920x1080."
+      lede: "Вопрос страницы: кто выйдет в бой. Принята I-Г (Макс, 22.08.2026). Доли — от кадра 1920x1080."
     },
     {
       kind: "stands",
       items: [
         {
           id: "party-box",
-          status: "waiting",
+          status: "rejected",
           title: "I-А · Ложа",
           tag: "две трети составу",
           note:
@@ -581,7 +581,7 @@ const section: SectionDef = {
         },
         {
           id: "party-spread",
-          status: "waiting",
+          status: "rejected",
           title: "I-Б · Разворот",
           tag: "плитка максимальная",
           note:
@@ -600,7 +600,7 @@ const section: SectionDef = {
         },
         {
           id: "party-cockpit",
-          status: "waiting",
+          status: "rejected",
           title: "I-В · Кокпит",
           tag: "половина кадра осмотру",
           note:
@@ -619,7 +619,7 @@ const section: SectionDef = {
         },
         {
           id: "party-stage",
-          status: "waiting",
+          status: "accepted",
           title: "I-Г · Витрина",
           tag: "состав телами",
           note:
@@ -651,7 +651,7 @@ const section: SectionDef = {
       items: [
         {
           id: "items-rows",
-          status: "waiting",
+          status: "accepted",
           title: "II-А · Строки",
           tag: "слоты в ряд",
           note:
@@ -670,7 +670,7 @@ const section: SectionDef = {
         },
         {
           id: "items-pairs",
-          status: "waiting",
+          status: "rejected",
           title: "II-Б · Пары",
           tag: "сетка как в отряде",
           note:
@@ -689,7 +689,7 @@ const section: SectionDef = {
         },
         {
           id: "items-bench",
-          status: "waiting",
+          status: "rejected",
           title: "II-В · Верстак",
           tag: "один в фокусе",
           note:
@@ -708,7 +708,7 @@ const section: SectionDef = {
         },
         {
           id: "items-columns",
-          status: "waiting",
+          status: "rejected",
           title: "II-Г · Колонны",
           tag: "слоты столбиком",
           note:

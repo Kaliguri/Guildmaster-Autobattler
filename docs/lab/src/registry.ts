@@ -292,6 +292,14 @@ export const PAGES: PageDef[] = [
     icon: "◫"
   },
   {
+    id: "ui-inspect-cards",
+    area: "ui",
+    title: "Осмотр и карточки",
+    blurb: "Что открывается по ЛКМ и по ПКМ: панель осмотра тремя местами, расширенные карточки «Сосуда» и Реликвии по три устройства. Единственный дом травм.",
+    load: () => import("./sections/ui-inspect-cards.js"),
+    icon: "◉"
+  },
+  {
     id: "ui-lobby",
     area: "ui",
     title: "Создать игру и лобби",
