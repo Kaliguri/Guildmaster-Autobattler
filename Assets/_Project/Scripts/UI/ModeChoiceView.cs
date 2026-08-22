@@ -69,7 +69,7 @@ namespace Guildmaster.UI
             IReadOnlyList<Card> cards,
             Func<string, string> localize,
             Action onBack,
-            VisualElement footerExtra = null)
+            VisualElement footerExtra)
         {
             var screen = new VisualElement { name = name };
             screen.AddToClassList("gm-screen");

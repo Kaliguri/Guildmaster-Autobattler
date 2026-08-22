@@ -1470,6 +1470,7 @@ namespace Guildmaster.UI
                         req.CurrentInventory,
                         relic => _loadoutVm.Name(relic),
                         key => _loc?.GetString(key),
+                        _palette,   // цвет ступени приглушения — тот же, что в бою
                         (chosen, dropId) =>
                         {
                             _audio?.Play("reward.take.stinger");
@@ -1478,8 +1479,7 @@ namespace Guildmaster.UI
                         () => { _audio?.Play("reward.skip.ui"); req.OnVote?.Invoke(RewardOptions.Skip); },
                         // Хук выбора карточки был заведён в экране, но никогда не прокидывался — карточка
                         // анимировалась молча.
-                        _ => _audio?.Play("reward.card_select.ui"),
-                        _palette);   // цвет ступени приглушения — тот же, что в бою
+                        _ => _audio?.Play("reward.card_select.ui"));
                 });
 
             _onReadyChanged = e =>

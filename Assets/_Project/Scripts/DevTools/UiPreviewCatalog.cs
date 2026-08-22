@@ -132,6 +132,7 @@ namespace Guildmaster.DevTools
             VisualElement screen = Guildmaster.UI.EventScreenView.Build(
                 uxml, ev,
                 localize: RuValue,
+                gold: 250,
                 onChosen: _ => { });
             root.Add(screen);
         }
@@ -157,7 +158,8 @@ namespace Guildmaster.DevTools
                 new(7, null,   null,     inBattle: false, open: false),
             };
 
-            VisualElement screen = Guildmaster.UI.PartyScreenView.Build(uxml, slots, actions: null, localize: RuValue);
+            VisualElement screen = Guildmaster.UI.PartyScreenView.Build(
+                uxml, slots, localize: RuValue, battleSlots: 4, actions: null);
             MountSampleInspect(screen);
             root.Add(screen);
         }
@@ -256,6 +258,8 @@ namespace Guildmaster.DevTools
                 narrativeOf: r => Coalesce(RuValue((r?.Id) + ".desc"), "«Древний завет, что тлеет в глубине веков…»"),
                 localize: RuValue,
                 lockedSlots: 3,
+                cardAnimations: true,
+                cardAttackAnimation: true,
                 tagsOf: r => UnitTagResolver.Resolve(r, content),
                 statsOf: r => statPreview.Basic(r),
                 palette: LoadFirst<Guildmaster.Data.Definitions.GuildmasterPalette>());
@@ -473,7 +477,15 @@ namespace Guildmaster.DevTools
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/OutcomeScreen.uxml");
             if (uxml == null) { AddError(root, "OutcomeScreen.uxml не найден"); return; }
             // Стенд показывает победу; поражение — тот же экран с victory:false.
-            root.Add(Guildmaster.UI.OutcomeScreenView.Build(uxml, victory: true, RuValue, () => { }));
+            var summary = new List<Guildmaster.Guild.OutcomeSummaryRow>
+            {
+                new("ui.outcome.nodes", "Пройдено узлов", "7"),
+                new("ui.outcome.gold",  "Золота собрано", "310"),
+                new("ui.outcome.time",  "Время забега",   "24 мин"),
+            };
+
+            root.Add(Guildmaster.UI.OutcomeScreenView.Build(
+                uxml, victory: true, RuValue, summary, glyph: null, onToMenu: () => { }));
         }
 
         private static void BuildMainMenu(VisualElement root)
@@ -487,7 +499,8 @@ namespace Guildmaster.DevTools
                 "Assets/_Project/ScriptableObjects/Configs/CommunityConfig.asset");
 
             root.Add(Guildmaster.UI.MainMenuScreenView.Build(
-                uxml, RuValue, () => { }, () => { }, () => { }, () => { }, community: community));
+                uxml, RuValue, () => { }, () => { }, () => { }, () => { },
+                canJoin: true, community: community));
         }
 
         /// <summary>Экран «Создать игру»: три режима карточками и галочка лобби в футере.</summary>
@@ -513,8 +526,18 @@ namespace Guildmaster.DevTools
                 new("g2", "Гильдия 2", hasRun: false),
             };
 
+            var palette = LoadFirst<Guildmaster.Data.Definitions.GuildmasterPalette>();
+            var emblems = LoadFirst<Guildmaster.Data.Definitions.GuildEmblemCatalog>();
+
             root.Add(Guildmaster.UI.GuildSelectScreenView.Build(
-                uxml, guilds, slotLimit: 4, RuValue, _ => { }, () => { }));
+                uxml, guilds, slotLimit: 4, RuValue,
+                emblemOf: id => emblems != null ? emblems.Resolve(id) : null,
+                shadeOf: index => palette != null &&
+                                  palette.TryGet(Guildmaster.Core.Players.PlayerColors.TokenOf(index),
+                                                 out UnityEngine.Color shade)
+                                      ? shade
+                                      : UnityEngine.Color.white,
+                onPick: _ => { }, onBack: () => { }));
         }
 
         /// <summary>Двор гильдии — пока заглушка с меткой и единственной кнопкой.</summary>
@@ -523,7 +546,8 @@ namespace Guildmaster.DevTools
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/HubScreen.uxml");
             if (uxml == null) { AddError(root, "HubScreen.uxml не найден"); return; }
 
-            root.Add(Guildmaster.UI.HubScreenView.Build(uxml, "Гильдия 1", RuValue, () => { }));
+            root.Add(Guildmaster.UI.HubScreenView.Build(
+                uxml, "Гильдия 1", RuValue, () => { }, canStartRun: true));
         }
 
         private static void BuildTitleCard(VisualElement root)

@@ -70,8 +70,8 @@ namespace Guildmaster.UI
             Action<ProfileIdentity> onSave,
             Action<ProfileIdentity> onPreview,
             Action onBack,
-            Func<string, UnityEngine.Texture2D> emblemOf = null,
-            Func<int, UnityEngine.Color> shadeOf = null)
+            Func<string, UnityEngine.Texture2D> emblemOf,
+            Func<int, UnityEngine.Color> shadeOf)
         {
             string L(string key, string fallback)
             {

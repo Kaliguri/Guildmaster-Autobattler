@@ -27,7 +27,7 @@ namespace Guildmaster.UI
             string guildName,
             Func<string, string> localize,
             Action onStartRun,
-            bool canStartRun = true,
+            bool canStartRun,
             (int Act, int Level, string TitleKey) stage = default,
             Action onLeave = null)
         {

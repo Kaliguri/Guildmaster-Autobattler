@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using Guildmaster.UI.Components;
@@ -30,7 +30,7 @@ namespace Guildmaster.UI
             TextEventData ev,
             Func<string, string> localize,
             Action<int> onChosen,
-            int gold = int.MaxValue)
+            int gold)
         {
             string L(string key, string fallback)
             {

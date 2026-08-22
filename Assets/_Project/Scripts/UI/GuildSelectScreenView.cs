@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Persistence;
 using Guildmaster.Guild;
@@ -55,12 +55,12 @@ namespace Guildmaster.UI
             IReadOnlyList<GuildEntry> guilds,
             int slotLimit,
             Func<string, string> localize,
+            Func<string, UnityEngine.Texture2D> emblemOf,
+            Func<int, UnityEngine.Color> shadeOf,
             Action<string> onPick,
             Action onBack,
             Action onCreate = null,
-            Action<string> onDelete = null,
-            Func<string, UnityEngine.Texture2D> emblemOf = null,
-            Func<int, UnityEngine.Color> shadeOf = null)
+            Action<string> onDelete = null)
         {
             string L(string key, string fallback)
             {

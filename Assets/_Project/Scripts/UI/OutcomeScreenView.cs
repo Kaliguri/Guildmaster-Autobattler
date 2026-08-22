@@ -22,10 +22,10 @@ namespace Guildmaster.UI
         /// </param>
         /// <param name="glyph">Знак исхода. <c>null</c> — знака не будет, экран от этого не сломается.</param>
         public static VisualElement Build(VisualTreeAsset uxml, bool victory, Func<string, string> localize,
+                                          IReadOnlyList<Guildmaster.Guild.OutcomeSummaryRow> summary,
+                                          UnityEngine.Texture2D glyph,
                                           Action onToMenu, Action onContinue = null,
-                                          Action onRestart = null, Action onToGuild = null,
-                                          IReadOnlyList<Guildmaster.Guild.OutcomeSummaryRow> summary = null,
-                                          UnityEngine.Texture2D glyph = null)
+                                          Action onRestart = null, Action onToGuild = null)
         {
             string L(string key, string fallback)
             {

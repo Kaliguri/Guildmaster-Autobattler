@@ -61,7 +61,8 @@ namespace Guildmaster.Tests.EditMode.UI
             rootVisualElement.Clear();
             rootVisualElement.Add(Guildmaster.UI.MainMenuScreenView.Build(
                 Uxml("Assets/_Project/UI/Screens/MainMenuScreen.uxml"),
-                localize: null, onCreate: null, onJoin: null, onSettings: null, onQuit: null));
+                localize: null, onCreate: null, onJoin: null, onSettings: null, onQuit: null,
+                canJoin: true, community: null));
             AssertNoOverlap("MainMenuScreen");
         }
 
@@ -87,7 +88,7 @@ namespace Guildmaster.Tests.EditMode.UI
                 Uxml("Assets/_Project/UI/Screens/GuildSelectScreen.uxml"),
                 guilds,
                 slotLimit: 8,        // предел GameConfig: список на пределе не имеет права разъехаться
-                localize: null, onPick: null, onBack: null));
+                localize: null, emblemOf: null, shadeOf: null, onPick: null, onBack: null));
             AssertNoOverlap("GuildSelectScreen");
         }
 
@@ -98,7 +99,7 @@ namespace Guildmaster.Tests.EditMode.UI
             rootVisualElement.Add(Guildmaster.UI.HubScreenView.Build(
                 Uxml("Assets/_Project/UI/Screens/HubScreen.uxml"),
                 guildName: "Гильдия с очень длинным именем, какое игрок вправе себе завести",
-                localize: null, onStartRun: null));
+                localize: null, onStartRun: null, canStartRun: true));
             AssertNoOverlap("HubScreen");
         }
 

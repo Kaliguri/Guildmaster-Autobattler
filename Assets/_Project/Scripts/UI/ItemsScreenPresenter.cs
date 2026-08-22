@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
@@ -60,15 +60,15 @@ namespace Guildmaster.UI
                 _uxml,
                 BuildRows(),
                 BuildStash(),
-                new ItemsScreenView.Actions
+                key => _loc?.GetString(key),
+                actions: new ItemsScreenView.Actions
                 {
                     Equip    = (slot, itemSlot, id) => Run(() => _commands?.SetSlotItem(slot, itemSlot, id)),
                     Unequip  = (slot, itemSlot)     => Run(() => _commands?.SetSlotItem(slot, itemSlot, string.Empty)),
                     Inspect  = index => _onInspect?.Invoke(index),
                     OpenCard = index => _onOpenCard?.Invoke(index),
                     Battle   = () => _onBattle?.Invoke(),
-                },
-                key => _loc?.GetString(key)));
+                }));
         }
 
         /// <summary>

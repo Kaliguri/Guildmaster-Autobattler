@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.UI.Components;
 using UnityEngine.UIElements;
@@ -77,8 +77,8 @@ namespace Guildmaster.UI
             VisualTreeAsset screenUxml,
             IReadOnlyList<ItemsRowView> rows,
             IReadOnlyList<string> stash,
-            Actions actions = null,
-            Func<string, string> localize = null)
+            Func<string, string> localize,
+            Actions actions = null)
         {
             if (screenUxml == null) throw new ArgumentNullException(nameof(screenUxml));
 

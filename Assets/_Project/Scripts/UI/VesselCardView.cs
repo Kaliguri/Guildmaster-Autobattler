@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.UI.Components;
 using Guildmaster.UI.Tooltips;
@@ -85,11 +85,11 @@ namespace Guildmaster.UI
 
         public static VisualElement Build(
             in VesselCardSubject subject,
-            int activeTab = 0,
+            int activeTab,
+            Func<string, string> localize,
             Action<int> onTab = null,
             Action onClose = null,
-            Action<string> onRelic = null,
-            Func<string, string> localize = null)
+            Action<string> onRelic = null)
         {
             string L(string key, string fallback)
             {

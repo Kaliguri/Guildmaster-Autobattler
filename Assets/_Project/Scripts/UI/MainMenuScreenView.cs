@@ -22,9 +22,9 @@ namespace Guildmaster.UI
             Action onJoin,
             Action onSettings,
             Action onQuit,
-            bool canJoin = true,
+            bool canJoin,
+            Guildmaster.Data.Definitions.CommunityConfig community,
             Action onProfile = null,
-            Guildmaster.Data.Definitions.CommunityConfig community = null,
             Action<string> onLink = null,
             Action onWishlist = null)
         {

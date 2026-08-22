@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
@@ -33,13 +33,13 @@ namespace Guildmaster.UI
             Func<RelicData, string> titleOf,
             Func<RelicData, string> narrativeOf,
             Func<string, string> localize,
-            int lockedSlots = 0,
-            bool cardAnimations = true,
-            bool cardAttackAnimation = true,
-            Action<RelicData, RelicDragPhase> onRelicDrag = null,
-            Func<RelicData, IReadOnlyList<TagData>> tagsOf = null,
-            Func<RelicData, IReadOnlyList<UnitStatLine>> statsOf = null,
-            GuildmasterPalette palette = null)
+            int lockedSlots,
+            bool cardAnimations,
+            bool cardAttackAnimation,
+            Func<RelicData, IReadOnlyList<TagData>> tagsOf,
+            Func<RelicData, IReadOnlyList<UnitStatLine>> statsOf,
+            GuildmasterPalette palette,
+            Action<RelicData, RelicDragPhase> onRelicDrag = null)
         {
             string L(string key, string ru)
             {

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
@@ -72,16 +72,16 @@ namespace Guildmaster.UI
             _host.Add(PartyScreenView.Build(
                 _uxml,
                 BuildSlots(),
-                new PartyScreenView.Actions
+                key => _loc?.GetString(key),
+                _config != null && _config.BattleSlots > 0 ? _config.BattleSlots : 4,
+                actions: new PartyScreenView.Actions
                 {
                     SetInBattle = (index, on) => Run(() => _commands?.SetSlotInBattle(index, on)),
                     Swap        = (from, to)  => Run(() => _commands?.SwapSlots(from, to)),
                     Inspect     = index => _onInspect?.Invoke(index),
                     OpenCard    = index => _onOpenCard?.Invoke(index),
                     Battle      = () => _onBattle?.Invoke(),
-                },
-                key => _loc?.GetString(key),
-                _config != null && _config.BattleSlots > 0 ? _config.BattleSlots : 4));
+                }));
         }
 
         /// <summary>Состав забега глазами экрана. Пустой забег даёт пустой список — это не отказ, а факт.</summary>

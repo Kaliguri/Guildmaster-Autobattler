@@ -87,10 +87,10 @@ namespace Guildmaster.UI
             IReadOnlyList<string> currentInventory,
             Func<RelicData, string> nameOf,
             Func<string, string> localize,
+            GuildmasterPalette palette,
             Action<RelicData, string> onTake,
             Action onSkip,
-            Action<RelicData> onCardSelectSound = null,
-            GuildmasterPalette palette = null)
+            Action<RelicData> onCardSelectSound = null)
         {
             string L(string key, string ru)
             {

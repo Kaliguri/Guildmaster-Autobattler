@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.UI.Components;
 using UnityEngine.UIElements;
@@ -85,9 +85,9 @@ namespace Guildmaster.UI
         public static VisualElement Build(
             VisualTreeAsset screenUxml,
             IReadOnlyList<PartySlotView> slots,
-            Actions actions = null,
-            Func<string, string> localize = null,
-            int battleSlots = 4)
+            Func<string, string> localize,
+            int battleSlots,
+            Actions actions = null)
         {
             if (screenUxml == null) throw new ArgumentNullException(nameof(screenUxml));
 

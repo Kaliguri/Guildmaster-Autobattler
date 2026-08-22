@@ -49,7 +49,8 @@ namespace Guildmaster.UI
                 L("ui.profile.hub.title", "Профиль"),
                 cards,
                 localize,
-                onBack);
+                onBack,
+                footerExtra: null);
         }
     }
 }
