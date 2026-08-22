@@ -44,6 +44,7 @@
 @import url("screens/settings.uss");
 @import url("screens/loadout.uss");
 @import url("screens/party.uss");
+@import url("screens/items.uss");
 @import url("screens/reward.uss");
 @import url("screens/event.uss");
 @import url("screens/continue.uss");

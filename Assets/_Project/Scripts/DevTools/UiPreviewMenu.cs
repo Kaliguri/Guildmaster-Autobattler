@@ -21,6 +21,9 @@ namespace Guildmaster.DevTools
         [MenuItem("Alebardium/UI Preview/Party (отряд, витрина)", priority = 201)]
         private static void Party() => Open("party");
 
+        [MenuItem("Alebardium/UI Preview/Items (предметы, строки)", priority = 202)]
+        private static void Items() => Open("items");
+
         [MenuItem("Alebardium/UI Preview/New Game (mode, lobby)", priority = 210)]
         private static void NewGame() => Open("newgame");
 

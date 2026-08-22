@@ -1,0 +1,150 @@
+/* Страница «Предметы» (ГДД preparation-screens §2.2, раскладка «Строки»).
+
+   Слоты стоят одной вертикалью, поэтому «у кого пусто» читается сверху вниз одним взглядом —
+   это и есть главный вопрос страницы. Квадратные: круглое у нас человек, квадратное вещь. */
+
+.gm-items {
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.gm-items__head {
+    flex-direction: row;
+    align-items: center;
+    padding: var(--gm-space-4) var(--gm-space-5);
+}
+
+.gm-items__title {
+    margin-right: var(--gm-space-5);
+}
+
+.gm-items__tabs {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+/* --- Строка носителя --- */
+
+.gm-items__rows {
+    padding: 0 var(--gm-space-5);
+}
+
+.gm-items-row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--gm-space-2);
+    padding: var(--gm-space-2);
+    background-color: var(--gm-color-surface-panel);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+}
+
+.gm-items-row:hover {
+    border-color: var(--gm-outline-color-hover);
+}
+
+.gm-items-row__portrait {
+    width: 44px;
+    height: 44px;
+    border-radius: 22px;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+}
+
+.gm-items-row__who {
+    width: 160px;
+    margin-left: var(--gm-space-3);
+}
+
+.gm-items-row__name {
+    -unity-font-style: bold;
+}
+
+.gm-items-row__relic {
+    color: var(--gm-color-accent);
+}
+
+.gm-items-row__slots {
+    flex-direction: row;
+}
+
+/* --- Слот вещи: квадрат --- */
+
+.gm-item-slot {
+    width: 56px;
+    height: 56px;
+    margin-right: var(--gm-space-2);
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-subtle);
+}
+
+.gm-item-slot--filled {
+    border-color: var(--gm-outline-color);
+}
+
+.gm-item-slot--locked {
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 0.6;
+}
+
+.gm-item-slot:hover {
+    border-color: var(--gm-outline-color-hover);
+}
+
+.gm-item-slot__id,
+.gm-item-slot__note {
+    color: var(--gm-color-text-muted);
+}
+
+/* --- Склад --- */
+
+.gm-items__stash-block {
+    padding: var(--gm-space-3) var(--gm-space-5);
+    background-color: var(--gm-color-surface-sunken);
+    border-top-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+}
+
+.gm-items__stash-head {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-items__stash {
+    max-height: 180px;
+}
+
+.gm-items__stash .unity-scroll-view__content-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.gm-stash-item {
+    width: 56px;
+    height: 56px;
+    margin: 0 var(--gm-space-2) var(--gm-space-2) 0;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gm-color-surface-panel);
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-outline-color);
+}
+
+.gm-stash-item:hover {
+    border-color: var(--gm-outline-color-hover);
+}
+
+.gm-stash-item__id {
+    color: var(--gm-color-text-muted);
+}
+
+.gm-items__actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: var(--gm-space-3) var(--gm-space-5) var(--gm-space-4);
+}

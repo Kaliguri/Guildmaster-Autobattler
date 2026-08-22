@@ -27,6 +27,7 @@ namespace Guildmaster.DevTools
             ["event"]        = BuildEvent,
             ["loadout-inventory"] = BuildLoadoutInventory,
             ["party"]        = BuildParty,
+            ["items"]        = BuildItems,
             ["settings"]     = BuildSettings,
             // "map" снят: карта больше не UITK-экран, она живёт в мире (см. WorldMapView) и в UI-стенде
             // не собирается. Смотреть её — дев-командами gm_map_* в игре.
@@ -151,6 +152,24 @@ namespace Guildmaster.DevTools
             };
 
             root.Add(Guildmaster.UI.PartyScreenView.Build(uxml, slots, actions: null, localize: RuValue));
+        }
+
+        /// <summary>Страница «Предметы» на выдуманном составе — по той же причине, что и «Отряд».</summary>
+        private static void BuildItems(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/ItemsScreen.uxml");
+            if (uxml == null) { AddError(root, "ItemsScreen.uxml не найден"); return; }
+
+            var rows = new List<Guildmaster.UI.ItemsRowView>
+            {
+                new(0, "Ирма", "Клинок", new[] { "item.boots", string.Empty, string.Empty, null }),
+                new(1, "Кай",  "Щит",    new[] { "item.amulet", "item.rune_flame", string.Empty, null }),
+                new(2, "Дан",  "Посох",  new[] { string.Empty, string.Empty, string.Empty, null }),
+                new(3, "Сув",  "Ветер",  new[] { "item.bracelet", string.Empty, string.Empty, null }),
+            };
+            var stash = new List<string> { "item.rune_frost", "item.potion_health", "item.cloak" };
+
+            root.Add(Guildmaster.UI.ItemsScreenView.Build(uxml, rows, stash, actions: null, localize: RuValue));
         }
 
         private static void BuildLoadoutInventory(VisualElement root)
