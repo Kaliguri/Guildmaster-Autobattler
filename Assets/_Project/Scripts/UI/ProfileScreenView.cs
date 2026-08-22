@@ -53,6 +53,7 @@ namespace Guildmaster.UI
             string steamName,
             IReadOnlyList<CursorSkinData> skins,
             int colorCount,
+            GuildmasterPalette palette,
             bool canLeave,
             bool customize,
             Func<string, string> localize,
@@ -60,6 +61,7 @@ namespace Guildmaster.UI
             Action onCreate,
             Action<string> onDelete,
             Action<ProfileIdentity> onSave,
+            Action<ProfileIdentity> onPreview,
             Action onBack)
         {
             string L(string key, string fallback)
@@ -103,7 +105,10 @@ namespace Guildmaster.UI
                     : L("ui.profile.hub.select.title", "Сменить профиль");
             if (slotsCap != null)  slotsCap.text  = L("ui.profile.slots", "Слоты");
             if (identCap != null)  identCap.text  = L("ui.profile.identity", "Как меня видят");
-            if (colorCap != null)  colorCap.text  = L("ui.profile.color", "Цвет");
+            // «ПРЕДПОЧТИТЕЛЬНЫЙ», а не просто «Цвет» (слово Макса 22.08.2026): в одной сессии оттенки
+            // уникальны, и занятый кем-то заменяется ближайшим свободным — подпись обязана обещать
+            // ровно это, а не «твой цвет навсегда».
+            if (colorCap != null)  colorCap.text  = L("ui.profile.color", "Предпочтительный цвет");
             if (cursorCap != null) cursorCap.text = L("ui.profile.cursor", "Курсор");
             if (save != null)      save.text      = L("ui.profile.save", "Сохранить");
             back?.Localize(localize);   // слово и ключ у возврата одни на всю игру — они в самом контроле
@@ -208,8 +213,28 @@ namespace Guildmaster.UI
             nameField?.RegisterValueChangedCallback(e => typedName = e.newValue);
             RefreshName();
 
-            BuildColors(colorRow, colorCount, colorIndex, index => colorIndex = index);
-            BuildCursors(cursorRow, skins, skinId, id => skinId = id);
+            // ВЫБОР ВИДЕН СРАЗУ, но живёт до «Сохранить» (заказ Макса 22.08.2026: «При выборе цвета или
+            // курсора - отображаться должно сразу. Но если не нажать кнопку сохранить - при выходе всё
+            // вернётся обратно»). Показ идёт мимо профиля: на диск пишет только «Сохранить», а откат
+            // делает уход с экрана.
+            void Preview() =>
+                onPreview?.Invoke(new ProfileIdentity(typedName, useSteam, colorIndex, skinId));
+
+            // Образцы курсора носят ВЫБРАННЫЙ цвет — тот же, каким курсор станет в игре и каким его
+            // увидит напарник. Белые образцы рядом с цветным курсором читались бы как другой набор.
+            void PaintCursors(int index)
+            {
+                if (palette == null || cursorRow == null) return;
+                if (!palette.TryGet(Core.Players.PlayerColors.TokenOf(index), out UnityEngine.Color shade)) return;
+
+                cursorRow.Query<VisualElement>(className: "gm-profile__cursor")
+                         .ForEach(tile => tile.style.unityBackgroundImageTintColor = shade);
+            }
+
+            BuildColors(colorRow, colorCount, colorIndex, palette,
+                        index => { colorIndex = index; PaintCursors(index); Preview(); });
+            BuildCursors(cursorRow, skins, skinId, id => { skinId = id; Preview(); });
+            PaintCursors(colorIndex);
 
             // ── Действия ────────────────────────────────────────────────────
             if (save != null)
@@ -332,7 +357,12 @@ namespace Guildmaster.UI
             }
         }
 
-        private static void BuildColors(VisualElement row, int count, int selected, Action<int> onPick)
+        /// <summary>
+        /// Образцы цвета. Оттенок берётся у палитры по имени токена — она остаётся единственным
+        /// владельцем цвета, а правил на каждый из шестнадцати оттенков тема не заводит.
+        /// </summary>
+        private static void BuildColors(VisualElement row, int count, int selected,
+                                        GuildmasterPalette palette, Action<int> onPick)
         {
             if (row == null) return;
             row.Clear();
@@ -344,8 +374,9 @@ namespace Guildmaster.UI
 
                 var swatch = new VisualElement { name = $"color-{i}", focusable = true };
                 swatch.AddToClassList("gm-profile__swatch");
-                // Оттенок живёт в USS-токенах: палитра остаётся единственным владельцем цвета.
-                swatch.AddToClassList($"gm-profile__swatch--p{i + 1}");
+                if (palette != null &&
+                    palette.TryGet(Core.Players.PlayerColors.TokenOf(i), out UnityEngine.Color shade))
+                    swatch.style.backgroundColor = shade;
                 if (i == selected) swatch.AddToClassList("gm-profile__swatch--picked");
 
                 swatch.RegisterCallback<ClickEvent>(_ =>

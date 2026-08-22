@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Tape;
@@ -282,7 +282,7 @@ namespace Guildmaster.Game
         /// палитра — единственный владелец цвета, и мир читает её снимок по имени токена.
         /// </summary>
         private Color? PlayerColor(int colorIndex) =>
-            _palette != null && _palette.TryGet($"--gm-color-player-{(colorIndex % 4) + 1}", out Color c)
+            _palette != null && _palette.TryGet(Guildmaster.Core.Players.PlayerColors.TokenOf(colorIndex), out Color c)
                 ? c
                 : (Color?)null;
 

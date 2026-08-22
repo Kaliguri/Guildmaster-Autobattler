@@ -95,10 +95,8 @@ namespace Guildmaster.UI
         private readonly int               _profileSlotLimit;
         private readonly int               _guildSlotLimit;
         private readonly Func<string>      _steamName;
-        private readonly Action<string>    _cursorApply;
+        private readonly Action<string, int> _cursorApply;
 
-        /// <summary>Сколько мейн-цветов предлагаем. Столько же токенов в палитре — предел кооп-сессии.</summary>
-        private const int ProfileColorCount = 4;
         private VisualTreeAsset _titleCardUxml;
         private VisualTreeAsset _loadoutInventoryUxml;
         private VisualTreeAsset _arcanaCardUxml;
@@ -128,7 +126,7 @@ namespace Guildmaster.UI
             _profileSlotLimit = gameConfig != null ? gameConfig.MaxProfiles : 1;
             _guildSlotLimit   = gameConfig != null ? gameConfig.MaxGuildsPerProfile : 1;
             _steamName       = () => platform != null ? platform.PlayerName : "Игрок";
-            _cursorApply     = id => cursors?.Apply(id);
+            _cursorApply     = (id, colorIndex) => cursors?.Apply(id, colorIndex);
             _readySub = readySub;
             // Подписка живёт столько же, сколько роутер, и это не лень: гейт объявляет счёт в момент
             // привязки действия — раньше, чем экран заказан. Подписка на время показа это объявление
@@ -1015,7 +1013,8 @@ namespace Guildmaster.UI
                 _profiles?.Identity ?? default,
                 _steamName?.Invoke() ?? "Игрок",
                 _cursorSkins?.Skins,
-                ProfileColorCount,
+                Core.Players.PlayerColors.Count,
+                _palette,
                 canLeave,
                 customize,
                 key => _loc?.GetString(key),
@@ -1033,9 +1032,20 @@ namespace Guildmaster.UI
                 onSave: identity =>
                 {
                     _profiles?.SaveIdentity(identity);
-                    _cursorApply?.Invoke(identity.CursorSkinId);
+                    _cursorApply?.Invoke(identity.CursorSkinId, identity.ColorIndex);
                 },
-                onBack: () => { Pop(); onClosed?.Invoke(); }));
+                // Показать выбранное немедленно — мимо профиля: на диск пишет «Сохранить».
+                onPreview: identity => _cursorApply?.Invoke(identity.CursorSkinId, identity.ColorIndex),
+                onBack: () =>
+                {
+                    // Ушли без «Сохранить» — возвращаем то, что лежит в профиле. Иначе примерка
+                    // переживала бы экран и выглядела бы сохранённой, хотя её никто не записывал.
+                    Core.Persistence.ProfileIdentity saved = _profiles?.Identity ?? default;
+                    _cursorApply?.Invoke(saved.CursorSkinId, saved.ColorIndex);
+
+                    Pop();
+                    onClosed?.Invoke();
+                }));
         }
 
         /// <summary>

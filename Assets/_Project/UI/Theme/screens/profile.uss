@@ -56,17 +56,28 @@
     scale: 1.1 1.1;
 }
 
-.gm-profile__swatch--p1 { background-color: var(--gm-color-player-1); }
-.gm-profile__swatch--p2 { background-color: var(--gm-color-player-2); }
-.gm-profile__swatch--p3 { background-color: var(--gm-color-player-3); }
-.gm-profile__swatch--p4 { background-color: var(--gm-color-player-4); }
+/* Образцы КРАСЯТСЯ ИЗ ПАЛИТРЫ КОДОМ, а не шестнадцатью классами-модификаторами: набор вырос до
+   шестнадцати (22.08.2026), и правило на каждый оттенок означало бы правку темы на всякое изменение
+   набора — при том что число оттенков живёт в PlayerColors, а сами оттенки в токенах. Единственный
+   владелец цвета при этом не меняется: экран спрашивает у палитры имя токена, а не литерал. */
 
+/* ФИГУРА ЛЕЖИТ В ЛЕВОМ ВЕРХНЕМ УГЛУ ХОЛСТА, а не по центру: скины собираются
+   `scripts/cursors-build.py` с общей диагональю, и остриё у них по построению в точке (0,0). При
+   вписывании целого холста 320x320 в плитку картинка занимала её угол, а три четверти плитки
+   оставались пустыми — «курсор не в центре выбранного квадратика» (наход. Макса 22.08.2026).
+   Показываем НЕ весь холст, а его занятую часть: замер альфы по всем пяти скинам даёт 196px из 320
+   (61%), отсюда увеличение до 163% и привязка к левому верхнему углу. Плитка при этом заполнена
+   фигурой, а не холстом.
+   `-unity-background-scale-mode` снят намеренно: он и background-size — два владельца одного
+   свойства, и вместе они не складываются. */
 .gm-profile__cursor {
     width: 48px;
     height: 48px;
     margin-right: var(--gm-space-1);
     padding: var(--gm-space-0);
-    -unity-background-scale-mode: scale-to-fit;
+    background-size: 163% 163%;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
     border-width: var(--gm-border-1);
     border-color: rgba(0, 0, 0, 0);
 }

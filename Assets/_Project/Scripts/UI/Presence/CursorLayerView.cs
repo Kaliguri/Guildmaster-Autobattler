@@ -106,7 +106,7 @@ namespace Guildmaster.UI.Presence
             int slot = _roster != null && _roster.TryGet(playerId, out SessionPlayer player)
                 ? player.ColorIndex
                 : playerId;
-            root.AddToClassList($"gm-cursor--p{(slot % 4) + 1}");
+            root.AddToClassList("gm-cursor--" + Core.Players.PlayerColors.SuffixOf(slot));
 
             label.text = _roster != null && _roster.TryGet(playerId, out SessionPlayer named)
                 ? named.Name

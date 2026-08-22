@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,9 +32,11 @@ namespace Guildmaster.Tests.EditMode.UI
         /// <summary>Класс вешается кодом из строки, собранной на лету, — текстом его не поймать.</summary>
         private static readonly string[] BuiltAtRuntime =
         {
-            "gm-cursor--p",            // gm-cursor--p{i}, номер игрока
-            "gm-vote-dot--p",          // кружок голоса красится мейн-цветом проголосовавшего
-            "gm-profile__swatch--p",   // тот же приём для образцов цвета
+            // Место в наборе мейн-цветов подставляет PlayerColors.SuffixOf — литерал в коде обрывается
+            // на двойном дефисе, поэтому и в списке он обрывается там же (до 22.08.2026 суффикс
+            // склеивался интерполяцией и попадал в текст целиком).
+            "gm-cursor--",             // gm-cursor--p{N}, место игрока в наборе цветов
+            "gm-vote-dot--",           // кружок голоса красится мейн-цветом проголосовавшего
             "gm-runbar__tab--",        // модификатор режима подставляется по id
             "gm-filter-tab--",         // фильтр инвентаря подставляет вид контента
         };

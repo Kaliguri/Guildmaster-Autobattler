@@ -1,4 +1,4 @@
-/* === Курсоры других игроков (кооп) =========================================
+﻿/* === Курсоры других игроков (кооп) =========================================
    Курсор чужого игрока в мировой точке: изображение скина, крашенное в его мейн-цвет, и подпись
    именем. Позицию ставит CursorLayerView переводом «мир → панель», картинку — он же из данных скина
    (CursorSkinData). Здесь только вид.
@@ -39,6 +39,30 @@
 .gm-cursor--p3 > .gm-cursor__name  { color: var(--gm-color-player-3); }
 .gm-cursor--p4 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-4); }
 .gm-cursor--p4 > .gm-cursor__name  { color: var(--gm-color-player-4); }
+.gm-cursor--p5 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-5); }
+.gm-cursor--p5 > .gm-cursor__name  { color: var(--gm-color-player-5); }
+.gm-cursor--p6 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-6); }
+.gm-cursor--p6 > .gm-cursor__name  { color: var(--gm-color-player-6); }
+.gm-cursor--p7 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-7); }
+.gm-cursor--p7 > .gm-cursor__name  { color: var(--gm-color-player-7); }
+.gm-cursor--p8 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-8); }
+.gm-cursor--p8 > .gm-cursor__name  { color: var(--gm-color-player-8); }
+.gm-cursor--p9 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-9); }
+.gm-cursor--p9 > .gm-cursor__name  { color: var(--gm-color-player-9); }
+.gm-cursor--p10 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-10); }
+.gm-cursor--p10 > .gm-cursor__name  { color: var(--gm-color-player-10); }
+.gm-cursor--p11 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-11); }
+.gm-cursor--p11 > .gm-cursor__name  { color: var(--gm-color-player-11); }
+.gm-cursor--p12 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-12); }
+.gm-cursor--p12 > .gm-cursor__name  { color: var(--gm-color-player-12); }
+.gm-cursor--p13 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-13); }
+.gm-cursor--p13 > .gm-cursor__name  { color: var(--gm-color-player-13); }
+.gm-cursor--p14 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-14); }
+.gm-cursor--p14 > .gm-cursor__name  { color: var(--gm-color-player-14); }
+.gm-cursor--p15 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-15); }
+.gm-cursor--p15 > .gm-cursor__name  { color: var(--gm-color-player-15); }
+.gm-cursor--p16 > .gm-cursor__point { -unity-background-image-tint-color: var(--gm-color-player-16); }
+.gm-cursor--p16 > .gm-cursor__name  { color: var(--gm-color-player-16); }
 
 
 
@@ -124,6 +148,18 @@
 .gm-vote-dot--p2 { background-color: var(--gm-color-player-2); }
 .gm-vote-dot--p3 { background-color: var(--gm-color-player-3); }
 .gm-vote-dot--p4 { background-color: var(--gm-color-player-4); }
+.gm-vote-dot--p5 { background-color: var(--gm-color-player-5); }
+.gm-vote-dot--p6 { background-color: var(--gm-color-player-6); }
+.gm-vote-dot--p7 { background-color: var(--gm-color-player-7); }
+.gm-vote-dot--p8 { background-color: var(--gm-color-player-8); }
+.gm-vote-dot--p9 { background-color: var(--gm-color-player-9); }
+.gm-vote-dot--p10 { background-color: var(--gm-color-player-10); }
+.gm-vote-dot--p11 { background-color: var(--gm-color-player-11); }
+.gm-vote-dot--p12 { background-color: var(--gm-color-player-12); }
+.gm-vote-dot--p13 { background-color: var(--gm-color-player-13); }
+.gm-vote-dot--p14 { background-color: var(--gm-color-player-14); }
+.gm-vote-dot--p15 { background-color: var(--gm-color-player-15); }
+.gm-vote-dot--p16 { background-color: var(--gm-color-player-16); }
 
 /* Где игрок сейчас: подпись справа от ника, тише имени — она вспомогательная. */
 .gm-participants__where {

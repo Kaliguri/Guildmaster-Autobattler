@@ -116,7 +116,7 @@ namespace Guildmaster.UI.Presence
 
             var dot = new VisualElement { pickingMode = PickingMode.Ignore };
             dot.AddToClassList("gm-participants__dot");
-            dot.AddToClassList($"gm-cursor--p{(player.ColorIndex % 4) + 1}");
+            dot.AddToClassList("gm-cursor--" + Core.Players.PlayerColors.SuffixOf(player.ColorIndex));
 
             var name = new Label(player.Name) { pickingMode = PickingMode.Ignore };
             name.AddToClassList("gm-text-label");

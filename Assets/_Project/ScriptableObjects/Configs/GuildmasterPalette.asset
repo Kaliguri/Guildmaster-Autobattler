@@ -133,12 +133,36 @@ MonoBehaviour:
     Color: {r: 0.80784315, g: 0.4745098, b: 0.39215687, a: 1}
   - Token: --gm-color-player-1
     Color: {r: 0.2, g: 0.6, b: 1, a: 1}
+  - Token: --gm-color-player-10
+    Color: {r: 0.54901963, g: 0.6627451, b: 1, a: 1}
+  - Token: --gm-color-player-11
+    Color: {r: 1, g: 0.2, b: 0.2, a: 1}
+  - Token: --gm-color-player-12
+    Color: {r: 0.54901963, g: 0.34901962, b: 0.8509804, a: 1}
+  - Token: --gm-color-player-13
+    Color: {r: 0.61960787, g: 0.85882354, b: 1, a: 1}
+  - Token: --gm-color-player-14
+    Color: {r: 1, g: 0.9490196, b: 0.7490196, a: 1}
+  - Token: --gm-color-player-15
+    Color: {r: 1, g: 1, b: 1, a: 1}
+  - Token: --gm-color-player-16
+    Color: {r: 1, g: 0.9254902, b: 0.7019608, a: 1}
   - Token: --gm-color-player-2
     Color: {r: 1, g: 0.8, b: 0.2, a: 1}
   - Token: --gm-color-player-3
     Color: {r: 0.7294118, g: 0.2, b: 1, a: 1}
   - Token: --gm-color-player-4
     Color: {r: 0.54901963, g: 1, b: 0.6509804, a: 1}
+  - Token: --gm-color-player-5
+    Color: {r: 1, g: 0.46666667, b: 0.2, a: 1}
+  - Token: --gm-color-player-6
+    Color: {r: 0.8, g: 1, b: 0.2, a: 1}
+  - Token: --gm-color-player-7
+    Color: {r: 0.47058824, g: 1, b: 0.2, a: 1}
+  - Token: --gm-color-player-8
+    Color: {r: 0.2, g: 1, b: 0.6, a: 1}
+  - Token: --gm-color-player-9
+    Color: {r: 0.2, g: 0.87058824, b: 1, a: 1}
   - Token: --gm-color-positive
     Color: {r: 0.5882353, g: 0.65882355, b: 0.3764706, a: 1}
   - Token: --gm-color-rail

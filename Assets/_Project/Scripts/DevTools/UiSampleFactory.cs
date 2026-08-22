@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.UI.Components;
 #if UNITY_EDITOR
@@ -73,9 +73,10 @@ namespace Guildmaster.DevTools
             ["gm-shop__stash-row"]     = () => StashRow(),                          // ShopScreenView.cs:106
             ["gm-reward-drop__row"]    = () => DropRow(),                           // RewardScreenView.cs:134
             ["gm-stat"]                = () => StatCell(),                          // LoadoutInventoryView.cs:515
-            // Свотч БЕРЁТ ЦВЕТ С МОДИФИКАТОРА и без него прозрачен: в игре бесцветным не бывает
-            // никогда, поэтому образец берёт первый цвет игрока, а не показывает дыру.
-            ["gm-profile__swatch"]     = () => Box("gm-profile__swatch", "gm-profile__swatch--p1"),
+            // Свотч БЕЗ ЦВЕТА ПРОЗРАЧЕН, а в игре бесцветным не бывает никогда: с 22.08.2026 оттенок
+            // ему ставит экран из палитры (набор вырос до шестнадцати, и правил на каждый оттенок
+            // тема больше не держит), поэтому образец красится тем же первым цветом здесь.
+            ["gm-profile__swatch"]     = () => Swatch(),
             ["gm-profile__cursor"]     = () => Box("gm-profile__cursor"),
             ["gm-chest__lid"]          = () => Box("gm-chest__lid"),                // ChestScreen.uxml:9
 
@@ -404,6 +405,18 @@ namespace Guildmaster.DevTools
             var cell = new Label(text);
             cell.AddToClassList(columnClass);
             return cell;
+        }
+
+        /// <summary>Образец цвета игрока: класс даёт форму, оттенок приходит из палитры — как в игре.</summary>
+        private static VisualElement Swatch()
+        {
+            var box = Box("gm-profile__swatch");
+            var palette = UnityEditor.AssetDatabase.LoadAssetAtPath<Guildmaster.Data.Definitions.GuildmasterPalette>(
+                "Assets/_Project/ScriptableObjects/Configs/GuildmasterPalette.asset");
+            if (palette != null &&
+                palette.TryGet(Guildmaster.Core.Players.PlayerColors.TokenOf(0), out UnityEngine.Color shade))
+                box.style.backgroundColor = shade;
+            return box;
         }
 
         private static VisualElement Box(params string[] classes)

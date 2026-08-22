@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using Guildmaster.UI.Components;
@@ -59,7 +59,7 @@ namespace Guildmaster.UI
 
                     var dot = new VisualElement { pickingMode = PickingMode.Ignore };
                     dot.AddToClassList(VoteDotClass);
-                    dot.AddToClassList($"{VoteDotClass}--p{(Mathf.Max(0, colorOf?.Invoke(votes[i].PlayerId) ?? 0) % 4) + 1}");
+                    dot.AddToClassList($"{VoteDotClass}--" + Core.Players.PlayerColors.SuffixOf(colorOf?.Invoke(votes[i].PlayerId) ?? 0));
                     row.Add(dot);
                 }
             });
