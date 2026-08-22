@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -44,14 +44,25 @@ namespace Guildmaster.UI.Components
             /// <summary>Каким цветом красить картинку. <c>null</c> — цветом самой картинки.</summary>
             public readonly Color? Tint;
 
+            /// <summary>
+            /// Показывать не весь холст картинки, а его левую верхнюю четверть.
+            /// </summary>
+            /// <remarks>
+            /// Нужно скинам курсора: их фигура по построению лежит в углу холста (остриё в нуле), и
+            /// вписанный целиком холст даёт крошечную стрелку в углу плитки. У знаков фигура занимает
+            /// весь холст, и та же обрезка съела бы у них половину.
+            /// </remarks>
+            public readonly bool CropToCorner;
+
             public Option(string id, Color? swatch = null, Texture2D image = null,
-                          string label = null, Color? tint = null)
+                          string label = null, Color? tint = null, bool cropToCorner = false)
             {
-                Id     = id;
-                Swatch = swatch;
-                Image  = image;
-                Label  = label;
-                Tint   = tint;
+                Id           = id;
+                Swatch       = swatch;
+                Image        = image;
+                Label        = label;
+                Tint         = tint;
+                CropToCorner = cropToCorner;
             }
         }
 
@@ -180,6 +191,9 @@ namespace Guildmaster.UI.Components
         /// <summary>Зазор между кнопкой и окном. Не токен: это расстояние принадлежит компоненту.</summary>
         private const float Gap = 8f;
 
+        /// <summary>Класс образца, показывающего левую верхнюю четверть холста (скины курсора).</summary>
+        private const string CornerCropClass = "gm-picker__sample--corner";
+
         private void BuildOptions()
         {
             _popover.Clear();
@@ -225,6 +239,9 @@ namespace Guildmaster.UI.Components
             {
                 sample.style.backgroundImage = new StyleBackground(option.Image);
                 if (option.Tint.HasValue) sample.style.unityBackgroundImageTintColor = option.Tint.Value;
+                // Обрезка — свойство ВАРИАНТА, а не образца: в одном наборе фигуры в углу холста, в
+                // другом — на весь холст, и общего правила у них нет.
+                sample.EnableInClassList(CornerCropClass, option.CropToCorner);
             }
 
             target.Add(sample);

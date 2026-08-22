@@ -53,6 +53,19 @@ namespace Guildmaster.Guild
         /// <summary>Выбранный скин курсора (<c>cursor.*</c>). Пусто — умолчание набора.</summary>
         public string CursorSkinId = string.Empty;
 
+        /// <summary>
+        /// Знак профиля (<c>emblem.*</c>) и его цвет — место в наборе мейн-цветов. Пусто — знака нет,
+        /// и в списке слот подписан одним именем.
+        /// </summary>
+        /// <remarks>
+        /// Заказ Макса 22.08.2026: профиль заводят экраном, где выбирают имя и знак. Поля
+        /// необязательные — старый сейв читается как «знака не выбирали», и версию схемы это не двигает.
+        /// </remarks>
+        public string EmblemId = string.Empty;
+
+        /// <summary>Цвет знака — тот же набор, что у мейн-цвета игрока (<c>PlayerColors</c>).</summary>
+        public int EmblemColorIndex;
+
         /// <summary>Открытые прегены: доступны любому дому этого профиля (реш. 2026-07-27/14-15).</summary>
         public List<string> UnlockedPregenIds = new();
 
@@ -126,6 +139,12 @@ namespace Guildmaster.Guild
 
         /// <summary>Имя дома, которое видит игрок.</summary>
         public string Name = string.Empty;
+
+        /// <summary>Знак дома (<c>emblem.*</c>) и его цвет — тем же набором, что у профиля.</summary>
+        public string EmblemId = string.Empty;
+
+        /// <summary>Цвет знака — место в наборе мейн-цветов (<c>PlayerColors</c>).</summary>
+        public int EmblemColorIndex;
 
         public string CreatedUtc = string.Empty;
 

@@ -4,6 +4,33 @@ using System.Collections.Generic;
 namespace Guildmaster.Core.Persistence
 {
     /// <summary>Профиль в списке выбора: то, что нужно показать, без загрузки его содержимого.</summary>
+    /// <summary>
+    /// Чем заводят слот — профиль или дом: имя, знак и цвет знака.
+    /// </summary>
+    /// <remarks>
+    /// Одна заявка на оба, потому что экран создания у них общий (заказ Макса 22.08.2026: «делаем UI
+    /// выбора гильдии, создания и удаления в духе профиля»). Разведи их по двум типам — и первое же
+    /// новое поле пришлось бы добавлять дважды.
+    /// </remarks>
+    public readonly struct SlotCreationRequest
+    {
+        /// <summary>Имя, которое ввёл игрок. Пусто — служба назовёт слот сама.</summary>
+        public readonly string Name;
+
+        /// <summary>Знак (<c>emblem.*</c>). Пусто — знака нет.</summary>
+        public readonly string EmblemId;
+
+        /// <summary>Цвет знака — место в наборе мейн-цветов.</summary>
+        public readonly int EmblemColorIndex;
+
+        public SlotCreationRequest(string name, string emblemId = null, int emblemColorIndex = 0)
+        {
+            Name             = name;
+            EmblemId         = emblemId;
+            EmblemColorIndex = emblemColorIndex;
+        }
+    }
+
     public readonly struct ProfileSummary
     {
         public string Id   { get; }
@@ -12,11 +39,19 @@ namespace Guildmaster.Core.Persistence
         /// <summary>Чем этот профиль жил: наиграно, забеги, открытия. Для гильдий — пустая.</summary>
         public ProfileStats Stats { get; }
 
-        public ProfileSummary(string id, string name, ProfileStats stats = default)
+        /// <summary>Знак слота (<c>emblem.*</c>) и его цвет — их показывает список рядом с именем.</summary>
+        public string EmblemId { get; }
+
+        public int EmblemColorIndex { get; }
+
+        public ProfileSummary(string id, string name, ProfileStats stats = default,
+                              string emblemId = null, int emblemColorIndex = 0)
         {
-            Id    = id;
-            Name  = name;
-            Stats = stats;
+            Id               = id;
+            Name             = name;
+            Stats            = stats;
+            EmblemId         = emblemId ?? string.Empty;
+            EmblemColorIndex = emblemColorIndex;
         }
     }
 
@@ -152,7 +187,11 @@ namespace Guildmaster.Core.Persistence
         /// Макса 03.08.2026). Именуемая сущность у игрока одна — дом: он и есть слот сохранения. Второе
         /// имя рядом с ним заставляло бы придумывать название тому, что игрок различает по счёту.
         /// </remarks>
-        ProfileSummary? CreateProfile();
+        /// <summary>
+        /// Завести профиль. <paramref name="request"/> несёт то, что игрок выбрал на экране создания:
+        /// имя и знак. Пустая заявка = имя по слоту и знака нет (так заводит дев-путь и старый вызов).
+        /// </summary>
+        ProfileSummary? CreateProfile(SlotCreationRequest request = default);
 
         /// <summary>Записать идентичность в активный профиль. false — профиля нет.</summary>
         bool SaveIdentity(in ProfileIdentity identity);
@@ -179,7 +218,8 @@ namespace Guildmaster.Core.Persistence
         bool DeleteProfile(string profileId);
 
         /// <summary>Создать гильдию в активном профиле и сделать активной. Null, если лимит или нет профиля.</summary>
-        ProfileSummary? CreateGuild(string name);
+        /// <summary>Завести дом. Имя и знак приходят с того же экрана создания, что у профиля.</summary>
+        ProfileSummary? CreateGuild(string name, SlotCreationRequest request = default);
 
         /// <summary>Переключиться на гильдию активного профиля. false = гильдии нет.</summary>
         bool SelectGuild(string guildId);

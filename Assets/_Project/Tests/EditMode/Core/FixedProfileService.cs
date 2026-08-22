@@ -42,7 +42,7 @@ namespace Guildmaster.Tests.EditMode
         public ProfileIdentity Identity { get; private set; } =
             new ProfileIdentity(string.Empty, useSteamName: true, colorIndex: 0, cursorSkinId: string.Empty);
 
-        public ProfileSummary? CreateProfile() => null;
+        public ProfileSummary? CreateProfile(SlotCreationRequest request = default) => null;
 
         public bool SaveIdentity(in ProfileIdentity identity)
         {
@@ -58,7 +58,7 @@ namespace Guildmaster.Tests.EditMode
 
         public bool SelectProfile(string profileId) => false;
         public bool DeleteProfile(string profileId) => false;
-        public ProfileSummary? CreateGuild(string name) => null;
+        public ProfileSummary? CreateGuild(string name, SlotCreationRequest request = default) => null;
         public bool SelectGuild(string guildId) => false;
         public bool DeleteGuild(string guildId) => false;
 

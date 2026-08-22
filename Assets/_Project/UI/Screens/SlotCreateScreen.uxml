@@ -1,0 +1,38 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
+            <gm:PanelFrame name="slot-create-frame" corner="0" />
+            <ui:Label name="slot-create-title" text="Новый профиль" class="gm-text-title gm-panel__title" />
+            <ui:VisualElement class="gm-divider" />
+
+            <!-- ОДИН ЭКРАН НА ПРОФИЛЬ И НА ДОМ: заводят их одинаково — именем и знаком, — и второй
+                 почти такой же экран разошёлся бы с первым на первой правке (заказ Макса 22.08.2026:
+                 «делаем UI выбора гильдии, создания и удаления в духе профиля»). -->
+            <ui:VisualElement class="gm-entry__single">
+                <ui:ScrollView class="gm-panel__body">
+                    <ui:VisualElement class="gm-section gm-form-column">
+                        <ui:Label name="name-caption" text="Название" class="gm-text-subtitle gm-section__title" />
+                        <ui:TextField name="field-name" class="gm-profile__name" />
+                        <ui:Label name="name-hint" class="gm-text-caption gm-text--muted gm-profile__hint" />
+                    </ui:VisualElement>
+
+                    <ui:VisualElement name="section-emblem" class="gm-section">
+                        <ui:Label name="emblem-caption" text="Знак" class="gm-text-subtitle gm-section__title" />
+                        <gm:PickerButton name="emblem-picker" />
+                    </ui:VisualElement>
+
+                    <ui:VisualElement name="section-emblem-color" class="gm-section">
+                        <ui:Label name="emblem-color-caption" text="Цвет знака" class="gm-text-subtitle gm-section__title" />
+                        <gm:PickerButton name="emblem-color-picker" />
+                    </ui:VisualElement>
+                </ui:ScrollView>
+            </ui:VisualElement>
+
+            <ui:VisualElement class="gm-divider" />
+            <ui:VisualElement class="gm-profile__actions">
+                <gm:BackButton name="btn-back" />
+                <gm:PlateButton name="btn-create" text="Создать" class="gm-button gm-button--primary" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

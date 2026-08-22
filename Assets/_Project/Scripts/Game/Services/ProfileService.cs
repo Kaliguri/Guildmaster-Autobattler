@@ -107,7 +107,7 @@ namespace Guildmaster.Game.Services
 
         // ── Профили ──────────────────────────────────────────────────────────
 
-        public ProfileSummary? CreateProfile()
+        public ProfileSummary? CreateProfile(SlotCreationRequest request = default)
         {
             if (ProfilesFull)
             {
@@ -117,9 +117,12 @@ namespace Guildmaster.Game.Services
 
             var profile = new ProfileState
             {
-                Id         = Guid.NewGuid().ToString("N"),
-                Name       = NextSlotName(),
-                CreatedUtc = DateTime.UtcNow.ToString("o"),
+                Id               = Guid.NewGuid().ToString("N"),
+                // Имя из заявки, а пустое — по слоту: экран создания может и не спросить (дев-путь).
+                Name             = string.IsNullOrWhiteSpace(request.Name) ? NextSlotName() : request.Name.Trim(),
+                EmblemId         = request.EmblemId ?? string.Empty,
+                EmblemColorIndex = request.EmblemColorIndex,
+                CreatedUtc       = DateTime.UtcNow.ToString("o"),
             };
 
             _save.Save(ProfileKey(profile.Id), profile);
@@ -213,7 +216,7 @@ namespace Guildmaster.Game.Services
 
         // ── Гильдии ──────────────────────────────────────────────────────────
 
-        public ProfileSummary? CreateGuild(string name)
+        public ProfileSummary? CreateGuild(string name, SlotCreationRequest request = default)
         {
             if (_activeProfile == null) return null;
             if (GuildsFull)
@@ -222,12 +225,16 @@ namespace Guildmaster.Game.Services
                 return null;
             }
 
+            string wanted = string.IsNullOrWhiteSpace(request.Name) ? name : request.Name.Trim();
+
             var guild = new GuildState
             {
-                Id             = Guid.NewGuid().ToString("N"),
-                Name           = string.IsNullOrWhiteSpace(name) ? "Гильдия" : name,
-                CreatedUtc     = DateTime.UtcNow.ToString("o"),
-                RosterCapacity = Math.Max(1, _config.StartingRosterCapacity),
+                Id               = Guid.NewGuid().ToString("N"),
+                Name             = string.IsNullOrWhiteSpace(wanted) ? "Гильдия" : wanted,
+                EmblemId         = request.EmblemId ?? string.Empty,
+                EmblemColorIndex = request.EmblemColorIndex,
+                CreatedUtc       = DateTime.UtcNow.ToString("o"),
+                RosterCapacity   = Math.Max(1, _config.StartingRosterCapacity),
             };
 
             _save.Save(GuildKey(_activeProfile.Id, guild.Id), guild);

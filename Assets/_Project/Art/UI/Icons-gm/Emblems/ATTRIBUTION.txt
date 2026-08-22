@@ -1,0 +1,16 @@
+Guild emblem icons in this folder are from https://game-icons.net/
+
+Authors: Lorc, Delapouite.
+License: Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+https://creativecommons.org/licenses/by/3.0/
+
+Attribution required when redistributing the game. Icons may be modified.
+Do not resell or redistribute the icon pack itself separately.
+
+Downloaded 2026-08-22 as white-on-transparent 512x512 PNG: the guild emblem is tinted with the
+player's colour at runtime, exactly like the cursor skins, so the source must be a white silhouette.
+
+Lorc: dragon-head, wolf-head, lion, eagle-emblem, raven, snake, crossed-swords, crown, anvil,
+      hammer-drop, star-swirl, moon, sun, mountains, tree-branch, skull-crossed-bones,
+      spiral-shell, candle-flame.
+Delapouite: castle, tower-flag.

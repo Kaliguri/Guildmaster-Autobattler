@@ -89,9 +89,15 @@ namespace Guildmaster.UI
         private VisualTreeAsset _hubUxml;
         private VisualTreeAsset _profileUxml;
 
+        /// <summary>Экран заведения слота — один на профиль и на дом.</summary>
+        private VisualTreeAsset _slotCreateUxml;
+
         // Профиль: набор скинов, число слотов, имя из Steam и применение выбранного курсора. Роутер
         // держит их функциями, а не тянет сервисы вглубь экрана: экран — разметка, а не владелец правил.
         private readonly CursorSkinCatalog _cursorSkins;
+
+        // Знаки профиля и дома: их предлагает экран создания. Пусто — про знак не спрашиваем вовсе.
+        private readonly GuildEmblemCatalog _guildEmblems;
         private readonly int               _profileSlotLimit;
         private readonly int               _guildSlotLimit;
         private readonly Func<string>      _steamName;
@@ -123,6 +129,7 @@ namespace Guildmaster.UI
         {
             _roster = roster;
             _cursorSkins     = gameConfig?.CursorSkins;
+            _guildEmblems    = gameConfig?.GuildEmblems;
             _profileSlotLimit = gameConfig != null ? gameConfig.MaxProfiles : 1;
             _guildSlotLimit   = gameConfig != null ? gameConfig.MaxGuildsPerProfile : 1;
             _steamName       = () => platform != null ? platform.PlayerName : "Игрок";
@@ -250,8 +257,10 @@ namespace Guildmaster.UI
             VisualTreeAsset titleCardUxml = null,
             VisualTreeAsset devConsoleUxml = null, VisualTreeAsset devLogUxml = null,
             VisualTreeAsset profileUxml = null,
-            VisualTreeAsset guildSelectUxml = null, VisualTreeAsset hubUxml = null)
+            VisualTreeAsset guildSelectUxml = null, VisualTreeAsset hubUxml = null,
+            VisualTreeAsset slotCreateUxml = null)
         {
+            _slotCreateUxml = slotCreateUxml;
             _guildSelectUxml = guildSelectUxml;
             _hubUxml = hubUxml;
             _profileUxml = profileUxml;
@@ -763,13 +772,29 @@ namespace Guildmaster.UI
         {
             if (CannotShow("Гильдия (_guildSelectScreen)", _guildSelectUxml)) return new VisualElement();
 
+            void Rebuild()
+            {
+                // Список домов поменялся — экран пересобирается целиком, как и экран профиля: точечная
+                // правка строк стоила бы своего кода ради экрана, который открывают раз в сессию.
+                Pop();
+                PushScreen(() => BuildGuildSelectScreen(onlineLobby, onStart),
+                           ScreenKind.Page, requiresBackdrop: true);
+            }
+
             return GuildSelectScreenView.Build(
                 _guildSelectUxml,
                 GuildSelectScreenView.ReadGuilds(_profiles, _save),
                 _guildSlotLimit,
                 key => _loc?.GetString(key),
                 onPick: guildId => onStart?.Invoke(new GameStartRequest(GameMode.Campaign, guildId, onlineLobby)),
-                onBack: Pop);
+                onBack: Pop,
+                onCreate: () => AskAndCreateGuildAsync(Rebuild).Forget(),
+                onDelete: id => ConfirmDeleteGuildAsync(id, Rebuild).Forget(),
+                emblemOf: id => _guildEmblems?.Resolve(id),
+                shadeOf: index => _palette != null &&
+                                  _palette.TryGet(Core.Players.PlayerColors.TokenOf(index), out UnityEngine.Color shade)
+                                      ? shade
+                                      : UnityEngine.Color.white);
         }
 
         /// <summary>
@@ -992,6 +1017,31 @@ namespace Guildmaster.UI
                 onBack: Pop));
         }
 
+        /// <summary>
+        /// Экран заведения слота: имя и знак. Один на профиль и на дом.
+        /// </summary>
+        /// <remarks>
+        /// Заказ Макса 22.08.2026: «При создания профиля должен открыться экран настройки… в котором
+        /// должны выбрать название и иконку», и следом — «делаем UI выбора гильдии, создания и удаления
+        /// в духе профиля». Отсюда один экран на оба случая: разница только в подписях.
+        /// </remarks>
+        private VisualElement BuildSlotCreateScreen(SlotCreateView.SlotKind kind, string suggestedName,
+                                                    Action<Core.Persistence.SlotCreationRequest> onCreate)
+        {
+            if (CannotShow("Создание слота (_slotCreateScreen)", _slotCreateUxml)) return new VisualElement();
+
+            return FillRoot(SlotCreateView.Build(
+                _slotCreateUxml,
+                kind,
+                suggestedName,
+                _guildEmblems,
+                _palette,
+                Core.Players.PlayerColors.Count,
+                key => _loc?.GetString(key),
+                onCreate: request => { Pop(); onCreate?.Invoke(request); },
+                onBack: Pop));
+        }
+
         private VisualElement BuildProfileScreen(bool required, Action onClosed, bool customize = false)
         {
             void Rebuild()
@@ -1029,15 +1079,10 @@ namespace Guildmaster.UI
                 customize,
                 key => _loc?.GetString(key),
                 onSelect: id => { _profiles?.SelectProfile(id); Rebuild(); },
-                onCreate: () =>
-                {
-                    if (_profiles?.CreateProfile() == null) return;
-
-                    // Обязательный показ существует ради одного события — появления профиля. Оно
-                    // случилось, держать игрока больше не на чем.
-                    if (required) { Pop(); onClosed?.Invoke(); return; }
-                    Rebuild();
-                },
+                // ПУСТОЙ СЛОТ СПРАШИВАЕТ, а не заводит молча (заказ Макса 22.08.2026: «При нажатии на
+                // него - появляется сообщение-уведомление (хотите создать новый профиль?), нажимаем -
+                // да (окно названия профиля), нет (ничего не происходит, остаемся там где были)»).
+                onCreate: () => AskAndCreateProfileAsync(required, onClosed, Rebuild).Forget(),
                 onDelete: id => ConfirmDeleteAsync(id, Rebuild).Forget(),
                 onSave: identity =>
                 {
@@ -1057,6 +1102,98 @@ namespace Guildmaster.UI
                     onClosed?.Invoke();
                 }));
         }
+
+        /// <summary>
+        /// Спросить про новый дом и, если игрок согласился, открыть экран заведения.
+        /// </summary>
+        /// <remarks>Тот же порядок, что у профиля: вопрос — экран — заведение.</remarks>
+        private async UniTaskVoid AskAndCreateGuildAsync(Action rebuild)
+        {
+            bool yes = await ConfirmAsync(
+                Loc("ui.guilds.create.ask.title", "Завести новую гильдию?"),
+                Loc("ui.guilds.create.ask.body", "Свободный слот станет новым домом."),
+                consequence: null,
+                Loc("ui.guilds.create.ask.confirm", "Завести"));
+
+            if (!yes) return;
+
+            PushScreen(() => BuildSlotCreateScreen(
+                    SlotCreateView.SlotKind.Guild,
+                    SuggestedGuildName(),
+                    request =>
+                    {
+                        if (_profiles?.CreateGuild(request.Name, request) == null) return;
+                        rebuild?.Invoke();
+                    }),
+                ScreenKind.Page, requiresBackdrop: true);
+        }
+
+        /// <summary>Имя дома по умолчанию: «Гильдия N» по числу заведённых.</summary>
+        private string SuggestedGuildName()
+            => string.Format(Loc("ui.guilds.create.default_name", "Гильдия {0}"),
+                             (_profiles?.Guilds.Count ?? 0) + 1);
+
+        /// <summary>
+        /// Спросить и снести дом. Вместе с ним уходит его забег — об этом и предупреждаем.
+        /// </summary>
+        private async UniTaskVoid ConfirmDeleteGuildAsync(string guildId, Action onDone)
+        {
+            string name = guildId;
+            if (_profiles != null)
+            {
+                for (int i = 0; i < _profiles.Guilds.Count; i++)
+                    if (_profiles.Guilds[i].Id == guildId) name = _profiles.Guilds[i].Name;
+            }
+
+            bool yes = await ConfirmAsync(
+                Loc("ui.guilds.delete.title", "Удалить гильдию?"),
+                name,
+                Loc("ui.guilds.delete.consequence",
+                    "Вместе с домом пропадёт его забег, ростер и всё нажитое. Это необратимо."),
+                Loc("ui.guilds.delete", "Удалить"));
+
+            if (!yes) return;
+
+            _profiles?.DeleteGuild(guildId);
+            onDone?.Invoke();
+        }
+
+        /// <summary>
+        /// Спросить про новый профиль и, если игрок согласился, открыть экран заведения.
+        /// </summary>
+        /// <remarks>
+        /// Вопрос стоит ПЕРЕД экраном, а не вместо него: пустой слот — это место, а не кнопка, и клик
+        /// по нему может быть промахом. Согласился — дальше имя и знак.
+        /// </remarks>
+        private async UniTaskVoid AskAndCreateProfileAsync(bool required, Action onClosed, Action rebuild)
+        {
+            bool yes = await ConfirmAsync(
+                Loc("ui.profile.create.ask.title", "Создать новый профиль?"),
+                Loc("ui.profile.create.ask.body", "Свободный слот станет новым профилем."),
+                consequence: null,
+                Loc("ui.profile.create.ask.confirm", "Создать"));
+
+            if (!yes) return;
+
+            PushScreen(() => BuildSlotCreateScreen(
+                    SlotCreateView.SlotKind.Profile,
+                    SuggestedProfileName(),
+                    request =>
+                    {
+                        if (_profiles?.CreateProfile(request) == null) return;
+
+                        // Обязательный показ существует ради одного события — появления профиля. Оно
+                        // случилось, держать игрока больше не на чем.
+                        if (required) { Pop(); onClosed?.Invoke(); return; }
+                        rebuild?.Invoke();
+                    }),
+                ScreenKind.Page, requiresBackdrop: true);
+        }
+
+        /// <summary>Имя, которое подставлено в поле по умолчанию: «Профиль N» по числу занятых слотов.</summary>
+        private string SuggestedProfileName()
+            => string.Format(Loc("ui.profile.create.default_name", "Профиль {0}"),
+                             (_profiles?.Profiles.Count ?? 0) + 1);
 
         /// <summary>
         /// Спросить и снести профиль. Отдельным методом, потому что вопрос асинхронный, а обработчик

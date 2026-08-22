@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Guildmaster.Data.Definitions
 {
@@ -106,6 +106,10 @@ namespace Guildmaster.Data.Definitions
                  "же причине — иначе каждая автономная сцена завела бы свой набор.")]
         [SerializeField] private CursorSkinCatalog _cursorSkins;
 
+        [Tooltip("Набор знаков для профиля и дома: белые силуэты, красятся выбранным цветом. Пусто — " +
+                 "экран создания просто не спросит про знак.")]
+        [SerializeField] private GuildEmblemCatalog _guildEmblems;
+
         public float  DefaultMasterVolume => _defaultMasterVolume;
         public float  DefaultMusicVolume  => _defaultMusicVolume;
         public float  DefaultSfxVolume    => _defaultSfxVolume;
@@ -153,6 +157,9 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Набор скинов курсора. <c>null</c> — курсор остаётся системным, игра идёт как обычно.</summary>
         public CursorSkinCatalog  CursorSkins  => _cursorSkins;
+
+        /// <summary>Набор знаков профиля и дома. <c>null</c> — знак не выбирают, слоту хватает имени.</summary>
+        public GuildEmblemCatalog GuildEmblems => _guildEmblems;
 
         /// <summary>
         /// Заготовка значений: инстанс в памяти, заполненный тем, с чего начинают новый ассет. Нужна

@@ -238,7 +238,7 @@ namespace Guildmaster.UI
                     CursorSkinData skin = skins[i];
                     if (skin == null) continue;
                     tiles.Add(new Components.PickerButton.Option(skin.Id, image: skin.Texture,
-                                                                 tint: Shade(colorIndex)));
+                                                                 tint: Shade(colorIndex), cropToCorner: true));
                 }
 
                 if (tiles.Count == 0) return;
@@ -374,7 +374,9 @@ namespace Guildmaster.UI
                 }
                 else
                 {
-                    var create = new Components.PlateButton { text = L("ui.profile.create", "Создать профиль") };
+                    // «ПУСТОЙ СЛОТ», а не «Создать профиль» (слово Макса 22.08.2026): строка называет
+                    // МЕСТО, а не действие — действие игрок подтверждает следующим вопросом.
+                    var create = new Components.PlateButton { text = L("ui.profile.empty_slot", "Пустой слот") };
                     create.AddToClassList("gm-button");
                     create.AddToClassList("gm-profile__slot-create");
                     create.clicked += () => onCreate?.Invoke();

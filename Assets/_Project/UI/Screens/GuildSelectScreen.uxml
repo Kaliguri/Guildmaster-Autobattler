@@ -1,20 +1,36 @@
-﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <gm:PanelFrame name="guilds-frame" corner="0" />
             <ui:Label name="guilds-title" text="Гильдия" class="gm-text-title gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
-            <ui:ScrollView class="gm-panel__body">
-                <!-- Слоты домов. Строки строятся кодом: их число берётся из GameConfig, а не из
-                     разметки, и свободные слоты показываются наравне с занятыми — иначе список не
-                     отвечает на первый же вопрос игрока «а можно ещё?». -->
-                <ui:Label name="guilds-caption" text="Дом хранит прогресс: забег, ростер, открытия" class="gm-text-caption gm-text--muted" />
-                <ui:VisualElement name="guild-list" class="gm-guilds__slots" />
-            </ui:ScrollView>
+            <!-- ТОТ ЖЕ КАРКАС, ЧТО У ПРОФИЛЯ: список слева, выбранный дом справа, действия под ним
+                 (заказ Макса 22.08.2026: «делаем UI выбора гильдии, создания и удаления в духе
+                 профиля»). Раскладку держит общий gm-entry__*, а не свои правила экрана. -->
+            <ui:VisualElement class="gm-entry__body">
+                <ui:VisualElement class="gm-entry__list">
+                    <ui:Label name="guilds-caption" text="Дома" class="gm-text-caption gm-text--muted" />
+                    <ui:ScrollView name="guild-list" class="gm-entry__list-scroll" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="gm-entry__panel">
+                    <ui:Label name="panel-title" class="gm-text-subtitle gm-entry__panel-title" />
+                    <ui:Label name="panel-meta" class="gm-text-caption gm-text--muted" />
+                    <ui:VisualElement class="gm-divider" />
+                    <ui:VisualElement name="stat-list" class="gm-panel__body" />
+
+                    <ui:VisualElement name="guild-actions" class="gm-entry__actions">
+                        <gm:PlateButton name="btn-pick" text="Играть" class="gm-button gm-button--primary" />
+                        <gm:PlateButton name="btn-delete" text="Удалить" class="gm-button" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
 
             <ui:VisualElement class="gm-divider" />
-            <gm:BackButton name="btn-back" />
+            <ui:VisualElement class="gm-profile__actions">
+                <gm:BackButton name="btn-back" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
