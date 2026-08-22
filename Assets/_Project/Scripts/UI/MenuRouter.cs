@@ -893,6 +893,45 @@ namespace Guildmaster.UI
         }
 
         /// <summary>
+        /// Показать титр: знак и крупное слово, которые въезжают в кадр и уходят сами.
+        /// </summary>
+        /// <remarks>
+        /// <b>Мимо навигатора, прямо в слой.</b> Титр не экран: он ничего не решает, ничего не ждёт и
+        /// не должен ни прятать нижнее, ни глушить ввод — а любой <c>ScreenKind</c> делает что-то из
+        /// этого (Page прячет, Modal глушит, Sheet прячет страницу под собой). Стек он поэтому не
+        /// трогает вовсе, как и заслонка выхода.
+        /// <para>Снимает себя сам, по времени: кнопки у титра нет и быть не должно.</para>
+        /// </remarks>
+        public void ShowTitle(in Core.Flow.TitleRevealRequest request)
+        {
+            VisualElement layer = _modalLayer ?? _root;
+            if (layer == null) return;
+
+            var titre = new Components.TitleReveal();
+            titre.Dress(
+                Loc(request.LineKey, request.LineFallback),
+                string.IsNullOrEmpty(request.SubKey) && string.IsNullOrEmpty(request.SubFallback)
+                    ? null
+                    : Loc(request.SubKey, request.SubFallback),
+                _guildEmblems?.Resolve(request.GlyphId),
+                ToneOf(request.Tone));
+
+            layer.Add(titre);
+            titre.Play(request.HoldSeconds > 0f ? request.HoldSeconds : DefaultTitleHold,
+                       () => titre.RemoveFromHierarchy());
+        }
+
+        /// <summary>Сколько титр держится, если заказчик не назвал своё время.</summary>
+        private const float DefaultTitleHold = 1.3f;
+
+        private static Components.TitleReveal.Tone ToneOf(Core.Flow.TitleRevealTone tone) => tone switch
+        {
+            Core.Flow.TitleRevealTone.Triumph => Components.TitleReveal.Tone.Triumph,
+            Core.Flow.TitleRevealTone.Defeat  => Components.TitleReveal.Tone.Defeat,
+            _                                 => Components.TitleReveal.Tone.Call,
+        };
+
+        /// <summary>
         /// Показать ожидание, пока живёт токен заказчика.
         /// </summary>
         /// <remarks>

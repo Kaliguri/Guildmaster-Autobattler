@@ -131,6 +131,10 @@ namespace Guildmaster.UI
         private ISubscriber<OpenHubRequest>      _openHubSub;
         private ISubscriber<Core.Flow.NoticeRequest> _noticeSub;
         private IDisposable _noticeSubscription;
+
+        // Титр: один приём появления на вход в бой, победу и поражение (вердикт Макса 22.08.2026).
+        private ISubscriber<Core.Flow.TitleRevealRequest> _titleSub;
+        private IDisposable _titleSubscription;
         private ISubscriber<Core.Flow.BusyRequest> _busySub;
         private IDisposable _busySubscription;
         private ISubscriber<Core.Flow.BusyStageChanged> _busyStageSub;
@@ -217,6 +221,7 @@ namespace Guildmaster.UI
             ISubscriber<OpenProfileRequest> openProfileSub,
             ISubscriber<OpenHubRequest> openHubSub,
             ISubscriber<Core.Flow.NoticeRequest> noticeSub,
+            ISubscriber<Core.Flow.TitleRevealRequest> titleSub,
             ISubscriber<Core.Flow.BusyRequest> busySub,
             ISubscriber<Core.Flow.BusyStageChanged> busyStageSub,
             ISubscriber<Core.Flow.OpenProvingGroundsRequest> openProvingGroundsSub,
@@ -272,6 +277,7 @@ namespace Guildmaster.UI
             _openProfileSub  = openProfileSub;
             _openHubSub      = openHubSub;
             _noticeSub       = noticeSub;
+            _titleSub        = titleSub;
             _busySub         = busySub;
             _busyStageSub    = busyStageSub;
             _openProvingGroundsSub = openProvingGroundsSub;
@@ -370,6 +376,7 @@ namespace Guildmaster.UI
                 _router.ShowNotice(in req);
             });
             _busySubscription   = _busySub?.Subscribe(req => _router.ShowBusy(in req));
+            _titleSubscription  = _titleSub?.Subscribe(req => _router.ShowTitle(in req));
             // Этап меняет СТРОКУ показанного ожидания, а не заказывает новое: повторный заказ
             // пересобрал бы экран, и кольцо дёрнулось бы с начала.
             _busyStageSubscription = _busyStageSub?.Subscribe(stage => _router.SetBusyStage(in stage));
@@ -856,6 +863,7 @@ namespace Guildmaster.UI
             _openProfileSubscription?.Dispose();
             _openHubSubscription?.Dispose();
             _noticeSubscription?.Dispose();
+            _titleSubscription?.Dispose();
             _busySubscription?.Dispose();
             _busyStageSubscription?.Dispose();
             _openProvingGroundsSubscription?.Dispose();

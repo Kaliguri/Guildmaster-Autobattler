@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
@@ -37,13 +37,21 @@ namespace Guildmaster.Game.Flow
         private readonly IContentDatabase              _content;
         private readonly ISubscriber<BattleEndedEvent> _endedSub;
         private readonly Services.TimeScaleService     _time;
+        // Титр исхода — тот же приём появления, что «В бой!»: один источник на все случаи.
+        private readonly IPublisher<Core.Flow.TitleRevealRequest> _titlePub;
+        // Чья победа — вопрос к стороне ЭТОГО клиента: у гостя она своя.
+        private readonly Core.Players.ILocalPlayer _localPlayer;
 
         private IDisposable _endedSubscription;
 
         public BattleStartup(IBattleSession session, BattleScopeParams parameters, EncounterLoader loader,
                              CombatSimulation sim, IRunStateView runStates, IContentDatabase content,
-                             ISubscriber<BattleEndedEvent> endedSub, Services.TimeScaleService time)
+                             ISubscriber<BattleEndedEvent> endedSub, Services.TimeScaleService time,
+                             IPublisher<Core.Flow.TitleRevealRequest> titlePub,
+                             Core.Players.ILocalPlayer localPlayer)
         {
+            _titlePub    = titlePub;
+            _localPlayer = localPlayer;
             _session   = session;
             _params    = parameters;
             _loader    = loader;
@@ -85,6 +93,13 @@ namespace Guildmaster.Game.Flow
         {
             _session.SetPhase(BattlePhase.Interlude);
             _session.ReportOutcome(e.Outcome, FallenGuildIndices());
+
+            // Титр исхода боя. Победа считается для СТОРОНЫ этого клиента: у гостя она своя, и
+            // «Победа» на экране проигравшего была бы худшим видом рассинхрона.
+            bool won = _localPlayer != null && e.Outcome.IsWinFor(_localPlayer.Team);
+            _titlePub?.Publish(won
+                ? Core.Flow.TitleRevealRequest.BattleWon()
+                : Core.Flow.TitleRevealRequest.Defeat(runOver: false));
         }
 
         /// <summary>

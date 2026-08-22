@@ -259,6 +259,11 @@ namespace Guildmaster.UI.Components
                 Interactive, OfButton, "главное действие экрана: начать забег, принять, продолжить"),
             NewTechnical("Пластина (форма, не элемент набора)", "gm-plate-button", UiComponentGroup.Buttons,
                 Interactive),
+            // ТИТР — не элемент набора и не кликается: он появляется и уходит сам. Состояний у него
+            // нет, а классы --shown/--gone/--call/--triumph/--defeat это ФАЗЫ и ТОНА, а не отклик на
+            // курсор. В реестре он ради витрины и гейта мёртвого.
+            NewTechnical("Титр (появление)", "gm-title-reveal", UiComponentGroup.Typography,
+                UiElementState.None),
 
             // --- ВКЛАДКИ И ЧИПЫ ---
             New("Вкладка", "gm-tab", UiComponentGroup.Tabs, Interactive, OfPlate,

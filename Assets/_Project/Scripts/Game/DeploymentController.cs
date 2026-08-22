@@ -53,6 +53,8 @@ namespace Guildmaster.Game
         private readonly ISubscriber<ProvingGroundsSetupRequest> _groundsSetupSub; // заказ состава площадки (дев-срезы)
         private readonly IPublisher<TestZoneChangedEvent> _testZoneChangedPub; // Ф5: вещаем СОСТОЯНИЕ (единый источник)
         private readonly IPublisher<ArenaRevealRequest>   _arenaRevealPub;    // «яви место боя» — подача за презентером
+        // Титр «В бой!»: тот же приём появления, что у победы и поражения (вердикт Макса 22.08.2026).
+        private readonly IPublisher<Core.Flow.TitleRevealRequest> _titlePub;
         private readonly IBattleSession   _session;
         // За какую сторону играем МЫ. Своего поля с командой у расстановки нет и не должно быть:
         // владелец этого факта один — состав сеанса, и спрашивается он в момент вопроса.
@@ -161,6 +163,7 @@ namespace Guildmaster.Game
             CombatSimulation sim,
             DeploymentService deploy,
             IPublisher<OpenLoadoutRequest> openLoadoutPub,
+            IPublisher<Core.Flow.TitleRevealRequest> titlePub,
             ISubscriber<EquipRelicRequest> equipSub,
             ISubscriber<UnitMoveIntent> moveSub,
             ISubscriber<OpenLoadoutIntent> loadoutSub,
@@ -198,6 +201,7 @@ namespace Guildmaster.Game
             _sim           = sim;
             _deploy        = deploy;
             _openLoadoutPub = openLoadoutPub;
+            _titlePub       = titlePub;
             _equipSub      = equipSub;
             _moveSub       = moveSub;
             _loadoutSub    = loadoutSub;
@@ -836,6 +840,11 @@ namespace Guildmaster.Game
             _sim.SetPaused(false);
             // Фаза Fighting — она же сигнал камере: сценарный вид включит она сама, если игрок его выбрал.
             _session.SetPhase(BattlePhase.Fighting); // центр панели = таймер боя; фаза → навигатор ставит контекст Combat (K8)
+
+            // «В БОЙ!» — тем же приёмом появления, что победа и поражение (вердикт Макса 22.08.2026,
+            // 7А: «единый стиль и источник и переюзание под всякие ситуации»). Титр ничего не ждёт и
+            // ничего не решает: он уходит сам, пока идут первые удары.
+            _titlePub?.Publish(Core.Flow.TitleRevealRequest.ToBattle());
 
             // Места бой не меняет — поэтому серую арену тут никто не трогает. Гашение серой зоны читается
             // верхним циклом как «игрок ушёл с площадки»: сделай это здесь, и Ристалище закрывалось бы

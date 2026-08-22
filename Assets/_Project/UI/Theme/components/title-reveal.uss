@@ -1,0 +1,96 @@
+/* ============================================================================
+ * ТИТР — ОДИН ПРИЁМ ПОЯВЛЕНИЯ НА ВСЮ ИГРУ.
+ *
+ * Вердикт Макса 22.08.2026 (пункт 7А плана ui-uplift): «берем такой эффект появления для "Победы"
+ * (в конце боя и в конце игры - свое), "Поражения", входа в бой (В бой! с мечами). Т.е. будет много
+ * где, единый стиль и источник и переюзание под всякие ситуации».
+ *
+ * Движение живёт ЗДЕСЬ, а не в коде: правит его тот же файл, что задаёт кегль и цвет, и «сделать
+ * помягче» не требует пересборки. Код только ставит классы состояний.
+ * ========================================================================== */
+
+.gm-title-reveal {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+
+    /* Начальное состояние: титра ещё нет. Он приходит снизу и чуть крупнее — так движение читается
+       как «выступил вперёд», а не «выехал сбоку». */
+    opacity: 0;
+    translate: 0 40px;
+    scale: 1.08 1.08;
+
+    transition-property: opacity, translate, scale;
+    transition-duration: 0.45s;
+    transition-timing-function: ease-out;
+}
+
+/* Титр в кадре. */
+.gm-title-reveal--shown {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1 1;
+}
+
+/* Уход: обратно вверх и в прозрачность, чуть быстрее прихода — уходящее не должно задерживать. */
+.gm-title-reveal--gone {
+    opacity: 0;
+    translate: 0 -24px;
+    scale: 1.02 1.02;
+    transition-duration: 0.3s;
+}
+
+/* Знак над строкой. Размер — от кегля вывески: знак и слово должны читаться одной вещью. */
+.gm-title-reveal__glyph {
+    width: 128px;
+    height: 128px;
+    background-size: 100% 100%;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-title-reveal__line {
+    -unity-text-align: middle-center;
+    --gm-text-case: upper;
+    letter-spacing: 6px;
+}
+
+.gm-title-reveal__sub {
+    -unity-text-align: middle-center;
+    margin-top: var(--gm-space-1);
+    color: var(--gm-color-text-muted);
+}
+
+/* --- ТОНА: разница между случаями идёт цветом, а не второй анимацией --- */
+
+/* Зов в бой: латунь интерфейса — это приглашение, а не итог. */
+.gm-title-reveal--call .gm-title-reveal__line {
+    color: var(--gm-color-text-interactive);
+}
+
+.gm-title-reveal--call .gm-title-reveal__glyph {
+    -unity-background-image-tint-color: var(--gm-color-text-interactive);
+}
+
+/* Победа: тот же свет, которым в бою отмечено удачное — золото щита. */
+.gm-title-reveal--triumph .gm-title-reveal__line {
+    color: var(--gm-color-display-accent);
+}
+
+.gm-title-reveal--triumph .gm-title-reveal__glyph {
+    -unity-background-image-tint-color: var(--gm-color-display-accent);
+}
+
+/* Поражение: приглушённое, а не кровавое. Красный титр во весь экран читался бы как ошибка игры. */
+.gm-title-reveal--defeat .gm-title-reveal__line {
+    color: var(--gm-color-text-muted);
+}
+
+.gm-title-reveal--defeat .gm-title-reveal__glyph {
+    -unity-background-image-tint-color: var(--gm-color-text-muted);
+}
