@@ -388,6 +388,14 @@ export const PAGES: PageDef[] = [
     icon: "△"
   },
   {
+    id: "ui-uplift-steps",
+    area: "ui",
+    title: "Догнать рефы: семь пунктов",
+    blurb: "План приём за приёмом: концы, свечение, паузы, заголовки секций, углы кадра, обрамление арены, знак исхода.",
+    load: () => import("./sections/ui-uplift-steps.js"),
+    icon: "≡"
+  },
+  {
     id: "ui-notice",
     area: "ui",
     title: "Сообщения игроку",
