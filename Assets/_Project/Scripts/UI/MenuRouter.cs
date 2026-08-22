@@ -1846,7 +1846,10 @@ namespace Guildmaster.UI
                         onToMenu: () => resolve(true),
                         onContinue: req.OnContinue,
                         onRestart:  req.OnRestart,
-                        onToGuild:  req.OnToGuild);
+                        onToGuild:  req.OnToGuild,
+                        summary: req.Summary,
+                        // Знак — ТОТ ЖЕ, что у титра исхода: игрок только что видел его во весь экран.
+                        glyph: _guildEmblems?.Resolve(req.Victory ? "emblem.crown" : "emblem.skull-crossed-bones"));
                     // Счёт, объявленный ДО постройки экрана, уже лежит в поле: гейт объявляет его в момент
                     // привязки действия, то есть раньше, чем этот экран вообще заказан.
                     ApplyReadyCount(built, _lastReady);

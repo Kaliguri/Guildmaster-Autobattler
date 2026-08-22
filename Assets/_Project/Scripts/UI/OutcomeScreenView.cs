@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI
@@ -16,9 +17,15 @@ namespace Guildmaster.UI
     /// </remarks>
     public static class OutcomeScreenView
     {
+        /// <param name="summary">
+        /// Строки итогов забега (вариант III-Б). Пусто — экран остаётся коротким: знак, слово, выходы.
+        /// </param>
+        /// <param name="glyph">Знак исхода. <c>null</c> — знака не будет, экран от этого не сломается.</param>
         public static VisualElement Build(VisualTreeAsset uxml, bool victory, Func<string, string> localize,
                                           Action onToMenu, Action onContinue = null,
-                                          Action onRestart = null, Action onToGuild = null)
+                                          Action onRestart = null, Action onToGuild = null,
+                                          IReadOnlyList<Guildmaster.Guild.OutcomeSummaryRow> summary = null,
+                                          UnityEngine.Texture2D glyph = null)
         {
             string L(string key, string fallback)
             {
@@ -32,6 +39,19 @@ namespace Guildmaster.UI
 
             var title = root.Q<Label>("outcome-title");
             var sub   = root.Q<Label>("outcome-sub");
+            var mark  = root.Q<VisualElement>("outcome-glyph");
+            var rows  = root.Q<VisualElement>("outcome-summary");
+
+            if (mark != null)
+            {
+                if (glyph != null)
+                {
+                    mark.style.backgroundImage = new StyleBackground(glyph);
+                    mark.style.display = DisplayStyle.Flex;
+                    mark.EnableInClassList("gm-outcome__glyph--defeat", !victory);
+                }
+                else mark.style.display = DisplayStyle.None;
+            }
 
             if (title != null)
             {
@@ -41,6 +61,8 @@ namespace Guildmaster.UI
             if (sub != null)
                 sub.text = victory ? L("ui.outcome.victory_sub", "Акт пройден.")
                                    : L("ui.outcome.defeat_sub", "Забег окончен.");
+
+            BuildSummary(rows, summary, localize);
 
             Bind(root, "btn-continue", L("ui.outcome.continue",  "Продолжить"),      onContinue);
             Bind(root, "btn-restart",  L("ui.outcome.restart",   "Начать заново"),   onRestart);
@@ -58,6 +80,49 @@ namespace Guildmaster.UI
             Highlight(root, "btn-menu",     primary);
 
             return root;
+        }
+
+        /// <summary>
+        /// Итоги забега строками «что» — «сколько».
+        /// </summary>
+        /// <remarks>
+        /// Строки приходят готовыми: считает их тот, у кого есть состояние забега. Пустой список —
+        /// законное состояние (площадка, где забега нет вовсе), и тогда блока просто не будет.
+        /// </remarks>
+        private static void BuildSummary(VisualElement list,
+                                         IReadOnlyList<Guildmaster.Guild.OutcomeSummaryRow> summary,
+                                         Func<string, string> localize)
+        {
+            if (list == null) return;
+
+            list.Clear();
+            if (summary == null || summary.Count == 0)
+            {
+                list.style.display = DisplayStyle.None;
+                return;
+            }
+
+            list.style.display = DisplayStyle.Flex;
+
+            for (int i = 0; i < summary.Count; i++)
+            {
+                Guildmaster.Guild.OutcomeSummaryRow row = summary[i];
+
+                var line = new VisualElement();
+                line.AddToClassList("gm-entry__stat");
+
+                string label = localize?.Invoke(row.LabelKey);
+                var caption = new Label(string.IsNullOrEmpty(label) ? row.LabelFallback : label);
+                caption.AddToClassList("gm-text-caption");
+                caption.AddToClassList("gm-text--muted");
+                line.Add(caption);
+
+                var value = new Label(row.Value);
+                value.AddToClassList("gm-text-body");
+                line.Add(value);
+
+                list.Add(line);
+            }
         }
 
         private static void Bind(VisualElement root, string name, string label, Action action)

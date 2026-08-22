@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Guildmaster.Guild
 {
@@ -26,10 +26,39 @@ namespace Guildmaster.Guild
     /// <para><b>«В меню» — личная кнопка, остальные общие</b> (вердикт Макса 08.08.2026). Общие ходят
     /// одним решением с вариантами — см. <c>DecisionKeys.RunAfter</c>.</para>
     /// </remarks>
+    /// <summary>Одна строка итогов забега: что считали и сколько вышло.</summary>
+    /// <remarks>
+    /// Метка едет КЛЮЧОМ, а значение — готовой строкой: перевести «Пройдено узлов» каждый обязан у
+    /// себя, а число во всех языках одно. Гость показывает тот же экран, что хозяин.
+    /// </remarks>
+    public readonly struct OutcomeSummaryRow
+    {
+        public readonly string LabelKey;
+        public readonly string LabelFallback;
+        public readonly string Value;
+
+        public OutcomeSummaryRow(string labelKey, string labelFallback, string value)
+        {
+            LabelKey      = labelKey;
+            LabelFallback = labelFallback;
+            Value         = value;
+        }
+    }
+
     public readonly struct OpenOutcomeRequest
     {
         /// <summary>true = победа, false = поражение.</summary>
         public readonly bool Victory;
+
+        /// <summary>
+        /// Чем кончился забег: строки итогов под знаком (вердикт Макса 22.08.2026, вариант III-Б).
+        /// Пусто — экран покажет только знак и подпись, как раньше.
+        /// </summary>
+        /// <remarks>
+        /// Итоги собирает тот, у кого есть состояние забега, а не экран: у гостя своего RunState нет
+        /// вовсе, и посчитать он ничего не может — ему приезжают готовые строки.
+        /// </remarks>
+        public readonly System.Collections.Generic.IReadOnlyList<OutcomeSummaryRow> Summary;
 
         /// <summary>Колбэк «В меню» (ровно один вызов). Личный: голосовать не за что.</summary>
         public readonly Action OnToMenu;
@@ -51,9 +80,11 @@ namespace Guildmaster.Guild
         public readonly Action OnToGuild;
 
         public OpenOutcomeRequest(bool victory, Action onToMenu, Action onContinue = null,
-                                  Action onRestart = null, Action onToGuild = null)
+                                  Action onRestart = null, Action onToGuild = null,
+                                  System.Collections.Generic.IReadOnlyList<OutcomeSummaryRow> summary = null)
         {
             Victory    = victory;
+            Summary    = summary;
             OnToMenu   = onToMenu;
             OnContinue = onContinue;
             OnRestart  = onRestart;

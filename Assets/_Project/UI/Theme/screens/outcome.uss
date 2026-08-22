@@ -1,4 +1,4 @@
-.gm-outcome__title--defeat {
+﻿.gm-outcome__title--defeat {
     color: var(--gm-color-negative);
 }
 
@@ -12,4 +12,27 @@
     flex-direction: row;
     justify-content: center;
     margin-top: var(--gm-space-3);
+}
+
+/* ЗНАК ИСХОДА (вердикт Макса 22.08.2026, III-Б). Тон — тот же, что у титра: победа золотом,
+   поражение приглушённым. Второго языка для одного события заводить нельзя. */
+.gm-outcome__glyph {
+    width: 128px;
+    height: 128px;
+    align-self: center;
+    margin-bottom: var(--gm-space-2);
+    background-size: 100% 100%;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    -unity-background-image-tint-color: var(--gm-color-display-accent);
+}
+
+.gm-outcome__glyph--defeat {
+    -unity-background-image-tint-color: var(--gm-color-text-muted);
+}
+
+/* Итоги забега: строки «что» — «сколько», тем же видом, что статистика профиля и дома. */
+.gm-outcome__summary {
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
 }

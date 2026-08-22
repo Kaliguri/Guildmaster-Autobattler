@@ -1,9 +1,17 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--outcome">
+            <!-- ЗНАК НАД ИТОГОМ (вердикт Макса 22.08.2026, вариант III-Б: «знак плюс итоги забега»).
+                 Тот же знак и тот же тон, что у титра исхода: игрок только что видел его во весь
+                 экран, и второй язык для того же события читался бы как другое событие. -->
+            <ui:VisualElement name="outcome-glyph" class="gm-outcome__glyph" picking-mode="Ignore" />
             <ui:Label name="outcome-title" text="Победа" class="gm-text-title gm-text--value gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
             <ui:Label name="outcome-sub" text="" class="gm-text-body gm-text--muted gm-outcome__sub" />
+
+            <!-- Итоги забега строками: строит их код, потому что число строк зависит от того, что
+                 забег успел накопить. -->
+            <ui:VisualElement name="outcome-summary" class="gm-outcome__summary" />
             <ui:VisualElement class="gm-outcome__footer">
                 <gm:PlateButton name="btn-continue" text="Продолжить" class="gm-button gm-button--primary" />
                 <gm:PlateButton name="btn-restart" text="Начать заново" class="gm-button" />

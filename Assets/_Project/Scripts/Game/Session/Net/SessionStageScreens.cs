@@ -164,8 +164,51 @@ namespace Guildmaster.Game.Session.Net
                 onToMenu:  () => _runControl?.RequestReturnToMainMenu(),
                 onContinue: null,   // акт кончился: продолжать нечем
                 onRestart: () => _decision?.Choose(Core.Net.RunAfterOptions.Restart),
-                onToGuild: () => _decision?.Choose(Core.Net.RunAfterOptions.Guild)));
+                onToGuild: () => _decision?.Choose(Core.Net.RunAfterOptions.Guild),
+                summary:   RunSummary()));
         }
+
+        /// <summary>
+        /// Чем кончился забег: строки итогов под знаком (вердикт Макса 22.08.2026, вариант III-Б).
+        /// </summary>
+        /// <remarks>
+        /// Считается ЗДЕСЬ, а не на экране: состояние забега есть только у владельца, и у гостя тот же
+        /// экран собирается из приехавших строк. Забега нет вовсе (площадка) — итогов не будет, и это
+        /// законно: считать нечего.
+        /// </remarks>
+        private IReadOnlyList<OutcomeSummaryRow> RunSummary()
+        {
+            RunState run = _runs?.Current;
+            if (run == null) return null;
+
+            int cleared = 0;
+            MapNode[] nodes = run.Map?.Nodes ?? Array.Empty<MapNode>();
+            for (int i = 0; i < nodes.Length; i++)
+                if (nodes[i] != null && nodes[i].Cleared) cleared++;
+
+            int wounds = 0;
+            RosterSlot[] guild = run.Guild ?? Array.Empty<RosterSlot>();
+            for (int i = 0; i < guild.Length; i++)
+                wounds += guild[i]?.Injuries?.Length ?? 0;
+
+            return new[]
+            {
+                new OutcomeSummaryRow("ui.outcome.summary.act", "Акт",
+                                      (run.CurrentActIndex + 1).ToString(Culture)),
+                new OutcomeSummaryRow("ui.outcome.summary.nodes", "Пройдено узлов",
+                                      cleared.ToString(Culture)),
+                new OutcomeSummaryRow("ui.outcome.summary.gold", "Золото",
+                                      run.Gold.ToString(Culture)),
+                new OutcomeSummaryRow("ui.outcome.summary.relics", "Реликвий в запасе",
+                                      (run.RelicInventory?.Length ?? 0).ToString(Culture)),
+                new OutcomeSummaryRow("ui.outcome.summary.wounds", "Ран у отряда",
+                                      wounds.ToString(Culture)),
+            };
+        }
+
+        /// <summary>Числа итогов пишутся одинаково у всех: они не переводятся, а сравниваются.</summary>
+        private static readonly System.Globalization.CultureInfo Culture =
+            System.Globalization.CultureInfo.InvariantCulture;
 
         /// <summary>
         /// Двор гильдии: дом, из которого уходят в забег — одинаково у обеих ролей.
