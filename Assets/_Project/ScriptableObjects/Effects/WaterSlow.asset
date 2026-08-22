@@ -15,9 +15,11 @@ MonoBehaviour:
   _id: effect.water_slow
   _polarity: 1
   _tags: 0
+  _controlWeight: 0.166
   _baseDuration: 2
   _stacking: 2
   _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 1
   _unremovable: 0
   _cleansePrice:

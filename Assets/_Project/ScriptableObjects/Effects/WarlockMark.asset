@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: effect.warlock_mark
   _polarity: 1
   _tags: 260
+  _controlWeight: 0.7
   _baseDuration: 4
   _stacking: 2
   _maxStacks: 1

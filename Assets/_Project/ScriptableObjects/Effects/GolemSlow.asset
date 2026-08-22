@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: effect.golem_slow
   _polarity: 1
   _tags: 0
+  _controlWeight: 0.166
   _baseDuration: 1
   _stacking: 2
   _maxStacks: 1

@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: effect.goblin_throw_stun
   _polarity: 1
   _tags: 4
+  _controlWeight: 1
   _baseDuration: 1
   _stacking: 2
   _maxStacks: 1

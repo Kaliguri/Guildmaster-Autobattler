@@ -15,12 +15,13 @@ MonoBehaviour:
   _id: effect.harvest_grip
   _polarity: 1
   _tags: 4
+  _controlWeight: 1
   _baseDuration: 2
   _stacking: 2
   _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 2
   _unremovable: 0
-  _stacksPerApplication: 1
   _cleansePrice:
   - Flat: 0
     Pct: 0
