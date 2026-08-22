@@ -1050,6 +1050,134 @@ export function relicBookLore(ctx: CanvasRenderingContext2D, width: number, heig
   lines(ctx, ["Кай (сейчас) · Ирма · Дан"], { x: b.right.x, y: b.right.y + 0.355 }, width, height);
 }
 
+/* ══ Улучшения Реликвии: шесть штук, три Tier 1 и три Tier 2 ═══════════════
+
+   Заказ Макса 22.08.2026: «Ты забыла "улучшения" у реликвии. 6 штук, 3 тир 1, 3 тир 2, их надо тоже
+   впихнуть куда-то. Мб ниже способностей в карточке релика».
+
+   Из методички `gdd/40-content/authoring/relic-upgrades`: игрок НЕ выбирает готовый путь и его не
+   запирают — он видит все шесть и комбинирует свободно. Значит карточка обязана показывать шестёрку
+   целиком с состояниями «взято / доступно / закрыто», а не список взятого: спрятанное улучшение
+   превращает свободу комбинирования в лотерею. */
+
+/** Сетка шести улучшений: ряд Tier 1, ряд Tier 2. Взятые залиты, доступные обычные, закрытые под
+ *  замком — уровень до них ещё не дорос. */
+function upgrades(
+  ctx: CanvasRenderingContext2D,
+  at: { x: number; y: number; w: number },
+  width: number,
+  height: number,
+  cellH = 0.06
+): void {
+  const gap = 0.008;
+  const cw = (at.w - gap * 2) / 3;
+  const taken = [0, 4];
+  const locked = [3, 5];
+
+  [0, 1].forEach((tier) => {
+    const y = at.y + tier * (cellH + 0.028);
+    w.text(ctx, `T${tier + 1}`, { x: at.x - 0.022, y: y + cellH / 2 }, width, height, {
+      size: 7,
+      color: w.WIRE.accent
+    });
+    for (let i = 0; i < 3; i++) {
+      const n = tier * 3 + i;
+      const r: w.Rect = { x: at.x + i * (cw + gap), y, w: cw, h: cellH };
+      if (locked.includes(n)) {
+        w.box(ctx, r, width, height, { dashed: true, hollow: true });
+        w.lock(ctx, r, width, height);
+        continue;
+      }
+      const isTaken = taken.includes(n);
+      w.box(ctx, r, width, height, { lit: isTaken });
+      w.text(
+        ctx,
+        ["Шип", "Оплот", "Зов", "Раскол", "Клятва+", "Стена+"][n] ?? "",
+        { x: r.x + r.w / 2, y: r.y + cellH * 0.4 },
+        width,
+        height,
+        { align: "center", size: 7 }
+      );
+      w.text(ctx, isTaken ? "взято" : "доступно", { x: r.x + r.w / 2, y: r.y + cellH * 0.75 }, width, height, {
+        align: "center",
+        size: 6,
+        color: isTaken ? w.WIRE.accent : w.WIRE.dim
+      });
+    }
+  });
+}
+
+/** IX-А · Улучшения под способностями: место, предложенное Максом. */
+function relicUpgradesRight(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  const b = book(ctx, width, height, "THE BULWARK", "Стандартная · Обычная · класс Танк · уровень 2 · носит Кай", 0);
+
+  figure(ctx, { x: b.left.x, y: b.left.y, w: b.left.w * 0.55, h: b.left.h * 0.62 }, width, height, "знак и облачение");
+  section(ctx, "АВТОАТАКА", { x: b.left.x + b.left.w * 0.6, y: b.left.y + 0.03 }, width, height);
+  lines(ctx, ["удар щитом", "41 урона · 1.2 с"], { x: b.left.x + b.left.w * 0.6, y: b.left.y + 0.065 }, width, height, 0.035);
+  section(ctx, "УРОВЕНЬ И КОПИИ", { x: b.left.x, y: b.left.y + b.left.h * 0.66 }, width, height);
+  lines(ctx, ["уровень 2 · копий собрано 2 / 3"], { x: b.left.x, y: b.left.y + b.left.h * 0.66 + 0.035 }, width, height, 0.035);
+  section(ctx, "ПАССИВКИ", { x: b.left.x, y: b.left.y + b.left.h * 0.78 }, width, height);
+  lines(ctx, ["+15% брони соседям в строю"], { x: b.left.x, y: b.left.y + b.left.h * 0.78 + 0.035 }, width, height, 0.035);
+
+  // Способности ужимаются, чтобы под ними осталось место шестёрке.
+  section(ctx, "СПОСОБНОСТИ", { x: b.right.x, y: b.right.y + 0.03 }, width, height);
+  for (let i = 0; i < 3; i++) {
+    const row: w.Rect = { x: b.right.x, y: b.right.y + 0.06 + i * 0.093, w: b.right.w, h: 0.08 };
+    w.box(ctx, row, width, height, { hollow: true });
+    w.box(ctx, { x: row.x + 0.01, y: row.y + 0.014, w: 0.032, h: 0.052 }, width, height, {});
+    w.text(ctx, ["Стена", "Вызов", "Клятва"][i] ?? "", { x: row.x + 0.05, y: row.y + 0.028 }, width, height, { size: 8 });
+    w.text(
+      ctx,
+      ["40 маны · при HP < 50%", "25 маны · раз в 8 с", "60 маны · смерть союзника"][i] ?? "",
+      { x: row.x + 0.05, y: row.y + 0.056 },
+      width,
+      height,
+      { size: 7, color: w.WIRE.dim }
+    );
+  }
+
+  section(ctx, "УЛУЧШЕНИЯ · 2 из 6", { x: b.right.x, y: b.right.y + 0.36 }, width, height);
+  upgrades(ctx, { x: b.right.x + 0.022, y: b.right.y + 0.39, w: b.right.w - 0.022 }, width, height, 0.055);
+}
+
+/** IX-Б · Улучшения на левой странице: рост кита собран в одном месте. */
+function relicUpgradesLeft(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  const b = book(ctx, width, height, "THE BULWARK", "Стандартная · Обычная · класс Танк · уровень 2 · носит Кай", 0);
+
+  figure(ctx, { x: b.left.x, y: b.left.y, w: b.left.w * 0.42, h: b.left.h * 0.42 }, width, height, "знак");
+  section(ctx, "АВТОАТАКА", { x: b.left.x + b.left.w * 0.47, y: b.left.y + 0.03 }, width, height);
+  lines(ctx, ["удар щитом", "41 урона · 1.2 с"], { x: b.left.x + b.left.w * 0.47, y: b.left.y + 0.065 }, width, height, 0.035);
+  section(ctx, "ПАССИВКИ", { x: b.left.x + b.left.w * 0.47, y: b.left.y + 0.15 }, width, height);
+  lines(ctx, ["+15% брони соседям"], { x: b.left.x + b.left.w * 0.47, y: b.left.y + 0.185 }, width, height, 0.035);
+
+  section(ctx, "УРОВЕНЬ 2 · КОПИЙ 2 / 3 · УЛУЧШЕНИЙ 2 из 6", { x: b.left.x, y: b.left.y + 0.31 }, width, height);
+  upgrades(ctx, { x: b.left.x + 0.022, y: b.left.y + 0.35, w: b.left.w - 0.022 }, width, height, 0.065);
+
+  section(ctx, "СПОСОБНОСТИ", { x: b.right.x, y: b.right.y + 0.03 }, width, height);
+  for (let i = 0; i < 3; i++) {
+    const row: w.Rect = { x: b.right.x, y: b.right.y + 0.065 + i * 0.135, w: b.right.w, h: 0.115 };
+    w.box(ctx, row, width, height, { hollow: true });
+    w.box(ctx, { x: row.x + 0.01, y: row.y + 0.02, w: 0.04, h: 0.075 }, width, height, {});
+    w.text(ctx, ["Стена", "Вызов", "Клятва"][i] ?? "", { x: row.x + 0.06, y: row.y + 0.035 }, width, height, { size: 9 });
+    w.text(
+      ctx,
+      ["40 маны · при HP < 50%", "25 маны · раз в 8 с", "60 маны · при смерти союзника"][i] ?? "",
+      { x: row.x + 0.06, y: row.y + 0.066 },
+      width,
+      height,
+      { size: 7, color: w.WIRE.dim }
+    );
+    w.text(
+      ctx,
+      ["барьер 180 на 6 с · улучшено «Шипом»", "тянет врага к себе", "+30% брони всему отряду"][i] ?? "",
+      { x: row.x + 0.06, y: row.y + 0.092 },
+      width,
+      height,
+      { size: 7, color: i === 0 ? w.WIRE.accent : w.WIRE.dim }
+    );
+  }
+}
+
 const section_: SectionDef = {
   id: "ui-inspect-cards",
   title: "Осмотр и карточки",
@@ -1289,6 +1417,57 @@ const section_: SectionDef = {
             "«Как меняет носителя» — единственное место, где связь Реликвии с обликом человека объяснена словами, а не только показана. Цена — копии и уровень попали в статистику, хотя это механика и им место на табе «Основное».",
           size: [480, 270],
           draw: relicBookLore
+        }
+      ]
+    },
+    {
+      kind: "head",
+      id: "upgrades",
+      title: "Улучшения Реликвии — куда их",
+      lede:
+        "Шесть штук: три Tier 1 и три Tier 2. По методичке игрок видит все шесть и комбинирует " +
+        "свободно — значит карточка показывает шестёрку целиком с состояниями, а не список взятого."
+    },
+    {
+      kind: "stands",
+      items: [
+        {
+          id: "relic-upgrades-right",
+          status: "waiting",
+          title: "IX-А · Под способностями",
+          tag: "место, предложенное Максом",
+          note:
+            "Правая страница: три способности сверху, под ними сетка 3+3 с рядами T1 и T2. " +
+            "Способности ужимаются, чтобы шестёрка влезла на ту же страницу.",
+          facts: [
+            ["улучшения", "правая страница, низ"],
+            ["строка способности", "8% вместо 11.5%"],
+            ["сетка", "3 x 2, ряды T1 / T2"],
+            ["состояния", "взято · доступно · закрыто"]
+          ],
+          verdict:
+            "Улучшение стоит рядом с тем, что оно меняет: видно, какая способность станет другой. Цена — способности теряют треть высоты, и третья строка описания в них уже не помещается.",
+          size: [480, 270],
+          draw: relicUpgradesRight
+        },
+        {
+          id: "relic-upgrades-left",
+          status: "waiting",
+          title: "IX-Б · На левой странице",
+          tag: "рост кита в одном месте",
+          note:
+            "Слева знак поменьше, под ним строка «уровень · копии · улучшений 2 из 6» и та же сетка. " +
+            "Способности справа остаются просторными и получают пометку, что улучшено.",
+          facts: [
+            ["улучшения", "левая страница, под ростом"],
+            ["строка способности", "11.5%, как было"],
+            ["связь", "пометкой в описании"],
+            ["знак", "42% вместо 55%"]
+          ],
+          verdict:
+            "Уровень, копии и улучшения стоят вместе — рост кита читается одним блоком, а способности не ужимаются. Цена — связь «что именно улучшено» держится на подписи в описании, а не на соседстве.",
+          size: [480, 270],
+          draw: relicUpgradesLeft
         }
       ]
     },
