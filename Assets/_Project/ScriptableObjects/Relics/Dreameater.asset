@@ -21,7 +21,6 @@ MonoBehaviour:
   _rangeBand: 3
   _rangeAdjustPct: -0.125
   _archetype: {fileID: 11400000, guid: 10874df940058294f90af2076059382f, type: 2}
-  _viewPrefab: {fileID: 8715034697537984562, guid: ac749868825b09f408f8e7372632056c, type: 3}
   _outfit: {fileID: 11400000, guid: 924228f4836e68148ae3acf9cb94802c, type: 2}
   _vfxTone: 15
   _autoAttackShape: 0
@@ -35,7 +34,6 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
-  _windupShare: 0.35
   _attackSwingTicks: 0
   _chargeAttackWindupMult: 1
   _hitDamageShares: []
@@ -68,7 +66,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: a2c4e6b8d0f3517c9e1b3d5f7a9c1e24, type: 2}
     _selfEffects: []
     _baseCooldown: 0
-    _resourceCost: 50
+    _resourceCost: 30
     _targetMode: 1
     _damageMultiplier: 0
     _baseDamage: 0
@@ -107,8 +105,6 @@ MonoBehaviour:
     _areaAtTarget: 0
     _displaces: 0
     _displaceDistance: 4
-    _displaceDamageMult: 1
-    _displaceWidth: 1
     _visualSlot: 0
     _infoTags: []
   _aiPreset: {fileID: 11400000, guid: b3d5f7c9e1a4628d0f2c4e6b8d0a2f35, type: 2}
