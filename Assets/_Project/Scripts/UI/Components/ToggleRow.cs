@@ -1,4 +1,4 @@
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
 namespace Guildmaster.UI.Components
 {
@@ -8,6 +8,14 @@ namespace Guildmaster.UI.Components
     /// подпись задаётся снаружи (loc), значение проводится через VM (<see cref="Toggle"/> /
     /// <see cref="SetValueWithoutNotify"/>).
     /// </summary>
+    /// <remarks>
+    /// <b>Переключает вся строка, а не квадратик</b> (правило Макса 22.08.2026: «мы должны мочь нажать
+    /// на любую часть элемента (даже на текст и тд), а не только на сам чекбокс»). Мишень в двадцать
+    /// пикселей на строке во всю панель — промах по умолчанию, и игрок читает это как «не нажимается».
+    /// <para>Клик по самому тумблеру сюда доходит всплытием, и переключить его вторично значило бы
+    /// вернуть значение назад — поэтому клики из поддерева тумблера мы пропускаем мимо: он уже
+    /// отработал сам.</para>
+    /// </remarks>
     [UxmlElement]
     public partial class ToggleRow : VisualElement
     {
@@ -47,6 +55,19 @@ namespace Guildmaster.UI.Components
             _toggle = new Toggle { name = "toggle" };
             _toggle.AddToClassList("gm-toggle-row__check");
             Add(_toggle);
+
+            RegisterCallback<ClickEvent>(OnRowClicked);
+        }
+
+        // Клик мимо самого тумблера — это тоже «переключи меня». Тумблер свой клик обработал сам, и
+        // повторное переключение вернуло бы значение обратно, поэтому его поддерево пропускаем.
+        private void OnRowClicked(ClickEvent evt)
+        {
+            if (!enabledInHierarchy) return;
+            if (evt.target is VisualElement target && (target == _toggle || _toggle.Contains(target))) return;
+
+            _toggle.value = !_toggle.value;
+            evt.StopPropagation();
         }
     }
 }
