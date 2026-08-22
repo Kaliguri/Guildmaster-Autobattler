@@ -37,17 +37,25 @@
                  намеренно: сменить профиль отсюда нельзя, для этого своя дверь. -->
             <ui:VisualElement name="side-customize" class="gm-entry__single">
                 <ui:ScrollView class="gm-panel__body">
-                    <ui:Label name="identity-caption" text="Как меня видят" class="gm-text-caption gm-text--muted" />
+                    <!-- ТРИ СЕКЦИИ С ЗАГОЛОВКАМИ, а не сплошной список строк: заголовок группы носит
+                         роль подзаголовка (сериф), подпись под полем остаётся подписью, а группировку
+                         держит пауза. Пункт 4 плана ui-uplift. -->
+                    <ui:VisualElement class="gm-section gm-form-column">
+                        <ui:Label name="identity-caption" text="Как меня видят" class="gm-text-subtitle gm-section__title" />
+                        <gm:ToggleRow name="toggle-steam-name" label-text="Брать имя из Steam" value="true" />
+                        <ui:TextField name="field-name" class="gm-profile__name" />
+                        <ui:Label name="name-hint" class="gm-text-caption gm-text--muted gm-profile__hint" />
+                    </ui:VisualElement>
 
-                    <gm:ToggleRow name="toggle-steam-name" label-text="Брать имя из Steam" value="true" />
-                    <ui:TextField name="field-name" class="gm-profile__name" />
-                    <ui:Label name="name-hint" class="gm-text-caption gm-text--muted gm-profile__hint" />
+                    <ui:VisualElement class="gm-section">
+                        <ui:Label name="color-caption" text="Предпочтительный цвет" class="gm-text-subtitle gm-section__title" />
+                        <ui:VisualElement name="color-row" class="gm-profile__colors" />
+                    </ui:VisualElement>
 
-                    <ui:Label name="color-caption" text="Цвет" class="gm-text-caption gm-text--muted" />
-                    <ui:VisualElement name="color-row" class="gm-profile__colors" />
-
-                    <ui:Label name="cursor-caption" text="Курсор" class="gm-text-caption gm-text--muted" />
-                    <ui:VisualElement name="cursor-row" class="gm-profile__cursors" />
+                    <ui:VisualElement class="gm-section">
+                        <ui:Label name="cursor-caption" text="Курсор" class="gm-text-subtitle gm-section__title" />
+                        <ui:VisualElement name="cursor-row" class="gm-profile__cursors" />
+                    </ui:VisualElement>
                 </ui:ScrollView>
             </ui:VisualElement>
 
