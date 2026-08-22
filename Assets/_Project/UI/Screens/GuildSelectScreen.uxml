@@ -1,4 +1,4 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <gm:PanelFrame name="guilds-frame" corner="0" />
@@ -14,7 +14,7 @@
             </ui:ScrollView>
 
             <ui:VisualElement class="gm-divider" />
-            <gm:PlateButton name="btn-back" text="Назад" class="gm-button" />
+            <gm:BackButton name="btn-back" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

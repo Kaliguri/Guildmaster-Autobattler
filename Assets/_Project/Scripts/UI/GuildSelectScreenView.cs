@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Persistence;
 using Guildmaster.Guild;
@@ -59,13 +59,13 @@ namespace Guildmaster.UI
             var title   = root.Q<Label>("guilds-title");
             var caption = root.Q<Label>("guilds-caption");
             var list    = root.Q<VisualElement>("guild-list");
-            var back    = root.Q<Button>("btn-back");
+            var back    = root.Q<Components.BackButton>("btn-back");
 
             if (title != null)   title.text   = L("ui.guilds.title", "Гильдия");
             if (caption != null) caption.text = L("ui.guilds.caption", "Дом хранит прогресс: забег, ростер, открытия");
             if (back != null)
             {
-                back.text = L("ui.guilds.back", "Назад");
+                back.Localize(localize);   // подпись возврата приходит из контрола, а не из ключа экрана
                 back.clicked += () => onBack?.Invoke();
             }
 

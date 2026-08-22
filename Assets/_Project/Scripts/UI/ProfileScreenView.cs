@@ -91,7 +91,7 @@ namespace Guildmaster.UI
             var cursorCap  = root.Q<Label>("cursor-caption");
             var cursorRow  = root.Q<VisualElement>("cursor-row");
             var save       = root.Q<Button>("btn-save");
-            var back       = root.Q<Button>("btn-back");
+            var back       = root.Q<Components.BackButton>("btn-back");
 
             // Показывается РОВНО ОДНО лицо: экран один, вопросов два, и смешивать их нельзя.
             if (sideSelect != null) sideSelect.style.display = customize ? DisplayStyle.None : DisplayStyle.Flex;
@@ -106,7 +106,7 @@ namespace Guildmaster.UI
             if (colorCap != null)  colorCap.text  = L("ui.profile.color", "Цвет");
             if (cursorCap != null) cursorCap.text = L("ui.profile.cursor", "Курсор");
             if (save != null)      save.text      = L("ui.profile.save", "Сохранить");
-            if (back != null)      back.text      = L("ui.profile.back", "Назад");
+            back?.Localize(localize);   // слово и ключ у возврата одни на всю игру — они в самом контроле
             if (steamToggle != null)
                 steamToggle.LabelText = L("ui.profile.name.steam", "Брать имя из Steam");
 

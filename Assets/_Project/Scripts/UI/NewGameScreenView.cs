@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Guild;
 using UnityEngine.UIElements;
 
@@ -92,7 +92,7 @@ namespace Guildmaster.UI
                 "newgame",
                 L("ui.newgame.title", "Создать игру"),
                 cards,
-                L("ui.newgame.back", "Назад"),
+                localize,
                 onBack,
                 footerExtra);
         }

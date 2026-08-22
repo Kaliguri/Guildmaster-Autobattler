@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Guildmaster.UI.Components
@@ -251,7 +251,10 @@ namespace Guildmaster.UI.Components
             // «не по карману»: обе метки накладываются на любую роль и ни одну не заменяют.
             New("Кнопка (Обычная) — Вариация 1", "gm-button", UiComponentGroup.Buttons, Interactive, null,
                 "везде, кроме главного действия экрана: диалоги, лавка, настройки",
-                "gm-button--display", "gm-button--danger", "gm-button--unaffordable"),
+                // «Вернуться» — МЕТКА МЕСТА на обычной кнопке, а не третья роль: вид у неё базовый,
+                // особенное только одно — она всегда стоит в левом краю футера (правило Макса
+                // 22.08.2026). Своей записи набора ей поэтому не полагается.
+                "gm-button--display", "gm-button--danger", "gm-button--unaffordable", "gm-button--back"),
             New("Кнопка (Главная) — Вариация 1", "gm-button--primary", UiComponentGroup.Buttons,
                 Interactive, OfButton, "главное действие экрана: начать забег, принять, продолжить"),
             NewTechnical("Пластина (форма, не элемент набора)", "gm-plate-button", UiComponentGroup.Buttons,

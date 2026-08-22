@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI
@@ -48,7 +48,7 @@ namespace Guildmaster.UI
                 "profile-hub",
                 L("ui.profile.hub.title", "Профиль"),
                 cards,
-                L("ui.profile.back", "Назад"),
+                localize,
                 onBack);
         }
     }

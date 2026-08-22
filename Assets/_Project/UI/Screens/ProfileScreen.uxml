@@ -1,4 +1,4 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <gm:PanelFrame name="profile-frame" corner="0" />
@@ -52,9 +52,12 @@
             </ui:VisualElement>
 
             <ui:VisualElement class="gm-divider" />
+            <!-- «Вернуться» идёт ПЕРВОЙ и своим контролом: место ей задаёт gm-button--back, а слово —
+                 один ключ на всю игру. Пока каждый экран писал свою кнопку, их было четыре с четырьмя
+                 разными словами (правило Макса 22.08.2026). -->
             <ui:VisualElement class="gm-profile__actions">
+                <gm:BackButton name="btn-back" />
                 <gm:PlateButton name="btn-save" text="Сохранить" class="gm-button gm-button--primary" />
-                <gm:PlateButton name="btn-back" text="Назад" class="gm-button" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

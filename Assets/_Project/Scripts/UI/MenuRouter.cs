@@ -1290,7 +1290,11 @@ namespace Guildmaster.UI
             // Принять = применить + закрыть; Сохранить = применить, не закрывая; Закрыть = отмена.
             screen.Q<Button>("btn-accept").clicked += () => { _loadoutVm.Apply(); Pop(); };
             screen.Q<Button>("btn-save").clicked   += () => { _loadoutVm.Apply(); RefreshCards(); };
-            screen.Q<Button>("btn-close").clicked  += Pop;
+            // Дверь наружу — тот же контрол, что и на прочих экранах: слово, место и вид у возврата
+            // одни на всю игру (правило Макса 22.08.2026).
+            Components.BackButton close = screen.Q<Components.BackButton>("btn-close");
+            close?.Localize(key => _loc?.GetString(key));
+            if (close != null) close.clicked += Pop;
             return screen;
         }
 

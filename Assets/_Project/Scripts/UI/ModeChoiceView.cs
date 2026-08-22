@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 
@@ -59,11 +59,15 @@ namespace Guildmaster.UI
         /// Необязательный довесок футера слева от «Назад» — то, что относится ко всему экрану, а не к
         /// отдельной двери (галочка лобби у «Создать игру»). Общий вид о его содержимом не знает.
         /// </param>
+        /// <param name="localize">
+        /// Служба перевода — нужна ровно для подписи возврата: ключ у неё один на всю игру и живёт в
+        /// самом контроле <see cref="Components.BackButton"/>, а не в вызывающем экране.
+        /// </param>
         public static VisualElement Build(
             string name,
             string title,
             IReadOnlyList<Card> cards,
-            string backText,
+            Func<string, string> localize,
             Action onBack,
             VisualElement footerExtra = null)
         {
@@ -96,9 +100,10 @@ namespace Guildmaster.UI
                 footer.Add(footerExtra);
             }
 
-            var back = new Components.PlateButton(() => onBack?.Invoke()) { text = backText };
-            back.AddToClassList("gm-button");
-            footer.Add(back);
+            // Возврат стоит ПЕРВЫМ в футере и уходит в его левый край сам — местом владеет класс
+            // gm-button--back, а не раскладка этого экрана.
+            var back = new Components.BackButton(onBack).Localize(localize);
+            footer.Insert(0, back);
             body.Add(footer);
 
             screen.Add(body);

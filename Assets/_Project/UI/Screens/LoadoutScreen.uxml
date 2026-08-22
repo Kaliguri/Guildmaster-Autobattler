@@ -1,4 +1,4 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel" style="min-width: 560px; max-width: 600px;">
             <ui:Label text="Loadout" class="gm-text-title gm-panel__title" />
@@ -30,7 +30,7 @@
             <ui:VisualElement class="gm-button-row">
                 <gm:PlateButton name="btn-accept" text="Принять" class="gm-button" />
                 <gm:PlateButton name="btn-save" text="Сохранить" class="gm-button" />
-                <gm:PlateButton name="btn-close" text="Закрыть" class="gm-button" />
+                <gm:BackButton name="btn-close" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
