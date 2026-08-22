@@ -46,7 +46,7 @@
              желаемое отдельным блоком в углу. Числа замера — в теме рядом с правилами.
              Тексты, ссылки и значки ставит View из ассета сообщества: здесь только каркас. -->
         <ui:VisualElement name="community" class="gm-community">
-            <ui:VisualElement class="gm-panel gm-panel--system gm-community__panel">
+            <ui:VisualElement class="gm-panel gm-community__panel">
                 <gm:PanelFrame name="community-frame" class="gm-panel__frame" corner="18" />
                 <ui:Label name="community-headline" class="gm-text-title gm-community__headline" />
                 <ui:VisualElement name="community-body" class="gm-community__body" />
@@ -56,7 +56,9 @@
                  круглые значки каналов. У рефа это единственное место, где живут ссылки, и стоит
                  оно ровно под панелью обращения, а не внутри неё. -->
             <ui:VisualElement name="community-service" class="gm-community__service">
-                <gm:PlateButton name="btn-bugreport" class="gm-button gm-button--sm gm-community__bug" />
+                <gm:PlateButton name="btn-bugreport" class="gm-button gm-button--sm gm-community__bug">
+                    <ui:VisualElement class="gm-button__icon gm-community__bug-icon" picking-mode="Ignore" />
+                </gm:PlateButton>
                 <ui:VisualElement name="community-links" class="gm-community__links" />
             </ui:VisualElement>
 
@@ -64,7 +66,7 @@
                  часть обращения, а просьба, и мешать её с «спасибо, что играете» нечестно. -->
             <ui:VisualElement name="community-wishlist" class="gm-community__wishlist">
                 <ui:Label name="wishlist-caption" class="gm-text-caption gm-community__wishlist-caption" />
-                <gm:PlateButton name="btn-wishlist" class="gm-button gm-button--sm gm-button--primary gm-community__wishlist-button" />
+                <gm:PlateButton name="btn-wishlist" class="gm-button gm-button--sm gm-button--block gm-button--primary" />
             </ui:VisualElement>
         </ui:VisualElement>
 

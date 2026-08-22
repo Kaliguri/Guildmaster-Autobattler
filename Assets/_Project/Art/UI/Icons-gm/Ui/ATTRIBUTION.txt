@@ -1,0 +1,9 @@
+Interface glyphs in this folder are from https://game-icons.net/
+
+License: Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+https://creativecommons.org/licenses/by/3.0/
+
+bug.svg — "Beetle shell" by Lorc. The solid 512x512 backing plate that game-icons ships inside each
+SVG was removed: the interface tints these glyphs, and the plate would tint into a filled square.
+
+Same source and licence as the guild emblems in ../Emblems — see the ATTRIBUTION.txt there.

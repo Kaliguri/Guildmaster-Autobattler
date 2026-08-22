@@ -22,6 +22,8 @@
        разных чисел, и одна и та же кнопка выглядела в них разной вещью. */
     min-width: var(--gm-control-w-md);
     min-height: var(--gm-control-h-md);
+    /* Всё, что внутри кнопки, следует за её ступенью — концы пластины и значок в том числе. */
+    --gm-plate-cap: var(--gm-plate-cap-md);
     background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-outline-width);
     border-color: var(--gm-color-border-frame);
@@ -464,12 +466,19 @@
 }
 
 /* Сам значок — РЕБЁНОК кнопки, а не её background-image: фон пластины рисует контрол мешем, и
-   картинка в фоне ушла бы под него. Красится тинтом, как знаки гильдии: исходники монохромные. */
+   картинка в фоне ушла бы под него. Красится тинтом, как знаки гильдии: исходники монохромные.
+   Размер — по ступени: значок обязан ужиматься вместе с кнопкой, а не жить своим числом. */
 .gm-button__icon {
-    width: 28px;
-    height: 28px;
-    background-size: 28px 28px;
+    width: var(--gm-control-icon-md);
+    height: var(--gm-control-icon-md);
+    background-size: var(--gm-control-icon-md) var(--gm-control-icon-md);
     -unity-background-image-tint-color: var(--gm-color-text-muted);
+}
+
+.gm-button--sm .gm-button__icon {
+    width: var(--gm-control-icon-sm);
+    height: var(--gm-control-icon-sm);
+    background-size: var(--gm-control-icon-sm) var(--gm-control-icon-sm);
 }
 
 .gm-button--icon:hover > .gm-button__icon {
@@ -493,12 +502,14 @@
     min-height: var(--gm-control-h-sm);
     padding: var(--gm-space-0) var(--gm-space-2);
     font-size: var(--gm-font-xs);
+    --gm-plate-cap: var(--gm-plate-cap-sm);
 }
 
 /* Крупная: пункт меты во весь голос — главное меню, пауза. */
 .gm-button--lg {
     min-width: var(--gm-control-w-lg);
     min-height: var(--gm-control-h-lg);
+    --gm-plate-cap: var(--gm-plate-cap-lg);
 }
 
 /* Значок мелкой ступени: там, где он стоит в одной строке с подписанной кнопкой и не должен

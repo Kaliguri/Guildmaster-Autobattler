@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -66,8 +66,7 @@ namespace Guildmaster.Tests.EditMode.UI
             "ui.guilds.title", "ui.guilds.caption", "ui.guilds.new", "ui.guilds.in_run", "ui.guilds.back",
 
             // Двор (экран-заглушка) и мелочь по экранам.
-            "ui.hub.title", "ui.hub.stub", "ui.hub.start_run",
-            "ui.boot.hint", "ui.boot.loading", "ui.confirm.cancel", "ui.outcome.continue",
+            "ui.hub.title", "ui.hub.stub", "ui.hub.start_run", "ui.confirm.cancel", "ui.outcome.continue",
             "ui.menu.invite",
 
             // Диалог потери соединения — зона коопа, который сейчас в работе.

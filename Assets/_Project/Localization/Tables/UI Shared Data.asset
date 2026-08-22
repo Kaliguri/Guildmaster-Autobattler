@@ -807,6 +807,26 @@ MonoBehaviour:
     m_Key: ui.community.bugreport
     m_Metadata:
       m_Items: []
+  - m_Id: 15470395111235584
+    m_Key: ui.community.p1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15470395161567232
+    m_Key: ui.community.p2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15470395161567233
+    m_Key: ui.community.link.youtube
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15470395161567234
+    m_Key: ui.boot.hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15470395165761536
+    m_Key: ui.boot.loading
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -27,24 +27,9 @@ MonoBehaviour:
       \u043F\u043E\u043D\u0440\u0430\u0432\u0438\u043B\u043E\u0441\u044C \u0438 \u0447\u0442\u043E
       \u0441\u043B\u043E\u043C\u0430\u043B\u043E\u0441\u044C."
   _links:
-  - Id: link.steam
-    LabelKey: ui.community.link.steam
-    LabelFallback: "\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u0430 \u0432 Steam"
-    Url: 
-    Icon: {fileID: 7388822144124034973, guid: 09e627cd1e657904aae19d4dfd7c0af2, type: 3}
-  - Id: link.discord
-    LabelKey: ui.community.link.discord
-    LabelFallback: Discord
-    Url: 
-    Icon: {fileID: 7388822144124034973, guid: 2cff54797b9fd8b4da2082eb2b2037b8, type: 3}
   - Id: link.youtube
     LabelKey: ui.community.link.youtube
     LabelFallback: YouTube
     Url: 
     Icon: {fileID: 7388822144124034973, guid: a87d7282cabfda642a720566a5360b71, type: 3}
-  - Id: link.telegram
-    LabelKey: ui.community.link.telegram
-    LabelFallback: Telegram
-    Url: 
-    Icon: {fileID: 7388822144124034973, guid: 30b0aad95fbe11243847b7003bc8d8b2, type: 3}
   _showWishlist: 1
