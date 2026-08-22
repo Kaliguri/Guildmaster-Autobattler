@@ -8,6 +8,7 @@
     { "id": "items", "file": "items.png" },
     { "id": "vessel-card", "file": "vessel-card.png" },
     { "id": "settings", "file": "settings.png" },
+    { "id": "loadout", "file": "loadout.png" },
     { "id": "shop", "file": "shop.png" },
     { "id": "chest", "file": "chest.png" },
     { "id": "outcome", "file": "outcome.png" },

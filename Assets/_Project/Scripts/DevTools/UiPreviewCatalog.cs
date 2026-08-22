@@ -30,6 +30,7 @@ namespace Guildmaster.DevTools
             ["items"]        = BuildItems,
             ["vessel-card"]  = BuildVesselCard,
             ["settings"]     = BuildSettings,
+            ["loadout"]      = BuildLoadout,
             // "map" снят: карта больше не UITK-экран, она живёт в мире (см. WorldMapView) и в UI-стенде
             // не собирается. Смотреть её — дев-командами gm_map_* в игре.
             ["shop"]         = BuildShop,
@@ -281,62 +282,64 @@ namespace Guildmaster.DevTools
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/SettingsScreen.uxml");
             if (uxml == null) { AddError(root, "SettingsScreen.uxml не найден"); return; }
 
-            VisualElement screen = uxml.CloneTree();
-            VisualElement r = screen.childCount > 0 ? screen[0] : screen;
+            // Тот же Build, что зовёт игра: стенд собирает экран НЕ своим кодом, иначе кадр показывал бы
+            // стенд, а не игру (правило Макса 23.08.2026).
+            Guildmaster.UI.SettingsScreenView view = Guildmaster.UI.SettingsScreenView.Build(uxml, RuValue);
 
-            // Подписи/значения — как проставляет роутер из VM (стенду хватает статичных).
-            SetSliderRow(r, "row-master", "Общий", 0.8f);
-            SetSliderRow(r, "row-music",  "Музыка", 0.65f);
-            SetSliderRow(r, "row-sfx",    "Звук",  1.0f);
-
-            // Страница «Графика»: реальные режимы монитора, чтобы видеть настоящую длину списков.
-            // Значения статичны — стенд не поднимает IDisplayService, он показывает вид, а не поведение.
-            SetSelectRow(r, "row-window-mode", "Режим окна",
-                new List<string> { "Окно без рамок", "Полноэкранный", "Оконный" }, 0);
+            // Значения статичны: стенд не поднимает ни VM, ни IDisplayService — он показывает вид, а не
+            // поведение. Списки берутся у настоящего монитора, чтобы видеть честную длину.
+            view.Master?.SetValueWithoutNotify(0.8f);
+            view.Music?.SetValueWithoutNotify(0.65f);
+            view.Sfx?.SetValueWithoutNotify(1.0f);
 
             var resolutions = new List<string>();
+            var rates = new List<string>();
             foreach (UnityEngine.Resolution res in UnityEngine.Screen.resolutions)
             {
                 string item = $"{res.width} x {res.height}";
                 if (!resolutions.Contains(item)) resolutions.Add(item);
-            }
-            SetSelectRow(r, "row-resolution", "Разрешение", resolutions, resolutions.Count - 1);
 
-            var rates = new List<string>();
-            foreach (UnityEngine.Resolution res in UnityEngine.Screen.resolutions)
-            {
-                string item = $"{res.refreshRateRatio.value:0.##} Гц";
-                if (!rates.Contains(item)) rates.Add(item);
+                string rate = $"{res.refreshRateRatio.value:0.##} Гц";
+                if (!rates.Contains(rate)) rates.Add(rate);
             }
-            SetSelectRow(r, "row-refresh-rate", "Частота обновления", rates, rates.Count - 1);
+
+            view.WindowMode?.SetChoices(new List<string> { "Окно без рамок", "Полноэкранный", "Оконный" }, 0);
+            view.Resolution?.SetChoices(resolutions, resolutions.Count - 1);
+            view.RefreshRate?.SetChoices(rates, rates.Count - 1);
 
             // Частота гаснет вне эксклюзивного полноэкранного — показываем именно это состояние,
             // потому что оно и есть по умолчанию (окно без рамок).
-            var refreshRow = r.Q<Guildmaster.UI.Components.SelectRow>("row-refresh-rate");
-            refreshRow?.SetRowEnabled(false);
-            var hint = r.Q<Label>("video-hint");
-            if (hint != null) hint.text = "Частоту обновления можно менять только в полноэкранном режиме.";
+            view.RefreshRate?.SetRowEnabled(false);
+            view.ShowVideoHint("Частоту обновления можно менять только в полноэкранном режиме.");
 
-            // Табы кликабельны — иначе страницу «Графика» в стенде не открыть.
-            Guildmaster.UI.MenuRouter.WireSettingsTabs(r);
-            root.Add(r);
+            root.Add(view.Root);
         }
 
-        private static void SetSelectRow(VisualElement root, string name, string label,
-                                         List<string> choices, int selected)
+        private static void BuildLoadout(VisualElement root)
         {
-            var row = root.Q<Guildmaster.UI.Components.SelectRow>(name);
-            if (row == null) return;
-            row.LabelText = label;
-            row.SetChoices(choices, selected);
-        }
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/LoadoutScreen.uxml");
+            if (uxml == null) { AddError(root, "LoadoutScreen.uxml не найден"); return; }
 
-        private static void SetSliderRow(VisualElement root, string name, string label, float value)
-        {
-            var row = root.Q<Guildmaster.UI.Components.SliderRow>(name);
-            if (row == null) return;
-            row.LabelText = label;
-            row.SetValueWithoutNotify(value);
+            IContentDatabase content = LoadContent();
+            if (content == null) { AddError(root, "ContentDatabase не найдена"); return; }
+
+            IReadOnlyList<RelicData> relics = content.All<RelicData>();
+
+            // Тот же Build, что зовёт игра. Стенд не поднимает LoadoutViewModel — он подставляет
+            // готовые строки в детали и отмечает первую карточку выбранной, чтобы на кадре было видно
+            // и обычную карточку, и выделенную.
+            Guildmaster.UI.LoadoutScreenView view = Guildmaster.UI.LoadoutScreenView.Build(
+                uxml, relics, r => Coalesce(RuValue(r.Id + ".name"), r.Id), RuValue);
+
+            RelicData first = view.FirstRelic;
+            view.SyncCards(r => r == first, r => r == first);
+            view.ShowDetail(
+                Coalesce(RuValue((first?.Id) + ".name"), first?.Id ?? "Реликвия"),
+                Coalesce(RuValue((first?.Id) + ".desc"), "«Древний завет, что тлеет в глубине веков…»"),
+                "боевая · редкая",
+                "урон +12 · броня +4");
+
+            root.Add(view.Root);
         }
 
         private static void BuildShop(VisualElement root)
@@ -411,8 +414,14 @@ namespace Guildmaster.DevTools
         {
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/MainMenuScreen.uxml");
             if (uxml == null) { AddError(root, "MainMenuScreen.uxml не найден"); return; }
+            // Конфиг сообщества грузится так же, как контент: без него правая панель меню
+            // (новости, отчёт об ошибке, ссылки, вишлист) остаётся пустой и на кадре её просто нет —
+            // наход. Макса 23.08.2026 по первому же прогону кадров экранов.
+            var community = AssetDatabase.LoadAssetAtPath<Guildmaster.Data.Definitions.CommunityConfig>(
+                "Assets/_Project/ScriptableObjects/Configs/CommunityConfig.asset");
+
             root.Add(Guildmaster.UI.MainMenuScreenView.Build(
-                uxml, RuValue, () => { }, () => { }, () => { }, () => { }));
+                uxml, RuValue, () => { }, () => { }, () => { }, () => { }, community: community));
         }
 
         /// <summary>Экран «Создать игру»: три режима карточками и галочка лобби в футере.</summary>

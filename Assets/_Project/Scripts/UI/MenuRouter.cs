@@ -1328,36 +1328,9 @@ namespace Guildmaster.UI
 
         private VisualElement BuildSettingsScreen()
         {
-            var screen = FillRoot(_settingsUxml.CloneTree());
+            SettingsScreenView view = SettingsScreenView.Build(_settingsUxml, key => _loc?.GetString(key));
 
-            // Подписи через loc с RU-фолбэком (как остальной новый UI); значения проводятся из VM.
             string L(string key, string ru) { string v = _loc?.GetString(key); return string.IsNullOrEmpty(v) ? ru : v; }
-
-            var master = screen.Q<Guildmaster.UI.Components.SliderRow>("row-master");
-            var music  = screen.Q<Guildmaster.UI.Components.SliderRow>("row-music");
-            var sfx    = screen.Q<Guildmaster.UI.Components.SliderRow>("row-sfx");
-            if (master != null) master.LabelText = L("ui.settings.volume_master", "Общий");
-            if (music  != null) music.LabelText  = L("ui.settings.volume_music", "Музыка");
-            if (sfx    != null) sfx.LabelText    = L("ui.settings.volume_sfx", "Звук");
-
-            // Таб «Игра»: тумблеры презентации (анимация карточек / анимация атаки).
-            var cardAnim   = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-card-anim");
-            var cardAttack = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-card-attack");
-            var tipDetails = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-tooltip-details");
-            if (cardAnim   != null) cardAnim.LabelText   = L("ui.settings.card_anim", "Анимация карточек");
-            if (cardAttack != null) cardAttack.LabelText = L("ui.settings.card_attack", "Анимация атаки карточек");
-            // §II.10.4: галка «всегда подробно». Shift при ней работает наоборот — временно даёт краткий вид.
-            if (tipDetails != null) tipDetails.LabelText = L("ui.settings.tooltip_details", "Всегда подробные подсказки");
-
-            // Таб «Графика»: дисплей. Списки живые — их наполняет Sync, потому что набор частот зависит
-            // от выбранного разрешения и меняется прямо во время правки.
-            var windowMode = screen.Q<Guildmaster.UI.Components.SelectRow>("row-window-mode");
-            var resolution = screen.Q<Guildmaster.UI.Components.SelectRow>("row-resolution");
-            var refreshRow = screen.Q<Guildmaster.UI.Components.SelectRow>("row-refresh-rate");
-            var videoHint  = screen.Q<Label>("video-hint");
-            if (windowMode != null) windowMode.LabelText = L("ui.settings.window_mode", "Режим окна");
-            if (resolution != null) resolution.LabelText = L("ui.settings.resolution", "Разрешение");
-            if (refreshRow != null) refreshRow.LabelText = L("ui.settings.refresh_rate", "Частота обновления");
 
             string ModeLabel(Core.Settings.WindowMode m) => m switch
             {
@@ -1371,189 +1344,111 @@ namespace Guildmaster.UI
             // SliderRow/ToggleRow сами обновляют свой вид (в т.ч. в SetValueWithoutNotify).
             void Sync()
             {
-                master.SetValueWithoutNotify(_settingsVm.Master);
-                music.SetValueWithoutNotify(_settingsVm.Music);
-                sfx.SetValueWithoutNotify(_settingsVm.Sfx);
-                cardAnim?.SetValueWithoutNotify(_settingsVm.CardAnimations);
-                cardAttack?.SetValueWithoutNotify(_settingsVm.CardAttackAnimation);
-                tipDetails?.SetValueWithoutNotify(_settingsVm.AlwaysDetailedTooltips);
+                view.Master.SetValueWithoutNotify(_settingsVm.Master);
+                view.Music.SetValueWithoutNotify(_settingsVm.Music);
+                view.Sfx.SetValueWithoutNotify(_settingsVm.Sfx);
+                view.CardAnimations?.SetValueWithoutNotify(_settingsVm.CardAnimations);
+                view.CardAttack?.SetValueWithoutNotify(_settingsVm.CardAttackAnimation);
+                view.TooltipDetails?.SetValueWithoutNotify(_settingsVm.AlwaysDetailedTooltips);
                 // «Атака» осмысленна только при включённой анимации карточек.
-                cardAttack?.SetEnabled(_settingsVm.CardAnimations);
+                view.CardAttack?.SetEnabled(_settingsVm.CardAnimations);
 
                 SyncDisplay();
             }
 
+            // Списки живые: набор частот зависит от выбранного разрешения и меняется прямо во время правки.
             void SyncDisplay()
             {
-                if (windowMode != null)
+                if (view.WindowMode != null)
                 {
                     var modes = new List<string>();
                     foreach (Core.Settings.WindowMode m in SettingsViewModel.WindowModes) modes.Add(ModeLabel(m));
-                    windowMode.SetChoices(modes, _settingsVm.WindowModeIndex);
+                    view.WindowMode.SetChoices(modes, _settingsVm.WindowModeIndex);
                 }
 
-                if (resolution != null)
+                if (view.Resolution != null)
                 {
                     var items = new List<string>();
                     foreach ((int w, int h) in _settingsVm.Resolutions) items.Add($"{w} x {h}");
-                    resolution.SetChoices(items, _settingsVm.ResolutionIndex);
+                    view.Resolution.SetChoices(items, _settingsVm.ResolutionIndex);
                 }
 
-                if (refreshRow != null)
+                if (view.RefreshRate != null)
                 {
                     var rates = new List<string>();
                     foreach (RefreshRate r in _settingsVm.RefreshRates) rates.Add($"{r.value:0.##} Гц");
-                    refreshRow.SetChoices(rates, _settingsVm.RefreshRateIndex);
+                    view.RefreshRate.SetChoices(rates, _settingsVm.RefreshRateIndex);
 
                     // Вне эксклюзивного полноэкранного частоту держит композитор рабочего стола —
                     // гасим строку вместо того, чтобы предлагать выбор без эффекта.
-                    refreshRow.SetRowEnabled(_settingsVm.RefreshRateSelectable);
+                    view.RefreshRate.SetRowEnabled(_settingsVm.RefreshRateSelectable);
                 }
 
-                if (videoHint != null)
-                {
-                    bool locked = !_settingsVm.RefreshRateSelectable;
-                    videoHint.text = locked
-                        ? L("ui.settings.refresh_rate.locked",
-                            "Частоту обновления можно менять только в полноэкранном режиме.")
-                        : string.Empty;
-                    videoHint.EnableInClassList("gm-tab-page--hidden", !locked);
-                }
+                view.ShowVideoHint(_settingsVm.RefreshRateSelectable
+                    ? string.Empty
+                    : L("ui.settings.refresh_rate.locked",
+                        "Частоту обновления можно менять только в полноэкранном режиме."));
             }
 
             Sync();
 
-            master.Slider.RegisterValueChangedCallback(e => _settingsVm.SetMaster(e.newValue));
-            music.Slider.RegisterValueChangedCallback(e => _settingsVm.SetMusic(e.newValue));
-            sfx.Slider.RegisterValueChangedCallback(e => _settingsVm.SetSfx(e.newValue));
-            cardAnim?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetCardAnimations(e.newValue));
-            cardAttack?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetCardAttackAnimation(e.newValue));
-            tipDetails?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetAlwaysDetailedTooltips(e.newValue));
+            view.Master.Slider.RegisterValueChangedCallback(e => _settingsVm.SetMaster(e.newValue));
+            view.Music.Slider.RegisterValueChangedCallback(e => _settingsVm.SetMusic(e.newValue));
+            view.Sfx.Slider.RegisterValueChangedCallback(e => _settingsVm.SetSfx(e.newValue));
+            view.CardAnimations?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetCardAnimations(e.newValue));
+            view.CardAttack?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetCardAttackAnimation(e.newValue));
+            view.TooltipDetails?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetAlwaysDetailedTooltips(e.newValue));
 
-            windowMode?.Dropdown.RegisterValueChangedCallback(_ => _settingsVm.SetWindowMode(windowMode.Index));
-            resolution?.Dropdown.RegisterValueChangedCallback(_ => _settingsVm.SetResolution(resolution.Index));
-            refreshRow?.Dropdown.RegisterValueChangedCallback(_ => _settingsVm.SetRefreshRate(refreshRow.Index));
+            view.WindowMode?.Dropdown.RegisterValueChangedCallback(_ => _settingsVm.SetWindowMode(view.WindowMode.Index));
+            view.Resolution?.Dropdown.RegisterValueChangedCallback(_ => _settingsVm.SetResolution(view.Resolution.Index));
+            view.RefreshRate?.Dropdown.RegisterValueChangedCallback(_ => _settingsVm.SetRefreshRate(view.RefreshRate.Index));
 
             // VM → контролы (Defaults/Cancel меняют значения «снаружи»). Отписка при снятии с панели.
             Action onChanged = Sync;
             _settingsVm.Changed += onChanged;
             Action onDisplayChanged = SyncDisplay;
             _settingsVm.DisplayChanged += onDisplayChanged;
-            screen.RegisterCallback<DetachFromPanelEvent>(_ =>
+            view.Root.RegisterCallback<DetachFromPanelEvent>(_ =>
             {
                 _settingsVm.Changed -= onChanged;
                 _settingsVm.DisplayChanged -= onDisplayChanged;
             });
 
-            screen.Q<Button>("btn-save").clicked += () => { _settingsVm.Save(); Pop(); };
+            view.Save.clicked += () => { _settingsVm.Save(); Pop(); };
 
             // Уход с несохранёнными правками и сброс к начальным — оба необратимы для того, что игрок
             // только что крутил, и оба спрашивают (правило Макса 22.08.2026). Уход БЕЗ правок не
             // спрашивает ничего: вопрос без последствий приучает жать «да» не читая.
-            Components.BackButton leave = screen.Q<Components.BackButton>("btn-cancel");
-            leave?.Localize(key => _loc?.GetString(key));
-            if (leave != null) leave.clicked += () => LeaveSettingsAsync().Forget();
+            if (view.Leave != null) view.Leave.clicked += () => LeaveSettingsAsync().Forget();
 
-            screen.Q<Button>("btn-defaults").clicked += () => ResetSettingsAsync().Forget();
+            view.Defaults.clicked += () => ResetSettingsAsync().Forget();
 
-            WireSettingsTabs(screen);
-            return screen;
+            return view.Root;
         }
 
-        // Табы настроек (Игра/Графика/Звук): клик показывает свою страницу и прячет прочие. Раскладка и
-        // стиль — из UXML/USS. Публичный, потому что тем же переключением пользуется UI-стенд превью:
-        // иначе страницу «Графика» нельзя посмотреть, не поднимая весь бут игры.
-        public static void WireSettingsTabs(VisualElement screen)
-        {
-            var tabGame  = screen.Q<Button>("tab-game");
-            var tabVideo = screen.Q<Button>("tab-video");
-            var tabAudio = screen.Q<Button>("tab-audio");
-            var pageGame  = screen.Q<VisualElement>("page-game");
-            var pageVideo = screen.Q<VisualElement>("page-video");
-            var pageAudio = screen.Q<VisualElement>("page-audio");
-            if (tabGame == null || tabVideo == null || tabAudio == null) return;
-
-            void Show(Button tab, VisualElement page)
-            {
-                tabGame.EnableInClassList("gm-tab--active", tab == tabGame);
-                tabVideo.EnableInClassList("gm-tab--active", tab == tabVideo);
-                tabAudio.EnableInClassList("gm-tab--active", tab == tabAudio);
-                pageGame?.EnableInClassList("gm-tab-page--hidden", page != pageGame);
-                pageVideo?.EnableInClassList("gm-tab-page--hidden", page != pageVideo);
-                pageAudio?.EnableInClassList("gm-tab-page--hidden", page != pageAudio);
-            }
-
-            tabGame.clicked  += () => Show(tabGame, pageGame);
-            tabVideo.clicked += () => Show(tabVideo, pageVideo);
-            tabAudio.clicked += () => Show(tabAudio, pageAudio);
-        }
 
         private VisualElement BuildLoadoutScreen()
         {
-            var screen = FillRoot(_loadoutUxml.CloneTree());
+            LoadoutScreenView view = LoadoutScreenView.Build(
+                _loadoutUxml, _loadoutVm.Relics, r => _loadoutVm.Name(r), key => _loc?.GetString(key));
 
-            var grid       = screen.Q<ScrollView>("relic-grid");
-            var detailName = screen.Q<Label>("detail-name");
-            var detailDesc = screen.Q<Label>("detail-desc");
-            var detailTags = screen.Q<Label>("detail-tags");
-            var detailStats = screen.Q<Label>("detail-stats");
+            void ShowDetail(RelicData r) =>
+                view.ShowDetail(_loadoutVm.Name(r), _loadoutVm.Desc(r), _loadoutVm.Tags(r), _loadoutVm.StatsSummary(r));
 
-            grid.contentContainer.AddToClassList("gm-grid");
-            var cards = new List<(RelicData relic, VisualElement card)>();
+            void RefreshCards() => view.SyncCards(_loadoutVm.IsSelected, _loadoutVm.IsCurrent);
 
-            void ShowDetail(RelicData r)
-            {
-                detailName.text  = _loadoutVm.Name(r);
-                detailDesc.text  = _loadoutVm.Desc(r);
-                detailTags.text  = _loadoutVm.Tags(r);
-                detailStats.text = _loadoutVm.StatsSummary(r);
-            }
-
-            void RefreshCards()
-            {
-                foreach (var (relic, card) in cards)
-                {
-                    card.EnableInClassList("gm-card--selected", _loadoutVm.IsSelected(relic));
-                    card.EnableInClassList("gm-card--current", _loadoutVm.IsCurrent(relic));
-                }
-            }
-
-            IReadOnlyList<RelicData> relics = _loadoutVm.Relics;
-            for (int i = 0; i < relics.Count; i++)
-            {
-                RelicData relic = relics[i];
-                // КОНТРОЛ, а не ручная сборка. До 07.08.2026 здесь построчно повторялся конструктор
-                // RelicCard — те же классы, тот же спрайт, та же подпись, — и расхождение уже стоило
-                // грида: карточки контрола стали focusable, а собранные тут остались недоступны с
-                // клавиатуры. Один владелец сборки: правка контрола доезжает сюда сама.
-                var card = new RelicCard { RelicName = _loadoutVm.Name(relic) };
-                card.SetSprite(relic.Icon);
-
-                // Наведение → детали; клик → выбор (+звук) + предпросмотр деталей.
-                card.RegisterCallback<PointerEnterEvent>(_ => ShowDetail(relic));
-                card.RegisterCallback<ClickEvent>(_ => { _loadoutVm.Select(relic); RefreshCards(); ShowDetail(relic); });
-
-                grid.Add(card);
-                cards.Add((relic, card));
-            }
+            view.Hovered += ShowDetail;
+            view.Picked  += r => { _loadoutVm.Select(r); RefreshCards(); ShowDetail(r); };
 
             RefreshCards();
-            ShowDetail(_loadoutVm.Selected ?? (relics.Count > 0 ? relics[0] : null));
-
-            // Табы-заглушки (кроме Релик) — недоступны (структура на будущее: Предметы/Улучшения/AI).
-            Disable(screen.Q<Button>("tab-items"));
-            Disable(screen.Q<Button>("tab-upgrades"));
-            Disable(screen.Q<Button>("tab-ai"));
+            ShowDetail(_loadoutVm.Selected ?? view.FirstRelic);
 
             // Принять = применить + закрыть; Сохранить = применить, не закрывая; Закрыть = отмена.
-            screen.Q<Button>("btn-accept").clicked += () => { _loadoutVm.Apply(); Pop(); };
-            screen.Q<Button>("btn-save").clicked   += () => { _loadoutVm.Apply(); RefreshCards(); };
-            // Дверь наружу — тот же контрол, что и на прочих экранах: слово, место и вид у возврата
-            // одни на всю игру (правило Макса 22.08.2026).
-            Components.BackButton close = screen.Q<Components.BackButton>("btn-close");
-            close?.Localize(key => _loc?.GetString(key));
-            if (close != null) close.clicked += Pop;
-            return screen;
+            view.Accept.clicked += () => { _loadoutVm.Apply(); Pop(); };
+            view.Save.clicked   += () => { _loadoutVm.Apply(); RefreshCards(); };
+            if (view.Close != null) view.Close.clicked += Pop;
+
+            return view.Root;
         }
 
         // Экран награды (A3) — на UXML (RewardScreen.uxml) через общий RewardScreenView. Навигатор гарантирует
