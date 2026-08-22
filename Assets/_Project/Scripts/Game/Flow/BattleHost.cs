@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
@@ -24,7 +24,7 @@ namespace Guildmaster.Game.Flow
     /// последовательность. Теперь генератор рождается вместе с боем и сразу с нужным сидом — пересев
     /// вырван с корнем, а не спрятан за вызовом.</para>
     /// </remarks>
-    public sealed class BattleHost : IStartable, IDisposable
+    public sealed class BattleHost : IDisposable
     {
         private readonly IBattleSession   _session;
         private readonly IRunStateView    _runStates;
@@ -45,6 +45,15 @@ namespace Guildmaster.Game.Flow
             _activity          = activity;
             _battleScopePrefab = battleScopePrefab;
             _worldStage        = worldStage;
+
+            // Шов привязывается ЗДЕСЬ, а не в Start(): точки входа VContainer диспатчит на следующем
+            // кадре, а узел заказывает бой в том же кадре, в котором родилось мероприятие. Пока привязка
+            // жила в Start, первый бой такого забега уходил в Aborted («некому запустить бой») и игрок
+            // возвращался в главное меню — замер 22.08.2026 показал launchBound=false сразу после
+            // ActivityHost.Open и true кадром позже.
+            _session.BindLaunch(Open);
+            _session.BindReset(Close);
+            _session.BindRestart(Restart);
         }
 
         /// <summary>Идёт ли бой прямо сейчас — то есть существует ли боевой скоуп.</summary>
@@ -64,13 +73,6 @@ namespace Guildmaster.Game.Flow
         /// <summary>Достать боевой сервис текущего боя. Боя нет — <c>null</c>, и это законный ответ.</summary>
         public T Resolve<T>() where T : class
             => _battle != null && _battle.Container != null ? _battle.Container.Resolve<T>() : null;
-
-        public void Start()
-        {
-            _session.BindLaunch(Open);
-            _session.BindReset(Close);
-            _session.BindRestart(Restart);
-        }
 
         public void Dispose()
         {
