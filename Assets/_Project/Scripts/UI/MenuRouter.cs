@@ -693,49 +693,35 @@ namespace Guildmaster.UI
         private const string TransparentScreenClass = "gm-screen--transparent";
 
         // Маркер экрана системного меню (pause) для стиля/якорей UXML. Логика «мы в меню» — по RouterScreen.ScreenId.
-        private const string PauseScreenClass = "gm-pause-root";
 
         // --- Экраны ---
 
         private VisualElement BuildPauseScreen()
         {
-            var screen = FillRoot(_pauseUxml.CloneTree());
-            screen.AddToClassList(PauseScreenClass); // стилевой маркер «системное меню»
+            PauseScreenView view = PauseScreenView.Build(
+                _pauseUxml, key => _loc?.GetString(key), _coop?.CanInvite ?? false);
+
             // «Продолжить» = снять ТОЛЬКО системное меню (Pop), а не весь стек (CloseAll снёс бы карту под паузой
             // → resolve узла null → Aborted, тот же баг класса #37). Экраны под меню (карта/инвентарь) остаются.
-            screen.Q<Button>("btn-return").clicked += Pop;
+            view.Return.clicked += Pop;
+
             // Настройки из паузы остаются Modal (глушение ввода, возврат к паузе по ESC), но задник просят
             // сами: экран занимает кадр целиком и панели не имеет — под ним мельтешила бы арена забега.
-            screen.Q<Button>("btn-settings").clicked +=
-                () => PushScreen(BuildSettingsScreen, ScreenKind.Modal, requiresBackdrop: true);
+            view.Settings.clicked += () => PushScreen(BuildSettingsScreen, ScreenKind.Modal, requiresBackdrop: true);
 
-            // Приглашение живёт ЗДЕСЬ, а не в главном меню: лобби поднимается вместе с игрой, и до
-            // входа звать друга некуда. Экран не закрываем — оверлей Steam ложится поверх, игрок
-            // возвращается в ту же паузу.
-            var invite = screen.Q<Button>("btn-invite");
-            if (invite != null)
-            {
-                invite.text = Loc("ui.menu.invite", "Пригласить друга");
-                invite.SetEnabled(_coop?.CanInvite ?? false);
-                invite.clicked += () => _coop?.InviteFriend();
-            }
+            // Экран не закрываем — оверлей Steam ложится поверх, игрок возвращается в ту же паузу.
+            if (view.Invite != null) view.Invite.clicked += () => _coop?.InviteFriend();
 
             // QA #18/#37: «В главное меню» прерывает забег ЕДИНОЙ отменой (токен) — снять меню (Pop) + отменить
             // забег; отмена сама закрывает открытый экран забега (карта/награда/…) через навигатор и всплывает
             // OperationCanceledException в GameFlow → главное меню. Никакого CloseAll-веника (снос K11). Сейв цел.
-            var toMenu = screen.Q<Button>("btn-main-menu");
-            if (toMenu != null)
-            {
-                toMenu.text = Loc("ui.menu.to_main_menu", "В главное меню");
-                toMenu.clicked += () => { Pop(); _runControl?.RequestReturnToMainMenu(); };
-            }
-            var quit = screen.Q<Button>("btn-quit");
-            if (quit != null)
-            {
-                quit.text = Loc("ui.menu.quit", "Выйти из игры");
-                quit.clicked += () => { ShowQuitVeil(); _runControl?.RequestQuit(); };
-            }
-            return screen;
+            if (view.ToMainMenu != null)
+                view.ToMainMenu.clicked += () => { Pop(); _runControl?.RequestReturnToMainMenu(); };
+
+            if (view.Quit != null)
+                view.Quit.clicked += () => { ShowQuitVeil(); _runControl?.RequestQuit(); };
+
+            return view.Root;
         }
 
         // Локализованная строка с RU-фолбэком (весь новый UI на code-fallback до записи в String Table).
@@ -1078,7 +1064,7 @@ namespace Guildmaster.UI
         {
             if (CannotShow("Создание слота (_slotCreateScreen)", _slotCreateUxml)) return new VisualElement();
 
-            return FillRoot(SlotCreateView.Build(
+            return SlotCreateView.Build(
                 _slotCreateUxml,
                 kind,
                 suggestedName,
@@ -1087,7 +1073,7 @@ namespace Guildmaster.UI
                 Core.Players.PlayerColors.Count,
                 key => _loc?.GetString(key),
                 onCreate: request => { Pop(); onCreate?.Invoke(request); },
-                onBack: Pop));
+                onBack: Pop);
         }
 
         private VisualElement BuildProfileScreen(bool required, Action onClosed, bool customize = false)
@@ -1115,7 +1101,7 @@ namespace Guildmaster.UI
 
             bool canLeave = !required || (_profiles?.HasActiveProfile ?? false);
 
-            return FillRoot(ProfileScreenView.Build(
+            return ProfileScreenView.Build(
                 _profileUxml,
                 slots,
                 _profileSlotLimit,
@@ -1154,7 +1140,7 @@ namespace Guildmaster.UI
                 shadeOf: index => _palette != null &&
                                   _palette.TryGet(Core.Players.PlayerColors.TokenOf(index), out UnityEngine.Color shade)
                                       ? shade
-                                      : UnityEngine.Color.white));
+                                      : UnityEngine.Color.white);
         }
 
         /// <summary>

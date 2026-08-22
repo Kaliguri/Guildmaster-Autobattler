@@ -31,6 +31,10 @@ namespace Guildmaster.DevTools
             ["vessel-card"]  = BuildVesselCard,
             ["settings"]     = BuildSettings,
             ["loadout"]      = BuildLoadout,
+            ["camp"]         = BuildCamp,
+            ["profile"]      = BuildProfile,
+            ["slotcreate"]   = BuildSlotCreate,
+            ["pause"]        = BuildPause,
             // "map" снят: карта больше не UITK-экран, она живёт в мире (см. WorldMapView) и в UI-стенде
             // не собирается. Смотреть её — дев-командами gm_map_* в игре.
             ["shop"]         = BuildShop,
@@ -340,6 +344,68 @@ namespace Guildmaster.DevTools
                 "урон +12 · броня +4");
 
             root.Add(view.Root);
+        }
+
+        private static void BuildCamp(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/CampScreen.uxml");
+            if (uxml == null) { AddError(root, "CampScreen.uxml не найден"); return; }
+
+            // Привал со свежим бюджетом: на кадре видно полный счётчик действий и все кнопки живыми.
+            root.Add(Guildmaster.UI.CampScreenView.Build(
+                uxml, new Guildmaster.Guild.CampSession(), RuValue, onLeave: () => { }));
+        }
+
+        private static void BuildProfile(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/ProfileScreen.uxml");
+            if (uxml == null) { AddError(root, "ProfileScreen.uxml не найден"); return; }
+
+            // Три слота из пяти заняты: видно и активный профиль, и соседний, и пустое место.
+            var slots = new List<Guildmaster.UI.ProfileScreenView.SlotEntry>
+            {
+                new("p1", "Гильдмастер", true),
+                new("p2", "Второй заход", false),
+                new("p3", "Проба", false),
+            };
+
+            var palette = LoadFirst<Guildmaster.Data.Definitions.GuildmasterPalette>();
+            var emblems = LoadFirst<Guildmaster.Data.Definitions.GuildEmblemCatalog>();
+
+            root.Add(Guildmaster.UI.ProfileScreenView.Build(
+                uxml, slots, slotLimit: 5, identity: default, steamName: "Игрок",
+                skins: null, colorCount: Guildmaster.Core.Players.PlayerColors.Count, palette: palette,
+                canLeave: true, customize: false, localize: RuValue,
+                onSelect: null, onCreate: null, onDelete: null, onSave: null, onPreview: null, onBack: null,
+                emblemOf: id => emblems != null ? emblems.Resolve(id) : null,
+                shadeOf: index => palette != null &&
+                                  palette.TryGet(Guildmaster.Core.Players.PlayerColors.TokenOf(index),
+                                                 out UnityEngine.Color shade)
+                                      ? shade
+                                      : UnityEngine.Color.white));
+        }
+
+        private static void BuildSlotCreate(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/SlotCreateScreen.uxml");
+            if (uxml == null) { AddError(root, "SlotCreateScreen.uxml не найден"); return; }
+
+            root.Add(Guildmaster.UI.SlotCreateView.Build(
+                uxml, Guildmaster.UI.SlotCreateView.SlotKind.Guild, "Новая гильдия",
+                LoadFirst<Guildmaster.Data.Definitions.GuildEmblemCatalog>(),
+                LoadFirst<Guildmaster.Data.Definitions.GuildmasterPalette>(),
+                Guildmaster.Core.Players.PlayerColors.Count, RuValue,
+                onCreate: null, onBack: null));
+        }
+
+        private static void BuildPause(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/PauseScreen.uxml");
+            if (uxml == null) { AddError(root, "PauseScreen.uxml не найден"); return; }
+
+            // Приглашение доступно: на кадре нужен обычный вид пункта, а выключенный он показан в
+            // контактном листе элементов.
+            root.Add(Guildmaster.UI.PauseScreenView.Build(uxml, RuValue, canInvite: true).Root);
         }
 
         private static void BuildShop(VisualElement root)

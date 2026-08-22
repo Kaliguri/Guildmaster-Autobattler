@@ -83,6 +83,15 @@ namespace Guildmaster.UI
             VisualElement root = screen.childCount > 0 ? screen[0] : screen;
             root.pickingMode = PickingMode.Position;
 
+            // Растяжка по слою — часть вида: собранный без неё экран лёг бы в кадр другим размером,
+            // чем в игре, а кадром мы его и принимаем (правило Макса 23.08.2026).
+            screen.style.position = Position.Absolute;
+            screen.style.left = 0;
+            screen.style.top = 0;
+            screen.style.right = 0;
+            screen.style.bottom = 0;
+
+
             var title      = root.Q<Label>("profile-title");
             var slotsCap   = root.Q<Label>("slots-caption");
             var slotList   = root.Q<VisualElement>("slot-list");
