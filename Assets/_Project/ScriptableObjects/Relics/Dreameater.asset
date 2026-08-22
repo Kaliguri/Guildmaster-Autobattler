@@ -66,7 +66,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: a2c4e6b8d0f3517c9e1b3d5f7a9c1e24, type: 2}
     _selfEffects: []
     _baseCooldown: 0
-    _resourceCost: 30
+    _resourceCost: 35
     _targetMode: 1
     _damageMultiplier: 0
     _baseDamage: 0
