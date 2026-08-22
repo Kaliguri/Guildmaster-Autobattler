@@ -22,6 +22,21 @@ namespace Guildmaster.Balance.Editor
         private const float CapSeconds = 240f;
         private const ulong Seed = 1UL;
 
+        /// <summary>
+        /// Штатный отряд — фон, на котором меряется каждая замена. Задан ПОИМЁННО и намеренно.
+        /// </summary>
+        /// <remarks>
+        /// Раньше на каждую роль брался кит с МЕДИАННЫМ вкладом, и это делало фон плавающим: правка
+        /// одного кита сдвигала медиану, а с ней — дельты всех остальных. Поймано 22.08.2026 на
+        /// Пожирателе снов: она поднялась, эталонным дальником вместо Следопыта стал трешевый Лучник, и
+        /// Следопыт «вырос» с 0.0 до 27.7, не изменившись ни на йоту. Отчёт при этом выглядел
+        /// нормально — числа же поменялись у всех сразу.
+        /// <para>Состав подобран как ОБЫЧНЫЙ отряд, а не команда мечты: все четверо обычного тира, ни
+        /// одного выдающегося. Менять его можно, но только осознанно — вместе с оговоркой, что дельты
+        /// до и после смены несравнимы.</para>
+        /// </remarks>
+        private static readonly string[] Incumbents = { "Treant", "Frostbound", "Ranger", "Necromancer" };
+
         public static (string csv, string md) Run()
         {
             StatsConfig config = BalanceAssets.LoadStatsConfig();
@@ -30,21 +45,26 @@ namespace Guildmaster.Balance.Editor
             List<RelicData> relics = BalanceAssets.LoadRelics();
             Slot[] lineup = Lineups.Squad;
 
-            // 1. Вклад каждого кита в штатный отряд — им же выбираем медианного представителя роли.
-            var contribution = new Dictionary<RelicData, double>();
-            double baseline = TeamHp(config, classes, new RelicData[0], lineup, cap);
-            foreach (RelicData relic in relics)
-                contribution[relic] = TeamHp(config, classes, new[] { relic }, lineup, cap) - baseline;
-
-            // 2. Штатный отряд: медианный кит на каждую роль строя (роль без китов остаётся манекеном).
+            // Штатный отряд задан ПОИМЁННО (см. Incumbents): фон обязан быть одним и тем же от прогона
+            // к прогону, иначе дельты несравнимы между замерами.
             var squad = new List<RelicData>();
             var squadByRole = new Dictionary<UnitClass, RelicData>();
-            foreach (Slot slot in lineup)
+            foreach (string name in Incumbents)
             {
-                if (squadByRole.ContainsKey(slot.Role)) continue;
-                RelicData pick = MedianOfRole(relics, contribution, slot.Role);
-                if (pick == null) continue;
-                squadByRole[slot.Role] = pick;
+                RelicData pick = null;
+                foreach (RelicData relic in relics)
+                    if (relic != null && relic.name == name) { pick = relic; break; }
+
+                if (pick == null)
+                {
+                    Debug.LogError($"[SimBench] SquadSwapBench: штатный кит «{name}» не найден — фон " +
+                                   "замера уехал, и дельты этого прогона несравнимы с прошлыми.");
+                    continue;
+                }
+
+                UnitClass role = Lineups.SlotRole(pick.CombatClass);
+                if (squadByRole.ContainsKey(role)) continue;
+                squadByRole[role] = pick;
                 squad.Add(pick);
             }
 
@@ -87,14 +107,15 @@ namespace Guildmaster.Balance.Editor
 
             string notes =
                 $"**Замена в живом отряде** (штатный размер игры — четвёрка; потолок {CapSeconds:0} с/бой). " +
-                $"Штатный отряд: **{string.Join(", ", squadNames)}** — на каждую роль взят кит с МЕДИАННЫМ " +
-                "вкладом, чтобы фон был обычным отрядом, а не командой мечты. " +
+                $"Штатный отряд: **{string.Join(", ", squadNames)}** — состав ЗАФИКСИРОВАН поимённо, " +
+                "чтобы фон не менялся от прогона к прогону: пока на роль бралcя кит с медианным вкладом, " +
+                "правка одного кита сдвигала медиану, а с ней дельты всех остальных. " +
                 "Бой идёт против зеркала этого же отряда, в котором заменён ровно один боец, поэтому весь " +
                 "сдвиг — цена замены. **Delta** — разница остатков HP команд в процентных пунктах: плюс " +
                 "означает, что с этим китом отряд крепче штатного, минус — слабее. У самого штатного бойца " +
                 "дельта нулевая по построению (он дерётся сам с собой). " +
-                "Оговорка: медиана считается вкладом в отряд из манекенов, поэтому роли, где кит один, " +
-                "попадают в состав без выбора. " +
+                "Оговорка: сравнивать дельты между прогонами можно только при НЕИЗМЕННОМ штатном " +
+                "отряде — смена любого из четверых делает старые числа несопоставимыми. " +
                 "**Роли, которой в строю нет** (убийца), кит подвигает соседа по линии боя — фронтовой " +
                 "встаёт вместо Брузера. Сравнивать дельты можно только ВНУТРИ роли: хилер и дальник " +
                 "полезны отряду по-разному, и разница между ними — про ценность ролей, а не про силу китов.";
@@ -206,19 +227,6 @@ namespace Guildmaster.Balance.Editor
             }
 
             return maxHp > 0.0 ? hpLeft / maxHp : 0.0;
-        }
-
-        /// <summary>Кит роли с медианным вкладом. При чётном числе кандидатов берётся верхний из середины.</summary>
-        private static RelicData MedianOfRole(List<RelicData> relics,
-            Dictionary<RelicData, double> contribution, UnitClass role)
-        {
-            var ofRole = new List<RelicData>();
-            foreach (RelicData relic in relics)
-                if (Lineups.SlotRole(relic.CombatClass) == role) ofRole.Add(relic);
-
-            if (ofRole.Count == 0) return null;
-            ofRole.Sort((a, b) => contribution[a].CompareTo(contribution[b]));
-            return ofRole[ofRole.Count / 2];
         }
 
         private static double TeamHp(StatsConfig config, ClassBalanceConfig classes,
