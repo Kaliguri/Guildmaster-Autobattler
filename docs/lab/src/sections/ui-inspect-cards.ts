@@ -641,6 +641,406 @@ function relicList(ctx: CanvasRenderingContext2D, width: number, height: number)
   w.measure(ctx, { x: r.x + pad, y: r.y + 0.565, w: rowW, h: 0.1 }, "строка 10% высоты", width, height);
 }
 
+/* ══ Карточка-разворот: форма, заданная Максом 22.08.2026 ══════════════════
+
+   «Не надо все в одну умещать. Сверху должны быть табы: I. Основное (боевое, перки + внешний вид
+   (в данный момент, если есть релик - то внешний вид в релике), II. Дополнительно (Лор (кто,
+   откуда, как выглядит + статистика)». И сама карточка — книга с двумя страницами, разворот.
+
+   Отсюда каркас: окно, шапка с именем, ряд табов, корешок посередине и две страницы. Спорят
+   варианты только тем, что на какой странице лежит. У Реликвии — тот же каркас: игрок учит форму
+   один раз. */
+
+interface Book {
+  r: w.Rect;
+  left: w.Rect;
+  right: w.Rect;
+}
+
+/** Разворот с табами. Корешок рисуется линией, а не зазором: зазор читался бы как два окна,
+ *  а это одно — и переход между страницами обязан выглядеть перелистыванием. */
+function book(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  title: string,
+  sub: string,
+  activeTab: number
+): Book {
+  const r = overlay(ctx, width, height, 0.86);
+  const pad = 0.022;
+
+  w.text(ctx, title, { x: r.x + pad, y: r.y + 0.045 }, width, height, { size: 12 });
+  w.text(ctx, sub, { x: r.x + pad, y: r.y + 0.082 }, width, height, { size: 7, color: w.WIRE.accent });
+  w.box(ctx, { x: r.x + r.w - pad - 0.03, y: r.y + 0.022, w: 0.03, h: 0.045 }, width, height, {
+    label: "Esc",
+    size: 7
+  });
+
+  ["I · ОСНОВНОЕ", "II · ДОПОЛНИТЕЛЬНО"].forEach((t, i) => {
+    w.box(ctx, { x: r.x + pad + i * 0.2, y: r.y + 0.105, w: 0.19, h: 0.045 }, width, height, {
+      label: t,
+      size: 8,
+      lit: i === activeTab
+    });
+  });
+
+  const top = r.y + 0.175;
+  const bottom = r.y + r.h - pad;
+  const half = (r.w - pad * 3) / 2;
+  const spine = r.x + pad + half + pad / 2;
+  const [sx] = w.px({ x: spine, y: 0, w: 0, h: 0 }, width, height);
+  ctx.strokeStyle = w.WIRE.line;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(sx, top * height);
+  ctx.lineTo(sx, bottom * height);
+  ctx.stroke();
+
+  return {
+    r,
+    left: { x: r.x + pad, y: top, w: half, h: bottom - top },
+    right: { x: spine + pad / 2, y: top, w: half, h: bottom - top }
+  };
+}
+
+/** Фигура «Сосуда» в облачении текущей Реликвии: по слову Макса вид показывается таким, какой он
+ *  СЕЙЧАС, — реликвия одевает человека, и карточка обязана это показывать, а не абстрактное тело. */
+function figure(
+  ctx: CanvasRenderingContext2D,
+  r: w.Rect,
+  width: number,
+  height: number,
+  label = "вид целиком · в облачении «Щита»"
+): void {
+  w.box(ctx, r, width, height, { hollow: true, dashed: true });
+  w.text(ctx, label, { x: r.x + r.w / 2, y: r.y + r.h / 2 }, width, height, {
+    align: "center",
+    size: 8,
+    color: w.WIRE.dim
+  });
+}
+
+/** VI-А · Портрет и лист: левая страница целиком под облик, правая — всё боевое. */
+function bookFigure(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  const b = book(ctx, width, height, "КАЙ, СЫН КАМЕНОТЁСА", "Сосуд гильдии · Реликвия «Щит» · Танк · уровень 3", 0);
+
+  figure(ctx, { x: b.left.x, y: b.left.y, w: b.left.w, h: b.left.h - 0.07 }, width, height);
+  w.text(ctx, "Щит · Танк · держит строй", { x: b.left.x + b.left.w / 2, y: b.left.y + b.left.h - 0.035 }, width, height, {
+    align: "center",
+    size: 8,
+    color: w.WIRE.accent
+  });
+
+  const c = b.right.x;
+  section(ctx, "СТАТЫ", { x: c, y: b.right.y + 0.03 }, width, height);
+  lines(
+    ctx,
+    ["HP 820", "броня 24 · маг. броня 12", "урон 41 · скорость 3.2", "реген маны 5.0"],
+    { x: c, y: b.right.y + 0.065 },
+    width,
+    height
+  );
+
+  section(ctx, "ПЕРКИ", { x: c, y: b.right.y + 0.2 }, width, height);
+  lines(ctx, ["+ Стойкий: +8% брони", "− Тугодум: −10% каста"], { x: c, y: b.right.y + 0.235 }, width, height);
+
+  section(ctx, "СНАРЯЖЕНИЕ", { x: c, y: b.right.y + 0.31 }, width, height);
+  itemRow(ctx, { x: c, y: b.right.y + 0.345 }, width, height, 0.07);
+
+  section(ctx, "ТРАВМЫ", { x: c, y: b.right.y + 0.45 }, width, height);
+  injuries(ctx, { x: c, y: b.right.y + 0.48 }, width, height);
+  w.text(ctx, "Закалка: Стойкость", { x: c, y: b.right.y + 0.54 }, width, height, {
+    size: 7,
+    color: w.WIRE.dim
+  });
+}
+
+/** VI-Б · Человек и боец: слева облик и то, что делает его собой; справа — чем он дерётся. */
+function bookHalves(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  const b = book(ctx, width, height, "КАЙ, СЫН КАМЕНОТЁСА", "Сосуд гильдии · Реликвия «Щит» · Танк · уровень 3", 0);
+
+  figure(ctx, { x: b.left.x, y: b.left.y, w: b.left.w, h: b.left.h * 0.58 }, width, height);
+  section(ctx, "ПЕРКИ", { x: b.left.x, y: b.left.y + b.left.h * 0.63 }, width, height);
+  lines(
+    ctx,
+    ["+ Стойкий: +8% брони", "− Тугодум: −10% скорости каста"],
+    { x: b.left.x, y: b.left.y + b.left.h * 0.63 + 0.035 },
+    width,
+    height
+  );
+  section(ctx, "СУДЬБА И ОБЕТЫ", { x: b.left.x, y: b.left.y + b.left.h * 0.63 + 0.11 }, width, height);
+  lines(
+    ctx,
+    ["Главный герой · 4 / 10", "Обет: не добивать раненых"],
+    { x: b.left.x, y: b.left.y + b.left.h * 0.63 + 0.145 },
+    width,
+    height
+  );
+
+  const c = b.right.x;
+  section(ctx, "СТАТЫ", { x: c, y: b.right.y + 0.03 }, width, height);
+  lines(
+    ctx,
+    ["HP 820", "броня 24 · маг. броня 12", "урон 41", "скорость 3.2", "реген маны 5.0"],
+    { x: c, y: b.right.y + 0.065 },
+    width,
+    height
+  );
+  section(ctx, "СНАРЯЖЕНИЕ", { x: c, y: b.right.y + 0.24 }, width, height);
+  itemRow(ctx, { x: c, y: b.right.y + 0.275 }, width, height, 0.08);
+  section(ctx, "ТРАВМЫ И ЗАКАЛКА", { x: c, y: b.right.y + 0.39 }, width, height);
+  injuries(ctx, { x: c, y: b.right.y + 0.42 }, width, height);
+  lines(
+    ctx,
+    ["Ушиб колена · Рана плеча", "Закалка: Стойкость"],
+    { x: c, y: b.right.y + 0.49 },
+    width,
+    height
+  );
+}
+
+/** VI-В · Клетки на развороте: облик колонкой, остальное — четыре секции в рамках. */
+function bookCells(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  const b = book(ctx, width, height, "КАЙ, СЫН КАМЕНОТЁСА", "Сосуд гильдии · Реликвия «Щит» · Танк · уровень 3", 0);
+
+  figure(ctx, { x: b.left.x, y: b.left.y, w: b.left.w * 0.42, h: b.left.h }, width, height, "вид в облачении");
+
+  const cells: Array<[string, w.Rect]> = [
+    ["СТАТЫ", { x: b.left.x + b.left.w * 0.46, y: b.left.y, w: b.left.w * 0.54, h: b.left.h / 2 - 0.012 }],
+    [
+      "ПЕРКИ",
+      { x: b.left.x + b.left.w * 0.46, y: b.left.y + b.left.h / 2 + 0.012, w: b.left.w * 0.54, h: b.left.h / 2 - 0.012 }
+    ],
+    ["СНАРЯЖЕНИЕ", { x: b.right.x, y: b.right.y, w: b.right.w, h: b.right.h / 2 - 0.012 }],
+    ["ТРАВМЫ", { x: b.right.x, y: b.right.y + b.right.h / 2 + 0.012, w: b.right.w, h: b.right.h / 2 - 0.012 }]
+  ];
+
+  cells.forEach(([title, cell]) => {
+    w.box(ctx, cell, width, height, { hollow: true });
+    w.text(ctx, title, { x: cell.x + 0.012, y: cell.y + 0.032 }, width, height, {
+      size: 8,
+      color: w.WIRE.accent
+    });
+    if (title === "СТАТЫ") {
+      lines(ctx, ["HP 820", "броня 24 · маг. 12", "урон 41 · скор. 3.2"], { x: cell.x + 0.012, y: cell.y + 0.07 }, width, height);
+    } else if (title === "ПЕРКИ") {
+      lines(ctx, ["+ Стойкий: +8% брони", "− Тугодум: −10% каста"], { x: cell.x + 0.012, y: cell.y + 0.07 }, width, height);
+    } else if (title === "СНАРЯЖЕНИЕ") {
+      itemRow(ctx, { x: cell.x + 0.012, y: cell.y + 0.055 }, width, height, 0.08);
+      w.box(ctx, { x: cell.x + 0.012, y: cell.y + 0.16, w: cell.w - 0.024, h: 0.045 }, width, height, {
+        label: "Реликвия «Щит» →",
+        size: 7
+      });
+    } else {
+      injuries(ctx, { x: cell.x + 0.012, y: cell.y + 0.06 }, width, height);
+      lines(ctx, ["Ушиб колена · Рана плеча", "Закалка: Стойкость"], { x: cell.x + 0.012, y: cell.y + 0.13 }, width, height);
+    }
+  });
+}
+
+/** VII-А · Дополнительно, лор и статистика: слева кто он и откуда, справа числа забегов. */
+function bookLore(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  const b = book(ctx, width, height, "КАЙ, СЫН КАМЕНОТЁСА", "Сосуд гильдии · Реликвия «Щит» · Танк · уровень 3", 1);
+
+  section(ctx, "КТО И ОТКУДА", { x: b.left.x, y: b.left.y + 0.03 }, width, height);
+  lines(
+    ctx,
+    [
+      "Пришёл из каменоломни у Серых",
+      "Врат, когда гильдия взяла его",
+      "отца в свой первый поход.",
+      "",
+      "Немногословен, спит у входа,",
+      "первым встаёт на дежурство."
+    ],
+    { x: b.left.x, y: b.left.y + 0.065 },
+    width,
+    height,
+    0.035
+  );
+
+  section(ctx, "КАК ВЫГЛЯДИТ", { x: b.left.x, y: b.left.y + 0.31 }, width, height);
+  lines(
+    ctx,
+    ["Широкие плечи, шрам через бровь,", "каменная пыль под ногтями."],
+    { x: b.left.x, y: b.left.y + 0.345 },
+    width,
+    height,
+    0.035
+  );
+
+  section(ctx, "СТАТИСТИКА", { x: b.right.x, y: b.right.y + 0.03 }, width, height);
+  const rows = [
+    ["боёв", "48"],
+    ["побед", "41"],
+    ["смертей в бою", "2"],
+    ["урона нанесено", "184 200"],
+    ["урона принято", "301 500"],
+    ["походов", "6"]
+  ];
+  rows.forEach(([k, v], i) => {
+    const y = b.right.y + 0.075 + i * 0.045;
+    w.text(ctx, k ?? "", { x: b.right.x, y }, width, height, { size: 7, color: w.WIRE.dim });
+    w.text(ctx, v ?? "", { x: b.right.x + b.right.w, y }, width, height, {
+      size: 8,
+      align: "right",
+      color: w.WIRE.text
+    });
+  });
+
+  section(ctx, "ЛЕТОПИСЬ", { x: b.right.x, y: b.right.y + 0.36 }, width, height);
+  lines(
+    ctx,
+    ["Выстоял один против троих у", "Тихого брода, поход четвёртый."],
+    { x: b.right.x, y: b.right.y + 0.395 },
+    width,
+    height,
+    0.035
+  );
+}
+
+/** VII-Б · Дополнительно, летопись лентой: слева облик и краткое досье, справа записи подвигов. */
+function bookChronicle(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  const b = book(ctx, width, height, "КАЙ, СЫН КАМЕНОТЁСА", "Сосуд гильдии · Реликвия «Щит» · Танк · уровень 3", 1);
+
+  figure(ctx, { x: b.left.x, y: b.left.y, w: b.left.w * 0.5, h: b.left.h * 0.6 }, width, height, "облик");
+  section(ctx, "КТО И ОТКУДА", { x: b.left.x + b.left.w * 0.55, y: b.left.y + 0.03 }, width, height);
+  lines(
+    ctx,
+    ["Из каменоломни у Серых", "Врат. Немногословен.", "Шрам через бровь."],
+    { x: b.left.x + b.left.w * 0.55, y: b.left.y + 0.065 },
+    width,
+    height,
+    0.035
+  );
+  section(ctx, "ЦИФРАМИ", { x: b.left.x, y: b.left.y + b.left.h * 0.66 }, width, height);
+  lines(
+    ctx,
+    ["48 боёв · 41 победа · 2 смерти", "184 200 урона · 6 походов"],
+    { x: b.left.x, y: b.left.y + b.left.h * 0.66 + 0.035 },
+    width,
+    height,
+    0.035
+  );
+
+  section(ctx, "ЛЕТОПИСЬ ПОДВИГОВ", { x: b.right.x, y: b.right.y + 0.03 }, width, height);
+  for (let i = 0; i < 4; i++) {
+    const row: w.Rect = { x: b.right.x, y: b.right.y + 0.065 + i * 0.105, w: b.right.w, h: 0.09 };
+    w.box(ctx, row, width, height, { hollow: true });
+    w.text(ctx, ["Поход 4", "Поход 5", "Поход 5", "Поход 6"][i] ?? "", { x: row.x + 0.012, y: row.y + 0.028 }, width, height, {
+      size: 7,
+      color: w.WIRE.accent
+    });
+    w.text(
+      ctx,
+      [
+        "Выстоял один против троих",
+        "Пережил бой на 3% HP",
+        "Ни одной смерти за акт",
+        "Убил Ветерана в одиночку"
+      ][i] ?? "",
+      { x: row.x + 0.012, y: row.y + 0.062 },
+      width,
+      height,
+      { size: 7, color: w.WIRE.dim }
+    );
+  }
+}
+
+/** VIII-А · Реликвия, «Основное»: слева знак и облачение, справа кит строками. */
+function relicBookMain(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  const b = book(ctx, width, height, "THE BULWARK", "Стандартная · Обычная · класс Танк · уровень 2 · носит Кай", 0);
+
+  figure(ctx, { x: b.left.x, y: b.left.y, w: b.left.w * 0.55, h: b.left.h * 0.62 }, width, height, "знак и облачение");
+  section(ctx, "АВТОАТАКА", { x: b.left.x + b.left.w * 0.6, y: b.left.y + 0.03 }, width, height);
+  lines(ctx, ["удар щитом", "41 урона · 1.2 с"], { x: b.left.x + b.left.w * 0.6, y: b.left.y + 0.065 }, width, height, 0.035);
+  section(ctx, "ПАССИВКИ", { x: b.left.x, y: b.left.y + b.left.h * 0.68 }, width, height);
+  lines(
+    ctx,
+    ["+15% брони соседям в строю", "Уровень 2: барьер держится дольше"],
+    { x: b.left.x, y: b.left.y + b.left.h * 0.68 + 0.035 },
+    width,
+    height,
+    0.035
+  );
+
+  section(ctx, "СПОСОБНОСТИ", { x: b.right.x, y: b.right.y + 0.03 }, width, height);
+  for (let i = 0; i < 3; i++) {
+    const row: w.Rect = { x: b.right.x, y: b.right.y + 0.065 + i * 0.135, w: b.right.w, h: 0.115 };
+    w.box(ctx, row, width, height, { hollow: true });
+    w.box(ctx, { x: row.x + 0.01, y: row.y + 0.02, w: 0.04, h: 0.075 }, width, height, {});
+    w.text(ctx, ["Стена", "Вызов", "Клятва"][i] ?? "", { x: row.x + 0.06, y: row.y + 0.035 }, width, height, { size: 9 });
+    w.text(
+      ctx,
+      ["40 маны · при HP < 50%", "25 маны · раз в 8 с", "60 маны · при смерти союзника"][i] ?? "",
+      { x: row.x + 0.06, y: row.y + 0.066 },
+      width,
+      height,
+      { size: 7, color: w.WIRE.dim }
+    );
+    w.text(
+      ctx,
+      ["барьер 180 на 6 с", "тянет врага к себе", "+30% брони всему отряду"][i] ?? "",
+      { x: row.x + 0.06, y: row.y + 0.092 },
+      width,
+      height,
+      { size: 7, color: w.WIRE.dim }
+    );
+  }
+}
+
+/** VIII-Б · Реликвия, «Дополнительно»: лор кита и его история в гильдии. */
+function relicBookLore(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  const b = book(ctx, width, height, "THE BULWARK", "Стандартная · Обычная · класс Танк · уровень 2 · носит Кай", 1);
+
+  section(ctx, "ЧЕЙ БЫЛ", { x: b.left.x, y: b.left.y + 0.03 }, width, height);
+  lines(
+    ctx,
+    [
+      "Щит, за которым погиб последний",
+      "защитник Врат. Его несли шестеро,",
+      "и ни один не дожил до утра.",
+      "",
+      "Реликвия не помнит имён — только",
+      "то, что за ней всегда кто-то стоял."
+    ],
+    { x: b.left.x, y: b.left.y + 0.065 },
+    width,
+    height,
+    0.035
+  );
+  section(ctx, "КАК МЕНЯЕТ НОСИТЕЛЯ", { x: b.left.x, y: b.left.y + 0.31 }, width, height);
+  lines(
+    ctx,
+    ["Плечи каменеют, шаг тяжелеет,", "спина не поворачивается к бою."],
+    { x: b.left.x, y: b.left.y + 0.345 },
+    width,
+    height,
+    0.035
+  );
+
+  section(ctx, "СТАТИСТИКА", { x: b.right.x, y: b.right.y + 0.03 }, width, height);
+  const rows = [
+    ["боёв с ней", "31"],
+    ["побед", "27"],
+    ["носителей было", "3"],
+    ["копий собрано", "2 / 3"],
+    ["урона принято", "241 800"]
+  ];
+  rows.forEach(([k, v], i) => {
+    const y = b.right.y + 0.075 + i * 0.045;
+    w.text(ctx, k ?? "", { x: b.right.x, y }, width, height, { size: 7, color: w.WIRE.dim });
+    w.text(ctx, v ?? "", { x: b.right.x + b.right.w, y }, width, height, {
+      size: 8,
+      align: "right",
+      color: w.WIRE.text
+    });
+  });
+  section(ctx, "НОСИТЕЛИ", { x: b.right.x, y: b.right.y + 0.32 }, width, height);
+  lines(ctx, ["Кай (сейчас) · Ирма · Дан"], { x: b.right.x, y: b.right.y + 0.355 }, width, height);
+}
+
 const section_: SectionDef = {
   id: "ui-inspect-cards",
   title: "Осмотр и карточки",
@@ -684,7 +1084,7 @@ const section_: SectionDef = {
       items: [
         {
           id: "panel-column",
-          status: "waiting",
+          status: "accepted",
           title: "III-А · Колонка у кромки",
           tag: "как в Guildrun",
           note: "Узкая панель во всю высоту у правой кромки, содержимое списком сверху вниз.",
@@ -701,7 +1101,7 @@ const section_: SectionDef = {
         },
         {
           id: "panel-wide",
-          status: "waiting",
+          status: "rejected",
           title: "III-Б · Широкая карта",
           tag: "две колонки внутри",
           note: "Панель шире и делится на «статы» и «человек»: всё помещается без прокрутки.",
@@ -718,7 +1118,7 @@ const section_: SectionDef = {
         },
         {
           id: "panel-shelf",
-          status: "waiting",
+          status: "rejected",
           title: "III-В · Полка снизу",
           tag: "тела не трогает",
           note: "Панель лежит вдоль низа кадра тремя секциями в ряд; тела остаются открытыми.",
@@ -737,16 +1137,167 @@ const section_: SectionDef = {
     },
     {
       kind: "head",
+      id: "book",
+      title: "Карточка-разворот с табами",
+      lede:
+        "Форма задана Максом 22.08.2026 и не спорится: карточка — книга с двумя страницами, сверху " +
+        "два таба, и всё в одну страницу не умещается."
+    },
+    {
+      kind: "table",
+      head: ["Таб", "Что несёт"],
+      rows: [
+        ["I · Основное", "боевое, перки и внешний вид — в облачении текущей Реликвии"],
+        ["II · Дополнительно", "лор: кто, откуда, как выглядит — и статистика"]
+      ]
+    },
+    {
+      kind: "note",
+      html:
+        "<b>Вид показывается в облачении.</b> «Внешний вид (в данный момент, если есть релик — то " +
+        "внешний вид в релике)»: карточка рисует человека таким, какой он сейчас, а не абстрактное " +
+        "тело. Значит арт зависит от связки «Сосуд + Реликвия», и это требование к пайплайну арта, " +
+        "а не к раскладке."
+    },
+    {
+      kind: "stands",
+      items: [
+        {
+          id: "book-figure",
+          status: "waiting",
+          title: "VI-А · Портрет и лист",
+          tag: "таб I · Основное",
+          note: "Левая страница целиком под облик, правая — всё боевое подряд: статы, перки, снаряжение, травмы.",
+          facts: [
+            ["страница", "43% каждая"],
+            ["облик", "во всю левую"],
+            ["секций справа", "4"],
+            ["таб", "Основное"]
+          ],
+          verdict:
+            "Облик получает столько места, сколько он и заслуживает на карточке человека, — и сразу видно, во что его одела Реликвия. Цена — правая страница несёт четыре секции подряд и к низу становится списком.",
+          size: [480, 270],
+          draw: bookFigure
+        },
+        {
+          id: "book-halves",
+          status: "waiting",
+          title: "VI-Б · Человек и боец",
+          tag: "таб I · Основное",
+          note: "Слева облик и то, что делает его собой — перки, Судьба, Обеты. Справа — чем он дерётся.",
+          facts: [
+            ["облик", "58% левой страницы"],
+            ["слева", "перки, Судьба, Обеты"],
+            ["справа", "статы, снаряжение, травмы"],
+            ["таб", "Основное"]
+          ],
+          verdict:
+            "Разворот работает как разворот: левая страница про человека, правая про бойца — и глаз знает, на какой стороне искать. Цена — облик ужимается до 58% страницы, а Судьба с Обетами спорят за низ с перками.",
+          size: [480, 270],
+          draw: bookHalves
+        },
+        {
+          id: "book-cells",
+          status: "waiting",
+          title: "VI-В · Клетки на развороте",
+          tag: "таб I · Основное",
+          note: "Облик узкой колонкой, остальное — четыре секции в рамках, по две на страницу.",
+          facts: [
+            ["облик", "42% левой страницы"],
+            ["клеток", "4, по две на страницу"],
+            ["границы", "у каждой секции своя"],
+            ["таб", "Основное"]
+          ],
+          verdict:
+            "Каждая секция в рамке: травмы находятся мгновенно, а пятую секцию можно добавить не переверстывая разворот. Цена — рамок становится много, и разворот начинает читаться сеткой, а не книгой.",
+          size: [480, 270],
+          draw: bookCells
+        },
+        {
+          id: "book-lore",
+          status: "waiting",
+          title: "VII-А · Лор и статистика",
+          tag: "таб II · Дополнительно",
+          note: "Слева кто и откуда плюс как выглядит, справа — числа забегов и строка летописи.",
+          facts: [
+            ["слева", "лор и внешность"],
+            ["справа", "шесть строк статистики"],
+            ["летопись", "внизу правой"],
+            ["таб", "Дополнительно"]
+          ],
+          verdict:
+            "Чистое деление: слева слова, справа числа — и ни одно не мешает другому. Цена — облика на этом табе нет вовсе, хотя «как выглядит» описано словами: текст конкурирует с картинкой, которой рядом нет.",
+          size: [480, 270],
+          draw: bookLore
+        },
+        {
+          id: "book-chronicle",
+          status: "waiting",
+          title: "VII-Б · Летопись лентой",
+          tag: "таб II · Дополнительно",
+          note: "Слева облик и краткое досье с цифрами, справа — подвиги записями по походам.",
+          facts: [
+            ["облик", "есть и на этом табе"],
+            ["слева", "досье + цифры строкой"],
+            ["справа", "4 записи летописи"],
+            ["таб", "Дополнительно"]
+          ],
+          verdict:
+            "Летопись подана как то, чем она и является — списком событий, а не абзацем; и облик остаётся на виду при переходе между табами. Цена — статистика сжата до двух строк, и сравнить двух «Сосудов» числами уже не выйдет.",
+          size: [480, 270],
+          draw: bookChronicle
+        },
+        {
+          id: "relic-book-main",
+          status: "waiting",
+          title: "VIII-А · Реликвия, «Основное»",
+          tag: "тот же каркас",
+          note: "Слева знак и облачение плюс автоатака и пассивки, справа — три способности строками с ценой и условием.",
+          facts: [
+            ["каркас", "тот же разворот"],
+            ["слева", "знак, автоатака, пассивки"],
+            ["справа", "3 способности"],
+            ["строка", "11.5% высоты"]
+          ],
+          verdict:
+            "Цена и условие каста читаются целиком, а знак и облачение объясняют, во что Реликвия одевает носителя. Цена — пассивки задвинуты в низ левой страницы, где их легко не заметить.",
+          size: [480, 270],
+          draw: relicBookMain
+        },
+        {
+          id: "relic-book-lore",
+          status: "waiting",
+          title: "VIII-Б · Реликвия, «Дополнительно»",
+          tag: "тот же каркас",
+          note: "Слева чей был щит и как он меняет носителя, справа — статистика Реликвии и список её носителей.",
+          facts: [
+            ["слева", "лор и влияние на носителя"],
+            ["справа", "5 строк статистики"],
+            ["носители", "списком"],
+            ["таб", "Дополнительно"]
+          ],
+          verdict:
+            "«Как меняет носителя» — единственное место, где связь Реликвии с обликом человека объяснена словами, а не только показана. Цена — копии и уровень попали в статистику, хотя это механика и им место на табе «Основное».",
+          size: [480, 270],
+          draw: relicBookLore
+        }
+      ]
+    },
+    {
+      kind: "head",
       id: "vessel-card",
-      title: "Расширенная карточка «Сосуда» — три устройства",
-      lede: "Окно 86% кадра, края подложки видны. Спорится не размер, а порядок секций внутри."
+      title: "Первая попытка — отклонена целиком",
+      lede:
+        "Шесть карточек ниже нарисованы до того, как форма была задана: одно окно без табов, всё " +
+        "содержимое разом. Вердикт Макса 22.08.2026 — «ничего из этого»; оставлены как след того, " +
+        "почему разворот с табами оказался нужен."
     },
     {
       kind: "stands",
       items: [
         {
           id: "card-spread",
-          status: "waiting",
+          status: "rejected",
           title: "IV-А · Разворот",
           tag: "вид слева, секции справа",
           note: "Вид в полный рост занимает левую пятую, справа две колонки секций.",
@@ -763,7 +1314,7 @@ const section_: SectionDef = {
         },
         {
           id: "card-columns",
-          status: "waiting",
+          status: "rejected",
           title: "IV-Б · Три колонны",
           tag: "кто он / чем дерётся",
           note: "Вид, «человек» и «боец» — три вертикали с явной границей между смыслами.",
@@ -780,7 +1331,7 @@ const section_: SectionDef = {
         },
         {
           id: "card-sheet",
-          status: "waiting",
+          status: "rejected",
           title: "IV-В · Лист состояний",
           tag: "как лист НРИ",
           note: "Шапка во всю ширину, под ней шесть клеток-секций: вид, досье, перки, травмы, снаряжение, статы.",
@@ -810,7 +1361,7 @@ const section_: SectionDef = {
       items: [
         {
           id: "relic-spread",
-          status: "waiting",
+          status: "rejected",
           title: "V-А · Разворот кита",
           tag: "зеркало IV-А",
           note: "Знак и лор слева, автоатака и три способности строками справа.",
@@ -827,7 +1378,7 @@ const section_: SectionDef = {
         },
         {
           id: "relic-book",
-          status: "waiting",
+          status: "rejected",
           title: "V-Б · Две страницы книги",
           tag: "заявка Макса",
           note: "Один разворот: слева «Сосуд» кратко, справа его Реликвия. Переход — перелистывание, а не второе окно.",
@@ -844,7 +1395,7 @@ const section_: SectionDef = {
         },
         {
           id: "relic-list",
-          status: "waiting",
+          status: "rejected",
           title: "V-В · Список способностей",
           tag: "кит во всю ширину",
           note: "Шапка со знаком, под ней четыре строки во всю ширину: автоатака и три способности с ценой и условием.",
