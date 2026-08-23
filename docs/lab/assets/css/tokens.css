@@ -1,0 +1,49 @@
+/* Токены Лаборатории: палитра, шрифты, размеры каркаса.
+
+   Цвета скопированы из палитры проекта (UI/Theme/tokens.*.uss) руками: это копия, и она вправе
+   отстать. Сверяться при крупных правках палитры. Живой снимок настоящей палитры показывает
+   раздел «Стиль» — он читает её с диска через /api/palette. */
+
+/* Каркас локальных инструментов Guildmaster: стенд джуса и (позже) сайт баланса.
+   Ноль внешних зависимостей — файл обязан открываться с диска через год.
+   Цвета скопированы из палитры проекта (UI/Theme/tokens.*.uss) руками: это копия,
+   и она вправе отстать. Сверяться при крупных правках палитры. */
+
+:root {
+  --ground: #12100D;
+  --panel: #1A130C;
+  --panel-lift: #221A11;
+  --edge: #3A2C1E;
+  --edge-soft: #2A2016;
+  --text: #E8DCC4;
+  --text-dim: #C4B393;
+  --muted: #93805E;
+  --brass: #B8863B;
+  --brass-lift: #C69A4B;
+
+  --flare-white: #FFFFFF;
+  --flare-holo: #4DF2FF;
+  --flare-honey: #FFCC33;
+  --flare-mint: #8CFFA6;
+
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", "Consolas", "Liberation Mono", monospace;
+  --sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+
+  --gap: 1.5rem;
+  --radius: 2px;
+  --bar-h: 0rem;
+  --side-w: 15.5rem;
+  --toc-w: 13.5rem;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}

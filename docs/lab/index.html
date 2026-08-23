@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Лаборатория · Guildmaster</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/shell.css">
+  <!-- Четыре файла вместо одного на 38 КБ: токены, оболочка, содержимое, отдельные разделы.
+       Порядок каскадный и значимый — sections.css уточняет content.css, а не наоборот. -->
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/shell.css">
+  <link rel="stylesheet" href="assets/css/content.css">
+  <link rel="stylesheet" href="assets/css/sections.css">
 </head>
 <body>
 

@@ -149,7 +149,7 @@ try {
     if (-not (Test-Path $Out)) { throw "Браузер не создал снимок ($Out). Адрес: $url" }
 
     # --- кроп по метке ---
-    # Страница в режиме съёмки красит фон магентой (shell.css): всё, что не она, — кадр.
+    # Страница в режиме съёмки красит фон магентой (assets/css/shell.css): всё, что не она, — кадр.
     if (-not $NoCrop) {
         $python = Get-Command python -ErrorAction SilentlyContinue
         if (-not $python) { $python = Get-Command py -ErrorAction SilentlyContinue }
