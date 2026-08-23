@@ -3,7 +3,7 @@
    Ни одна из трёх не ведётся руками. Витрина берёт превью из самого раздела, музей — фильтр по
    статусу стенда. Список, который ведут отдельно от содержимого, расходится с ним за неделю. */
 
-import { el, html } from "./dom.js";
+import { clear, el, html } from "./dom.js";
 import { watch } from "./stage.js";
 import * as lightbox from "./lightbox.js";
 import * as toggles from "./toggles.js";
@@ -42,8 +42,14 @@ export function hero(title: string, lede?: string, eyebrow = "Лаборатор
 
 /* ---------- главная: области ---------- */
 
+/** Догрузка раздела по требованию. Витрина знает id разделов из реестра, но их СОДЕРЖИМОЕ (живое
+ *  превью, счётчик стендов) лежит в модуле раздела — а модулей 64 штуки на 2.6 МБ. Раньше витрина
+ *  ждала их все: главная грузила весь сайт ради пяти картинок. Теперь модуль грузится тогда,
+ *  когда карточка доехала до экрана. */
+export type Ensure = (pageId: string) => Promise<SectionDef | null>;
+
 export function renderHome(
-  view: HTMLElement, areas: AreaDef[], pages: PageDef[], loaded: Map<string, SectionDef>
+  view: HTMLElement, areas: AreaDef[], pages: PageDef[], loaded: Map<string, SectionDef>, ensure: Ensure
 ): void {
   beginScenes();
   view.appendChild(
@@ -62,13 +68,10 @@ export function renderHome(
     card.href = `#/${area.id}`;
 
     // Превью области — первая живая сцена любого её раздела: карточка обязана показывать, что внутри.
-    const cover = inside.map((p) => loaded.get(p.id)).find((d) => d && coverStand(d));
-    const stand = cover ? coverStand(cover) : null;
-    if (stand) {
-      card.appendChild(coverBox(stand));
-    } else if (area.icon) {
-      card.appendChild(el("div", "card-mark", area.icon));
-    }
+    const slot = el("div", "card-slot");
+    if (area.icon) slot.appendChild(el("div", "card-mark", area.icon));
+    card.appendChild(slot);
+    lazyCover(slot, inside.map((p) => p.id), loaded, ensure);
 
     const body = el("div", "card-text");
     body.appendChild(el("h3", null, area.title));
@@ -85,6 +88,58 @@ export function renderHome(
   }
   view.appendChild(grid);
   commitScenes();
+}
+
+/* Ленивое превью.
+
+   Наблюдатель, а не загрузка всего: 64 модуля на 2.6 МБ парсились при каждом заходе на главную и
+   на обзор ЛЮБОЙ области, хотя на экране пять-шесть карточек. Раздел грузится, когда его карточка
+   доехала до окна, и ровно один раз.
+
+   Порог 200 px: карточка успевает нарисоваться до того, как попадёт в поле зрения, и подстановка
+   картинки не мелькает под курсором. */
+const lazyWatcher = new IntersectionObserver(
+  (entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      lazyWatcher.unobserve(entry.target);
+      const job = lazyJobs.get(entry.target);
+      lazyJobs.delete(entry.target);
+      void job?.();
+    }
+  },
+  { rootMargin: "200px" }
+);
+const lazyJobs = new Map<Element, () => Promise<void>>();
+
+function lazyCover(slot: HTMLElement, ids: string[], loaded: Map<string, SectionDef>, ensure: Ensure): void {
+  const fill = async (): Promise<void> => {
+    for (const id of ids) {
+      const def = loaded.get(id) ?? (await ensure(id));
+      const stand = def ? coverStand(def) : null;
+      if (!stand) continue;
+      clear(slot);
+      const box = coverBox(stand);
+      slot.appendChild(box);
+      // Сцена приехала после общей сборки страницы — лайтбокс узнаёт о ней отдельно.
+      addLightboxItems([{ kind: "scene", stand, w: stand.size?.[0] ?? 320, h: stand.size?.[1] ?? 280 }]);
+      return;
+    }
+  };
+  lazyJobs.set(slot, fill);
+  lazyWatcher.observe(slot);
+}
+
+/** Счётчик стендов на карточке раздела — тоже лениво: он живёт в модуле раздела. */
+function lazyTally(host: HTMLElement, pageId: string, loaded: Map<string, SectionDef>, ensure: Ensure): void {
+  const fill = async (): Promise<void> => {
+    const def = loaded.get(pageId) ?? (await ensure(pageId));
+    if (!def) return;
+    const text = tallyText(def);
+    if (text) host.textContent = text;
+  };
+  lazyJobs.set(host, fill);
+  lazyWatcher.observe(host);
 }
 
 /* Превью для карточки. Сцена рисуется в СВОЁМ логическом размере, иначе стенд, рассчитанный на
@@ -105,44 +160,59 @@ function coverBox(stand: StandDef): HTMLElement {
 /* ---------- обзор области ---------- */
 
 export function renderArea(
-  view: HTMLElement, area: AreaDef, pages: PageDef[], loaded: Map<string, SectionDef>
+  view: HTMLElement, area: AreaDef, pages: PageDef[], loaded: Map<string, SectionDef>, ensure: Ensure
 ): void {
   beginScenes();
   view.appendChild(hero(area.title, area.blurb, "Лаборатория · область"));
 
-  const grid = el("div", "cards");
-  for (const page of pages) grid.appendChild(indexCard(page, loaded.get(page.id)));
-  view.appendChild(grid);
+  const shelves = area.shelves ?? [];
+  const loose = pages.filter((p) => !p.shelf);
+  if (loose.length > 0 || shelves.length === 0) {
+    view.appendChild(cardGrid(loose.length > 0 ? loose : pages, loaded, ensure));
+  }
+
+  // Полки повторяют раскладку боковой колонки: если в навигации «Узлы карты» — это пять экранов,
+  // на витрине они обязаны стоять теми же пятью, а не вперемешку по алфавиту.
+  for (const shelf of shelves) {
+    const items = pages.filter((p) => p.shelf === shelf.id);
+    if (items.length === 0) continue;
+    const box = el("section");
+    const head = el("h2", null, shelf.title);
+    head.id = shelf.id;
+    box.appendChild(head);
+    box.appendChild(cardGrid(items, loaded, ensure));
+    view.appendChild(box);
+  }
+
   commitScenes();
 }
 
-function indexCard(page: PageDef, def: SectionDef | undefined): HTMLElement {
+function cardGrid(pages: PageDef[], loaded: Map<string, SectionDef>, ensure: Ensure): HTMLElement {
+  const grid = el("div", "cards");
+  for (const page of pages) grid.appendChild(indexCard(page, loaded, ensure));
+  return grid;
+}
+
+function indexCard(page: PageDef, loaded: Map<string, SectionDef>, ensure: Ensure): HTMLElement {
   const card = el("a", "card-link");
   card.href = page.href ?? routeHref(page.id);
   if (page.href) card.target = "_blank";
 
   // Живое превью, а не скриншот: список ссылок не говорит, что внутри, а снимок устаревает молча.
-  const cover = def ? coverStand(def) : null;
-  if (cover) {
-    card.appendChild(coverBox(cover));
-  } else if (page.icon) {
-    card.appendChild(el("div", "card-mark", page.icon));
-  }
+  const slot = el("div", "card-slot");
+  if (page.icon) slot.appendChild(el("div", "card-mark", page.icon));
+  card.appendChild(slot);
+  if (!page.href) lazyCover(slot, [page.id], loaded, ensure);
 
   const body = el("div", "card-text");
   body.appendChild(el("h3", null, page.title));
   body.appendChild(el("p", "dim", page.blurb));
   if (page.href) {
     body.appendChild(el("p", "tag", "отдельное приложение · откроется в новой вкладке"));
-  } else if (def) {
-    // Счётчик показываем ровно настолько, насколько ему есть что сказать: у раздела без развилок
-    // «принято 0» читалось бы как «ничего не решено», хотя решать там нечего.
-    const t = tally(def);
-    const parts: string[] = [];
-    if (t.total > 0) parts.push(`${t.total} стендов`);
-    if (t.accepted > 0) parts.push(`принято ${t.accepted}`);
-    if (t.waiting > 0) parts.push(`ждёт ${t.waiting}`);
-    if (parts.length > 0) body.appendChild(el("p", "tag", parts.join(" · ")));
+  } else {
+    const tag = el("p", "tag");
+    body.appendChild(tag);
+    lazyTally(tag, page.id, loaded, ensure);
   }
   card.appendChild(body);
   return card;
@@ -159,40 +229,77 @@ function coverStand(def: SectionDef): StandDef | null {
   return accepted ?? any;
 }
 
-function tally(def: SectionDef): { total: number; accepted: number; rejected: number; waiting: number } {
-  const t = { total: 0, accepted: 0, rejected: 0, waiting: 0 };
+/** Счётчик показываем ровно настолько, насколько ему есть что сказать: у раздела без развилок
+ *  «принято 0» читалось бы как «ничего не решено», хотя решать там нечего. */
+function tallyText(def: SectionDef): string {
+  let total = 0;
+  let accepted = 0;
+  let waiting = 0;
   eachStand(def, (s) => {
-    t.total++;
-    if (s.status === "accepted") t.accepted++;
-    else if (s.status === "rejected") t.rejected++;
-    else if (s.status === "waiting") t.waiting++;
+    total++;
+    if (s.status === "accepted") accepted++;
+    else if (s.status === "waiting") waiting++;
   });
-  return t;
+  const parts: string[] = [];
+  if (total > 0) parts.push(`${total} стендов`);
+  if (accepted > 0) parts.push(`принято ${accepted}`);
+  if (waiting > 0) parts.push(`ждёт ${waiting}`);
+  return parts.join(" · ");
 }
 
-/* ---------- музей отклонённого ---------- */
+/* ---------- сквозные срезы по статусу ----------
+   Статус у стенда был с первого дня, а вопрос «что от меня ждут» сайт не умел: «ждёт 5» стояло на
+   карточке раздела, и собрать эти пятёрки в одно место было нечем. Срез собирается тем же
+   проходом, что и музей отклонённого, — поэтому расходиться им не с чем. */
 
-export function renderLegacy(view: HTMLElement, pages: PageDef[], loaded: Map<string, SectionDef>): void {
-  beginScenes();
-  view.appendChild(
-    hero(
-      "Отклонённое",
+interface SliceCopy {
+  title: string;
+  lede: string;
+  empty: string;
+}
+
+const SLICE: Record<"waiting" | "rejected", SliceCopy> = {
+  waiting: {
+    title: "Ждут вердикта",
+    lede:
+      "Всё нарисованное, по чему решения ещё нет. Это единственная страница сайта, обращённая к " +
+      "Максу с вопросом, а не с ответом: вариант без вердикта не мёртв и не принят — он ждёт.",
+    empty: "Ни одного стенда без вердикта — всё решено."
+  },
+  rejected: {
+    title: "Отклонённое",
+    lede:
       "Варианты, которые проиграли, — живыми, а не описанием. Музей полезен ровно тем, что показывает, " +
-        "ЧЕМ проигравший был хуже: через полгода «мы это уже пробовали» без картинки звучит " +
-        "неубедительно и пробуется заново."
-    )
-  );
+      "ЧЕМ проигравший был хуже: через полгода «мы это уже пробовали» без картинки звучит " +
+      "неубедительно и пробуется заново.",
+    empty: "Пока ни один вариант не отклонён."
+  }
+};
 
-  let any = false;
+export function renderSlice(
+  view: HTMLElement, status: "waiting" | "rejected", pages: PageDef[], loaded: Map<string, SectionDef>
+): void {
+  beginScenes();
+  const copy = SLICE[status];
+  view.appendChild(hero(copy.title, copy.lede));
+
+  // Счётчик в подзаголовке: «сколько всего ждёт меня» — первый вопрос к этой странице, а
+  // пересчитывать карточки глазами в списке на полсотни штук никто не станет.
+  const stat = el("p", "tag");
+  view.appendChild(stat);
+
+  let count = 0;
+  let sections = 0;
   for (const page of pages) {
     const def = loaded.get(page.id);
     if (!def) continue;
     const items: StandDef[] = [];
     eachStand(def, (s) => {
-      if (s.status === "rejected") items.push(s);
+      if (s.status === status) items.push(s);
     });
     if (items.length === 0) continue;
-    any = true;
+    count += items.length;
+    sections++;
 
     const wrap = el("section");
     const head = el("h2", null, page.title);
@@ -204,7 +311,8 @@ export function renderLegacy(view: HTMLElement, pages: PageDef[], loaded: Map<st
     view.appendChild(wrap);
   }
 
-  if (!any) view.appendChild(el("p", "dim", "Пока ни один вариант не отклонён."));
+  stat.textContent = count === 0 ? "" : `${count} стендов в ${sections} разделах`;
+  if (count === 0) view.appendChild(el("p", "dim", copy.empty));
   commitScenes();
 }
 

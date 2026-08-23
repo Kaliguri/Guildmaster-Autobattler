@@ -423,12 +423,19 @@ td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass
   display: grid;
   place-items: center;
   height: 176px;
-  border-bottom: 1px solid var(--edge-soft);
-  background: #0C0B09;
   font-size: 2.6rem;
   font-weight: 200;
   color: var(--edge);
 }
+/* Слот превью: место занято ДО того, как раздел загрузился. Без него подстановка живой сцены
+   толкала бы вниз весь ряд карточек, и витрина дёргалась бы при прокрутке. */
+.card-slot {
+  height: 176px;
+  overflow: hidden;
+  background: #0C0B09;
+  border-bottom: 1px solid var(--edge-soft);
+}
+.card-slot > .card-cover, .card-slot > .card-mark { border-bottom: 0; }
 .areas { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
 .areas .card-text h3 { font-size: 1.25rem; font-weight: 400; }
 .card-text { padding: 1rem 1.05rem 1.15rem; display: flex; flex-direction: column; gap: .45rem; }

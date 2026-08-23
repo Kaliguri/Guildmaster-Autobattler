@@ -12,7 +12,7 @@ import { clear, el } from "./dom.js";
 import { AREAS, PAGES, areaOf, pagesOf } from "./registry.js";
 import { hasLive, invalidateSizes, paint, register, reset } from "./stage.js";
 import type { AreaDef, PageDef, SectionDef, StandDef } from "./types.js";
-import { eachStand, hero, renderArea, renderHome, renderLegacy, renderSection, routeHref } from "./views.js";
+import { eachStand, hero, renderArea, renderHome, renderSection, renderSlice, routeHref } from "./views.js";
 
 const loaded = new Map<string, SectionDef>();
 const pending = new Map<string, Promise<SectionDef | null>>();
@@ -97,7 +97,10 @@ function loadAll(): Promise<Array<SectionDef | null>> {
 /** Сквозные страницы: собираются по ВСЕМ разделам, поэтому не принадлежат ни одной области.
  *  В дереве области они прячутся — иначе «Отклонённое» висело бы в «Джусе», где оно объявлено
  *  по историческим причинам, и выглядело бы его частью. */
-const CROSS: Array<{ id: string; title: string }> = [{ id: "legacy", title: "Отклонённое" }];
+const CROSS: Array<{ id: string; title: string }> = [
+  { id: "waiting", title: "Ждут вердикта" },
+  { id: "legacy", title: "Отклонённое" }
+];
 const CROSS_IDS = new Set(CROSS.map((c) => c.id));
 
 function buildSide(): void {
@@ -406,6 +409,15 @@ async function renderShot(spec: ShotSpec): Promise<void> {
 
 /* ---------- отрисовка маршрута ---------- */
 
+/** Сквозные страницы-срезы: адрес -> статус, по которому собираются стенды со всего сайта.
+ *  `legacy`, а не `rejected`, потому что на этот адрес ссылается append-only журнал решений,
+ *  где ссылку не переписать. */
+const SLICES: Record<string, "waiting" | "rejected" | undefined> = {
+  waiting: "waiting",
+  legacy: "rejected"
+};
+
+
 async function renderRoute(): Promise<void> {
   const route = parseRoute();
   const view = document.getElementById("lab-view");
@@ -422,10 +434,16 @@ async function renderRoute(): Promise<void> {
   syncNav(route.page);
 
   const area = AREAS.find((a) => a.id === route.page);
-  // Главной и обзору области нужны все разделы: они показывают живые превью и счётчики.
-  const wholeSite = route.page === "index" || route.page === "legacy" || area !== undefined;
-  if (wholeSite) await loadAll();
-  else await loadPage(route.page);
+  // Сквозной срез — единственное место, которому честно нужны ВСЕ разделы: он собирает стенды по
+  // статусу со всего сайта. Витрина обходится реестром: превью и счётчики она догружает лениво,
+  // по появлению карточки в окне (раньше главная тянула все 64 модуля ради пяти картинок).
+  const slice = SLICES[route.page];
+  if (slice) {
+    view.appendChild(el("p", "dim", "Собираю стенды по всем разделам…"));
+    await loadAll();
+  } else if (!area) {
+    await loadPage(route.page);
+  }
 
   // Пока грузились, могли уйти дальше: рисовать устаревший маршрут поверх нового нельзя.
   if (parseRoute().page !== route.page) return;
@@ -435,11 +453,11 @@ async function renderRoute(): Promise<void> {
   if (toc) clear(toc);
 
   if (route.page === "index") {
-    renderHome(view, AREAS, PAGES, loaded);
+    renderHome(view, AREAS, PAGES, loaded, loadPage);
   } else if (area) {
-    renderArea(view, area, pagesOf(area.id), loaded);
-  } else if (route.page === "legacy") {
-    renderLegacy(view, PAGES, loaded);
+    renderArea(view, area, pagesOf(area.id), loaded, loadPage);
+  } else if (slice) {
+    renderSlice(view, slice, PAGES, loaded);
   } else {
     const def = loaded.get(route.page);
     if (!def) {
