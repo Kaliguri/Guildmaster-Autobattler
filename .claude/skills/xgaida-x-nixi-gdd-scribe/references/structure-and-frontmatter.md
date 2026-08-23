@@ -28,8 +28,8 @@ vault (единый язык, совпадает с EN-каноном сущно
 | `20-combat` | `Combat` | `roster` | `Roster` |
 | `30-run-meta` | `Run` | `enemies` | `Enemies` / `Faction` |
 
-- **Карточки-сущности** (слаги + структурный title): реликвии `Relic - <Common|Unique> -
-  <Name (Class)>` (`the-bloom.md` → `Relic - Common - The Bloom (Druid)`); враги
+- **Карточки-сущности** (слаги + структурный title): мементо `Memento - <Common|Unique> -
+  <Name (Class)>` (`the-bloom.md` → `Memento - Common - The Bloom (Druid)`); враги
   `<Faction> - <Tier> - <Name>` (`bandit-bruiser.md` → `Bandits - Common - Bandit Bruiser`);
   фракции `Faction - <Name>` (`goblins.md` → `Faction - Goblins`).
 - **Обзорный файл раздела** не дублирует префикс: `combat-system` → `Combat - System`,

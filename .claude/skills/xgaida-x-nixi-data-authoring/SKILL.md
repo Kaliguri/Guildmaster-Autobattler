@@ -26,7 +26,7 @@ description: >-
 | Базовый класс контент-SO (id `domain.name`, Edit Id) | `Assets/_Project/Scripts/Data/Definitions/ContentDefinition.cs` |
 | Маппинг тип→домен + генерация id из имени | `Assets/_Project/Scripts/Data/Definitions/ContentDomains.cs` |
 | Боевой кит юнита (база всего на арене) | `Assets/_Project/Scripts/Data/Definitions/UnitData.cs` |
-| Реликвия игрока / враг (мета над китом) | `.../Definitions/RelicData.cs`, `.../Definitions/EnemyData.cs` |
+| Мементо игрока / враг (мета над китом) | `.../Definitions/RelicData.cs`, `.../Definitions/EnemyData.cs` |
 | Прочие контент-типы (эффект/предмет/сосуд/энкаунтер/ивент…) | `Assets/_Project/Scripts/Data/Definitions/*.cs` |
 | Стат-модификатор / список статов / операции | `Assets/_Project/Scripts/Data/Stats/StatModifier.cs`, `StatType.cs`, `ModifierOp.cs` |
 | Глобальный шаблон статов (дефолты + константы) | `Assets/_Project/Scripts/Data/Definitions/StatsConfig.cs` |

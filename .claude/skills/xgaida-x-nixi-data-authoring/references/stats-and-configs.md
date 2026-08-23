@@ -34,7 +34,7 @@ baseTerm = Override (если задан) ИНАЧЕ дефолт StatsConfig
 ## Авторинг базы через Override — это КАНОН, не костыль
 
 Базовые статы юнита авторятся как **абсолют через `Override`** в `UnitData._stats`
-(`StatModifier[]`): реликвия задаёт реальное значение стата (HP = `{MaxHP, Override, 1800}`), а не
+(`StatModifier[]`): мементо задаёт реальное значение стата (HP = `{MaxHP, Override, 1800}`), а не
 дельту от дефолта. `StatsConfig` остаётся фолбэком для НЕзаданных статов и стартовой GD-напоминалкой
 при создании SO.
 
@@ -42,7 +42,7 @@ baseTerm = Override (если задан) ИНАЧЕ дефолт StatsConfig
 юнита»), а не обходной путь:
 
 - База концептуально и есть «замени дефолт на это абсолютное значение» — семантика связна.
-- Один список `_stats` держит и базу (`Override`), и дельты реликвии (`Flat`/`Percent`) — их легко
+- Один список `_stats` держит и базу (`Override`), и дельты мементо (`Flat`/`Percent`) — их легко
   разделить фильтром по `Op`, если инструменту нужно.
 - Система собирает `база + модификаторы` корректно (`Stats.RebuildCache`), покрыта боевыми
   EditMode-тестами.
@@ -58,7 +58,7 @@ baseTerm = Override (если задан) ИНАЧЕ дефолт StatsConfig
 `Assets/_Project/Scripts/Combat/Stats/Stats.cs` (владелец — combat-sim; контракт данных — здесь):
 
 - `AddModifiersFrom(source, StatModifier[])` / `RemoveModifiersFrom(source)` — модификаторы
-  группируются по источнику, снимаются разом (реликвия, бафф, аура).
+  группируются по источнику, снимаются разом (мементо, бафф, аура).
 - `RebuildCache` считает по формуле выше, кэширует, инвалидируется dirty-флагом.
 - `baseTerm = Override (если задан) ИНАЧЕ config.GetDefault (или NaturalDefault, если config == null)`.
 - Фабрика (`RuntimeUnitFactory`) скармливает `UnitData.Stats` как группу от источника-`UnitData`.

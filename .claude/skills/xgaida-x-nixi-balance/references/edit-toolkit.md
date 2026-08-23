@@ -27,7 +27,7 @@ Namespace `Guildmaster.Data.Editor`, зовётся из `execute_code`.
 роли расползается разнобой.
 
 ```csharp
-ContentCohorts.OfClass(UnitClass.Tank)          // все Танки — и реликвии, и враги
+ContentCohorts.OfClass(UnitClass.Tank)          // все Танки — и мементо, и враги
 ContentCohorts.OfAttackType(AttackType.Melee)   // все ближники
 ContentCohorts.OfSchool(DamageSchool.Magic)     // все маги
 ContentCohorts.OfCreatureType(CreatureType.Undead)
@@ -35,7 +35,7 @@ ContentCohorts.WithIdPrefix("enemy.goblin")     // по id, не по имени
 ContentCohorts.Where<RelicData>(r => r.Abilities.Length > 1)
 ```
 
-`AllUnits()` намеренно объединяет реликвии и врагов: класс, оружие и статы у них общие, поэтому
+`AllUnits()` намеренно объединяет мементо и врагов: класс, оружие и статы у них общие, поэтому
 классовая правка обязана задевать обе стороны — подтянуть Танков только у игрока значит сломать
 бой, а не починить роль.
 
