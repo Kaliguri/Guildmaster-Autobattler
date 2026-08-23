@@ -119,55 +119,55 @@ updated: 2026-08-23
 альфу, картинка обесцвечена, размер приведён к кратному четырём. Пересобрать —
 `py scripts/prep_ui_textures.py --force`; редактировать эти файлы руками бессмысленно.
 
-| Файл | Размер | Альфа | Вес |
-|---|---|---|---|
-| `Backdrops/Backdrop_Bloom` | 1672x940 | нет (кадр целиком) | 882 КБ |
-| `Backdrops/Backdrop_Facets` | 1672x940 | нет (кадр целиком) | 1019 КБ |
-| `Backdrops/Backdrop_Flare` | 1672x940 | нет (кадр целиком) | 874 КБ |
-| `Backdrops/Backdrop_Marble` | 1672x940 | нет (кадр целиком) | 740 КБ |
-| `Backdrops/Backdrop_Rays_Dim` | 1672x940 | нет (кадр целиком) | 496 КБ |
-| `Backdrops/Backdrop_Rays_Sharp` | 1672x940 | нет (кадр целиком) | 764 КБ |
-| `Backdrops/Backdrop_Ridges` | 1672x940 | нет (кадр целиком) | 891 КБ |
-| `Banners/Banner_Arch` | 612x1024 | нет (кадр целиком) | 366 КБ |
-| `Banners/Banner_Barb` | 612x1024 | нет (кадр целиком) | 336 КБ |
-| `Banners/Banner_Fold` | 612x1024 | нет (кадр целиком) | 477 КБ |
-| `Banners/Banner_Pennant` | 616x1024 | нет (кадр целиком) | 305 КБ |
-| `Banners/Banner_Pillar` | 612x1024 | нет (кадр целиком) | 369 КБ |
-| `Banners/Banner_Plain` | 612x1024 | нет (кадр целиком) | 395 КБ |
-| `Frames/Frame_Barb` | 1024x1024 | есть | 338 КБ |
-| `Frames/Frame_Feather` | 1024x1024 | есть | 410 КБ |
-| `Frames/Frame_Filigree` | 1024x1024 | есть | 345 КБ |
-| `Frames/Frame_Rivet` | 1024x1024 | есть | 354 КБ |
-| `Frames/Frame_Rosette` | 1024x1024 | есть | 362 КБ |
-| `Frames/Frame_Scroll` | 1024x1024 | есть | 332 КБ |
-| `Frames/Frame_Stepped` | 1024x1024 | есть | 514 КБ |
-| `Frames/Frame_Stitch` | 1024x1024 | есть | 618 КБ |
-| `Frames/Frame_Talon` | 1024x1024 | есть | 426 КБ |
-| `Frames/Frame_Wisp` | 1024x1024 | есть | 334 КБ |
-| `Masks/Mask_Edge_Blob` | 1024x576 | есть | 71 КБ |
-| `Masks/Mask_Edge_Fade` | 1024x576 | есть | 49 КБ |
-| `Masks/Mask_Edge_Soft` | 1024x576 | есть | 217 КБ |
-| `Masks/Mask_Fog_Billow` | 1024x576 | есть | 225 КБ |
-| `Masks/Mask_Fog_Cloud` | 1024x576 | есть | 213 КБ |
-| `Masks/Mask_Fog_Tongue` | 1024x576 | есть | 223 КБ |
-| `Masks/Mask_Fog_Top` | 1024x576 | есть | 232 КБ |
-| `Masks/Mask_Fog_Wisp` | 1024x576 | есть | 66 КБ |
-| `Masks/Mask_Glow_Faint` | 1024x576 | есть | 56 КБ |
-| `Masks/Mask_Glow_Oval` | 1024x576 | есть | 230 КБ |
-| `Masks/Mask_Glow_Soft` | 1024x576 | есть | 200 КБ |
-| `Masks/Mask_Glow_Wide` | 1024x576 | есть | 230 КБ |
-| `Masks/Mask_Sweep_Diagonal` | 1024x576 | есть | 232 КБ |
-| `Masks/Mask_Sweep_Vertical` | 1024x576 | есть | 27 КБ |
-| `Plates/Plate_Bracket` | 1024x408 | есть | 162 КБ |
-| `Plates/Plate_Curl` | 1024x436 | есть | 185 КБ |
-| `Plates/Plate_Feather` | 1024x408 | есть | 177 КБ |
-| `Plates/Plate_Leaf` | 1024x424 | есть | 178 КБ |
-| `Plates/Plate_Octagon` | 1024x372 | есть | 145 КБ |
-| `Plates/Plate_Plain` | 1024x456 | есть | 187 КБ |
-| `Plates/Plate_Quill` | 1024x408 | есть | 178 КБ |
-| `Plates/Plate_Scroll` | 1024x388 | есть | 161 КБ |
-| `Plates/Plate_Stitch` | 1024x436 | есть | 232 КБ |
-| `Plates/Plate_Volute` | 1024x408 | есть | 160 КБ |
+| Файл | Размер | Альфа | 9-slice | Вес |
+|---|---|---|---|---|
+| `Backdrops/Backdrop_Bloom` | 1672x940 | нет (кадр целиком) | — | 882 КБ |
+| `Backdrops/Backdrop_Facets` | 1672x940 | нет (кадр целиком) | — | 1019 КБ |
+| `Backdrops/Backdrop_Flare` | 1672x940 | нет (кадр целиком) | — | 874 КБ |
+| `Backdrops/Backdrop_Marble` | 1672x940 | нет (кадр целиком) | — | 740 КБ |
+| `Backdrops/Backdrop_Rays_Dim` | 1672x940 | нет (кадр целиком) | — | 496 КБ |
+| `Backdrops/Backdrop_Rays_Sharp` | 1672x940 | нет (кадр целиком) | — | 764 КБ |
+| `Backdrops/Backdrop_Ridges` | 1672x940 | нет (кадр целиком) | — | 891 КБ |
+| `Banners/Banner_Arch` | 612x1024 | нет (кадр целиком) | — | 366 КБ |
+| `Banners/Banner_Barb` | 612x1024 | нет (кадр целиком) | — | 336 КБ |
+| `Banners/Banner_Fold` | 612x1024 | нет (кадр целиком) | — | 477 КБ |
+| `Banners/Banner_Pennant` | 616x1024 | нет (кадр целиком) | — | 305 КБ |
+| `Banners/Banner_Pillar` | 612x1024 | нет (кадр целиком) | — | 369 КБ |
+| `Banners/Banner_Plain` | 612x1024 | нет (кадр целиком) | — | 395 КБ |
+| `Frames/Frame_Barb` | 956x936 | есть | со всех 77 | 286 КБ |
+| `Frames/Frame_Feather` | 912x908 | есть | со всех 180 | 333 КБ |
+| `Frames/Frame_Filigree` | 948x944 | есть | со всех 88 | 289 КБ |
+| `Frames/Frame_Rivet` | 908x908 | есть | со всех 145 | 285 КБ |
+| `Frames/Frame_Rosette` | 904x908 | есть | со всех 53 | 289 КБ |
+| `Frames/Frame_Scroll` | 916x904 | есть | со всех 54 | 264 КБ |
+| `Frames/Frame_Stepped` | 948x944 | есть | со всех 151 | 455 КБ |
+| `Frames/Frame_Stitch` | 932x928 | есть | со всех 72 | 542 КБ |
+| `Frames/Frame_Talon` | 916x920 | есть | со всех 125 | 358 КБ |
+| `Frames/Frame_Wisp` | 888x888 | есть | со всех 50 | 252 КБ |
+| `Masks/Mask_Edge_Blob` | 1024x576 | есть | — | 71 КБ |
+| `Masks/Mask_Edge_Fade` | 1024x576 | есть | — | 49 КБ |
+| `Masks/Mask_Edge_Soft` | 1024x576 | есть | — | 217 КБ |
+| `Masks/Mask_Fog_Billow` | 1024x576 | есть | — | 225 КБ |
+| `Masks/Mask_Fog_Cloud` | 1024x576 | есть | — | 213 КБ |
+| `Masks/Mask_Fog_Tongue` | 1024x576 | есть | — | 223 КБ |
+| `Masks/Mask_Fog_Top` | 1024x576 | есть | — | 232 КБ |
+| `Masks/Mask_Fog_Wisp` | 1024x576 | есть | — | 66 КБ |
+| `Masks/Mask_Glow_Faint` | 1024x576 | есть | — | 56 КБ |
+| `Masks/Mask_Glow_Oval` | 1024x576 | есть | — | 230 КБ |
+| `Masks/Mask_Glow_Soft` | 1024x576 | есть | — | 200 КБ |
+| `Masks/Mask_Glow_Wide` | 1024x576 | есть | — | 230 КБ |
+| `Masks/Mask_Sweep_Diagonal` | 1024x576 | есть | — | 232 КБ |
+| `Masks/Mask_Sweep_Vertical` | 1024x576 | есть | — | 27 КБ |
+| `Plates/Plate_Bracket` | 940x188 | есть | бока 98, кромки 38 | 81 КБ |
+| `Plates/Plate_Curl` | 1000x200 | есть | бока 78, кромки 84 | 97 КБ |
+| `Plates/Plate_Feather` | 992x168 | есть | бока 79, кромки 70 | 90 КБ |
+| `Plates/Plate_Leaf` | 960x160 | есть | бока 95, кромки 67 | 80 КБ |
+| `Plates/Plate_Octagon` | 952x168 | есть | бока 38, кромки 35 | 71 КБ |
+| `Plates/Plate_Plain` | 976x156 | есть | бока 61, кромки 65 | 66 КБ |
+| `Plates/Plate_Quill` | 984x172 | есть | бока 95, кромки 72 | 92 КБ |
+| `Plates/Plate_Scroll` | 968x184 | есть | бока 58, кромки 57 | 86 КБ |
+| `Plates/Plate_Stitch` | 992x176 | есть | бока 85, кромки 73 | 134 КБ |
+| `Plates/Plate_Volute` | 988x208 | есть | бока 67, кромки 80 | 93 КБ |
 
 ## Как читать колонки
 

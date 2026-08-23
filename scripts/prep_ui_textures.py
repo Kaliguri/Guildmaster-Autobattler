@@ -158,8 +158,17 @@ def process(path: Path, folder: str) -> tuple[Image.Image, str]:
     # решает про каждый пиксель «да или нет», а край исходника был мягким.
     alpha = ImageOps.invert(bg).filter(ImageFilter.GaussianBlur(0.6))
     out = Image.merge("RGBA", (gray, gray, gray, alpha))
-    covered = sum(alpha.point(lambda v: 1 if v > 127 else 0).getdata()) / (tw * th)
-    return out, f"вырез: фигура занимает {covered * 100:.0f}% кадра"
+
+    # Обрезка по фигуре обязательна, а не косметика: без неё пустое поле вокруг ленты попадает
+    # в верхний и нижний слайс, и границы 9-slice съедали 60-70% высоты — тянуть было нечего.
+    box = alpha.point(lambda v: 255 if v > 8 else 0).getbbox()
+    if box:
+        out = out.crop(box)
+        cw, ch = to_multiple_of_four(out.size[0]), to_multiple_of_four(out.size[1])
+        out = out.crop((0, 0, cw, ch))
+
+    covered = (out.size[0] * out.size[1]) / (tw * th)
+    return out, f"вырез и обрезка: {out.size[0]}x{out.size[1]}, {covered * 100:.0f}% от кадра"
 
 
 def main() -> int:

@@ -57,6 +57,20 @@ def polarity(im: Image.Image) -> str:
     return "без поля"
 
 
+def slice_border(png: Path) -> str:
+    """Границы 9-slice берутся из `.meta` — их владелец импортёр, а не эта таблица."""
+    meta = png.with_suffix(png.suffix + ".meta")
+    if not meta.is_file():
+        return "—"
+    for line in meta.read_text(encoding="utf-8", errors="ignore").splitlines():
+        if "spriteBorder:" in line and "0, y: 0, z: 0, w: 0" not in line:
+            nums = [p.split(":")[-1].strip() for p in line.split("spriteBorder:")[1].strip("{} ").split(",")]
+            if len(nums) == 4:
+                left, bottom, right, top = nums
+                return f"бока {left}, кромки {bottom}" if left != bottom else f"со всех {left}"
+    return "—"
+
+
 def main() -> None:
     if not SRC.is_dir():
         raise SystemExit(f"нет папки {SRC}")
@@ -131,14 +145,14 @@ def main() -> None:
         lines.append("альфу, картинка обесцвечена, размер приведён к кратному четырём. Пересобрать —")
         lines.append("`py scripts/prep_ui_textures.py --force`; редактировать эти файлы руками бессмысленно.")
         lines.append("")
-        lines.append("| Файл | Размер | Альфа | Вес |")
-        lines.append("|---|---|---|---|")
+        lines.append("| Файл | Размер | Альфа | 9-slice | Вес |")
+        lines.append("|---|---|---|---|---|")
         for f in work_files:
             im = Image.open(f)
             alpha = "есть" if im.mode in ("RGBA", "LA") else "нет (кадр целиком)"
             lines.append(
                 f"| `{f.parent.name}/{f.stem}` | {im.size[0]}x{im.size[1]} | {alpha} "
-                f"| {f.stat().st_size // 1024} КБ |"
+                f"| {slice_border(f)} | {f.stat().st_size // 1024} КБ |"
             )
         lines.append("")
 
