@@ -21,11 +21,11 @@ function playerRow(
   w.box(ctx, { x: 0.045, y, w: 0.022, h: 0.038 }, width, height, { lit: true });
 
   w.text(ctx, opts.name + (opts.self ? "  (вы)" : ""), { x: 0.078, y: y + 0.019 }, width, height,
-    { size: 10.5, color: opts.self ? "#E8E8EC" : "#8A8A93" });
+    { size: 10.5, color: opts.self ? "#E8E8EC" : w.WIRE.dim });
 
   if (opts.host) {
     w.text(ctx, "хозяин", { x: 0.078 + 0.085, y: y + 0.019 }, width, height,
-      { size: 8.5, color: "#C8A24C" });
+      { size: 8.5, color: w.WIRE.accent });
   }
 
   if (opts.where) {
@@ -34,7 +34,7 @@ function playerRow(
   }
 
   w.text(ctx, opts.ping, { x: 0.245, y: y + 0.019 }, width, height,
-    { size: 9.5, align: "right", color: "#8A8A93" });
+    { size: 9.5, align: "right", color: w.WIRE.dim });
 }
 
 /** Принято: строка с числом пинга. */
@@ -75,7 +75,7 @@ function drawCards(ctx: CanvasRenderingContext2D, width: number, height: number)
     w.box(ctx, { x: 0.03, y, w: 0.23, h: 0.115 }, width, height, {});
     w.box(ctx, { x: 0.042, y: y + 0.018, w: 0.045, h: 0.08 }, width, height,
       { label: "портрет", size: 7.5 });
-    w.text(ctx, name, { x: 0.10, y: y + 0.042 }, width, height, { size: 10, color: "#8A8A93" });
+    w.text(ctx, name, { x: 0.10, y: y + 0.042 }, width, height, { size: 10, color: w.WIRE.dim });
     w.text(ctx, meta, { x: 0.10, y: y + 0.078 }, width, height, { size: 8.5, color: "#5F5F68" });
   });
 }

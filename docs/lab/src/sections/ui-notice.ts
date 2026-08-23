@@ -42,7 +42,7 @@ function drawModal(ctx: CanvasRenderingContext2D, width: number, height: number)
   w.text(ctx, "Связь с хозяином потеряна.", { x: 0.50, y: 0.46 }, width, height,
     { align: "center", size: 11 });
   w.text(ctx, "Забег останется у него.", { x: 0.50, y: 0.51 }, width, height,
-    { align: "center", size: 10, color: "#8A8A93" });
+    { align: "center", size: 10, color: w.WIRE.dim });
 
   w.box(ctx, { x: 0.325, y: 0.60, w: 0.11, h: 0.055 }, width, height, { label: "Ждать", size: 9 });
   w.box(ctx, { x: 0.445, y: 0.60, w: 0.11, h: 0.055 }, width, height, { label: "В меню", size: 9 });
@@ -67,7 +67,7 @@ function drawToast(ctx: CanvasRenderingContext2D, width: number, height: number)
 
   w.box(ctx, { x: 0.62, y: 0.625, w: 0.36, h: 0.07 }, width, height, {});
   w.text(ctx, "Гилберт присоединился", { x: 0.64, y: 0.66 }, width, height,
-    { size: 10, color: "#8A8A93" });
+    { size: 10, color: w.WIRE.dim });
 
   w.callout(ctx, { x: 0.62, y: 0.58 }, { x: 0.44, y: 0.58 }, "3 c, потом тает", width, height, "right");
   w.callout(ctx, { x: 0.62, y: 0.66 }, { x: 0.44, y: 0.66 }, "не больше трёх зараз", width, height, "right");

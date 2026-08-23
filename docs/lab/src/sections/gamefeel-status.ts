@@ -2,7 +2,7 @@
    Канон решений: docs/wiki/gdd/70-gamefeel/vfx-language.md §Статусы. */
 
 import { tick } from "../clock.js";
-import { ground, jag, miniLabel, ST, statusBody, unitPath } from "../draw.js";
+import { ST, ground, hexOf, jag, miniLabel, statusBody, unitPath } from "../draw.js";
 import { isOn } from "../toggles.js";
 import type { DrawFn, SectionDef } from "../types.js";
 
@@ -183,16 +183,16 @@ const drawChannels: DrawFn = (ctx, w, h) => {
   stunMarks(ctx, bx, groundY, bodyH);
   markSign(ctx, bx, groundY, bodyH);
 
-  channelTag(ctx, "воля", groundY - bodyH - u * 1.4, 150, x - u * 3.4, "#FFD448");
-  channelTag(ctx, "снаружи", groundY - bodyH - u * 3.6, 150, x - u * 1.6, "#FF6050");
-  channelTag(ctx, "тело", groundY - bodyH * 0.55, 150, x - u * 3.2, "#FF9230");
-  channelTag(ctx, "земля", groundY + u * 0.7, 150, x - u * 3.8, "#68A4D8");
+  channelTag(ctx, "воля", groundY - bodyH - u * 1.4, 150, x - u * 3.4, hexOf(ST.stun));
+  channelTag(ctx, "снаружи", groundY - bodyH - u * 3.6, 150, x - u * 1.6, hexOf(ST.mark));
+  channelTag(ctx, "тело", groundY - bodyH * 0.55, 150, x - u * 3.2, hexOf(ST.burn));
+  channelTag(ctx, "земля", groundY + u * 0.7, 150, x - u * 3.8, hexOf(ST.slow));
 
   infoPanel(ctx, x, groundY, bodyH, [
-    ["стан", "0.8 с", "#FFD448"],
-    ["поджог x3", "4.2 с", "#FF9230"],
-    ["метка", "6.0 с", "#FF6050"],
-    ["замедление", "-30%", "#68A4D8"]
+    ["стан", "0.8 с", hexOf(ST.stun)],
+    ["поджог x3", "4.2 с", hexOf(ST.burn)],
+    ["метка", "6.0 с", hexOf(ST.mark)],
+    ["замедление", "-30%", hexOf(ST.slow)]
   ]);
 
   miniLabel(ctx, "четыре канала одновременно");
@@ -300,7 +300,7 @@ function drawBurnStand(mode: BurnMode): DrawFn {
     }
 
     stackReadout(ctx, h, String(st.stacks), burnLevelLabel(mode, st.stacks), st.stacks >= 5);
-    infoPanel(ctx, x, groundY, bodyH, [[`поджог x${st.stacks}`, "4.0 с", "#FF9230"]]);
+    infoPanel(ctx, x, groundY, bodyH, [[`поджог x${st.stacks}`, "4.0 с", hexOf(ST.burn)]]);
   };
 }
 
@@ -377,7 +377,7 @@ const drawAbsurd: DrawFn = (ctx, w, h) => {
   ctx.restore();
 
   stackReadout(ctx, h, "999", "ступень 4 · пасхалка", true);
-  infoPanel(ctx, x, groundY, bodyH, [["поджог x999", "беск.", "#FF9230"]]);
+  infoPanel(ctx, x, groundY, bodyH, [["поджог x999", "беск.", hexOf(ST.burn)]]);
 };
 
 /* ---------- раздел ---------- */
@@ -438,10 +438,10 @@ const section: SectionDef = {
     {
       kind: "legend",
       items: [
-        { color: "#FFD448", text: "воля — стан, сон, заморозка" },
-        { color: "#FF9230", text: "тело — горение, яд, изморозь, кровь" },
-        { color: "#FF6050", text: "снаружи — щит, метка, усиление" },
-        { color: "#68A4D8", text: "земля — замедление, корни" }
+        { color: hexOf(ST.stun), text: "воля — стан, сон, заморозка" },
+        { color: hexOf(ST.burn), text: "тело — горение, яд, изморозь, кровь" },
+        { color: hexOf(ST.mark), text: "снаружи — щит, метка, усиление" },
+        { color: hexOf(ST.slow), text: "земля — замедление, корни" }
       ]
     },
 

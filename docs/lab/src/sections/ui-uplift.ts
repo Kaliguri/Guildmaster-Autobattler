@@ -56,7 +56,7 @@ function shots(pair: Pair): (host: HTMLElement) => void {
       const cap = el("figcaption");
       cap.style.marginTop = "6px";
       cap.style.fontSize = "12px";
-      cap.style.color = "#8A8A93";
+      cap.style.color = w.WIRE.dim;
       cap.innerHTML = `<b style="color:#C9C9D2">${tag}</b> · ${caption}`;
       cell.appendChild(cap);
 
@@ -79,7 +79,7 @@ function menuNow(ctx: CanvasRenderingContext2D, width: number, height: number): 
     w.box(ctx, { x: 0.075, y: 0.43 + i * 0.075, w: 0.20, h: 0.06 }, width, height,
       { label: ["Создать игру", "Присоединиться", "Профиль", "Настройки", "Выход"][i] ?? "", size: 9 });
   }
-  w.text(ctx, "0.0.4-dev", { x: 0.02, y: 0.95 }, width, height, { size: 8, color: "#8A8A93" });
+  w.text(ctx, "0.0.4-dev", { x: 0.02, y: 0.95 }, width, height, { size: 8, color: w.WIRE.dim });
 
   w.callout(ctx, { x: 0.62, y: 0.50 }, { x: 0.34, y: 0.50 },
     "60% ширины пусты", width, height, "right");
@@ -311,7 +311,7 @@ function loadoutShowcase(ctx: CanvasRenderingContext2D, width: number, height: n
 
   w.text(ctx, "СОБРАНО 13 ИЗ 75", { x: 0.03, y: 0.17 }, width, height, { size: 13 });
   w.text(ctx, "реликвии открываются за победы над элитой", { x: 0.03, y: 0.22 }, width, height,
-    { size: 9, color: "#8A8A93" });
+    { size: 9, color: w.WIRE.dim });
 
   for (let r = 0; r < 3; r++)
     for (let c = 0; c < 9; c++)
@@ -538,7 +538,7 @@ function cornersEmpty(ctx: CanvasRenderingContext2D, width: number, height: numb
   w.worldBehind(ctx, width, height);
   for (let i = 0; i < 3; i++)
     w.box(ctx, { x: 0.08, y: 0.36 + i * 0.14, w: 0.26, h: 0.10 }, width, height, { size: 9 });
-  w.text(ctx, "0.0.4-dev", { x: 0.03, y: 0.94 }, width, height, { size: 8, color: "#8A8A93" });
+  w.text(ctx, "0.0.4-dev", { x: 0.03, y: 0.94 }, width, height, { size: 8, color: w.WIRE.dim });
   w.callout(ctx, { x: 0.80, y: 0.14 }, { x: 0.62, y: 0.14 }, "пусто", width, height, "right");
   w.callout(ctx, { x: 0.80, y: 0.88 }, { x: 0.62, y: 0.88 }, "пусто", width, height, "right");
 }
@@ -552,7 +552,7 @@ function cornersFilled(ctx: CanvasRenderingContext2D, width: number, height: num
   w.box(ctx, { x: 0.86, y: 0.04, w: 0.10, h: 0.10 }, width, height, { label: "?", size: 12 });
   w.box(ctx, { x: 0.72, y: 0.86, w: 0.10, h: 0.10 }, width, height, { label: "D", size: 10 });
   w.box(ctx, { x: 0.85, y: 0.86, w: 0.10, h: 0.10 }, width, height, { label: "YT", size: 10 });
-  w.text(ctx, "0.0.4-dev", { x: 0.03, y: 0.94 }, width, height, { size: 8, color: "#8A8A93" });
+  w.text(ctx, "0.0.4-dev", { x: 0.03, y: 0.94 }, width, height, { size: 8, color: w.WIRE.dim });
 
   w.callout(ctx, { x: 0.86, y: 0.09 }, { x: 0.66, y: 0.09 }, "справка · клавиши", width, height, "right");
   w.callout(ctx, { x: 0.72, y: 0.91 }, { x: 0.56, y: 0.91 }, "ссылки сообщества", width, height, "right");

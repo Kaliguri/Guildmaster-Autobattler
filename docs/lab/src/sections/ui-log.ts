@@ -20,7 +20,7 @@ function logLine(
   label: string
 ): void {
   w.text(ctx, label, { x: 0.635, y }, width, height,
-    { size: 9.5, color: dim ? "#5F5F68" : "#8A8A93" });
+    { size: 9.5, color: dim ? "#5F5F68" : w.WIRE.dim });
 }
 
 /** Принято: угол HUD, старые строки тают. */
@@ -56,7 +56,7 @@ function drawWindow(ctx: CanvasRenderingContext2D, width: number, height: number
 
   for (let i = 0; i < 8; i++) {
     w.text(ctx, "00:1" + i + "   Мидра · Раскол ↦ Гнильщик", { x: 0.30, y: 0.30 + i * 0.055 },
-      width, height, { size: 9.5, color: "#8A8A93" });
+      width, height, { size: 9.5, color: w.WIRE.dim });
   }
 
   w.callout(ctx, { x: 0.50, y: 0.83 }, { x: 0.50, y: 0.90 },
