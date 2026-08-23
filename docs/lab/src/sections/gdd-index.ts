@@ -117,6 +117,56 @@ function render(host: HTMLElement): void {
   void wikiIndex.settled.then(paint);
 }
 
+/* Карта вики столбиками: сколько заметок в каждом кластере.
+
+   Карточка «Документации» на главной показывала знак параграфа — то есть ничего. Столбик отвечает
+   сразу на два вопроса: какие кластеры вообще есть и где документации густо, а где пусто. */
+function clusters(ctx: CanvasRenderingContext2D, w: number, h: number): void {
+  const index = fetchWikiIndex();
+  const baseY = h * 0.82;
+
+  ctx.fillStyle = "#93805E";
+  ctx.font = "10px ui-monospace, monospace";
+
+  if (!index.data) {
+    ctx.fillText(index.error ? "сервер не отвечает" : "читаю вики…", w * 0.08, baseY);
+    return;
+  }
+
+  const counts = new Map<string, number>();
+  for (const note of index.data.notes) {
+    const key = `${note.vault}/${note.cluster}`.replace(/\/$/, "");
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  const top = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 7);
+  if (top.length === 0) return;
+
+  // Полосы лежат, а не стоят: имена кластеров длинные, и стоячим столбикам подпись приходилось
+  // поворачивать — она уезжала за нижний край кадра.
+  const max = top[0]?.[1] ?? 1;
+  const padX = w * 0.07;
+  const nameW = w * 0.34;
+  const barMax = w - padX * 2 - nameW - w * 0.1;
+  const top0 = h * 0.26;
+  const step = (h * 0.66) / top.length;
+
+  top.forEach(([name, n], i) => {
+    const y = top0 + step * i;
+    const short = (name.split("/").pop() ?? name).replace(/^\d+-/, "");
+    ctx.fillStyle = "#93805E";
+    ctx.font = "10px ui-monospace, monospace";
+    ctx.fillText(short.length > 16 ? `${short.slice(0, 15)}…` : short, padX, y + 4);
+    ctx.fillStyle = i === 0 ? "rgba(198,154,75,.85)" : "rgba(147,128,94,.5)";
+    ctx.fillRect(padX + nameW, y - 5, Math.max(2, barMax * (n / max)), 9);
+    ctx.fillStyle = "#6E6055";
+    ctx.fillText(String(n), padX + nameW + barMax * (n / max) + 5, y + 4);
+  });
+
+  ctx.fillStyle = "#C4B393";
+  ctx.font = "11px ui-monospace, monospace";
+  ctx.fillText(`${index.data.count} заметок`, padX, h * 0.16);
+}
+
 const section: SectionDef = {
   id: "gdd",
   title: "Указатель ГДД",
@@ -128,6 +178,20 @@ const section: SectionDef = {
     "Сайт отвечает на вопрос «где это лежит», а не пересказывает содержимое.",
 
   blocks: [
+    {
+      kind: "stands",
+      items: [
+        {
+          id: "wiki-clusters",
+          status: "note",
+          title: "Где густо, где пусто",
+          tag: "снимок вики",
+          note: "Девять самых крупных кластеров по числу заметок. Читается с диска на лету.",
+          size: [320, 200],
+          draw: clusters
+        }
+      ]
+    },
     {
       kind: "head", id: "map", title: "Что где лежит",
       lede: "Клик по строке открывает заметку в Obsidian. Поиск идёт по заголовку, пути и тегам."

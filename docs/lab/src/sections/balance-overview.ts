@@ -22,6 +22,93 @@ function tile(label: string, value: string | number, note: string, cls = ""): HT
   return box;
 }
 
+/* Разброс ростера по норме: точка на кита, полоса посередине — коридор роли.
+
+   Заведён как стенд, а не как ещё одна плитка, по двум причинам. Во-первых, это единственная
+   картинка на всю область баланса — карточка «Баланса» на главной показывала иконку-весы, то есть
+   не показывала ничего. Во-вторых, разброс отвечает на вопрос, которого нет у плиток: «ростер
+   собран кучно или расползся», а его цифрой не передать.
+
+   Рисовалка опрашивает фид каждый кадр и до его прихода честно рисует пустую шкалу: canvas
+   перерисовывается сам, и ждать загрузки ему незачем. */
+function spread(ctx: CanvasRenderingContext2D, w: number, h: number): void {
+  const run = runA();
+  const midY = h * 0.54;
+  const padX = w * 0.1;
+  const span = w - padX * 2;
+
+  // Коридор: середина — норма, края — двойная полоса допуска.
+  ctx.fillStyle = "rgba(184,134,59,.14)";
+  ctx.fillRect(padX + span * 0.3, midY - h * 0.16, span * 0.4, h * 0.32);
+  ctx.strokeStyle = "rgba(184,134,59,.5)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(padX, midY);
+  ctx.lineTo(padX + span, midY);
+  ctx.stroke();
+
+  ctx.fillStyle = "#93805E";
+  ctx.font = "10px ui-monospace, monospace";
+  ctx.fillText("норма", padX + span * 0.5 - 16, midY + h * 0.26);
+
+  const units = unitsOf(run).filter((u) => !isReference(u) && !isControlRow(u));
+  if (units.length === 0) {
+    ctx.fillText("нет прогонов", padX, midY - h * 0.24);
+    return;
+  }
+
+  const modes = modesOf(run);
+  let out = 0;
+  // Сначала считаем, потом рисуем. Порядок важен: у части прогонов норм нет вовсе, и точки на
+  // нуле шкалы читались бы как «весь ростер идеально в норме» — самая дорогая ложь, какую этот
+  // стенд мог бы сказать.
+  let measured = 0;
+  const points: Array<{ rel: number; bad: boolean }> = [];
+  for (const unit of units) {
+    // Худшее отклонение по ключевым метрикам, В ДОЛЯХ КОРИДОРА: коридор у ролей разный, и десять
+    // процентов у танка не то же самое, что десять у лекаря. Единица шкалы — край коридора.
+    let worst = 0;
+    for (const key of NORM_KEYS) {
+      for (const mode of modes) {
+        const d = deviation(unit, key, valueOf(run, mode, unit, key));
+        if (!d || d.band <= 0) continue;
+        measured++;
+        const rel = d.dev / d.band;
+        if (Math.abs(rel) > Math.abs(worst)) worst = rel;
+      }
+    }
+    // Красным метим по ТОЙ ЖЕ мерке, что и рисуем: |rel| > 1 — за краем коридора. Брать сюда
+    // outOfBand() нельзя, хотя он и рядом: он считает флаги по винрейту и урону, а не по норме,
+    // и точка внутри полосы могла оказаться красной — картинка спорила бы сама с собой.
+    const bad = Math.abs(worst) > 1;
+    if (bad) out++;
+    points.push({ rel: worst, bad });
+  }
+
+  if (measured === 0) {
+    ctx.fillStyle = "rgba(255,146,48,.9)";
+    ctx.font = "11px ui-monospace, monospace";
+    ctx.fillText("норм в прогоне нет — мерить нечем", padX, midY - h * 0.24);
+  } else {
+    points.forEach((p, i) => {
+      const x = padX + span * (0.5 + Math.max(-0.46, Math.min(0.46, p.rel * 0.2)));
+      const y = midY - h * 0.2 + (h * 0.4 * (i + 0.5)) / points.length;
+      ctx.fillStyle = p.bad ? "rgba(255,96,80,.75)" : "rgba(200,162,76,.55)";
+      ctx.beginPath();
+      ctx.arc(x, y, 2.4, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+
+  ctx.fillStyle = "#C4B393";
+  ctx.font = "11px ui-monospace, monospace";
+  ctx.fillText(`${units.length} китов`, padX, h * 0.14);
+  if (measured > 0) {
+    ctx.fillStyle = out > 0 ? "rgba(255,96,80,.9)" : "#93805E";
+    ctx.fillText(out > 0 ? `${out} вне коридора` : "все в коридоре", padX + span * 0.52, h * 0.14);
+  }
+}
+
 function render(host: HTMLElement): void {
   const status = el("p", "dim", "читаю отчёты…");
   host.appendChild(status);
@@ -120,10 +207,15 @@ function bandCard(judged: string[]): HTMLElement {
   const list = el("ul", "lead");
 
   const worst = new Map<string, { key: string; dev: number; also: number }>();
+  // Норм у прогона может не быть вовсе — их пишет не всякий бенч. Тогда пустой список значит
+  // «сравнивать не с чем», и печатать «все внутри коридоров» нельзя: это ответ на незаданный
+  // вопрос, а выглядит как зелёный свет.
+  let measured = 0;
   for (const name of judged) {
     for (const mode of modesOf(run)) {
       for (const key of NORM_KEYS) {
         const d = deviation(name, key, valueOf(run, mode, name, key));
+        if (d) measured++;
         if (!d?.out) continue;
         const prev = worst.get(name);
         if (!prev) worst.set(name, { key, dev: d.dev, also: 0 });
@@ -146,7 +238,11 @@ function bandCard(judged: string[]): HTMLElement {
       `${r.dev > 0 ? "+" : "−"}${fmt(Math.abs(r.dev) * 100)}%`));
     list.appendChild(li);
   }
-  if (rows.length === 0) list.appendChild(el("li", "empty", "Все киты внутри своих коридоров."));
+  if (rows.length === 0) {
+    list.appendChild(el("li", "empty", measured === 0
+      ? "В этом прогоне норм нет — сравнивать не с чем. Выбери прогон, где бенч их посчитал."
+      : "Все киты внутри своих коридоров."));
+  }
   card.appendChild(list);
   return card;
 }
@@ -207,6 +303,23 @@ const section: SectionDef = {
     "кто не проходит энкаунтеры и что сдвинулось с прошлого прогона.",
 
   blocks: [
+    {
+      kind: "stands",
+      items: [
+        {
+          id: "bal-spread",
+          status: "note",
+          title: "Разброс по норме",
+          tag: "живой прогон",
+          note:
+            "Точка на кита, полоса посередине — коридор роли. Красным — те, у кого хоть одна " +
+            "метрика вне коридора. Отвечает на то, чего не видно в цифрах: ростер собран кучно " +
+            "или расползся.",
+          size: [320, 200],
+          draw: spread
+        }
+      ]
+    },
     {
       kind: "head", id: "overview", title: "Первые вопросы к прогону",
       lede:

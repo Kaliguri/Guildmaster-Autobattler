@@ -113,7 +113,9 @@ button[data-active="true"] { border-color: var(--brass); color: var(--brass-lift
 input[type=range] { accent-color: var(--brass); width: 170px; }
 
 /* --- стенды --- */
-.stands { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--gap); }
+/* auto-fill, а не auto-fit: единственный стенд блока иначе разъезжается во всю ширину колонки
+   и читается как главный на странице, хотя он просто один. */
+.stands { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--gap); }
 .stand { display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--edge-soft); border-radius: var(--radius); overflow: hidden; }
 .stand canvas { display: block; width: 100%; height: auto; background: #0C0B09; }
 .stand-body { padding: 1rem 1.05rem 1.2rem; display: flex; flex-direction: column; gap: .55rem; }
