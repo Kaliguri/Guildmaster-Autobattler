@@ -41,27 +41,38 @@ function feed<T>(url: string): Feed<T> {
 /** Человеческое имя экрана. Неизвестный id печатается как есть — новый экран не должен пропадать. */
 const TITLE: Record<string, string> = {
   mainmenu: "Главное меню",
-  newgame: "Создать игру",
+  newgame: "Выбор режима",
+  profile: "Выбор профиля",
+  slotcreate: "Создание гильдии",
   guilds: "Выбор гильдии",
-  profile: "Профиль",
-  slotcreate: "Создание слота",
   hub: "Двор гильдии",
-  titlecard: "Заставка узла",
-  party: "Отряд",
-  items: "Предметы",
-  loadout: "Расстановка",
-  "loadout-inventory": "Инвентарь",
+  party: "Подготовка · Отряд",
+  items: "Подготовка · Предметы",
+  loadout: "Снаряжение Сосуда",
+  "loadout-inventory": "Снаряжение · Реликвии",
   "vessel-card": "Карточка Сосуда",
+  titlecard: "Заставка узла",
   shop: "Лавка",
   chest: "Сундук",
   event: "Событие",
   camp: "Привал",
   reward: "Награда",
   outcome: "Исход забега",
-  pause: "Системное меню",
-  devconsole: "Дев-консоль",
-  "dev-picker": "Дев-выбор боя"
+  settings: "Настройки",
+  pause: "ESC-меню",
+  devconsole: "Дев · Команды (F1)",
+  "dev-log": "Дев · Лог движка (F2)",
+  "dev-battles": "Дев · Витрина боёв (F3)"
 };
+
+/** Группы в порядке пути игрока: первый id группы открывает её заголовком. */
+const GROUPS: { at: string; title: string }[] = [
+  { at: "mainmenu",   title: "Вход в игру" },
+  { at: "hub",        title: "Гильдия и подготовка" },
+  { at: "titlecard",  title: "Забег: узлы и исход" },
+  { at: "settings",   title: "Служебное" },
+  { at: "devconsole", title: "Дев-полки" }
+];
 
 /** Что на экране собрано заглушкой, а не настоящим содержимым: иначе кадр читается как поломка. */
 const STUB: Record<string, string> = {
@@ -126,7 +137,13 @@ function render(host: HTMLElement): void {
     const grid = el("div");
     grid.style.display = "grid";
     grid.style.gap = "var(--gap)";
-    for (const screen of manifest.data.screens) grid.appendChild(screenCard(screen));
+    for (const screen of manifest.data.screens) {
+      // Заголовок группы стоит ПЕРЕД своим первым экраном, а не задаёт порядок сам: порядок держит
+      // манифест, то есть каталог в игре. Заведи витрина свой — она разошлась бы с прогоном.
+      const group = GROUPS.find((g) => g.at === screen.id);
+      if (group) grid.appendChild(el("h2", null, group.title));
+      grid.appendChild(screenCard(screen));
+    }
     box.appendChild(grid);
   });
 }
