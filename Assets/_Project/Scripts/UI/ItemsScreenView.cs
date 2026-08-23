@@ -15,7 +15,7 @@ namespace Guildmaster.UI
         /// <summary>Имя носителя; пусто — место свободно и вещи вешать не на кого.</summary>
         public readonly string Name;
 
-        /// <summary>Реликвия носителя.</summary>
+        /// <summary>Мементо носителя.</summary>
         public readonly string Relic;
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Guildmaster.UI
         /// </summary>
         public readonly IReadOnlyList<string> Items;
 
-        /// <summary>Лицо носителя — портрет архетипа его Реликвии; <c>null</c> — лица ещё нет.</summary>
+        /// <summary>Лицо носителя — портрет архетипа его Мементо; <c>null</c> — лица ещё нет.</summary>
         public readonly Sprite Portrait;
 
         public ItemsRowView(int slotIndex, string name, string relic, IReadOnlyList<string> items,

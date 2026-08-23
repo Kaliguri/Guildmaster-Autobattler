@@ -87,13 +87,13 @@ namespace Guildmaster.Game
         private readonly Core.Flow.IRunControl _runControl;
         private readonly Core.Audio.IAudioService _audio;              // взял/поставил/отказ — звук расстановки
 
-        // Редактируемый ростер игрока в этой фазе (позиции/релики меняются перетаскиванием и loadout'ом).
+        // Редактируемый ростер игрока в этой фазе (позиции/Мементо меняются перетаскиванием и loadout'ом).
         // GuildIndex — тот же слот в durable-гильдии забега (RunState.Guild): по нему правки уезжают в сейв,
-        // иначе расстановка и надетые релики жили бы только до конца боя (наход. Макса, п.5).
+        // иначе расстановка и надетые Мементо жили бы только до конца боя (наход. Макса, п.5).
         private sealed class Slot
         {
-            // Юнит слота — UnitData, а не RelicData: на площадке может стоять и не-реликвия (дев-срез
-            // ставит своих бойцов). Сужение до реликвии молча теряло такого юнита на первой же пересборке
+            // Юнит слота — UnitData, а не RelicData: на площадке может стоять и не-мементо (дев-срез
+            // ставит своих бойцов). Сужение до мементо молча теряло такого юнита на первой же пересборке
             // превью — слот оставался, а ставить было некого.
             public UnitData Unit; public VesselData Vessel; public Vector2 Pos;
             public int LiveUnitId = -1;
@@ -105,7 +105,7 @@ namespace Guildmaster.Game
             /// </summary>
             public int Team;
 
-            /// <summary>Кит слота, если это реликвия: лоадаут и гильдия забега работают только с ними.</summary>
+            /// <summary>Кит слота, если это мементо: лоадаут и гильдия забега работают только с ними.</summary>
             public RelicData Relic => Unit as RelicData;
         }
         private readonly List<Slot> _slots = new List<Slot>();

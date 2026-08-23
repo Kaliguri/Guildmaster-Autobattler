@@ -4,7 +4,7 @@ namespace Guildmaster.Combat.Abilities
 {
     /// <summary>
     /// Рантайм-состояние одной активной способности на юните (POCO, один бой): таймер кулдауна.
-    /// Создаётся <see cref="RuntimeUnitFactory"/> из <see cref="AbilityData"/> реликвии (вики «12» §2.4).
+    /// Создаётся <see cref="RuntimeUnitFactory"/> из <see cref="AbilityData"/> мементо (вики «12» §2.4).
     /// </summary>
     public sealed class AbilityRuntime
     {

@@ -15,7 +15,7 @@ namespace Guildmaster.ContentHub.Editor
     /// </summary>
     public static class StatMath
     {
-        /// <summary>Собрать эффективный стат-блок реликвии/врага поверх дефолтов конфига и классовой базы.</summary>
+        /// <summary>Собрать эффективный стат-блок мементо/врага поверх дефолтов конфига и классовой базы.</summary>
         public static Stats BuildEffective(UnitData data, StatsConfig config, ClassBalanceConfig classConfig = null)
             => EffectiveStats.Build(data, config, classConfig);
 

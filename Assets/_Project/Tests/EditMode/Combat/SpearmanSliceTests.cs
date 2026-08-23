@@ -193,7 +193,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         /// <summary>
         /// Тикает авто-атаку до первого нанесённого урона (сквозь двухфазный замах, вики «14»).
-        /// Без визуала у реликвии windup = MinWindupTicks; удар наступает через несколько тиков.
+        /// Без визуала у мементо windup = MinWindupTicks; удар наступает через несколько тиков.
         /// </summary>
         private static void TickUntilDamage(List<RuntimeUnit> units, SpatialStubContext ctx, int maxTicks = 64)
         {

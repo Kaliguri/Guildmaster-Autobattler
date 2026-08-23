@@ -46,7 +46,7 @@ namespace Guildmaster.Tests.EditMode.ContentHub
         {
             var cohort = ContentIndex.Cohort(typeof(RelicData));
             if (cohort == null || cohort.Size == 0)
-                Assert.Ignore("нет реликвий в проекте — когорту не проверяем");
+                Assert.Ignore("нет мементо в проекте — когорту не проверяем");
 
             var hp = cohort.For(StatType.MaxHP);
             Assert.AreEqual(cohort.Size, hp.Count);

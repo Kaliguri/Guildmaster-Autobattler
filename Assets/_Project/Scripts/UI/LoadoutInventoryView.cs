@@ -11,7 +11,7 @@ namespace Guildmaster.UI
 {
     /// <summary>
     /// Сборка нового лоадаут/инвентарь-экрана (редизайн, Ф3a каркас) из UXML-шаблона.
-    /// Полноэкранный трёхколоночник: боевая зона-«дырка» слева | грид таро-карточек реликвий |
+    /// Полноэкранный трёхколоночник: боевая зона-«дырка» слева | грид таро-карточек мементо |
     /// панель деталей (видео 16:9, способности, улучшения, нарратив). Общий код для роутера и
     /// превью-стенда.
     /// <para>
@@ -61,11 +61,11 @@ namespace Guildmaster.UI
             // мир виден через неё (пока загружена боевая сцена). Подсказку прячем — она была для мок-заглушки.
             var battleHint = root.Q<Label>("battle-hint");
             if (battleHint != null) battleHint.style.display = DisplayStyle.None;
-            // Фильтры-чипы (иконка + подпись, п.1): Реликвии активны по умолчанию, клик переключает
+            // Фильтры-чипы (иконка + подпись, п.1): Мементо активны по умолчанию, клик переключает
             // подсветку. Фильтрация по категории — отдельная фаза; здесь пока только визуальный выбор.
             var filterChips = new[]
             {
-                (chip: root.Q<Chip>("filter-relics"),  label: L("ui.loadout.filter.relics", "Реликвии")),
+                (chip: root.Q<Chip>("filter-relics"),  label: L("ui.loadout.filter.relics", "Мементо")),
                 (chip: root.Q<Chip>("filter-items"),   label: L("ui.loadout.filter.items", "Предметы")),
                 (chip: root.Q<Chip>("filter-banners"), label: L("ui.loadout.filter.banners", "Знамёна")),
             };
@@ -107,12 +107,12 @@ namespace Guildmaster.UI
 
             // ── Теги «быстрого чтения» (ряд под именем): реальные теги юнита из UnitTagResolver,
             //    иконка + подпись, порядок осей Role→DamageType→Playstyle→Mechanic с «|» между группами.
-            //    Заполняется per-relic в ShowDetail (набор зависит от выбранного релика).
+            //    Заполняется per-relic в ShowDetail (набор зависит от выбранного Мементо).
             //    Высота ряда фиксирована (3 строки, USS) — лишние теги сворачиваются в чип «+N»
             //    с подсказкой по наведению; подсказка живёт оверлеем в корне экрана. ──
             var tags = root.Q<VisualElement>("detail-tags");
 
-            // Описание релика приходит из слоя описаний с развёрнутой разметкой ключевых слов —
+            // Описание Мементо приходит из слоя описаний с развёрнутой разметкой ключевых слов —
             // включаем rich text и подсказки по ссылкам один раз, на сам Label (Трек Т).
             root.Q<Label>("detail-narrative")?.WithKeywordTooltips();
 
@@ -226,7 +226,7 @@ namespace Guildmaster.UI
                     ShowDetail(relic);
                     if (cardAnimations) Animate(relic);
                 });
-                WireRelicDrag(cardRoot, relic, onRelicDrag); // QA #5: тащить реликвию на юнита в мире
+                WireRelicDrag(cardRoot, relic, onRelicDrag); // QA #5: тащить мементо на юнита в мире
                 // Карточка показывает имя и арт; кит, теги и описание — тултипом (при активном драге
                 // система глушит подсказки сама, так что жест перетаскивания не мигает окном).
                 cardRoot.WithTooltip(TooltipRequest.Relic(relic?.Id));
@@ -246,7 +246,7 @@ namespace Guildmaster.UI
                 gridEl.Add(cardRoot);
             }
 
-            // Предвыбор первого релика — сразу заполнить панель деталей.
+            // Предвыбор первого Мементо — сразу заполнить панель деталей.
             if (cards.Count > 0) ShowDetail(cards[0].relic);
 
             // Рабочая сортировка по имени: клик по «Имя ↓» переключает направление и переставляет карты
@@ -277,7 +277,7 @@ namespace Guildmaster.UI
 
         private const float RelicDragThresholdSq = 36f; // (6 панельных ед)² — меньше сдвиг = клик, больше = drag
 
-        // Drag карточки реликвии на юнита в мире (QA #5): pointer-capture на карте, порог клик/drag; за порогом
+        // Drag карточки мементо на юнита в мире (QA #5): pointer-capture на карте, порог клик/drag; за порогом
         // публикуем Start/Move/Drop — позицию курсора фаза расстановки берёт из своего ввода (событие лишь
         // держит жест активным). Клик (без drag) не трогаем — ClickEvent карты (выбор) срабатывает как раньше.
         private static void WireRelicDrag(VisualElement card, RelicData relic,
@@ -348,7 +348,7 @@ namespace Guildmaster.UI
             // ширины чипов нулевые, а считаем мы именно по ним.
             //
             // Ждём геометрию ЧИПА, а не контейнера. У контейнера размер задан в USS и при смене
-            // реликвии не меняется — GeometryChangedEvent на нём приходил ровно один раз, за всю
+            // мементо не меняется — GeometryChangedEvent на нём приходил ровно один раз, за всю
             // жизнь панели: у первой показанной карточки теги сворачивались, у всех следующих лишние
             // молча срезались overflow'ом, без чипа «+N» и без подсказки. Чипы же пересоздаются на
             // каждое заполнение, и их геометрия устанавливается всегда.
@@ -493,7 +493,7 @@ namespace Guildmaster.UI
             !string.IsNullOrEmpty(id) && id.StartsWith("tag.") ? id.Substring(4) : id;
 
         // Статблок выбранного кита: реальные числа из шва. Нет данных (dev-стенд без DI, пустой
-        // релик) — прячем всю секцию вместе с подписью: пустая рамка «характеристики» врёт сильнее,
+        // Мементо) — прячем всю секцию вместе с подписью: пустая рамка «характеристики» врёт сильнее,
         // чем её отсутствие.
         private static void FillStats(VisualElement container, VisualElement section,
             IReadOnlyList<UnitStatLine> lines, Func<string, string, string> L, string ownerId)
@@ -533,7 +533,7 @@ namespace Guildmaster.UI
         private static string Title(RelicData r, Func<RelicData, string> titleOf)
             => r == null ? null : (titleOf != null ? titleOf(r) : r.Id);
 
-        // Спрайт релика: портрет из AnimationArchetypeData, иначе иконка-фолбэк.
+        // Спрайт Мементо: портрет из AnimationArchetypeData, иначе иконка-фолбэк.
         private static Sprite RelicSprite(RelicData relic)
         {
             if (relic == null) return null;

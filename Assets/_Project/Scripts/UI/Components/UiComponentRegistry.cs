@@ -284,7 +284,7 @@ namespace Guildmaster.UI.Components
             New("Таб ленты забега", "gm-runbar__tab", UiComponentGroup.Tabs, Interactive, OfChip,
                 "лента режимов забега — переключение боя, карты, лагеря"),
             New("Фильтр инвентаря", "gm-filter-tab", UiComponentGroup.Tabs, Interactive, OfChip,
-                "инвентарь реликвий — отбор по виду", "gm-filter-tab--last"),
+                "инвентарь мементо — отбор по виду", "gm-filter-tab--last"),
 
             // --- КАРТОЧКИ И СЛОТЫ ---
             // КАРТОЧКА ОДНА, различается РАЗМЕРОМ (правило Макса 06.08.2026, третье применение того
@@ -293,12 +293,12 @@ namespace Guildmaster.UI.Components
             // отступ и КАЙМА (--gm-border-2 цвета border-inner против outline-width/outline-color).
             // Расхождение было историческим: витрина писалась в screens/shop.uss отдельно. Кайма
             // сведена к базовой, вид лавки при этом изменился — решение принято глядя на кадр.
-            New("Карточка релика", "gm-card", UiComponentGroup.Cards, Interactive, null,
+            New("Карточка Мементо", "gm-card", UiComponentGroup.Cards, Interactive, null,
                 "снаряжение бойца, витрина лавки, выбор награды",
                 "gm-card--selected", "gm-card--current", "gm-card--reward", "gm-card--shop",
                 "gm-card--sold"),
             New("Карточка арканы", "gm-arcana-card", UiComponentGroup.Cards, Interactive, null,
-                "инвентарь реликвий — таро-грид",
+                "инвентарь мементо — таро-грид",
                 "gm-arcana-card--selected", "gm-arcana-card--locked"),
             New("Строка запаса", "gm-shop__stash-row", UiComponentGroup.Cards, Interactive, null,
                 "лавка — список того, что можно продать"),
@@ -423,7 +423,7 @@ namespace Guildmaster.UI.Components
             New("Кольцо ожидания", "gm-wait", UiComponentGroup.Overlays, UiElementState.None, null,
                 "контрол WaitNote: кольцо и две строки — экран ожидания, заслонка выхода, бут"),
             New("Подсказка", "gm-tooltip", UiComponentGroup.Overlays, UiElementState.None, null,
-                "наведение на что угодно с описанием: релик, стат, понятие",
+                "наведение на что угодно с описанием: Мементо, стат, понятие",
                 "gm-tooltip--wide", "gm-tooltip--sticky"),
             New("Карточка подсказки", "gm-tooltip__card", UiComponentGroup.Overlays, UiElementState.None, null,
                 "содержимое подсказки: заголовок, мета, строки", "gm-tooltip__card--wide"),

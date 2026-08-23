@@ -4,7 +4,7 @@
             <ui:Label name="loadout-title" text="Снаряжение" class="gm-text-title gm-panel__title" />
 
             <ui:VisualElement class="gm-tabbar">
-                <gm:PlateButton name="tab-relic" text="Реликвия" class="gm-tab gm-tab--active" />
+                <gm:PlateButton name="tab-relic" text="Мементо" class="gm-tab gm-tab--active" />
                 <gm:PlateButton name="tab-items" text="Предметы" class="gm-tab" />
                 <gm:PlateButton name="tab-upgrades" text="Улучшения" class="gm-tab" />
                 <gm:PlateButton name="tab-ai" text="Поведение" class="gm-tab" />

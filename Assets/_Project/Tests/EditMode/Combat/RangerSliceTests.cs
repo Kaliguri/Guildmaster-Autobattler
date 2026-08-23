@@ -188,7 +188,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             var target = MakeUnit(9, team: 1, pos: new Vector2(10f, 0f));
 
-            // Реликвия со стрельбой на ходу, штраф 50%. Юнит в замахе — обычно рут, но флаг снимает рут.
+            // Мементо со стрельбой на ходу, штраф 50%. Юнит в замахе — обычно рут, но флаг снимает рут.
             RelicData movingRelic = TestRelic.Make(canAttackWhileMoving: true, movingAttackSpeedPenaltyPct: 0.5f);
 
             var moving = MakeUnit(0, team: 0, pos: Vector2.zero, range: 1f, relic: movingRelic);

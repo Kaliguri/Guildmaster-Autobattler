@@ -129,7 +129,7 @@ namespace Guildmaster.DevTools
             // родителем, потому что кегль задавала кнопка, а гарнитуру — консоль.
             ["gm-text-display"] = () => Text("GUILDMASTERS"),
             ["gm-text-title"]   = () => Text("Настройки"),
-            ["gm-text-subtitle"] = () => Text("Продать реликвии"),
+            ["gm-text-subtitle"] = () => Text("Продать мементо"),
             ["gm-text-name"]    = () => Text("Клинок Рассвета"),
             ["gm-text-body"]    = () => Text("Сложность"),
             ["gm-text-caption"] = () => Text("Дом хранит прогресс забега"),
@@ -264,7 +264,7 @@ namespace Guildmaster.DevTools
             host.Add(label);
         }
 
-        /// <summary>Строка запаса лавки: имя релика слева, кнопка продажи справа.</summary>
+        /// <summary>Строка запаса лавки: имя Мементо слева, кнопка продажи справа.</summary>
         /// <remarks>Собрано по <c>ShopScreenView.RenderStash</c>: кнопка там несёт <c>gm-button</c>.</remarks>
         private static VisualElement StashRow()
         {

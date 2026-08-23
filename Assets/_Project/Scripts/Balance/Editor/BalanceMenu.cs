@@ -92,8 +92,8 @@ namespace Guildmaster.Balance.Editor
         [MenuItem("Alebardium/Balance/Run Selected Scenario", validate = true)]
         private static bool RunScenarioValidate() => Selection.activeObject is BalanceScenarioData;
 
-        // Разбор одного боя событиями: выделение решает, какой это бой (реликвия + энкаунтер, две
-        // реликвии или сценарий). Отвечает на «почему», на который агрегатные таблицы не отвечают.
+        // Разбор одного боя событиями: выделение решает, какой это бой (мементо + энкаунтер, две
+        // мементо или сценарий). Отвечает на «почему», на который агрегатные таблицы не отвечают.
         [MenuItem("Alebardium/Balance/Трейс выделенного — лента одного боя", priority = 181)]
         private static void Trace()
         {

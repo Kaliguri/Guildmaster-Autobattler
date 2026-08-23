@@ -78,9 +78,9 @@ namespace Guildmaster.Data.Definitions
     public enum EventEffectKind
     {
         Gold,              // Amount: изменить золото (+/-)
-        GrantRelic,        // ContentId: выдать релик в запас (enforce вместимости §5.4)
-        RemoveRelic,       // ContentId: убрать релик из запаса
-        GainRelicCapacity, // Amount: изменить вместимость запаса реликов (+)
+        GrantRelic,        // ContentId: выдать Мементо в запас (enforce вместимости §5.4)
+        RemoveRelic,       // ContentId: убрать Мементо из запаса
+        GainRelicCapacity, // Amount: изменить вместимость запаса Мементо (+)
         GrantItem,         // ContentId: выдать предмет (проводка в бой — D1/позже; пока лог)
         Custom,            // Note: произвольное последствие (пока дебаг-лог; хук под будущие механики)
     }

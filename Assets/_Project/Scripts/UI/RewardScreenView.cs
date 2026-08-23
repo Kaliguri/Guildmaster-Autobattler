@@ -36,7 +36,7 @@ namespace Guildmaster.UI
         /// <remarks>
         /// <b>Зовётся снаружи и на каждое объявление счёта</b>, а не строится один раз: голоса меняются,
         /// пока экран открыт, и передумать можно до самого конца.
-        /// <para><b>Обмен считается голосом за ВЗЯТУЮ реликвию</b> — кружок встаёт под той карточкой,
+        /// <para><b>Обмен считается голосом за ВЗЯТУЮ мементо</b> — кружок встаёт под той карточкой,
         /// которую человек хочет забрать. Что он при этом предлагает выбросить, видно в секции сброса,
         /// и второй кружок там был бы про другой вопрос.</para>
         /// <para><b>В одиночной игре не рисуем ничего</b> (решение Макса 07.08.2026): одному кружок
@@ -75,10 +75,10 @@ namespace Guildmaster.UI
         }
 
         /// <summary>
-        /// Построить экран-оверлей награды. <paramref name="nameOf"/> — локализованное имя реликвии,
+        /// Построить экран-оверлей награды. <paramref name="nameOf"/> — локализованное имя мементо,
         /// <paramref name="localize"/> — строка по ключу (null/пусто → RU-фолбэк). <paramref name="onCardSelectSound"/>
         /// — хук звука/voice-стингера при выборе карточки (FMOD-ассет позже; план 10 §5). Кнопка «Взять»
-        /// активна, когда выбрана реликвия и (при полном запасе) выбрано, что сбросить.
+        /// активна, когда выбрана мементо и (при полном запасе) выбрано, что сбросить.
         /// </summary>
         public static VisualElement Build(
             VisualTreeAsset uxml,
@@ -111,7 +111,7 @@ namespace Guildmaster.UI
             var skipBtn    = root.Q<Button>("btn-skip");
             var takeBtn    = root.Q<Button>("btn-take");
 
-            if (title   != null) title.text   = L("ui.reward.title", "Награда — выбери реликвию");
+            if (title   != null) title.text   = L("ui.reward.title", "Награда — выбери мементо");
             if (skipBtn != null) skipBtn.text = L("ui.reward.skip", "Пропустить");
             if (takeBtn != null) takeBtn.text = L("ui.reward.take", "Взять");
 
@@ -158,7 +158,7 @@ namespace Guildmaster.UI
                 RelicData r = relic;
                 RenderTexture cardRt = rt;
                 // Подсказка — запросом по данным (Трек Т): содержимое соберёт общая фабрика, поэтому
-                // реликвия в награде, в магазине и в инвентаре выглядит одинаково без копирования кода.
+                // мементо в награде, в магазине и в инвентаре выглядит одинаково без копирования кода.
                 card.WithTooltip(TooltipRequest.Relic(r?.Id));
                 card.RegisterCallback<ClickEvent>(_ =>
                 {
@@ -187,12 +187,12 @@ namespace Guildmaster.UI
             {
                 dropSection.style.display = DisplayStyle.Flex;
                 if (dropHint != null)
-                    dropHint.text = L("ui.reward.drop_hint", "Запас реликвий полон — выбери, что сбросить:");
+                    dropHint.text = L("ui.reward.drop_hint", "Запас мементо полон — выбери, что сбросить:");
 
                 for (int i = 0; currentInventory != null && i < currentInventory.Count; i++)
                 {
                     string id = currentInventory[i];
-                    // Имя берём ключом по id, а не поиском в choices: там лежат ПРЕДЛОЖЕННЫЕ реликвии,
+                    // Имя берём ключом по id, а не поиском в choices: там лежат ПРЕДЛОЖЕННЫЕ мементо,
                     // и та, что уже у игрока, в этом списке отсутствует по определению — резолв всегда
                     // промахивался, и в списке «что сбросить» игрок читал сырые id.
                     string label = Coalesce(localize?.Invoke(id + "." + ContentKeys.NameSuffix), id);

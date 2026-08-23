@@ -45,7 +45,7 @@ namespace Guildmaster.Game.Session
         /// <summary>Владелец сейва: держит забег сам, сам его пишет и сам раздаёт гостям.</summary>
         private static void InstallOwner(IContainerBuilder builder)
         {
-            // Durable-состояние забега + правила вместимости реликов (план 11 §3.1, §5.4). Читателям
+            // Durable-состояние забега + правила вместимости Мементо (план 11 §3.1, §5.4). Читателям
             // снаружи сессии оно видно только через роутер — писать в обход шины команд нельзя.
             builder.Register<Guildmaster.Guild.RunStateService>(Lifetime.Singleton)
                    .AsSelf().As<Guildmaster.Guild.ISessionRunState>();

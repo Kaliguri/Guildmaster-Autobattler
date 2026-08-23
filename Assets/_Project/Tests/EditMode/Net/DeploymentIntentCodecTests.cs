@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Guildmaster.Tests.EditMode.Net
 {
     /// <summary>
-    /// Намерения игрока на арене по проводу: «поставь бойца сюда» и «надень на него реликвию».
+    /// Намерения игрока на арене по проводу: «поставь бойца сюда» и «надень на него мементо».
     /// </summary>
     /// <remarks>
     /// Формат жил без прогона потому, что кодек был закрыт от тестов, — то же положение дел, что у
@@ -34,7 +34,7 @@ namespace Guildmaster.Tests.EditMode.Net
         }
 
         /// <summary>
-        /// Реликвия едет строковым id: по проводу ездит контент, а не ссылки на ассеты. До 08.08.2026
+        /// Мементо едет строковым id: по проводу ездит контент, а не ссылки на ассеты. До 08.08.2026
         /// этот путь не существовал вовсе — жест у гостя уходил в шину без подписчика.
         /// </summary>
         [Test]
@@ -88,7 +88,7 @@ namespace Guildmaster.Tests.EditMode.Net
             Assert.IsFalse(DeploymentIntentCodec.TryRead(writer.WrittenSegment, out _));
         }
 
-        /// <summary>Пустой id реликвии надеть нечем — это битый пакет, а не «снять реликвию».</summary>
+        /// <summary>Пустой id мементо надеть нечем — это битый пакет, а не «снять мементо».</summary>
         [Test]
         public void EquipWithoutRelicId_IsRefused()
         {

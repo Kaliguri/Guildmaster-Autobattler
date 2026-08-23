@@ -113,7 +113,7 @@ namespace Guildmaster.UI
         private static string Fallback(CampAction action) => action switch
         {
             CampAction.Empower    => "Усилиться",
-            CampAction.CopyRelic  => "Получить копию реликвии",
+            CampAction.CopyRelic  => "Получить копию мементо",
             CampAction.Cleanse    => "Снять негативное последствие",
             // Скобка про замену — ПОЯСНЕНИЕ, и в подпись кнопки оно не помещалось: текст выходил за
             // пластину и рисовался поверх соседей (кадр 23.08.2026). Место пояснению — тултип.

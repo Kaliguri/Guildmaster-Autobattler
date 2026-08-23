@@ -88,7 +88,7 @@ namespace Guildmaster.Tests.EditMode.Content
         /// подставляет код-дефолт при загрузке. Снаружи это выглядит как работающий конфиг, но владельцев у
         /// значения становится двое: часть полей играет из ассета, часть из кода, и дизайнер, который правит
         /// ассет, вторую часть не видит вовсе. У <c>GameConfig</c> так разъехалось 13 полей из 20, причём
-        /// единственное, что ассет всё-таки держал против кода (вместимость реликвий 12 против 8), кодовые
+        /// единственное, что ассет всё-таки держал против кода (вместимость мементо 12 против 8), кодовые
         /// тесты продолжали проверять по коду (аудит 2026-07-26, T-8/CD-10/AC-17).</para>
         /// </summary>
         [TestCase(typeof(GameConfig))]
@@ -194,7 +194,7 @@ namespace Guildmaster.Tests.EditMode.Content
             Assert.That(g.DefaultSfxVolume,    Is.InRange(0f, 1f));
             Assert.GreaterOrEqual(g.VesselItemSlots, 1);
             Assert.GreaterOrEqual(g.GuildSize, 1, "Гильдия не может быть пустой (ГДД: четверо).");
-            Assert.IsFalse(string.IsNullOrEmpty(g.StartingRelicId), "Стартовая реликвия не задана.");
+            Assert.IsFalse(string.IsNullOrEmpty(g.StartingRelicId), "Стартовое мементо не задана.");
 
             // Экономика: инициализаторов у полей больше нет, значения живут только в ассете. Незаполненный
             // ассет иначе прошёл бы молча — и забег стартовал бы с нулём золота и бесплатной лавкой.
@@ -204,7 +204,7 @@ namespace Guildmaster.Tests.EditMode.Content
             Assert.Greater(g.PriceCursed, 0, "Цена Cursed — ноль.");
             Assert.Greater(g.PriceDivine, 0, "Цена Divine — ноль.");
             Assert.Greater(g.ShopRerollCost, 0, "Реролл витрины бесплатен — это не задумано.");
-            Assert.Greater(g.SellPercent, 0f, "Продажа реликвии не приносит ничего.");
+            Assert.Greater(g.SellPercent, 0f, "Продажа мементо не приносит ничего.");
             Assert.GreaterOrEqual(g.RelicCapacityBase, 1, "Вместимость коллекции — ноль.");
             Assert.GreaterOrEqual(g.RelicCapacityMax, g.RelicCapacityBase,
                 "Потолок вместимости ниже стартовой — апгрейд невозможен.");

@@ -7,15 +7,15 @@ namespace Guildmaster.Game.Flow
 {
     /// <summary>
     /// Применяет последствия выбора текстового ивента (<see cref="EventEffect"/>) к <see cref="RunState"/>
-    /// через <see cref="RunStateService"/> — единый центр-switch (план 11 §5.1). Тривиальное (золото, релик,
+    /// через <see cref="RunStateService"/> — единый центр-switch (план 11 §5.1). Тривиальное (золото, Мементо,
     /// вместимость) применяется реально; ещё не проведённое в бой (предмет) и произвольное (Custom) — пока
     /// дебаг-лог (как просил Макс: «хотя бы дебаг-лог»), но с честным хуком под будущую механику.
     /// </summary>
     public sealed class EventEffectApplier
     {
         private readonly RunStateService _runStates;
-        // Золото и снятие реликвии — односторонние записи, они идут через шину команд и попадают в лог.
-        // Выдача реликвии и вместимость остались прямыми: они спрашивают «вышло ли» синхронно, а это
+        // Золото и снятие мементо — односторонние записи, они идут через шину команд и попадают в лог.
+        // Выдача мементо и вместимость остались прямыми: они спрашивают «вышло ли» синхронно, а это
         // транзакция (см. RunStateService.TrySpendGold, отложенный шаг транзакций в ТЗ кооп-вертикали).
         private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
 
@@ -80,20 +80,20 @@ namespace Guildmaster.Game.Flow
                 case EventEffectKind.GrantRelic:
                     if (string.IsNullOrEmpty(e.ContentId)) { WarnNoId(e); break; }
                     bool added = _runStates.TryAddRelic(e.ContentId);
-                    Debug.Log($"[EventEffect] - выдан релик '{e.ContentId}'" + (added ? "" : " — НЕ добавлен (запас полон)"));
+                    Debug.Log($"[EventEffect] - выдан Мементо '{e.ContentId}'" + (added ? "" : " — НЕ добавлен (запас полон)"));
                     break;
 
                 case EventEffectKind.RemoveRelic:
                     if (string.IsNullOrEmpty(e.ContentId)) { WarnNoId(e); break; }
                     _commands.RemoveRelic(e.ContentId);
-                    Debug.Log($"[EventEffect] - убран релик '{e.ContentId}'");
+                    Debug.Log($"[EventEffect] - убран Мементо '{e.ContentId}'");
                     break;
 
                 case EventEffectKind.GainRelicCapacity:
                     int gained = 0;
                     for (int k = 0; k < e.Amount; k++)
                         if (_runStates.IncreaseCapacity()) gained++; else break;
-                    Debug.Log($"[EventEffect] - вместимость реликов +{gained} → {_runStates.Current?.RelicCapacity}");
+                    Debug.Log($"[EventEffect] - вместимость Мементо +{gained} → {_runStates.Current?.RelicCapacity}");
                     break;
 
                 case EventEffectKind.GrantItem:

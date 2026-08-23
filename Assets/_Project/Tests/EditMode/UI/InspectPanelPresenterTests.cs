@@ -51,19 +51,19 @@ namespace Guildmaster.Tests.EditMode.UI
             Assert.IsFalse(subject.IsEmpty);
             Assert.AreEqual("vessel.kai", subject.Name, "Без локализации имя показывается своим id, а не заглушкой.");
             StringAssert.Contains("в бою", subject.Subtitle, "Строка под именем говорит, выходит ли он на арену.");
-            Assert.AreEqual("relic.bulwark", subject.RelicId, "Есть Реликвия — кнопка «о Реликвии» горит.");
+            Assert.AreEqual("relic.bulwark", subject.RelicId, "Есть Мементо — кнопка «о Мементо» горит.");
         }
 
         [Test]
         public void Subject_WithoutRelic_LeavesTheRelicButtonDark()
         {
             RunState run = _runStates.NewDefaultRun(1L);
-            run.Guild[0].VesselId = "vessel.kai"; // кит базовый, то есть Реликвии нет
+            run.Guild[0].VesselId = "vessel.kai"; // кит базовый, то есть Мементо нет
 
             InspectSubject subject = _presenter.BuildSubject(0);
 
             Assert.IsFalse(subject.IsEmpty, "Человек есть, осматривать его можно.");
-            Assert.IsNull(subject.RelicId, "Реликвии нет — кнопка гаснет, но панель работает.");
+            Assert.IsNull(subject.RelicId, "Мементо нет — кнопка гаснет, но панель работает.");
         }
 
         [Test]

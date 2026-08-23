@@ -11,14 +11,14 @@ namespace Guildmaster.Data.Definitions
     public enum DeploymentMode { Fixed, Free }
 
     /// <summary>
-    /// Слот player-ростера: сосуд + надетый на него релик (весь боевой кит) + сохранённая стартовая
-    /// позиция (team 0). Модель «фигурка = Сосуд, релик даёт кит»: слот релика всегда заполнен — у
-    /// «пустого» сосуда стоит базовый релик без особенностей (<c>relic.base</c>).
+    /// Слот player-ростера: сосуд + надетый на него Мементо (весь боевой кит) + сохранённая стартовая
+    /// позиция (team 0). Модель «фигурка = Сосуд, Мементо даёт кит»: слот Мементо всегда заполнен — у
+    /// «пустого» сосуда стоит базовое Мементо без особенностей (<c>relic.base</c>).
     /// </summary>
     [System.Serializable]
     public struct PlayerSlot
     {
-        [Tooltip("Релик = весь боевой кит юнита. relic.base = «пустой» сосуд (дамми-кит). Обязателен.")]
+        [Tooltip("Мементо = весь боевой кит юнита. relic.base = «пустой» сосуд (дамми-кит). Обязателен.")]
         [SerializeField] private RelicData _relic;
 
         [Tooltip("Сосуд («пилот»). Опционален: null = без сосуда (vessel-контента пока нет). Даёт перк-моды при наличии.")]
@@ -81,7 +81,7 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Вражеский состав боя.")]
         [SerializeField] private EncounterData _encounter;
 
-        [Tooltip("Player-ростер (team 0): слоты {релик + сосуд + позиция}.")]
+        [Tooltip("Player-ростер (team 0): слоты {Мементо + сосуд + позиция}.")]
         [SerializeField] private PlayerSlot[] _roster;
 
         [Tooltip("Fixed = спавн сразу по сохранённым позициям; Free = интерактивная расстановка (шаг 4; пока = Fixed).")]

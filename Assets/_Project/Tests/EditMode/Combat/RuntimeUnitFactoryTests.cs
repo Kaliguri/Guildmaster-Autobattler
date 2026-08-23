@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Guildmaster.Tests.EditMode.Combat
 {
     /// <summary>
-    /// Интеграция фабрики (шаг 9): пассивки реликвии накладываются при сборке (постоянная длительность,
+    /// Интеграция фабрики (шаг 9): пассивки мементо накладываются при сборке (постоянная длительность,
     /// до инициализации CurrentHP), активки оборачиваются в <see cref="Abilities.AbilityRuntime"/>,
     /// ресурс стартует с <see cref="StatType.StartResource"/> (вики «12» §2.4, §6).
     /// </summary>
@@ -50,7 +50,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             RuntimeUnit unit = factory.Create(relic, null, team: 0, Vector2.zero);
 
-            Assert.AreEqual(2, unit.Abilities.Count, "Обе активки реликвии обёрнуты в AbilityRuntime");
+            Assert.AreEqual(2, unit.Abilities.Count, "Обе активки мементо обёрнуты в AbilityRuntime");
             Assert.AreEqual(5f, unit.Abilities[0].Data.BaseCooldown, 1e-4f);
         }
 
@@ -85,7 +85,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             RuntimeUnit unit = factory.Create(relic, null, team: 0, Vector2.zero);
 
-            // 300 (база реликвии) + 200 (пассив) = 500; CurrentHP стартует с полного, т.к. пассивки
+            // 300 (база мементо) + 200 (пассив) = 500; CurrentHP стартует с полного, т.к. пассивки
             // накладываются ДО инициализации CurrentHP.
             Assert.AreEqual(500f, unit.Stats.Get(StatType.MaxHP), 1e-4f);
             Assert.AreEqual(500f, unit.CurrentHP, 1e-4f, "Юнит стартует с полным HP, включая бонус пассивки");

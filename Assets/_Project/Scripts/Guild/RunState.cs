@@ -70,9 +70,9 @@ namespace Guildmaster.Guild
     }
 
     /// <summary>
-    /// Слот ростера гильдии (план 11 §3.1): сосуд + надетый релик (весь кит) + пресет AI + предметы + позиция.
-    /// Всё по строковым content id (relic.*, vessel.*, ai_preset.*, item.*). Слот релика всегда заполнен
-    /// (relic.base у «пустого» сосуда). Пустые строки = не задано (сосуд опц., aiPreset = дефолт релика).
+    /// Слот ростера гильдии (план 11 §3.1): сосуд + надетое Мементо (весь кит) + пресет AI + предметы + позиция.
+    /// Всё по строковым content id (relic.*, vessel.*, ai_preset.*, item.*). Слот Мементо всегда заполнен
+    /// (relic.base у «пустого» сосуда). Пустые строки = не задано (сосуд опц., aiPreset = дефолт Мементо).
     /// </summary>
     [Serializable]
     public sealed class RosterSlot
@@ -153,10 +153,10 @@ namespace Guildmaster.Guild
         /// <summary>Перезапуски боя, оставшиеся В ЭТОМ АКТЕ (реш. №65). Сброс в начале акта, не копится между актами.</summary>
         public int    RestartsRemaining;
 
-        /// <summary>Вместимость коллекции запаса реликов (план 11 §5.4). База/потолок — в GameConfig.</summary>
+        /// <summary>Вместимость коллекции запаса Мементо (план 11 §5.4). База/потолок — в GameConfig.</summary>
         public int    RelicCapacity;
 
-        /// <summary>Собранные, но не надетые релики (запас для свапа между боями). Кап = <see cref="RelicCapacity"/>.</summary>
+        /// <summary>Собранные, но не надетые Мементо (запас для свапа между боями). Кап = <see cref="RelicCapacity"/>.</summary>
         public string[] RelicInventory = Array.Empty<string>();
 
         /// <summary>Баннеры (Party-скоуп предметы, действуют на всю команду в бою).</summary>
@@ -166,7 +166,7 @@ namespace Guildmaster.Guild
         /// Склад предметов забега: собранные, но не надетые Vessel-предметы. Снятая вещь уходит сюда,
         /// надетая уходит отсюда — поэтому «переложить от Кая к Ирме» это снятие плюс надевание, и
         /// предмет ни в один момент не висит в воздухе.
-        /// <para>Лимита у склада нет (в отличие от реликвий с их <see cref="RelicCapacity"/>): дефицит
+        /// <para>Лимита у склада нет (в отличие от мементо с их <see cref="RelicCapacity"/>): дефицит
         /// у предметов создают три слота на «Сосуде», а не вместимость запаса.</para>
         /// </summary>
         public string[] ItemInventory = Array.Empty<string>();

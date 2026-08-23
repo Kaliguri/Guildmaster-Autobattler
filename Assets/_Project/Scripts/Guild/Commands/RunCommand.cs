@@ -12,13 +12,13 @@ namespace Guildmaster.Guild.Commands
         /// <summary>Запомнить позицию сосуда на арене: <c>SlotIndex</c> + <c>X</c>/<c>Y</c>.</summary>
         SetSlotPosition = 1,
 
-        /// <summary>Поставить кит на сосуд напрямую (drag реликвии в расстановке): <c>SlotIndex</c> + <c>Text</c>.</summary>
+        /// <summary>Поставить кит на сосуд напрямую (drag мементо в расстановке): <c>SlotIndex</c> + <c>Text</c>.</summary>
         SetSlotRelic = 2,
 
         /// <summary>Изменить золото забега на <c>Amount</c> (может быть отрицательным).</summary>
         AddGold = 3,
 
-        /// <summary>Убрать один экземпляр реликвии из запаса: <c>Text</c> — её id.</summary>
+        /// <summary>Убрать один экземпляр Мементо из запаса: <c>Text</c> — его id.</summary>
         RemoveRelic = 4,
 
         /// <summary>Начислить награду золотом за победу в бою; величина живёт в конфиге, не в команде.</summary>
@@ -121,7 +121,7 @@ namespace Guildmaster.Guild.Commands
         /// <summary>Числовой аргумент вида команды (дельта золота), иначе <c>0</c>.</summary>
         public readonly int Amount;
 
-        /// <summary>Строковый аргумент вида команды (id реликвии), иначе <c>null</c>.</summary>
+        /// <summary>Строковый аргумент вида команды (id мементо), иначе <c>null</c>.</summary>
         public readonly string Text;
 
         /// <summary>Позиция, если вид команды её требует.</summary>

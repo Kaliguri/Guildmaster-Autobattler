@@ -31,14 +31,14 @@ namespace Guildmaster.Data.Editor
             return picked;
         }
 
-        /// <summary>Реликвии игрока.</summary>
+        /// <summary>Мементо игрока.</summary>
         public static List<RelicData> Relics() => ContentEditService.LoadAll<RelicData>();
 
         /// <summary>Враги.</summary>
         public static List<EnemyData> Enemies() => ContentEditService.LoadAll<EnemyData>();
 
         /// <summary>
-        /// ВСЕ боевые юниты — реликвии и враги вместе. Класс, оружие и статы у них общие
+        /// ВСЕ боевые юниты — мементо и враги вместе. Класс, оружие и статы у них общие
         /// (<see cref="UnitData"/>), поэтому классовая правка обязана задевать обе стороны:
         /// подтянуть Танков только у игрока значит сломать бой, а не починить роль.
         /// </summary>

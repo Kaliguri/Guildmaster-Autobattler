@@ -15,14 +15,14 @@ namespace Guildmaster.Game
 {
     /// <summary>
     /// Руки игрока на арене в фазе расстановки: круги-опоры под ногами, выбор бойца под курсором,
-    /// перетаскивание фигурки и приём реликвии из инвентаря.
+    /// перетаскивание фигурки и приём мементо из инвентаря.
     /// </summary>
     /// <remarks>
     /// <b>Существует отдельно от <see cref="DeploymentController"/>, потому что ролей две, а не одна.</b>
     /// Контроллер владеет МЕСТОМ и СОСТАВОМ — кто вышел на арену, когда начинается бой, — и это право
     /// хозяина сеанса. Руки есть у каждого участника, включая гостя, у которого ни симуляции, ни
     /// пресета боя нет вовсе. Пока обе роли жили в одном классе, гость не получал ни кругов, ни драга,
-    /// ни приёма реликвии — и это читалось как три отдельных бага вместо одной несделанной работы.
+    /// ни приёма мементо — и это читалось как три отдельных бага вместо одной несделанной работы.
     ///
     /// <para><b>Ничего не применяет сам</b> — публикует намерения (<see cref="UnitMoveIntent"/>,
     /// <see cref="OpenLoadoutIntent"/>, <see cref="EquipRelicRequest"/>). Исполняет их владелец арены,
@@ -83,7 +83,7 @@ namespace Guildmaster.Game
         private float _lastClickTime;
         private int   _lastClickUnitId = -1;
 
-        private RelicData _relicDrag; // тащим реликвию из инвентаря (null = нет)
+        private RelicData _relicDrag; // тащим мементо из инвентаря (null = нет)
 
         private readonly List<(Vector2 center, float radius, DeploymentView.RingState state, Color? tint)> _ringBuffer = new();
 
@@ -180,7 +180,7 @@ namespace Guildmaster.Game
             EnsureView();
             if (!_view.gameObject.activeSelf) _view.SetActive(true);
 
-            // Реликвия-drag из инвентаря: призрак силуэта виден ВЕЗДЕ, пока тащим (в том числе над
+            // Мементо-drag из инвентаря: призрак силуэта виден ВЕЗДЕ, пока тащим (в том числе над
             // панелью грида), цель эквипа под курсором подсвечиваем кругом. Юнит-drag и ховер в это
             // время не трогаем — это отдельный жест поверх UI.
             if (_relicDrag != null) { DrawRelicDragGhost(); return; }
@@ -302,7 +302,7 @@ namespace Guildmaster.Game
             && !Overlaps(target, dragged);
 
         // Призрак-силуэт перетаскиваемого бойца в целевой позиции — через единый источник
-        // UnitSilhouette (тот же вид «в руке», что и при drag реликвии из инвентаря). Нет вида
+        // UnitSilhouette (тот же вид «в руке», что и при drag мементо из инвентаря). Нет вида
         // (headless, спрайт не готов) → без призрака: круг всё равно ведёт цель.
         private void ShowDragGhost(in ArenaUnit dragged, Vector2 target, bool valid)
         {
@@ -328,7 +328,7 @@ namespace Guildmaster.Game
 
         private void HideGhostSprite() => _view.SetGhost(false, default, UnitSilhouette.None, false);
 
-        // ── Drag реликвии из инвентаря на бойца ──────────────────────────────
+        // ── Drag мементо из инвентаря на бойца ──────────────────────────────
         private void OnRelicDrag(RelicDragEvent e)
         {
             if (!Deploying) return;
@@ -357,7 +357,7 @@ namespace Guildmaster.Game
             }
         }
 
-        // Призрак силуэта реликвии у курсора (единый вид «в руке», из ViewPrefab: бойца на поле ещё
+        // Призрак силуэта мементо у курсора (единый вид «в руке», из ViewPrefab: бойца на поле ещё
         // нет) + подсветка бойца под курсором. Круги-опоры остаются видимыми.
         private void DrawRelicDragGhost()
         {

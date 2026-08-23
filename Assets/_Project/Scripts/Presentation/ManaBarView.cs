@@ -12,7 +12,7 @@ namespace Guildmaster.Presentation
     /// постоянна для юнита. Chip-дельты у ресурса нет: трату показывает ВСПЫШКА полосы, а не догоняющий
     /// хвост (см. <see cref="PushResourceColor"/>).
     ///
-    /// <para>Скрывается целиком для безресурсных юнитов (<c>MaxResource ≤ 0</c> — болванчики, безресурсные реликвии).
+    /// <para>Скрывается целиком для безресурсных юнитов (<c>MaxResource ≤ 0</c> — болванчики, безресурсные мементо).
     /// Динамика гонится в per-instance материал по рендер-времени (НЕ по сим-тику).</para>
     /// </summary>
     public sealed class ManaBarView : MonoBehaviour

@@ -10,10 +10,10 @@ using MessagePipe;
 namespace Guildmaster.UI
 {
     /// <summary>
-    /// ViewModel loadout-экрана (план шаг 5): держит цель (юнит + текущий/выбранный релик), отдаёт грид
-    /// доступных реликов и применяет выбор через <see cref="EquipRelicRequest"/> (слушает фаза расстановки).
+    /// ViewModel loadout-экрана (план шаг 5): держит цель (юнит + текущий/выбранное Мементо), отдаёт грид
+    /// доступных Мементо и применяет выбор через <see cref="EquipRelicRequest"/> (слушает фаза расстановки).
     /// POCO по образцу <c>SettingsViewModel</c>: сервисы Core/Data, никакой ссылки на боевой слой.
-    /// Релик = весь боевой кит (вики «13» §3.1); при выборе играет звук-стингер релика (хук FMOD).
+    /// Мементо = весь боевой кит (вики «13» §3.1); при выборе играет звук-стингер Мементо (хук FMOD).
     /// </summary>
     public sealed class LoadoutViewModel
     {
@@ -46,10 +46,10 @@ namespace Guildmaster.UI
             _descriptions = descriptions;
         }
 
-        /// <summary>Все доступные релики для грида (пока — весь контент; фильтр по владению — Фаза 5).</summary>
+        /// <summary>Все доступные Мементо для грида (пока — весь контент; фильтр по владению — Фаза 5).</summary>
         public IReadOnlyList<RelicData> Relics => _content.All<RelicData>();
 
-        /// <summary>Открыть loadout для цели: запомнить юнита/сосуд/текущий релик, предвыбрать текущий.</summary>
+        /// <summary>Открыть loadout для цели: запомнить юнита/сосуд/текущее Мементо, предвыбрать текущий.</summary>
         public void Open(OpenLoadoutRequest req)
         {
             _unitId  = req.UnitId;
@@ -58,13 +58,13 @@ namespace Guildmaster.UI
             Selected = req.CurrentRelic;
         }
 
-        /// <summary>Выбрать релик (клик по карточке): предпросмотр + звук-стингер релика.</summary>
+        /// <summary>Выбрать Мементо (клик по карточке): предпросмотр + звук-стингер Мементо.</summary>
         public void Select(RelicData relic)
         {
             if (relic == null) return;
             Selected = relic;
             // Ключ канона {contentId}.{action}: «select» действием НЕ является, поэтому старый
-            // «<relicId>.select» не имел фолбэка и всегда молчал. Общий звук выбора реликвии + при
+            // «<relicId>.select» не имел фолбэка и всегда молчал. Общий звук выбора мементо + при
             // желании точечный «<relicId>.ui» перекроет его в каталоге.
             _audio?.Play("ui.relic_select.ui");
         }
@@ -83,26 +83,26 @@ namespace Guildmaster.UI
         public string Name(RelicData r) => r != null ? _loc.GetString(r.Id + ".name") : string.Empty;
 
         /// <summary>
-        /// Описание релика через слой описаний, а не напрямую из таблицы: только он разворачивает
+        /// Описание Мементо через слой описаний, а не напрямую из таблицы: только он разворачивает
         /// разметку ключевых слов и подставляет числа (§II.10.1) — иначе игрок увидит сырой <c>[kw:…]</c>.
         /// </summary>
         public string Desc(RelicData r)
             => r != null ? (_descriptions?.Describe(r, null) ?? _loc.GetString(r.Id + ".desc")) : string.Empty;
 
         /// <summary>
-        /// Теги «быстрого чтения» релика для карточки в порядке осей (Role→DamageType→Playstyle→Mechanic):
+        /// Теги «быстрого чтения» Мементо для карточки в порядке осей (Role→DamageType→Playstyle→Mechanic):
         /// авто Role/DamageType из данных + ручные InfoTags. Резолв — <see cref="UnitTagResolver"/>.
         /// </summary>
         public IReadOnlyList<TagData> ResolveTags(RelicData r) => UnitTagResolver.Resolve(r, _content);
 
         /// <summary>
-        /// Базовые статы релика для панели деталей — реальный каскад из боевой сборки через шов
+        /// Базовые статы Мементо для панели деталей — реальный каскад из боевой сборки через шов
         /// <see cref="IUnitStatPreview"/> (UI боевую сборку по asmdef не видит).
         /// </summary>
         public IReadOnlyList<UnitStatLine> ResolveStats(RelicData r) =>
             r != null && _statPreview != null ? _statPreview.Basic(r) : System.Array.Empty<UnitStatLine>();
 
-        /// <summary>Строка тегов релика (локализованные имена <c>InfoTags</c>) — легаси-путь старого LoadoutScreen.</summary>
+        /// <summary>Строка тегов Мементо (локализованные имена <c>InfoTags</c>) — легаси-путь старого LoadoutScreen.</summary>
         public string Tags(RelicData r)
         {
             if (r?.InfoTags == null || r.InfoTags.Length == 0) return string.Empty;
@@ -116,7 +116,7 @@ namespace Guildmaster.UI
             return sb.ToString();
         }
 
-        /// <summary>Короткая сводка ключевых статов из стат-блока релика (Override-значения кита).</summary>
+        /// <summary>Короткая сводка ключевых статов из стат-блока Мементо (Override-значения кита).</summary>
         public string StatsSummary(RelicData r)
         {
             if (r?.Stats == null || r.Stats.Length == 0) return "—";

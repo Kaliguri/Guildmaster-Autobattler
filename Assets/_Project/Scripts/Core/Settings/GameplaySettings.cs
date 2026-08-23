@@ -10,7 +10,7 @@ namespace Guildmaster.Core.Settings
     [System.Serializable]
     public struct GameplaySettings
     {
-        /// <summary>Анимировать спрайты карточек реликвий в инвентаре (idle+attack выбранной). Off = всё статично.</summary>
+        /// <summary>Анимировать спрайты карточек мементо в инвентаре (idle+attack выбранной). Off = всё статично.</summary>
         public bool CardAnimations;
 
         /// <summary>Проигрывать анимацию атаки у выбранной карточки (в цикле). Off = только idle. Игнорируется, если

@@ -52,7 +52,7 @@ namespace Guildmaster.Data.Stats
         ReceiveDebuffEff = 25,  // Ф2 (= tenacity)
         CooldownEff = 26,       // Ф2
 
-        // --- §3.7 Ресурс (только геройские реликвии) ---
+        // --- §3.7 Ресурс (только геройские мементо) ---
         MaxResource = 27,       // Ф2
         StartResource = 28,     // Ф2 (init-only)
         ResourceGainEff = 29,   // Ф2

@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Guildmaster.Tests.EditMode.Run
 {
     /// <summary>
-    /// Генерация витрины наград (план 11 §4 A3): количество, уникальность, фильтр базового релика,
+    /// Генерация витрины наград (план 11 §4 A3): количество, уникальность, фильтр базового Мементо,
     /// детерминизм по сиду. Взятие/сброс живёт в RunStateService (тестируется в RunStateSaveTests).
     /// </summary>
     public sealed class RewardServiceTests
@@ -36,7 +36,7 @@ namespace Guildmaster.Tests.EditMode.Run
 
             IReadOnlyList<RelicData> choices = service.RollChoices(RewardTier.Battle, 3);
 
-            Assert.IsFalse(choices.Any(r => r.Id == "relic.base"), "базовый релик не выпадает в награде");
+            Assert.IsFalse(choices.Any(r => r.Id == "relic.base"), "базовое Мементо не выпадает в награде");
             Assert.AreEqual(2, choices.Count, "из пула из base+2 остаётся 2 кандидата");
         }
 

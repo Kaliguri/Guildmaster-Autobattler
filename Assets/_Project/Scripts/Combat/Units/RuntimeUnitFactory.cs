@@ -11,7 +11,7 @@ namespace Guildmaster.Combat
     /// Единственная точка сборки <see cref="RuntimeUnit"/> из SO-данных.
     /// Шаги сборки (вики «10» §5.2, «6» §3): дефолты из <see cref="StatsConfig"/> → классовая база
     /// (<see cref="ClassBalanceConfig"/>) → видовые скейлы врага (<see cref="SpeciesData"/>) → моды
-    /// реликвии → перки сосуда → предметы → последствия боёв (<see cref="ConsequenceData"/>) → пассивки
+    /// мементо → перки сосуда → предметы → последствия боёв (<see cref="ConsequenceData"/>) → пассивки
     /// (<see cref="RelicData.GrantedEffects"/> с постоянной длительностью)
     /// → активки (<see cref="AbilityRuntime"/>) → ресурс (<see cref="StatType.StartResource"/>)
     /// → <c>CurrentHP = EffectiveStats.StartingHp(...)</c>.
@@ -69,7 +69,7 @@ namespace Guildmaster.Combat
 
         /// <summary>
         /// Создать <see cref="RuntimeUnit"/> из SO-данных. Принимает базовый <see cref="UnitData"/> —
-        /// реликвию или врага; сборке всё равно, кто перед ней (вики «13» §3.1).
+        /// мементо или врага; сборке всё равно, кто перед ней (вики «13» §3.1).
         /// </summary>
         /// <param name="data">Боевой кит («Чемпион»/враг). null — юнит получит только дефолты StatsConfig.</param>
         /// <param name="vessel">SO «Пилот». null — перки не применяются.</param>

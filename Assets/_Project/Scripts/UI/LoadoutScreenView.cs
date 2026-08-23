@@ -7,8 +7,8 @@ using UnityEngine.UIElements;
 namespace Guildmaster.UI
 {
     /// <summary>
-    /// Экран расстановки реликвий: сетка карточек и панель деталей. Про <c>LoadoutViewModel</c> не
-    /// знает ничего — получает список реликвий и отдаёт наружу события наведения и выбора.
+    /// Экран расстановки мементо: сетка карточек и панель деталей. Про <c>LoadoutViewModel</c> не
+    /// знает ничего — получает список мементо и отдаёт наружу события наведения и выбора.
     /// </summary>
     /// <remarks>
     /// <b>Почему вид уехал из роутера.</b> Сборка жила приватным методом в <c>MenuRouter</c> и потому
@@ -31,7 +31,7 @@ namespace Guildmaster.UI
         /// <summary>Наведение на карточку — повод показать её детали.</summary>
         public event Action<RelicData> Hovered;
 
-        /// <summary>Клик по карточке — выбор реликвии.</summary>
+        /// <summary>Клик по карточке — выбор мементо.</summary>
         public event Action<RelicData> Picked;
 
         private readonly List<(RelicData Relic, VisualElement Card)> _cards = new();
@@ -41,11 +41,11 @@ namespace Guildmaster.UI
         private Label _detailStats;
 
         /// <summary>
-        /// Собирает экран и сетку карточек по списку реликвий.
+        /// Собирает экран и сетку карточек по списку мементо.
         /// </summary>
         /// <param name="uxml">Разметка экрана.</param>
         /// <param name="relics">Что показать в сетке, в порядке показа.</param>
-        /// <param name="nameOf">Подпись карточки: имя реликвии в языке игрока.</param>
+        /// <param name="nameOf">Подпись карточки: имя мементо в языке игрока.</param>
         /// <param name="localize">Ключ → строка, для кнопки возврата.</param>
         /// <param name="onClose">Закрыть экран. Действие приезжает сюда, а не подписывается снаружи:
         /// место возврату задаёт <see cref="BackButton.PlaceOn"/>, и ставить его может только вид.</param>
@@ -101,7 +101,7 @@ namespace Guildmaster.UI
             Localize(tree.Q<Button>("tab-upgrades"), "ui.loadout.tab.upgrades", localize);
             Localize(tree.Q<Button>("tab-ai"),       "ui.loadout.tab.ai", localize);
 
-            // Табы-заглушки (кроме Реликвии) — недоступны (структура на будущее).
+            // Табы-заглушки (кроме Мементо) — недоступны (структура на будущее).
             Disable(tree.Q<Button>("tab-items"));
             Disable(tree.Q<Button>("tab-upgrades"));
             Disable(tree.Q<Button>("tab-ai"));
@@ -138,7 +138,7 @@ namespace Guildmaster.UI
             }
         }
 
-        /// <summary>Первая реликвия сетки — с неё экран открывается, когда выбора ещё нет.</summary>
+        /// <summary>Первое мементо сетки — с неё экран открывается, когда выбора ещё нет.</summary>
         public RelicData FirstRelic => _cards.Count > 0 ? _cards[0].Relic : null;
 
         private static void Disable(Button b) { if (b != null) b.SetEnabled(false); }

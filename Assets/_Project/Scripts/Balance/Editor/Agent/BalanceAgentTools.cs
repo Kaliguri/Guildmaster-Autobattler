@@ -103,14 +103,14 @@ namespace Guildmaster.Balance.Editor.Agent
     /// <inheritdoc cref="BalanceBenchTool"/>
     [McpForUnityTool("battle_trace",
         Description = "Разобрать один бой Guildmaster лентой событий по тикам. " +
-                      "Параметр assets — имена реликвии и энкаунтера (или двух реликвий, или сценария).")]
+                      "Параметр assets — имена мементо и энкаунтера (или двух мементо, или сценария).")]
     public static class BattleTraceTool
     {
         /// <inheritdoc cref="BalanceBenchTool.Parameters"/>
         public class Parameters
         {
-            [ToolParameter("Имена ассетов через запятую в любом порядке: реликвия + энкаунтер, " +
-                           "две реликвии или один сценарий.")]
+            [ToolParameter("Имена ассетов через запятую в любом порядке: мементо + энкаунтер, " +
+                           "два мементо или один сценарий.")]
             public string assets { get; set; }
         }
 
@@ -118,8 +118,8 @@ namespace Guildmaster.Balance.Editor.Agent
         {
             string names = @params?["assets"]?.ToString();
             if (string.IsNullOrWhiteSpace(names))
-                return new ErrorResponse("assets_required: нужны имена реликвии и энкаунтера " +
-                                         "(или двух реликвий, или сценария) через запятую.");
+                return new ErrorResponse("assets_required: нужны имена мементо и энкаунтера " +
+                                         "(или двух мементо, или сценария) через запятую.");
 
             var found = new List<UnityEngine.Object>();
             foreach (string raw in names.Split(',', ' ', ';'))
@@ -129,7 +129,7 @@ namespace Guildmaster.Balance.Editor.Agent
 
                 UnityEngine.Object asset = BalanceAssets.ResolveTraceAsset(name);
                 if (asset == null)
-                    return new ErrorResponse($"asset_not_found: «{name}» — искали среди реликвий, " +
+                    return new ErrorResponse($"asset_not_found: «{name}» — искали среди мементо, " +
                                              "энкаунтеров и сценариев.");
 
                 found.Add(asset);

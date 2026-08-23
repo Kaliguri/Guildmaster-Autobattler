@@ -160,7 +160,7 @@ namespace Guildmaster.UI
             return string.IsNullOrEmpty(name) ? ContentTitle.WithoutDomain(itemId) : name;
         }
 
-        /// <summary>Лицо носителя — портрет архетипа его Реликвии; базовая Реликвия лица не даёт.</summary>
+        /// <summary>Лицо носителя — портрет архетипа его Мементо; базовое Мементо лица не даёт.</summary>
         private Sprite PortraitOf(RosterSlot slot)
         {
             string id = slot?.RelicId;

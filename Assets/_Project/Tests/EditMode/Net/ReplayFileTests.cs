@@ -217,7 +217,7 @@ namespace Guildmaster.Tests.EditMode.Net
 
         private static UnitData MakeUnit(string id)
         {
-            // UnitData абстрактен — берём конкретного наследника; реплей за меню и есть дуэли реликвий.
+            // UnitData абстрактен — берём конкретного наследника; реплей за меню и есть дуэли мементо.
             var def = ScriptableObject.CreateInstance<RelicData>();
             def.name = id;
             typeof(ContentDefinition)

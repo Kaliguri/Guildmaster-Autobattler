@@ -12,7 +12,7 @@ using UnityEngine.TestTools;
 namespace Guildmaster.Tests.EditMode.Run
 {
     /// <summary>
-    /// Применение последствий выбора текстового ивента к RunState (план 11 §5.1): золото, релик, вместимость.
+    /// Применение последствий выбора текстового ивента к RunState (план 11 §5.1): золото, Мементо, вместимость.
     /// Прогоняется через реальный RunStateService (единый центр вместимости) + фейковый сейв.
     /// </summary>
     public sealed class EventEffectApplierTests
@@ -27,7 +27,7 @@ namespace Guildmaster.Tests.EditMode.Run
             _run = new RunStateService(new InMemorySaveService(), config, new FixedProfileService(), content: null);
             _run.NewRun(1, Array.Empty<RosterSlot>());
             _run.Current.Gold = 0; // старт-золото забега — не предмет этих тестов (проверяем дельту эффекта)
-            // Золото и снятие реликвии едут через шину команд; выдача и вместимость — пока напрямую.
+            // Золото и снятие мементо едут через шину команд; выдача и вместимость — пока напрямую.
             var commands = new Guildmaster.Guild.Commands.RunCommandBus(
                 new Guildmaster.Guild.Commands.RunCommandApplier(_run),
                 new Guildmaster.Guild.Commands.RunCommandLog());
@@ -115,7 +115,7 @@ namespace Guildmaster.Tests.EditMode.Run
             _run.Current.RelicCapacity = 1;
             _run.TryAddRelic("relic.a");
             _applier.Apply(new[] { Effect(EventEffectKind.GrantRelic, contentId: "relic.b") });
-            Assert.AreEqual(1, _run.Current.RelicInventory.Length, "полный запас не должен принять релик");
+            Assert.AreEqual(1, _run.Current.RelicInventory.Length, "полный запас не должен принять Мементо");
         }
 
         [Test]

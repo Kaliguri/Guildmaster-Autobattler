@@ -16,7 +16,7 @@ namespace Guildmaster.Guild.Commands
         /// <summary>Запомнить позицию сосуда на арене (перетаскивание в расстановке).</summary>
         bool SetSlotPosition(int slotIndex, UnityEngine.Vector2 position);
 
-        /// <summary>Поставить кит на сосуд напрямую, минуя запас (drag реликвии на юнита в расстановке).</summary>
+        /// <summary>Поставить кит на сосуд напрямую, минуя запас (drag мементо на юнита в расстановке).</summary>
         bool SetSlotRelic(int slotIndex, string relicId);
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Guildmaster.Guild.Commands
         /// <summary>Изменить золото забега (±).</summary>
         void AddGold(int delta);
 
-        /// <summary>Убрать один экземпляр реликвии из запаса.</summary>
+        /// <summary>Убрать один экземпляр мементо из запаса.</summary>
         void RemoveRelic(string relicId);
 
         /// <summary>Начислить награду золотом за победу в бою (величина — из конфига).</summary>

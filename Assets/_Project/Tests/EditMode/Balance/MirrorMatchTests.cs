@@ -158,7 +158,7 @@ namespace Guildmaster.Balance.Tests
         private static RelicData Relic(string name)
         {
             RelicData relic = BalanceAssets.LoadRelics().Find(r => r.name == name);
-            Assert.IsNotNull(relic, $"Реликвия {name} не найдена");
+            Assert.IsNotNull(relic, $"Мементо {name} не найдена");
             return relic;
         }
 

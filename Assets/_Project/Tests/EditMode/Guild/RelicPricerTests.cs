@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Guildmaster.Tests.EditMode.Guild
 {
     /// <summary>
-    /// Ценообразование реликвий (план act-map-run-loop §3.3, B1): детерминизм по (id, сид витрины), база растёт
+    /// Ценообразование мементо (план act-map-run-loop §3.3, B1): детерминизм по (id, сид витрины), база растёт
     /// с силой кита, разброс в пределах конфига, продажа = доля от покупки.
     /// </summary>
     public sealed class RelicPricerTests

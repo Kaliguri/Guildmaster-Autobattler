@@ -169,7 +169,7 @@ namespace Guildmaster.Balance.Editor
         private static string Kind(UnitData unit)
         {
             if (unit.Id == ReferenceUnitId) return "Эталон";
-            return unit is RelicData ? "Реликвия" : "Враг";
+            return unit is RelicData ? "Мементо" : "Враг";
         }
 
         private static string Tags(StringTable ru, UnitData unit)

@@ -421,10 +421,10 @@ namespace Guildmaster.UI
         }
 
         /// <summary>
-        /// Полноэкранный лоадаут/инвентарь (редизайн, Ф3a): грид таро-карточек реликвий + детали.
+        /// Полноэкранный лоадаут/инвентарь (редизайн, Ф3a): грид таро-карточек мементо + детали.
         /// Открывается табом «Инвентарь» в топбаре. <paramref name="onClose"/>
         /// зовётся на ЛЮБОМ закрытии (Pop/Esc/PopAll) через DetachFromPanelEvent — бутстрап по нему
-        /// возвращает ран-топбар. Реликвии — весь контент (фильтр по владению — Фаза 5); gold из RunState.
+        /// возвращает ран-топбар. Мементо — весь контент (фильтр по владению — Фаза 5); gold из RunState.
         /// </summary>
         // Инвентарь (Ф6): формальный Sheet-экран навигатора. ТУМБЛЕР — открыт → снять (Remove из любого места
         // стека, даже под паузой), закрыт → построить и Push. Владеет экраном роутер (ссылка _inventoryScreen,
@@ -463,7 +463,7 @@ namespace Guildmaster.UI
             VisualElement screen = LoadoutInventoryView.Build(
                 _loadoutInventoryUxml, _arcanaCardUxml,
                 _loadoutVm.Relics, gold,
-                // Имя реликвии в интерфейсе ОДНО на все экраны — из локализации (реш. Макса 23.08.2026).
+                // Имя мементо в интерфейсе ОДНО на все экраны — из локализации (реш. Макса 23.08.2026).
                 // До этого инвентарь звал её титулом арканы («The Antimage»), а расстановка русским
                 // именем, и одна вещь выглядела двумя разными.
                 titleOf: r => _loadoutVm.Name(r),
@@ -472,8 +472,8 @@ namespace Guildmaster.UI
                 lockedSlots: 0,
                 cardAnimations: _settingsVm.CardAnimations,
                 cardAttackAnimation: _settingsVm.CardAttackAnimation,
-                onRelicDrag: onRelicDrag, // QA #5: drag карточки реликвии на юнита в мире
-                tagsOf: r => _loadoutVm.ResolveTags(r),   // теги «быстрого чтения» из данных релика
+                onRelicDrag: onRelicDrag, // QA #5: drag карточки мементо на юнита в мире
+                tagsOf: r => _loadoutVm.ResolveTags(r),   // теги «быстрого чтения» из данных Мементо
                 statsOf: r => _loadoutVm.ResolveStats(r), // базовые статы тем же каскадом, что у боя
                 palette: _palette);                       // цвет приглушения тела — как в бою
 

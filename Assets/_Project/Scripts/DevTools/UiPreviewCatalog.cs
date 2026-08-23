@@ -128,7 +128,7 @@ namespace Guildmaster.DevTools
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/RewardScreen.uxml");
             if (uxml == null) { AddError(root, "RewardScreen.uxml не найден"); return; }
 
-            // Витрина: первые несколько реликвий из настоящей БД (без RNG — стенду хватает достоверного контента).
+            // Витрина: первые несколько мементо из настоящей БД (без RNG — стенду хватает достоверного контента).
             IContentDatabase content = LoadContent();
             var choices = new List<RelicData>();
             if (content != null)
@@ -182,7 +182,7 @@ namespace Guildmaster.DevTools
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/PartyScreen.uxml");
             if (uxml == null) { AddError(root, "PartyScreen.uxml не найден"); return; }
 
-            // Реликвии настоящие: лицо человека — портрет её архетипа, и на выдуманном имени его нет.
+            // Мементо настоящие: лицо человека — портрет его архетипа, и на выдуманном имени его нет.
             IReadOnlyList<RelicData> allRelics = LoadContent()?.All<RelicData>() ?? Array.Empty<RelicData>();
             RelicData Relic(int i)
             {
@@ -359,7 +359,7 @@ namespace Guildmaster.DevTools
             var statPreview = new Guildmaster.Combat.UnitStatPreview(
                 LoadFirst<StatsConfig>(), LoadFirst<ClassBalanceConfig>());
 
-            // Владеемые релики слева + 3 заблокированных (задел под фильтр по владению, Фаза 5).
+            // Владеемые Мементо слева + 3 заблокированных (задел под фильтр по владению, Фаза 5).
             VisualElement screen = Guildmaster.UI.LoadoutInventoryView.Build(
                 screenUxml, cardUxml, relics, gold: 100,
                 titleOf: r => RuName(r?.Id),
@@ -439,7 +439,7 @@ namespace Guildmaster.DevTools
             RelicData first = view.FirstRelic;
             view.SyncCards(r => r == first, r => r == first);
             view.ShowDetail(
-                Coalesce(RuValue((first?.Id) + ".name"), first?.Id ?? "Реликвия"),
+                Coalesce(RuValue((first?.Id) + ".name"), first?.Id ?? "Мементо"),
                 Coalesce(RuValue((first?.Id) + ".desc"), "«Древний завет, что тлеет в глубине веков…»"),
                 "боевая · редкая",
                 "урон +12 · броня +4");

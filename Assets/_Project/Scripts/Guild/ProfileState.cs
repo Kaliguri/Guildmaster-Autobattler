@@ -82,7 +82,7 @@ namespace Guildmaster.Guild
         /// </summary>
         public int MaxAscensionUnlocked;
 
-        /// <summary>Что игрок уже встречал — основа компендиума (id реликвий, врагов, эффектов).</summary>
+        /// <summary>Что игрок уже встречал — основа компендиума (id мементо, врагов, эффектов).</summary>
         public List<string> CompendiumSeenIds = new();
 
         /// <summary>

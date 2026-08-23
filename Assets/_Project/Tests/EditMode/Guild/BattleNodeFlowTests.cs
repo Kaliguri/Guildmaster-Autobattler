@@ -63,7 +63,7 @@ namespace Guildmaster.Tests.EditMode.Guild
 
             flow.Run(ctx).GetAwaiter().GetResult();
 
-            Assert.AreEqual(2, reward.Calls, "Элитка — два выбора реликвии подряд (награда ×2).");
+            Assert.AreEqual(2, reward.Calls, "Элитка — два выбора мементо подряд (награда ×2).");
         }
 
         [Test]

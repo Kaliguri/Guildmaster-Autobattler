@@ -19,7 +19,7 @@ namespace Guildmaster.ContentHub.Editor
         public string DisplayName { get; }
         public string Path { get; }
 
-        /// <summary>Юнит (реликвия/враг) — участвует в стат-когортах и Balance-таблице.</summary>
+        /// <summary>Юнит (мементо/враг) — участвует в стат-когортах и Balance-таблице.</summary>
         public UnitData Unit { get; }
         public bool IsUnit => Unit != null;
 

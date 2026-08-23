@@ -187,7 +187,7 @@ namespace Guildmaster.Tests.EditMode.Content
             }
         }
 
-        // --- §8 правило 7: BattlePreset — энкаунтер задан, слоты ростера имеют релик (кит) ---
+        // --- §8 правило 7: BattlePreset — энкаунтер задан, слоты ростера имеют Мементо (кит) ---
 
         /// <remarks>
         /// Пресет-ОБОЛОЧКА (<see cref="BattlePresetData.IsCarrier"/>) от требования состава освобождён:

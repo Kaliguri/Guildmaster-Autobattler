@@ -473,7 +473,7 @@ namespace Guildmaster.Combat
             float landReach = reach + SimConstants.AttackReachTolerance;
             if ((target.Position - unit.Position).sqrMagnitude > landReach * landReach) return;
 
-            // Прирост ресурса — на момент реального удара (мана-реликвии).
+            // Прирост ресурса — на момент реального удара (мана-мементо).
             GainResourceOnHit(unit, ctx);
 
             // Маскировка слетает от своего удара — «притаился перед нанесением удара» и есть её смысл
@@ -653,7 +653,7 @@ namespace Guildmaster.Combat
             }
         }
 
-        /// <summary>Наложить on-hit эффекты авто-атаки реликвии на задетую цель (§9.1, мили-путь).</summary>
+        /// <summary>Наложить on-hit эффекты авто-атаки мементо на задетую цель (§9.1, мили-путь).</summary>
         /// <summary>
         /// Толчок заряженного удара («Восходящий удар» Монаха воды): цель уезжает ОТ носителя на
         /// взведённую зарядом дистанцию. Обычный толчок, БЕЗ урона на линии полёта и без добивания о

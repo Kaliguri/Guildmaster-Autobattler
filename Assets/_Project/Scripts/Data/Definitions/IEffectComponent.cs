@@ -2,7 +2,7 @@ namespace Guildmaster.Data.Definitions
 {
     /// <summary>
     /// Якорь полиморфного поведения эффекта для сериализации. <see cref="EffectData"/> хранит
-    /// <c>[SerializeReference] IEffectComponent[]</c>, так что реликвии/эффекты ссылаются на
+    /// <c>[SerializeReference] IEffectComponent[]</c>, так что мементо/эффекты ссылаются на
     /// поведение, НЕ создавая зависимость <c>Data → Combat</c> вверх (вики «10» §2.2).
     /// </summary>
     /// <remarks>

@@ -110,7 +110,7 @@ namespace Guildmaster.UI.Tooltips
             _root.RegisterCallback<TooltipShowEvent>(OnShowRequested);
             _root.RegisterCallback<TooltipHideEvent>(OnHideRequested);
 
-            // Драг реликвии — жест, который перекрывает чтение: карточку тащат из грида в мир.
+            // Драг мементо — жест, который перекрывает чтение: карточку тащат из грида в мир.
             _dragSubscription = _relicDrag?.Subscribe(e => SetSuppressed(e.Phase != RelicDragPhase.Drop));
         }
 

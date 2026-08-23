@@ -54,7 +54,7 @@ namespace Guildmaster.UI
                     toast.AddToClassList("gm-shop__toast-label");
                     toastBox.Add(toast);
                 }
-                toast.text = L("ui.shop.no_space", "Нет места — продай реликвию!");
+                toast.text = L("ui.shop.no_space", "Нет места — продай мементо!");
                 toast.style.opacity = 1f;
                 toast.experimental.animation.Start(1f, 0f, 1200, (e, v) => e.style.opacity = v);
             }
@@ -70,7 +70,7 @@ namespace Guildmaster.UI
                     card.AddToClassList("gm-card");
                     card.AddToClassList("gm-card--shop");
                     if (item.Sold) card.AddToClassList("gm-card--sold");
-                    // Витрина показывает имя и цену; чем реликвия ЯВЛЯЕТСЯ — тем же тултипом, что в награде
+                    // Витрина показывает имя и цену; чем мементо ЯВЛЯЕТСЯ — тем же тултипом, что в награде
                     // и в инвентаре (Трек Т): решение о покупке принимается по киту, а не по цене.
                     card.WithTooltip(TooltipRequest.Relic(item.Relic?.Id));
 

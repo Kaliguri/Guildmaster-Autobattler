@@ -46,7 +46,7 @@ namespace Guildmaster.Guild
         /// <summary>Само число подвига — то, что барк цитирует дословно («защитился от 32 000 урона»).</summary>
         public double Value;
 
-        /// <summary>Кем он был в тот момент: id Реликвии — снапшот архетипа, а не текущая роль.</summary>
+        /// <summary>Кем он был в тот момент: id Мементо — снапшот архетипа, а не текущая роль.</summary>
         public string RelicId = string.Empty;
 
         /// <summary>В каком забеге это случилось: индекс в <see cref="GuildBook.Runs"/>, −1 если вне забега.</summary>

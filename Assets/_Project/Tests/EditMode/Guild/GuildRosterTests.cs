@@ -44,7 +44,7 @@ namespace Guildmaster.Tests.EditMode.Guild
             Assert.AreEqual(_config.BattleSlots, inBattle, "На арену выходят BattleSlots «Сосудов», не весь отряд.");
             foreach (RosterSlot s in run.Guild)
             {
-                Assert.AreEqual("relic.base", s.RelicId, "Стартовый сосуд несёт базовый релик (пустой кит).");
+                Assert.AreEqual("relic.base", s.RelicId, "Стартовый сосуд несёт базовое Мементо (пустой кит).");
                 Assert.IsEmpty(s.VesselId, "Сосуд-контента пока нет → VesselId пуст.");
             }
 
@@ -62,7 +62,7 @@ namespace Guildmaster.Tests.EditMode.Guild
             content.Add(MakeRelic("relic.druid"));
 
             RunState run = _runStates.NewDefaultRun(1L);
-            run.Guild[0].RelicId = "relic.druid"; // навесили собранный релик на первый сосуд
+            run.Guild[0].RelicId = "relic.druid"; // навесили собранное Мементо на первый сосуд
 
             PlayerSlot[] roster = GuildRoster.Resolve(run, content);
 

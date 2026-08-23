@@ -75,7 +75,7 @@ namespace Guildmaster.Balance.Editor
 
         /// <summary>
         /// Разбор одного боя лентой событий: <c>-executeMethod …BalanceCli.Trace -assets "Ranger,GoblinRaid"</c>.
-        /// Имена — ассетов (реликвия, энкаунтер, сценарий) в любом порядке; из редактора то же делает
+        /// Имена — ассетов (мементо, энкаунтер, сценарий) в любом порядке; из редактора то же делает
         /// выделение в Project.
         /// </summary>
         public static void Trace()
@@ -83,8 +83,8 @@ namespace Guildmaster.Balance.Editor
             string names = ArgValue("-assets");
             if (string.IsNullOrWhiteSpace(names))
             {
-                Debug.LogError("[BalanceCli] Трейсу нужен -assets: имена реликвии и энкаунтера " +
-                               "(или двух реликвий, или сценария) через запятую.");
+                Debug.LogError("[BalanceCli] Трейсу нужен -assets: имена мементо и энкаунтера " +
+                               "(или двух мементо, или сценария) через запятую.");
                 EditorApplication.Exit(2);
                 return;
             }
@@ -98,7 +98,7 @@ namespace Guildmaster.Balance.Editor
                 UnityEngine.Object asset = BalanceAssets.ResolveTraceAsset(name);
                 if (asset == null)
                 {
-                    Debug.LogError($"[BalanceCli] Не найден ассет «{name}» (искали среди реликвий, " +
+                    Debug.LogError($"[BalanceCli] Не найден ассет «{name}» (искали среди мементо, " +
                                    "энкаунтеров и сценариев).");
                     EditorApplication.Exit(2);
                     return;

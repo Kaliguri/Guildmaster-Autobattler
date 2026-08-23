@@ -281,7 +281,7 @@ namespace Guildmaster.Combat
         /// удар «вне очереди» ускоренной анимацией («Вихревой заход» монаха, §10.6); тратит вход в замах,
         /// как и <see cref="EmpowerDamageMult"/>.
         /// <para>Отдельно от <see cref="Data.Definitions.UnitData.ChargeAttackWindupMult"/> потому, что тот
-        /// принадлежит КИТУ (удар с разбега — свойство реликвии), а этот — конкретному взведённому комбо.</para>
+        /// принадлежит КИТУ (удар с разбега — свойство мементо), а этот — конкретному взведённому комбо.</para>
         /// </summary>
         public float NextWindupMult;
 
@@ -544,7 +544,7 @@ namespace Guildmaster.Combat
         /// <summary>Помечен DeathSystem — исключается из всех систем с текущего тика.</summary>
         public bool IsDead;
 
-        /// <summary>Боевой кит юнита (реликвия/враг): тип атаки, стат-блок, эффекты, AI (вики «13» §3.1).</summary>
+        /// <summary>Боевой кит юнита (мементо/враг): тип атаки, стат-блок, эффекты, AI (вики «13» §3.1).</summary>
         public UnitData Unit;
 
         /// <summary>SO «Пилот»: идентичность, перки (Фаза 2/4).</summary>
@@ -698,7 +698,7 @@ namespace Guildmaster.Combat
             IncomingEffectTags = remaining;
         }
 
-        /// <summary>Активные способности (кулдаун/ресурс). Заполняет <see cref="RuntimeUnitFactory"/> из реликвии.</summary>
+        /// <summary>Активные способности (кулдаун/ресурс). Заполняет <see cref="RuntimeUnitFactory"/> из мементо.</summary>
         public readonly List<AbilityRuntime> Abilities = new List<AbilityRuntime>();
 
         // --- Флаги контроля (Фаза 2) ---

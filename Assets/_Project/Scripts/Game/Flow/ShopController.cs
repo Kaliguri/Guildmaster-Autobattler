@@ -19,7 +19,7 @@ namespace Guildmaster.Game.Flow
         private readonly RewardService    _rewards;
         private readonly RelicPricer      _pricer;
         private readonly RunStateService  _runStates;
-        // Односторонние записи в забег (продажа: минус реликвия, плюс золото) идут через шину команд —
+        // Односторонние записи в забег (продажа: минус мементо, плюс золото) идут через шину команд —
         // иначе в коопе второй игрок увидит опустевшую полку без причины в логе.
         private readonly Guildmaster.Guild.Commands.IRunCommands _commands;
         private readonly IContentDatabase _content;

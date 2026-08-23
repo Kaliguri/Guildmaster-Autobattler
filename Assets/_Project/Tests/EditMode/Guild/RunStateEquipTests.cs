@@ -9,9 +9,9 @@ using UnityEngine;
 namespace Guildmaster.Tests.EditMode.Guild
 {
     /// <summary>
-    /// Лоадаут-операции <see cref="RunStateService"/> (кольцо реликвий, Фаза 2): надеть релик из запаса на сосуд
-    /// (свап прежнего кита обратно в запас), снять релик обратно в запас (слот → базовый кит). Проверяем, что
-    /// это durable-правки <see cref="RunState.Guild"/> + <see cref="RunState.RelicInventory"/>, без потери реликов.
+    /// Лоадаут-операции <see cref="RunStateService"/> (кольцо мементо, Фаза 2): надеть Мементо из запаса на сосуд
+    /// (свап прежнего кита обратно в запас), снять Мементо обратно в запас (слот → базовый кит). Проверяем, что
+    /// это durable-правки <see cref="RunState.Guild"/> + <see cref="RunState.RelicInventory"/>, без потери Мементо.
     /// </summary>
     public sealed class RunStateEquipTests
     {
@@ -32,9 +32,9 @@ namespace Guildmaster.Tests.EditMode.Guild
             _runStates.TryAddRelic("relic.druid");
 
             Assert.IsTrue(_runStates.EquipRelic(0, "relic.druid"));
-            Assert.AreEqual("relic.druid", _runStates.Current.Guild[0].RelicId, "Слот несёт надетый релик.");
+            Assert.AreEqual("relic.druid", _runStates.Current.Guild[0].RelicId, "Слот несёт надетое Мементо.");
             Assert.AreEqual(-1, Array.IndexOf(_runStates.Current.RelicInventory, "relic.druid"),
-                "Надетый релик ушёл из запаса.");
+                "Надетое Мементо ушёл из запаса.");
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         {
             _runStates.TryAddRelic("relic.a");
             Assert.IsFalse(_runStates.EquipRelic(99, "relic.a"));
-            Assert.Contains("relic.a", _runStates.Current.RelicInventory, "Релик остался в запасе.");
+            Assert.Contains("relic.a", _runStates.Current.RelicInventory, "Мементо остался в запасе.");
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace Guildmaster.Tests.EditMode.Guild
 
             Assert.IsTrue(_runStates.UnequipRelic(0));
             Assert.AreEqual("relic.base", _runStates.Current.Guild[0].RelicId, "Слот вернулся к базовому киту.");
-            Assert.Contains("relic.a", _runStates.Current.RelicInventory, "Снятый релик вернулся в запас.");
+            Assert.Contains("relic.a", _runStates.Current.RelicInventory, "Снятое Мементо вернулся в запас.");
         }
 
         [Test]

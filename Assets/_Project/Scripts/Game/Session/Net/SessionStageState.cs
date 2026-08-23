@@ -66,11 +66,11 @@ namespace Guildmaster.Game.Session.Net
     /// <summary>Витрина награды: из чего выбирают и есть ли куда положить.</summary>
     public readonly struct RewardStage
     {
-        /// <summary>Id выпавших реликвий, по порядку карточек.</summary>
+        /// <summary>Id выпавших мементо, по порядку карточек.</summary>
         public readonly IReadOnlyList<string> Options;
 
         /// <summary>
-        /// Запас реликвий полон — витрина предложит обмен вместо простого «взять».
+        /// Запас мементо полон — витрина предложит обмен вместо простого «взять».
         /// </summary>
         /// <remarks>
         /// <b>Едет по проводу, потому что от него зависит ГОЛОС.</b> При полном запасе вариант выглядит

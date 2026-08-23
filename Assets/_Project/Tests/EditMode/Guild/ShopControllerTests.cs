@@ -13,7 +13,7 @@ namespace Guildmaster.Tests.EditMode.Guild
 {
     /// <summary>
     /// Логика магазина <see cref="ShopController"/> (план act-map-run-loop §4 B2): покупка списывает золото и
-    /// добавляет реликвию, полный запас → NoSpace, реролл списывает золото, продажа возвращает золото. Денежный
+    /// добавляет мементо, полный запас → NoSpace, реролл списывает золото, продажа возвращает золото. Денежный
     /// поток идёт через реальные <see cref="RunStateService"/> + <see cref="RelicPricer"/>.
     /// </summary>
     public sealed class ShopControllerTests
@@ -103,7 +103,7 @@ namespace Guildmaster.Tests.EditMode.Guild
             int before = _runStates.Gold;
 
             var relic = _shop.Stash.Count > 0 ? _shop.Stash[0].Relic : null;
-            Assert.NotNull(relic, "В запасе есть реликвия для продажи.");
+            Assert.NotNull(relic, "В запасе есть мементо для продажи.");
             int expectedGain = _shop.Stash[0].SellValue;
 
             Assert.IsTrue(_shop.Sell(relic));

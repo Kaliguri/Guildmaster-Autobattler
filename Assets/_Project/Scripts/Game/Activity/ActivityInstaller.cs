@@ -84,9 +84,9 @@ namespace Guildmaster.Game.Activity
         /// <summary>Ведение акта: узлы, награды, передышка, магазин, последствия ивентов.</summary>
         private static void RegisterRunLoop(IContainerBuilder builder)
         {
-            // Витрина наград после боя (A3): катит 1-из-3 реликов из контент-БД (детерминирован через RNG).
+            // Витрина наград после боя (A3): катит 1-из-3 Мементо из контент-БД (детерминирован через RNG).
             builder.Register<RewardService>(Lifetime.Singleton);
-            // Ценообразование реликвий (B1): цена по KitPower + разброс на сиде витрины.
+            // Ценообразование мементо (B1): цена по KitPower + разброс на сиде витрины.
             builder.Register<RelicPricer>(Lifetime.Singleton);
             // Показ награды: переиспользуют петля акта и вход одного боя.
             builder.Register<RewardPresenter>(Lifetime.Singleton).As<IRewardPresenter>();

@@ -45,7 +45,7 @@ namespace Guildmaster.Game.Flow
                 _decision?.Unbind(Core.Net.DecisionKeys.ChestOpen);
             }
 
-            await _reward.PresentAsync(RewardTier.Battle, ctx.Cancellation); // 1-из-3 реликвий
+            await _reward.PresentAsync(RewardTier.Battle, ctx.Cancellation); // 1-из-3 мементо
 
             // Единый ритм конца узла (QA #48/#49): награда выдана → кадр-прощание держит экран до
             // следующего узла. Кнопки «дальше» приходят тем же шагом.

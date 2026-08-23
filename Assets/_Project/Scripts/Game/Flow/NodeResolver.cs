@@ -86,7 +86,7 @@ namespace Guildmaster.Game.Flow
                         return new CompletedStubFlow(node.Type);
                     }
 
-                    // Забег деплоит СВОЮ гильдию (уточн. Макса): ростер — из RunState (4 сосуда + надетые релики),
+                    // Забег деплоит СВОЮ гильдию (уточн. Макса): ростер — из RunState (4 сосуда + надетые Мементо),
                     // враги — из выбранного пресета, режим — Free (фаза расстановки + «Начать» перед боем).
                     // Пустая гильдия (dev/тест без ростера) → берём пресет как есть (канон-ростер, его режим).
                     BattlePresetData effective = preset;
@@ -101,7 +101,7 @@ namespace Guildmaster.Game.Flow
 
                     var battle = new BattleFlow(effective, _session, _localPlayer,
                                                 () => _runStates.TrySpendRestart()); // пул перезапусков акта (C1)
-                    int rewardCount = wantTier == EncounterTier.Elite ? 2 : 1;   // элитка — два выбора реликвии подряд (B5)
+                    int rewardCount = wantTier == EncounterTier.Elite ? 2 : 1;   // элитка — два выбора мементо подряд (B5)
                     // Сессия + способ дождаться нового приговора: dev-R после конца боя откатывает узел
                     // к бою, снимая с него награду и мост к ней.
                     return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, _commands, _continue,

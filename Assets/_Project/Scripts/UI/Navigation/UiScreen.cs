@@ -19,7 +19,7 @@ namespace Guildmaster.UI
         /// </summary>
         public const string MapModeTag = "map";
 
-        /// <summary>Тег режима инвентаря: Sheet-экран грида реликвий поверх мира.</summary>
+        /// <summary>Тег режима инвентаря: Sheet-экран грида мементо поверх мира.</summary>
         public const string InventoryModeTag = "inventory";
 
         /// <summary>Тег боевого режима: пространство арены (бой или полигон) под всеми оверлеями.</summary>

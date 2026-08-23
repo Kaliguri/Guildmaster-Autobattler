@@ -65,7 +65,7 @@ namespace Guildmaster.Tests.EditMode.Guild
             Assert.AreEqual(relicAfterPlay, replayState.Current.Guild[2].RelicId,
                 "Кит слота воспроизвёлся из лога");
             Assert.AreEqual(stashAfterPlay, replayState.Current.RelicInventory.Length,
-                "Запас реликвий сошёлся");
+                "Запас мементо сошёлся");
         }
 
         // ═══ Идемпотентность: лекарство от дублей на стыке реконнекта ═══

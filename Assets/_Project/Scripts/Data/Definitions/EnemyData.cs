@@ -5,7 +5,7 @@ namespace Guildmaster.Data.Definitions
     /// <summary>
     /// Вражеский юнит: боевой кит (<see cref="UnitData"/>) + мета врага (очки опасности, награда).
     /// Сим не читает мету — она для превью боя и бюджетов генерации (вики «13» §3.1). Ассеты врагов
-    /// авторятся при строительстве флоу; можно копией кита реликвии с ослабленными статами.
+    /// авторятся при строительстве флоу; можно копией кита мементо с ослабленными статами.
     /// </summary>
     [CreateAssetMenu(menuName = "Guildmaster/Content/Enemy", fileName = "Enemy")]
     public sealed class EnemyData : UnitData

@@ -5,7 +5,7 @@ namespace Guildmaster.Data.Definitions
 {
     /// <summary>
     /// Гильдмастер (GDD 4, вики «13» §3.2): пассивный бонус гильдии, уникальные особенности,
-    /// стартовые реликвии (по id) и ресурс.
+    /// стартовые мементо (по id) и ресурс.
     /// <para>Заклинаний у Гильдмастера НЕТ: ввода игрока во время боя не существует, бой — чистый
     /// результат подготовки (решение 2026-07, см. ГДД <c>combat-system</c>). Поле <c>_spells</c>
     /// пережило вырезание механики и снято 2026-07-26 — его никто не читал.</para>
@@ -17,7 +17,7 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private StatModifier[] _mods;
         [Tooltip("Уникальные особенности ГМ — эффект-нагрузка на забег/бой.")]
         [SerializeField] private EffectData[] _uniqueEffects;
-        [Tooltip("Начальные реликвии (id, пикер из реестра).")]
+        [Tooltip("Начальные мементо (id, пикер из реестра).")]
         [SerializeField] private string[] _startingRelicIds;
         [Tooltip("Стартовый ресурс забега.")]
         [SerializeField] private int _startingGold;

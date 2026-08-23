@@ -41,7 +41,7 @@ namespace Guildmaster.Game.Session.Net
         // Реестр контента: по проводу едут id, а витрине нужны определения. Реестры сторон совпадают —
         // это проверено рукопожатием, поэтому промах по id здесь означает поломку, а не редкий случай.
         private readonly IContentDatabase _content;
-        // Запас реликвий — чтобы при полном показать, что придётся выбросить. Есть у ОБЕИХ ролей:
+        // Запас мементо — чтобы при полном показать, что придётся выбросить. Есть у ОБЕИХ ролей:
         // у владельца это держатель забега, у гостя — приёмник снимков.
         private readonly ISessionRunState _runs;
         private readonly Core.Net.ISharedDecision _decision;
@@ -199,7 +199,7 @@ namespace Guildmaster.Game.Session.Net
                                       cleared.ToString(Culture)),
                 new OutcomeSummaryRow("ui.outcome.summary.gold", "Золото",
                                       run.Gold.ToString(Culture)),
-                new OutcomeSummaryRow("ui.outcome.summary.relics", "Реликвий в запасе",
+                new OutcomeSummaryRow("ui.outcome.summary.relics", "Мементо в запасе",
                                       (run.RelicInventory?.Length ?? 0).ToString(Culture)),
                 new OutcomeSummaryRow("ui.outcome.summary.wounds", "Ран у отряда",
                                       wounds.ToString(Culture)),
@@ -282,7 +282,7 @@ namespace Guildmaster.Game.Session.Net
             for (int i = 0; i < ids.Count; i++)
             {
                 if (_content != null && _content.TryGet(ids[i], out RelicData relic)) choices.Add(relic);
-                else Debug.LogError($"[SessionStageScreens] - реликвии '{ids[i]}' нет в реестре: " +
+                else Debug.LogError($"[SessionStageScreens] - мементо '{ids[i]}' нет в реестре: " +
                                     "контент разъехался, хотя рукопожатие это проверяло.");
             }
 

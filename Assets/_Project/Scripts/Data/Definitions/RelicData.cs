@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 namespace Guildmaster.Data.Definitions
 {
     /// <summary>
-    /// «Чемпион» — реликвия игрока: боевой кит (<see cref="UnitData"/>) + мета забега (редкость,
+    /// «Чемпион» — мементо игрока: боевой кит (<see cref="UnitData"/>) + мета забега (редкость,
     /// нагрузка на забег, альт-пресеты AI, доступ к Extended-зонам). Из неё + <see cref="StatsConfig"/>
     /// фабрика собирает рантайм-юнита (вики «10» §4.2, «13» §3.1).
     /// </summary>
@@ -19,7 +19,7 @@ namespace Guildmaster.Data.Definitions
         [FormerlySerializedAs("_rarity")]
         [SerializeField] private KitPower _kitPower = KitPower.Common;
 
-        [Tooltip("Редкость выпадения (экономика): как часто реликвия встречается в наградах и магазине. Ортогональна классу кита.")]
+        [Tooltip("Редкость выпадения (экономика): как часто мементо встречается в наградах и магазине. Ортогональна классу кита.")]
         [SerializeField] private DropRarity _dropRarity = DropRarity.Common;
 
         [Tooltip("Нагрузка на весь забег (штрафы Cursed / бонусы Divine); у Common пусто. Чисто статовый штраф = EffectData со StatModifierComponent и бессрочной длительностью.")]

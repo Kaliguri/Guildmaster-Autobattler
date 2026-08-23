@@ -10,7 +10,7 @@ namespace Guildmaster.Guild
     public enum CampAction
     {
         Empower,       // усилиться
-        CopyRelic,     // получить копию реликвии
+        CopyRelic,     // получить копию мементо
         Cleanse,       // снять негативное последствие
         HireVessel,    // найм сосуда (или замена старого)
         MoveOn,        // пройти мимо — закрывает привал, стоит 0

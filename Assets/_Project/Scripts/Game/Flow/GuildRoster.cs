@@ -7,8 +7,8 @@ namespace Guildmaster.Game.Flow
 {
     /// <summary>
     /// Мост durable-гильдии игрока (<see cref="RunState"/>, строковые id) → player-ростер боя (Data-ссылки).
-    /// Каждый слот = сосуд + надетый релик (весь кит) + предметы + стартовая позиция. Пустой/непроставленный
-    /// релик → <c>relic.base</c> (дамми-кит), чтобы сосуд всегда был боеспособен. Чистая функция (без DI и
+    /// Каждый слот = сосуд + надетое Мементо (весь кит) + предметы + стартовая позиция. Пустой/непроставленный
+    /// Мементо → <c>relic.base</c> (дамми-кит), чтобы сосуд всегда был боеспособен. Чистая функция (без DI и
     /// мутаций) — берётся <see cref="IContentDatabase"/> для резолва id; легко тестируется на фейке БД.
     /// </summary>
     public static class GuildRoster
@@ -45,12 +45,12 @@ namespace Guildmaster.Game.Flow
                 if (!content.TryGet(relicId, out RelicData relic)
                     && !content.TryGet(ContentIds.BaseRelic, out relic))
                 {
-                    Debug.LogWarning($"[GuildRoster] - релик '{relicId}' не найден в контент-БД, и базового кита " +
+                    Debug.LogWarning($"[GuildRoster] - Мементо '{relicId}' не найден в контент-БД, и базового кита " +
                                      $"'{ContentIds.BaseRelic}' тоже нет → слот пропущен (индексы гильдии разъедутся)");
                     continue;
                 }
                 if (relic.Id != relicId)
-                    Debug.LogWarning($"[GuildRoster] - релик '{relicId}' не найден в контент-БД → слот встаёт с базовым китом");
+                    Debug.LogWarning($"[GuildRoster] - Мементо '{relicId}' не найден в контент-БД → слот встаёт с базовым китом");
 
                 VesselData vessel = null;
                 if (!string.IsNullOrEmpty(rs.VesselId)) content.TryGet(rs.VesselId, out vessel);

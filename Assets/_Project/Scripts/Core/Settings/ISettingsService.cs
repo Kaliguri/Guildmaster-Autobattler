@@ -36,7 +36,7 @@ namespace Guildmaster.Core.Settings
         /// <summary>Громкость SFX [0..1].</summary>
         void SetSfxVolume(float volume01);
 
-        /// <summary>Включить/выключить анимацию карточек реликвий целиком (idle+attack). Поднимает <see cref="Changed"/>.</summary>
+        /// <summary>Включить/выключить анимацию карточек мементо целиком (idle+attack). Поднимает <see cref="Changed"/>.</summary>
         void SetCardAnimations(bool enabled);
 
         /// <summary>Включить/выключить анимацию атаки выбранной карточки (при включённой анимации). Поднимает <see cref="Changed"/>.</summary>

@@ -16,7 +16,7 @@
             <ui:VisualElement class="gm-divider" />
 
             <!-- Продажа: запас игрока (наполняет код) -->
-            <ui:Label text="Продать реликвии" class="gm-text-subtitle gm-text--muted gm-shop__section-title" />
+            <ui:Label text="Продать Мементо" class="gm-text-subtitle gm-text--muted gm-shop__section-title" />
             <ui:ScrollView name="shop-stash" class="gm-shop__stash" />
 
             <!-- Подвал -->

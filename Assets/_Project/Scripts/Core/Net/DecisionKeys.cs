@@ -17,7 +17,7 @@ namespace Guildmaster.Core.Net
         /// <summary>Согласие уйти с экрана исхода обратно к расстановке.</summary>
         public const string BattleContinue = "battle.continue";
 
-        /// <summary>Какую из выпавших реликвий забирает группа. Вариант — id реликвии.</summary>
+        /// <summary>Какую из выпавших мементо забирает группа. Вариант — id мементо.</summary>
         public const string RewardPick = "reward.pick";
 
         /// <summary>Куда идём по карте акта. Вариант — id узла.</summary>

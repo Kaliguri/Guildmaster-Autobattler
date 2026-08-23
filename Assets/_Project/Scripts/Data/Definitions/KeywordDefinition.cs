@@ -17,7 +17,7 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Поведение в бою: угроза, стелс, метка.</summary>
         Behaviour = 3,
 
-        /// <summary>Понятия забега: реликвия, сосуд, узел.</summary>
+        /// <summary>Понятия забега: мементо, сосуд, узел.</summary>
         Run = 4,
 
         Other = 5,

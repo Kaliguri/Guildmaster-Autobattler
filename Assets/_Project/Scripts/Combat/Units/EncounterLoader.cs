@@ -5,8 +5,8 @@ using UnityEngine;
 namespace Guildmaster.Combat
 {
     /// <summary>
-    /// Один player-юнит для старта боя: кит (реликвия/база) + сосуд + позиция (team 0). Player-сторону
-    /// энкаунтер НЕ хранит — её подаёт вызывающий: в dev-срезе (шаг 1) это временный селектор реликвии,
+    /// Один player-юнит для старта боя: кит (мементо/база) + сосуд + позиция (team 0). Player-сторону
+    /// энкаунтер НЕ хранит — её подаёт вызывающий: в dev-срезе (шаг 1) это временный селектор мементо,
     /// в шаге 3 — ростер <c>BattlePresetData</c>. Так форма <see cref="EncounterData"/> финальна.
     /// </summary>
     public readonly struct PlayerSpawn
@@ -95,7 +95,7 @@ namespace Guildmaster.Combat
             for (int i = 0; i < roster.Count; i++)
             {
                 PlayerSlot slot = roster[i];
-                if (slot.Relic == null) continue; // слот релика должен быть заполнен (relic.base у «пустого» сосуда)
+                if (slot.Relic == null) continue; // слот Мементо должен быть заполнен (relic.base у «пустого» сосуда)
                 IReadOnlyList<ItemData> items = CombineItems(slot.Items, partyItems);
                 side.Add(new PlayerSpawn(slot.Relic, slot.Vessel, slot.Position, items, slot.Consequences));
             }

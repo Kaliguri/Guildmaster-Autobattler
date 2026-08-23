@@ -37,7 +37,7 @@ namespace Guildmaster.UI.Components
             SetIcon(null);
         }
 
-        /// <summary>Подсветить слот как выбранный (лоадаут-хаб: «взведённая» реликвия из запаса).</summary>
+        /// <summary>Подсветить слот как выбранный (лоадаут-хаб: «взведённая» мементо из запаса).</summary>
         public void SetSelected(bool on) => EnableInClassList("gm-slot--selected", on);
 
         /// <summary>Заполнить слот иконкой (null → пустой плейсхолдер).</summary>

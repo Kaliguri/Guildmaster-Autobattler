@@ -5,7 +5,7 @@ using Guildmaster.Data.Definitions;
 
 namespace Guildmaster.Guild
 {
-    /// <summary>Слот витрины магазина: реликвия + её цена + признак «уже куплено» (слот пуст).</summary>
+    /// <summary>Слот витрины магазина: Мементо + его цена + признак «уже куплено» (слот пуст).</summary>
     public sealed class ShopItem
     {
         public RelicData Relic;
@@ -13,7 +13,7 @@ namespace Guildmaster.Guild
         public bool      Sold;
     }
 
-    /// <summary>Строка панели продажи: реликвия из запаса игрока + сколько за неё дадут.</summary>
+    /// <summary>Строка панели продажи: мементо из запаса игрока + сколько за неё дадут.</summary>
     public sealed class ShopStashItem
     {
         public RelicData Relic;
@@ -38,9 +38,9 @@ namespace Guildmaster.Guild
 
     public enum ShopBuyOutcome
     {
-        Bought,          // куплено: золото списано, реликвия в запасе, слот опустел
+        Bought,          // куплено: золото списано, мементо в запасе, слот опустел
         NotEnoughGold,   // не хватает золота
-        NoSpace,         // запас реликвий полон (тост «нет места» → продать что-то)
+        NoSpace,         // запас мементо полон (тост «нет места» → продать что-то)
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ namespace Guildmaster.Guild
         /// <summary>4 слота витрины (проданные помечены <see cref="ShopItem.Sold"/>).</summary>
         IReadOnlyList<ShopItem> Shelf { get; }
 
-        /// <summary>Запас игрока для продажи (реликвия + цена продажи 25%).</summary>
+        /// <summary>Запас игрока для продажи (мементо + цена продажи 25%).</summary>
         IReadOnlyList<ShopStashItem> Stash { get; }
 
         /// <summary>Купить слот витрины по индексу.</summary>
@@ -65,7 +65,7 @@ namespace Guildmaster.Guild
         /// <summary>Перекатить всю витрину за <see cref="RerollCost"/>. false = не хватило золота.</summary>
         bool Reroll();
 
-        /// <summary>Продать реликвию из запаса (освободить место). false = такой в запасе нет.</summary>
+        /// <summary>Продать мементо из запаса (освободить место). false = такой в запасе нет.</summary>
         bool Sell(RelicData relic);
 
         /// <summary>

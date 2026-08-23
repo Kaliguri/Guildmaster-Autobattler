@@ -76,7 +76,7 @@ namespace Guildmaster.Combat
         public StatValue Explain(StatType stat)
         {
             // Override формирует БАЗУ, а не вклад: это способ авторинга базовых статов
-            // реликвии. Побеждает последний — тот же порядок, что в RebuildCache.
+            // мементо. Побеждает последний — тот же порядок, что в RebuildCache.
             float baseVal = DefaultOf(stat);
             int count = 0;
 

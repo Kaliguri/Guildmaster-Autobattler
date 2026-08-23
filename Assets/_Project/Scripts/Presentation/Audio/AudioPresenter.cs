@@ -11,7 +11,7 @@ namespace Guildmaster.Presentation.Audio
     /// Аудио-презентер (вики impl «09» §П4): POCO-entry-point, подписан НАПРЯМУЮ на C#-события боевой
     /// симуляции, системы способностей и системы эффектов (тот же приём, что <c>CombatFeelDirector</c>).
     /// Резолвит ключ <c>{contentId}.{action}</c> через <see cref="AudioResolver"/> и отдаёт в
-    /// <see cref="IAudioService"/>. Точечные звуки реликвий/эффектов (<c>relic.cryomancer.attack</c>,
+    /// <see cref="IAudioService"/>. Точечные звуки мементо/эффектов (<c>relic.cryomancer.attack</c>,
     /// <c>effect.frozen.apply</c>) подхватываются резолвером автоматически — достаточно выстрелить нужным
     /// действием с нужным id.
     ///

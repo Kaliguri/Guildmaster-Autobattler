@@ -95,7 +95,7 @@ namespace Guildmaster.Combat
                 // сам удар. По ChargedSwing разутыми оставались бы все, кто не успел разогнаться.
                 bool chargingIn = unit.ChargingIn && unit.Phase == AttackPhase.Windup;
 
-                // Атака рутит юнита (свинг на месте) — КРОМЕ реликвий со «стрельбой на ходу» (§9.8):
+                // Атака рутит юнита (свинг на месте) — КРОМЕ мементо со «стрельбой на ходу» (§9.8):
                 // те продолжают движение со штрафом скорости.
                 if (firing && !attackWhileMoving && !chargingIn) { unit.StopSprint(); continue; }
 

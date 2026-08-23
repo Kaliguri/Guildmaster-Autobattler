@@ -36,7 +36,7 @@ namespace Guildmaster.UI
         /// <summary>Статистика: пары «что» и «сколько».</summary>
         public readonly IReadOnlyList<(string Label, string Value)> Statistics;
 
-        /// <summary>Реликвия, к карточке которой ведёт переход; пусто — перехода нет.</summary>
+        /// <summary>Мементо, к карточке которого ведёт переход; пусто — перехода нет.</summary>
         public readonly string RelicId;
 
         public VesselCardSubject(string name, string subtitle,
@@ -156,11 +156,11 @@ namespace Guildmaster.UI
             {
                 string relicId = s.RelicId;
                 // Имя из локализации, а не строковый id: до 23.08.2026 кнопка звалась
-                // «Реликвия «relic.bulwark» →». Правило имени — одно на все экраны.
+                // «Мементо «relic.bulwark» →». Правило имени — одно на все экраны.
                 string relicName = L(relicId + ".name", ContentTitle.WithoutDomain(relicId));
                 var toRelic = new PlateButton
                 {
-                    text = string.Format(L("ui.vcard.to_relic", "Реликвия «{0}» →"), relicName),
+                    text = string.Format(L("ui.vcard.to_relic", "Мементо «{0}» →"), relicName),
                 };
                 toRelic.AddToClassList("gm-vcard__to-relic");
                 toRelic.clicked += () => onRelic?.Invoke(relicId);

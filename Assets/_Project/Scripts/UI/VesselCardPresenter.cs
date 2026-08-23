@@ -16,7 +16,7 @@ namespace Guildmaster.UI
     /// сколько мест занято, знает он один, и второй счётчик рядом разошёлся бы с ним на первом же
     /// снятии раны.
     /// <para><b>Человек берётся из дома</b> (<see cref="IGuildRosterView"/>), а не из забега: забег
-    /// держит только ссылку. Пока людей нет, карточка показывает то, чем место является — Реликвию.</para>
+    /// держит только ссылку. Пока людей нет, карточка показывает то, чем место является — Мементо.</para>
     /// </remarks>
     public sealed class VesselCardPresenter
     {
@@ -96,7 +96,7 @@ namespace Guildmaster.UI
                 _tab,
                 onTab: index => { _tab = index; Render(); },
                 onClose: Close,
-                onRelic: null, // карточка Реликвии — следующая фаза
+                onRelic: null, // карточка Мементо — следующая фаза
                 localize: key => _loc?.GetString(key)));
         }
 

@@ -5,9 +5,9 @@ using UnityEngine;
 namespace Guildmaster.Game.Flow
 {
     /// <summary>
-    /// Ценообразование реликвий (план [[act-map-run-loop]] §3.3): база по <see cref="KitPower"/>
+    /// Ценообразование мементо (план [[act-map-run-loop]] §3.3): база по <see cref="KitPower"/>
     /// (Common/Cursed/Divine из <see cref="GameConfig"/>) + детерминированный разброс вокруг неё. Разброс
-    /// стабилен для пары (id реликвии, seed витрины) — одна витрина всегда даёт ту же цену, но между витринами
+    /// стабилен для пары (id мементо, seed витрины) — одна витрина всегда даёт ту же цену, но между витринами
     /// цена гуляет. У <see cref="RelicData"/> нет поля Cost — цена вычисляется здесь, ассеты не размечаем.
     /// </summary>
     public sealed class RelicPricer
@@ -16,7 +16,7 @@ namespace Guildmaster.Game.Flow
 
         public RelicPricer(GameConfig config) => _config = config;
 
-        /// <summary>Цена покупки реликвии в витрине с сидом <paramref name="shopSeed"/>.</summary>
+        /// <summary>Цена покупки мементо в витрине с сидом <paramref name="shopSeed"/>.</summary>
         public int Price(RelicData relic, int shopSeed) =>
             relic == null ? 0 : PriceFor(relic.KitPower, relic.Id, shopSeed);
 
@@ -36,7 +36,7 @@ namespace Guildmaster.Game.Flow
             return Mathf.Max(1, price);
         }
 
-        /// <summary>Сколько игрок получит за продажу реликвии с ценой покупки <paramref name="buyPrice"/>.</summary>
+        /// <summary>Сколько игрок получит за продажу мементо с ценой покупки <paramref name="buyPrice"/>.</summary>
         public int SellValue(int buyPrice) => Mathf.Max(1, Mathf.RoundToInt(buyPrice * _config.SellPercent));
 
     }

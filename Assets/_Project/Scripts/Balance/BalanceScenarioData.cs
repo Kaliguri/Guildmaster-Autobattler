@@ -18,7 +18,7 @@ namespace Guildmaster.Balance
         [Serializable]
         public struct SideEntry
         {
-            [Tooltip("Боевой кит: реликвия или враг. Пусто = запись пропускается.")]
+            [Tooltip("Боевой кит: мементо или враг. Пусто = запись пропускается.")]
             public UnitData Unit;
 
             [Tooltip("Пилот (перки). Пусто = без сосуда.")]

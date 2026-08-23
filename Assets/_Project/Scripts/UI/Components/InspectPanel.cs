@@ -11,7 +11,7 @@ namespace Guildmaster.UI.Components
         /// <summary>Имя в шапке.</summary>
         public readonly string Name;
 
-        /// <summary>Реликвия и класс одной строкой: «Щит · Танк · ур. 3».</summary>
+        /// <summary>Мементо и класс одной строкой: «Щит · Танк · ур. 3».</summary>
         public readonly string Subtitle;
 
         /// <summary>Статы ИТОГОМ, парами «что» и «сколько». Остаются числами на виду — по ним сравнивают.</summary>
@@ -26,7 +26,7 @@ namespace Guildmaster.UI.Components
         /// <summary>Профиль поведения человеческим словом.</summary>
         public readonly string Behaviour;
 
-        /// <summary>Id Реликвии; пусто — кнопка «о Реликвии» гаснет.</summary>
+        /// <summary>Id Мементо; пусто — кнопка «о Мементо» гаснет.</summary>
         public readonly string RelicId;
 
         public InspectSubject(string name, string subtitle,
@@ -56,7 +56,7 @@ namespace Guildmaster.UI.Components
     /// <para><b>Статы остаются числами, всё остальное — именами.</b> Описания живут в тултипах
     /// (решение Макса 22.08.2026), но панель существует ради СРАВНЕНИЯ двух бойцов, а сравнивать по
     /// всплывающим окнам нельзя: пришлось бы наводиться на каждую строку у каждого.</para>
-    /// <para><b>Кнопка «о Реликвии» без Реликвии гаснет текстом, но остаётся живой</b> — правило
+    /// <para><b>Кнопка «о Мементо» без Мементо гаснет текстом, но остаётся живой</b> — правило
     /// <c>ui-feedback</c> §1: мёртвая кнопка читается как сломанный экран.</para>
     /// </remarks>
     public static class InspectPanel
@@ -147,7 +147,7 @@ namespace Guildmaster.UI.Components
             aboutVessel.clicked += () => onAboutVessel?.Invoke();
             buttons.Add(aboutVessel);
 
-            var aboutRelic = new PlateButton { text = L("ui.inspect.about_relic", "о Реликвии") };
+            var aboutRelic = new PlateButton { text = L("ui.inspect.about_relic", "о Мементо") };
             bool hasRelic = !string.IsNullOrEmpty(subject.RelicId);
             // Гаснет ТЕКСТОМ и остаётся живой: отклик подтверждает, что нажатие увидено, а
             // недоступность сообщает подпись. Отключать элемент средствами движка правило запрещает.

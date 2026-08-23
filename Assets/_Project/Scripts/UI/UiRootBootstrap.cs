@@ -36,10 +36,10 @@ namespace Guildmaster.UI
         [Tooltip("UXML экрана настроек (3 слайдера + Save/Cancel/Defaults).")]
         [SerializeField] private VisualTreeAsset _settingsScreen;
 
-        [Tooltip("UXML loadout-экрана (грид реликов + Accept/Save/Close). Открывается дабл-кликом по сосуду в расстановке.")]
+        [Tooltip("UXML loadout-экрана (грид Мементо + Accept/Save/Close). Открывается дабл-кликом по сосуду в расстановке.")]
         [SerializeField] private VisualTreeAsset _loadoutScreen;
 
-        [Tooltip("UXML экрана награды после боя (витрина реликвий + Взять/Пропустить).")]
+        [Tooltip("UXML экрана награды после боя (витрина мементо + Взять/Пропустить).")]
         [SerializeField] private VisualTreeAsset _rewardScreen;
 
         [Tooltip("UXML экрана текстового ивента (StS-style: заголовок, тело, варианты ответа).")]
@@ -93,7 +93,7 @@ namespace Guildmaster.UI
         [Tooltip("UXML лоадаут/инвентарь-экрана (редизайн, Ф3a: трёхколоночник с таро-карточками). Открывается табом «Инвентарь».")]
         [SerializeField] private VisualTreeAsset _loadoutInventoryScreen;
 
-        [Tooltip("UXML таро-карточки реликвии (клонируется в грид нового инвентаря).")]
+        [Tooltip("UXML таро-карточки мементо (клонируется в грид нового инвентаря).")]
         [SerializeField] private VisualTreeAsset _arcanaCard;
 
         [Tooltip("Материал чернильной шторки перехода (SH_Map_Transition). Рисуется в текстуру и кладётся " +
@@ -177,7 +177,7 @@ namespace Guildmaster.UI
         private bool _lastProvingGrounds;    // ребро вида панели: забег ↔ площадка
         private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
         private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4; источник — _router.IsInventoryOpen)
-        private IPublisher<RelicDragEvent> _relicDragPub; // QA #5: drag реликвии из грида → фаза расстановки
+        private IPublisher<RelicDragEvent> _relicDragPub; // QA #5: drag мементо из грида → фаза расстановки
         private IPublisher<SetTestZoneRequest> _testZonePub; // радио-табы: целевое состояние тест-зоны (бой/не-бой)
         private ISubscriber<TestZoneChangedEvent> _testZoneChangedSub; // Ф5: СОСТОЯНИЕ тест-зоны → Sheet-экран
         private IDisposable _testZoneChangedSubscription;
@@ -363,7 +363,7 @@ namespace Guildmaster.UI
             // предупреждения по ходу боя идут одной дорогой, а не заводят себе по экрану.
             // ОБЛИК ВЫБИРАЕТ МОДЕЛЬ, А НЕ ЗАКАЗЧИК (решение Макса 20.08.2026). Ответов нет и это не
             // ошибка — сообщение ни о чём не спрашивает, значит лента в углу; иначе игра ждёт решения,
-            // и это окно со scrim. Отдай выбор вызывающему коду — и «нет слота под реликвию» через
+            // и это окно со scrim. Отдай выбор вызывающему коду — и «нет слота под мементо» через
             // месяц приедет модалкой, потому что кому-то оно покажется важным.
             _noticeSubscription = _noticeSub?.Subscribe(req =>
             {
@@ -740,7 +740,7 @@ namespace Guildmaster.UI
             RequestWorldMap(false); // инвентарь смотрит на мир, а не на карту — идемпотентно
             RequestTestZone(true);  // сначала бой — идемпотентно
             int gold = _runStates?.Current != null ? _runStates.Current.Gold : 0;
-            // QA #5: drag карточки реликвии → публикуем RelicDragEvent, фаза расстановки рисует призрак и надевает.
+            // QA #5: drag карточки мементо → публикуем RelicDragEvent, фаза расстановки рисует призрак и надевает.
             _router.ShowInventory(gold, PublishRelicDrag); // инвентарь над боем — идемпотентно
         }
 

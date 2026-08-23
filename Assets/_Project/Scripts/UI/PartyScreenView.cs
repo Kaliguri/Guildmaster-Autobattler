@@ -19,7 +19,7 @@ namespace Guildmaster.UI
         /// <summary>Имя человека; пусто — место свободно.</summary>
         public readonly string Name;
 
-        /// <summary>Имя Реликвии, которую он несёт.</summary>
+        /// <summary>Имя Мементо, которое он несёт.</summary>
         public readonly string Relic;
 
         /// <summary>Выходит ли в бой.</summary>
@@ -29,7 +29,7 @@ namespace Guildmaster.UI
         public readonly bool Open;
 
         /// <summary>
-        /// Лицо человека. Пока люди — это их Реликвии, берётся портрет архетипа; <c>null</c> —
+        /// Лицо человека. Пока люди — это их Мементо, берётся портрет архетипа; <c>null</c> —
         /// портрета нет, и плитка честно показывает пустой круг.
         /// </summary>
         /// <remarks>
@@ -62,7 +62,7 @@ namespace Guildmaster.UI
     /// <b>Тела рисует мир, а не этот экран</b> (<c>WorldStageController</c> ставит отряд на арену вне
     /// боя). Отсюда «дырка» в разметке: зона сцены прозрачна для ввода, и клик по бойцу доходит до
     /// мира. Экран отвечает за ленту, подписи и кнопки — то есть за решения, а не за показ боя.
-    /// <para><b>Что показывает плитка, задано дизайном:</b> имя и Реликвия, и больше ничего. Перки,
+    /// <para><b>Что показывает плитка, задано дизайном:</b> имя и Мементо, и больше ничего. Перки,
     /// Судьба и травмы живут в панели осмотра и расширенной карточке — на плитке они превратили бы
     /// ленту в таблицу (ГДД <c>preparation-screens</c> §2.1).</para>
     /// </remarks>
@@ -176,7 +176,7 @@ namespace Guildmaster.UI
             var portrait = new VisualElement();
             portrait.AddToClassList("gm-party-slot__portrait");
             // Лица нет — круг остаётся пустым и говорит об этом видом, а не подписью: подпись под
-            // портретом заняли бы имя и Реликвия, а третья строка сделала бы плитку таблицей.
+            // портретом заняли бы имя и Мементо, а третья строка сделала бы плитку таблицей.
             portrait.EnableInClassList("gm-party-slot__portrait--blank", slot.Portrait == null);
             if (slot.Portrait != null) portrait.style.backgroundImage = new StyleBackground(slot.Portrait);
             cell.Add(portrait);

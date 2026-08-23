@@ -13,11 +13,11 @@ namespace Guildmaster.Game.Flow
     }
 
     /// <summary>
-    /// Генератор витрины наград (план 11 §4 A3, «сердце рогалика»): катит N (обычно 3) РАЗНЫХ реликвий из
+    /// Генератор витрины наград (план 11 §4 A3, «сердце рогалика»): катит N (обычно 3) РАЗНЫХ мементо из
     /// контент-БД. Детерминирован через <see cref="IRngService"/> (тот же seed → та же витрина; для реплея/коопа).
     /// Взятие/сброс живёт в <see cref="Guildmaster.Guild.RunStateService"/> (единая точка вместимости, §5.4) —
     /// сервис только формирует выбор.
-    /// <para>Ramp по <see cref="RewardTier"/>: шанс уникальной реликвии в слоте витрины — 10% за рядовой бой,
+    /// <para>Ramp по <see cref="RewardTier"/>: шанс уникального мементо в слоте витрины — 10% за рядовой бой,
     /// 20% за элиту, 100% за босса (экономика, [[meta-progression-economy]]). Наклон катится ПОСЛОТНО, так что
     /// у босса вся витрина уникальная, а в рядовом бою уник — редкий гость.</para>
     /// </summary>
@@ -34,7 +34,7 @@ namespace Guildmaster.Game.Flow
             _rng     = rng;
         }
 
-        /// <summary>Шанс уникальной реликвии в одном слоте витрины.</summary>
+        /// <summary>Шанс уникального мементо в одном слоте витрины.</summary>
         public static float UniqueChance(RewardTier tier) => tier switch
         {
             RewardTier.Boss  => 1f,
@@ -43,7 +43,7 @@ namespace Guildmaster.Game.Flow
         };
 
         /// <summary>
-        /// Скатать витрину: до <paramref name="count"/> РАЗНЫХ реликвий (без базовой). Меньше пула — вернёт сколько
+        /// Скатать витрину: до <paramref name="count"/> РАЗНЫХ мементо (без базовой). Меньше пула — вернёт сколько
         /// есть. Порядок детерминирован RNG. Дубли с уже собранными допустимы (дубль = прогресс, экономика §5.4).
         /// </summary>
         public IReadOnlyList<RelicData> RollChoices(RewardTier tier, int count = DefaultChoiceCount)

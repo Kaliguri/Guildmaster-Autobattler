@@ -35,10 +35,10 @@ namespace Guildmaster.Data.Definitions
                  "внутри забега и сгорает вместе с ним — как и места отряда.")]
         [SerializeField] private int _vesselItemSlotsMax;
 
-        [Tooltip("Стартовая вместимость коллекции реликов гильдии (запас ненадетых, план 11 §5.4).")]
+        [Tooltip("Стартовая вместимость коллекции Мементо гильдии (запас ненадетых, план 11 §5.4).")]
         [SerializeField] private int _relicCapacityBase;
 
-        [Tooltip("Потолок вместимости коллекции реликов (апгрейд в магазине не поднимет выше).")]
+        [Tooltip("Потолок вместимости коллекции Мементо (апгрейд в магазине не поднимет выше).")]
         [SerializeField] private int _relicCapacityMax;
 
         [Header("Economy (план act-map-run-loop §3.3)")]
@@ -48,19 +48,19 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Награда золотом за победу в бою (обычный/элита/босс).")]
         [SerializeField] private int _battleGoldReward;
 
-        [Tooltip("Базовая цена покупки реликвии по KitPower: Common.")]
+        [Tooltip("Базовая цена покупки мементо по KitPower: Common.")]
         [SerializeField] private int _priceCommon;
 
-        [Tooltip("Базовая цена покупки реликвии по KitPower: Cursed.")]
+        [Tooltip("Базовая цена покупки мементо по KitPower: Cursed.")]
         [SerializeField] private int _priceCursed;
 
-        [Tooltip("Базовая цена покупки реликвии по KitPower: Divine.")]
+        [Tooltip("Базовая цена покупки мементо по KitPower: Divine.")]
         [SerializeField] private int _priceDivine;
 
         [Tooltip("Случайный разброс цены вокруг базы (доля, напр. 0.2 = ±20%), детерминирован сидом.")]
         [Range(0f, 0.9f)] [SerializeField] private float _priceSpread;
 
-        [Tooltip("Доля цены покупки, которую игрок получает при продаже реликвии (напр. 0.25 = 25%).")]
+        [Tooltip("Доля цены покупки, которую игрок получает при продаже мементо (напр. 0.25 = 25%).")]
         [Range(0f, 1f)] [SerializeField] private float _sellPercent;
 
         [Tooltip("Стоимость реролла витрины магазина (перекат всех слотов).")]
@@ -81,7 +81,7 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Сколько «Сосудов» выходит в бой одновременно (ГДД: 4). Остальные ждут в запасе.")]
         [SerializeField] private int _battleSlots;
 
-        [Tooltip("Релик на стартовом сосуде (пустой кит) — игрок навешивает собранное в лоадауте.")]
+        [Tooltip("Мементо на стартовом сосуде (пустой кит) — игрок навешивает собранное в лоадауте.")]
         [SerializeField] private string _startingRelicId;
 
         [Tooltip("Пул имён и прозвищ, из которого рождаются процедурные «Сосуды». Пусто — фабрика " +

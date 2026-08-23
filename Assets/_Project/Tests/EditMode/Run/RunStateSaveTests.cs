@@ -8,7 +8,7 @@ namespace Guildmaster.Tests.EditMode.Run
 {
     /// <summary>
     /// A1: сериализация <see cref="RunState"/> (JSON round-trip + диск через <see cref="JsonFileSaveService"/>)
-    /// и правила вместимости коллекции реликов (<see cref="RunStateService"/>, план 11 §5.4).
+    /// и правила вместимости коллекции Мементо (<see cref="RunStateService"/>, план 11 §5.4).
     /// </summary>
     public sealed class RunStateSaveTests
     {
