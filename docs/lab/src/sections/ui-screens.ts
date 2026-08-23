@@ -1,0 +1,154 @@
+/* Экраны игры целиком: по кадру на экран, снято из ЖИВОЙ игры.
+
+   Заказ Макса 23.08.2026: «дай мне ссылку на сайте где лежат всегда обновленные экраны». Соседний
+   раздел «Элементы интерфейса» отвечает на вопрос «как выглядит КНОПКА», а приёмка идёт по экранам —
+   и три самых частых претензии (реф не отработан, метрика внутри элемента разъехалась, кусок молча
+   пропал) не ловит ни один из статических гейтов. Их видно только на кадре целого экрана.
+
+   Кадры снимает `Alebardium → UI → Screen Sheet` (пункт в Unity, работает в play): он проходит по
+   `UiPreviewCatalog`, собирает каждый экран со стендовыми данными ПОВЕРХ настоящей панели и кладёт
+   PNG прямо сюда. Поверх живой панели, а не на стенде, потому что своей заливки у экранов нет —
+   задник рисует презентация, и снимок в изоляции показал бы экран на пустоте.
+
+   Список НЕ захардкожен: он приходит манифестом того же прогона. Захардкоженный список разошёлся бы
+   с каталогом на первом же новом экране — ровно эта болезнь была у прежней витрины компонентов. */
+
+import { el, html } from "../dom.js";
+import type { Feed } from "../api.js";
+import type { SectionDef } from "../types.js";
+
+interface Screen {
+  id: string;
+  file: string;
+}
+
+interface Manifest {
+  screens: Screen[];
+}
+
+/** Копия локального `feed` из api.ts: тянуть туда раздел ради одного файла данных незачем. */
+function feed<T>(url: string): Feed<T> {
+  const state: Feed<T> = { data: null, error: null, settled: Promise.resolve() };
+  state.settled = fetch(url)
+    .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+    .then((json: T) => { state.data = json; })
+    .catch((err: unknown) => {
+      state.error = err instanceof Error ? err.message : String(err);
+    });
+  return state;
+}
+
+/** Человеческое имя экрана. Неизвестный id печатается как есть — новый экран не должен пропадать. */
+const TITLE: Record<string, string> = {
+  mainmenu: "Главное меню",
+  newgame: "Создать игру",
+  guilds: "Выбор гильдии",
+  profile: "Профиль",
+  slotcreate: "Создание слота",
+  hub: "Двор гильдии",
+  titlecard: "Заставка узла",
+  party: "Отряд",
+  items: "Предметы",
+  loadout: "Расстановка",
+  "loadout-inventory": "Инвентарь",
+  "vessel-card": "Карточка Сосуда",
+  shop: "Лавка",
+  chest: "Сундук",
+  event: "Событие",
+  camp: "Привал",
+  reward: "Награда",
+  outcome: "Исход забега",
+  pause: "Системное меню",
+  devconsole: "Дев-консоль",
+  "dev-picker": "Дев-выбор боя"
+};
+
+/** Что на экране собрано заглушкой, а не настоящим содержимым: иначе кадр читается как поломка. */
+const STUB: Record<string, string> = {
+  chest: "экран-заглушка: содержимое сундука ещё не сделано",
+  hub: "экран-заглушка: двор ещё обустраивают"
+};
+
+const manifest = feed<Manifest>("data/ui-screens.json");
+
+function screenCard(screen: Screen): HTMLElement {
+  const box = el("article", "card");
+
+  const head = el("div", "i-head");
+  head.appendChild(el("h3", null, TITLE[screen.id] ?? screen.id));
+  head.appendChild(el("span", "dim", screen.id));
+  box.appendChild(head);
+
+  // Кадр открывается в новой вкладке по клику: снят в 1920×1080, и внутри страницы неизбежно ужат —
+  // мелкий текст и метрику на ужатом кадре не разглядеть, а именно за ними сюда и идут.
+  const link = el("a") as HTMLAnchorElement;
+  link.href = `assets/ui-screens/${screen.file}`;
+  link.target = "_blank";
+  link.rel = "noopener";
+
+  const img = el("img") as HTMLImageElement;
+  img.src = `assets/ui-screens/${screen.file}`;
+  img.alt = TITLE[screen.id] ?? screen.id;
+  img.loading = "lazy";
+  img.style.width = "100%";
+  img.style.display = "block";
+  img.style.borderRadius = "4px";
+  link.appendChild(img);
+  box.appendChild(link);
+
+  const note = STUB[screen.id];
+  if (note) box.appendChild(el("p", "dim", note));
+
+  return box;
+}
+
+function render(host: HTMLElement): void {
+  const box = el("div");
+  box.appendChild(el("p", "dim", "Загружаю кадры…"));
+  host.appendChild(box);
+
+  void manifest.settled.then(() => {
+    box.textContent = "";
+
+    if (!manifest.data?.screens?.length) {
+      box.appendChild(html("p",
+        "Кадров нет. Их кладёт пункт <code>Alebardium → UI → Screen Sheet</code> — " +
+        "он работает <b>в play</b>: вне игры живой панели не существует, и снимать нечего." +
+        (manifest.error ? `<br><span class="dim">${manifest.error}</span>` : ""),
+        "note"));
+      return;
+    }
+
+    box.appendChild(el("p", "dim", `Экранов в прогоне: ${manifest.data.screens.length}`));
+
+    // ОДНА КОЛОНКА, а не сетка: кадр снят в 1920×1080, и в узкой карточке от экрана остаётся пятно.
+    // Здесь смотрят детали — ради них прогон и делается.
+    const grid = el("div");
+    grid.style.display = "grid";
+    grid.style.gap = "var(--gap)";
+    for (const screen of manifest.data.screens) grid.appendChild(screenCard(screen));
+    box.appendChild(grid);
+  });
+}
+
+const section: SectionDef = {
+  id: "ui-screens",
+  title: "Экраны игры",
+  lede: "По кадру на каждый экран, снято из живой игры поверх настоящего задника. Сюда смотрят, " +
+        "когда вопрос про экран целиком: сошлась ли метрика, не пропал ли кусок, похоже ли на реф. " +
+        "Состояния отдельных элементов — в соседнем разделе «Элементы интерфейса».",
+  transport: false,
+  blocks: [
+    {
+      kind: "note",
+      html: "Обновляется прогоном <code>Alebardium → UI → Screen Sheet</code> в play. Кадры лежат " +
+            "в репозитории, поэтому историю держит git: пропавший задник виден диффом картинки. " +
+            "Список экранов приходит из <code>UiPreviewCatalog</code>, а гейт " +
+            "<code>UiScreenCatalogGateTests</code> краснеет, если экран игры остался без записи — " +
+            "стенд не может тихо разойтись с игрой."
+    },
+    { kind: "live", id: "ui-screens-gallery", render }
+  ]
+};
+
+export default section;

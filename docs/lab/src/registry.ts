@@ -252,6 +252,14 @@ export const PAGES: PageDef[] = [
     icon: "▦"
   },
   {
+    id: "ui-screens",
+    area: "ui",
+    title: "Экраны игры",
+    blurb: "По кадру на каждый экран, снято из живой игры поверх настоящего задника. Экран целиком: метрика, пропажи, сходство с рефом.",
+    load: () => import("./sections/ui-screens.js"),
+    icon: "▦"
+  },
+  {
     id: "ui-states",
     area: "ui",
     title: "Элементы интерфейса",
