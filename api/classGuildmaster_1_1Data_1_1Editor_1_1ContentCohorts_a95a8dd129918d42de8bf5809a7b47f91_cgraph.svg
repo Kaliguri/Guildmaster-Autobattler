@@ -21,7 +21,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="ВСЕ боевые юниты — реликвии и враги вместе.">
+<g id="a_Node000001"><a xlink:title="ВСЕ боевые юниты — мементо и враги вместе.">
 <polygon fill="#999999" stroke="#666666" points="136,-54 0,-54 0,-24 136,-24 136,-54"/>
 <text text-anchor="start" x="8" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Editor.</text>
 <text text-anchor="middle" x="68" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">ContentCohorts.AllUnits</text>
@@ -50,7 +50,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Data_1_1Editor_1_1ContentCohorts.html#a6c083df93133b0962c9c75f75a9b25ed" target="_top" xlink:title="Реликвии игрока.">
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Data_1_1Editor_1_1ContentCohorts.html#a6c083df93133b0962c9c75f75a9b25ed" target="_top" xlink:title="Мементо игрока.">
 <polygon fill="white" stroke="#666666" points="308.5,-30 172.5,-30 172.5,0 308.5,0 308.5,-30"/>
 <text text-anchor="start" x="180.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Editor.</text>
 <text text-anchor="middle" x="240.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ContentCohorts.Relics</text>

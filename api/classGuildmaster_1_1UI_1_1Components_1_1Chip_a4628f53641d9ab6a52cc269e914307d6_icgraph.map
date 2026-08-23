@@ -1,6 +1,6 @@
 <map id="Guildmaster.UI.Components.Chip.SetActive" name="Guildmaster.UI.Components.Chip.SetActive">
 <area shape="rect" id="Node000001" title="Подсветить как выбранный (активный фильтр, надетый тег и т.п.)." alt="" coords="291,37,500,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1LoadoutInventoryView.html#a8f99c6aa4f12e322a999f2da3917067e" title=" " alt="" coords="5,5,243,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1LoadoutInventoryView.html#a2ae59fa6f714987ef2911e110bb47e26" title=" " alt="" coords="5,5,243,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="277,46,243,42,243,37,277,41"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1RunModeBarView.html#a4a97317f9034c18518154869ca761f29" title="Держать таб настроек нажатым, пока открыто системное меню (наход." alt="" coords="21,69,227,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="277,74,228,80,227,75,276,69"/>

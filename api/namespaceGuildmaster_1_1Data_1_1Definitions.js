@@ -12,6 +12,7 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
     [ "BattlePresetData", "classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData" ],
     [ "ClassBalanceConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig" ],
     [ "ClipMarkers", "classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers" ],
+    [ "CommunityConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1CommunityConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1CommunityConfig" ],
     [ "ConsequenceData", "classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData" ],
     [ "ContentDatabase", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase" ],
     [ "ContentDefinition", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition" ],
@@ -70,6 +71,7 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
     [ "UnitData", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData" ],
     [ "UnitTagResolver", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitTagResolver.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitTagResolver" ],
     [ "VesselData", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselData" ],
+    [ "VesselNamePool", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselNamePool.html", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselNamePool" ],
     [ "VfxData", "classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1VfxData" ],
     [ "AbilityParameter", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afe80c9145386df4d9fac1fd87c017c8e", [
       [ "Cooldown", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afe80c9145386df4d9fac1fd87c017c8ea5b9cca31b21c9c04c3d6f9ecbcc3ffc8", null ],

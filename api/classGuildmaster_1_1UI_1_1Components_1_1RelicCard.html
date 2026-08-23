@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1Components_1
 </div><!--header-->
 <div class="contents">
 
-<p>Карточка реликвии: рамка + область ВИЗУАЛА + имя + состояния (текущая/выбранная).  
+<p>Карточка мементо: рамка + область ВИЗУАЛА + имя + состояния (текущая/выбранная).  
  <a href="classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.UI.Components.RelicCard:</div>
@@ -135,8 +135,8 @@ Properties</h2></td></tr>
 <tr class="separator:a4e5ff83b60f39128c6c467035fc1b81c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Карточка реликвии: рамка + область ВИЗУАЛА + имя + состояния (текущая/выбранная). </p>
-<p>Там, где релик ПИКАЮТ (награда/лоадаут), primary = анимированный спрайт персонажа, не иконка (утв. дизайн, план 10 §5): визуал подаётся снаружи через шов — SetVisual (RenderTexture с боевого рига idle/attack) или SetSprite (статичный портрет/фолбэк). Один источник для витрины награды, грида лоадаута, хаба. Вид — классы <code>.gm-card*</code>. </p>
+<div class="textblock"><p>Карточка мементо: рамка + область ВИЗУАЛА + имя + состояния (текущая/выбранная). </p>
+<p>Там, где Мементо ПИКАЮТ (награда/лоадаут), primary = анимированный спрайт персонажа, не иконка (утв. дизайн, план 10 §5): визуал подаётся снаружи через шов — SetVisual (RenderTexture с боевого рига idle/attack) или SetSprite (статичный портрет/фолбэк). Один источник для витрины награды, грида лоадаута, хаба. Вид — классы <code>.gm-card*</code>. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a34347b284b83038826cc22097fbd3113" name="a34347b284b83038826cc22097fbd3113"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a34347b284b83038826cc22097fbd3113">&#9670;&#160;</a></span>RelicCard()</h2>
@@ -189,6 +189,11 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Статичный визуал карточки: портрет/спрайт (фолбэк, когда нет анимированного рига). </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1RelicCard_ac337391be38670feb6c8430167575e64_icgraph.svg" width="487" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -217,7 +222,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Анимированный визуал: RenderTexture с боевого рига (реальный юнит, idle/attack). </p>
-<p>Шов под план 10 §5 — риг рендерит <code>ViewPrefab</code> релика в RT, карточка лишь показывает её. </p>
+<p>Шов под план 10 §5 — риг рендерит <code>ViewPrefab</code> Мементо в RT, карточка лишь показывает его. </p>
 
 </div>
 </div>

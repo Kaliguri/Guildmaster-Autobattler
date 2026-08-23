@@ -8,7 +8,10 @@ var classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands =
     [ "InflictInjury", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#aa9f008044ee291c7febf40755410e5d0", null ],
     [ "RemoveRelic", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0848c149e3fb7035b15703e5338351c", null ],
     [ "RequestSave", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ad0c3a3a856db765ea7b749267c4946bc", null ],
+    [ "SetSlotInBattle", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#abe0b5031e2b6f2ff7a6bf5a818b1f95b", null ],
+    [ "SetSlotItem", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#a4f98113809250b40359fe26ff3ba08a5", null ],
     [ "SetSlotPosition", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#a8ab22f4b3b91ab39c39adb24d2fb5e76", null ],
     [ "SetSlotRelic", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#ab6783c1580b51ea8449a7e560871e65f", null ],
+    [ "SwapSlots", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#aed1d0eb05b9765a302f1928e6f2b02c2", null ],
     [ "SentCount", "classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html#a351d547c1bc58f8a7f0133ccf58b3c2a", null ]
 ];

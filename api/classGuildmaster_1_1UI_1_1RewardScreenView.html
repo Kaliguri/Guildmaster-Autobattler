@@ -111,16 +111,16 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a17cb1d9c12c32a29e91c6ec7c6ff74da" id="r_a17cb1d9c12c32a29e91c6ec7c6ff74da"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1RewardScreenView.html#a17cb1d9c12c32a29e91c6ec7c6ff74da">SetVotes</a> (VisualElement root, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Net_1_1PlayerChoice.html">Core.Net.PlayerChoice</a> &gt; votes, Func&lt; int, int &gt; colorOf, bool solo)</td></tr>
 <tr class="memdesc:a17cb1d9c12c32a29e91c6ec7c6ff74da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать, кто за что проголосовал: кружок мейн-цвета игрока под его вариантом.  <br /></td></tr>
 <tr class="separator:a17cb1d9c12c32a29e91c6ec7c6ff74da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6cac3561f13f23a15c5da8bc716536d" id="r_aa6cac3561f13f23a15c5da8bc716536d"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1RewardScreenView.html#aa6cac3561f13f23a15c5da8bc716536d">Build</a> (VisualTreeAsset uxml, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt; choices, bool inventoryFull, IReadOnlyList&lt; string &gt; currentInventory, Func&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, string &gt; nameOf, Func&lt; string, string &gt; localize, Action&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, string &gt; onTake, Action onSkip, Action&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt; onCardSelectSound=null, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html">GuildmasterPalette</a> palette=null)</td></tr>
-<tr class="memdesc:aa6cac3561f13f23a15c5da8bc716536d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Построить экран-оверлей награды.  <br /></td></tr>
-<tr class="separator:aa6cac3561f13f23a15c5da8bc716536d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf89d08586cf6e1f9f770acc54b758e1" id="r_adf89d08586cf6e1f9f770acc54b758e1"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1RewardScreenView.html#adf89d08586cf6e1f9f770acc54b758e1">Build</a> (VisualTreeAsset uxml, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt; choices, bool inventoryFull, IReadOnlyList&lt; string &gt; currentInventory, Func&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, string &gt; nameOf, Func&lt; string, string &gt; localize, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html">GuildmasterPalette</a> palette, Action&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, string &gt; onTake, Action onSkip, Action&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt; onCardSelectSound=null)</td></tr>
+<tr class="memdesc:adf89d08586cf6e1f9f770acc54b758e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Построить экран-оверлей награды.  <br /></td></tr>
+<tr class="separator:adf89d08586cf6e1f9f770acc54b758e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Сборка экрана награды (A3) из UXML-шаблона — общий код для живого роутера (MenuRouter) и превью-стенда (<code>UiPreviewCatalog</code>). </p>
 <p>Разметка/стиль — только из <code>RewardScreen.uxml</code> + классы дизайн-системы; здесь наполнение витрины карточками-компонентами (RelicCard с анимированным спрайтом от RelicCardVisualRig, план 10 §5), подсветка выбора, тултип при наведении, звук при выборе и проводка кнопок. Состояние выбора — в замыканиях; результат уходит через <em>onTake</em> /<em>onSkip</em> . </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa6cac3561f13f23a15c5da8bc716536d" name="aa6cac3561f13f23a15c5da8bc716536d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6cac3561f13f23a15c5da8bc716536d">&#9670;&#160;</a></span>Build()</h2>
+<a id="adf89d08586cf6e1f9f770acc54b758e1" name="adf89d08586cf6e1f9f770acc54b758e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf89d08586cf6e1f9f770acc54b758e1">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -167,6 +167,12 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html">GuildmasterPalette</a>&#160;</td>
+          <td class="paramname"><em>palette</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">Action&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>, string &gt;&#160;</td>
           <td class="paramname"><em>onTake</em>, </td>
         </tr>
@@ -180,13 +186,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt;&#160;</td>
-          <td class="paramname"><em>onCardSelectSound</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterPalette.html">GuildmasterPalette</a>&#160;</td>
-          <td class="paramname"><em>palette</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>onCardSelectSound</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -202,11 +202,11 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Построить экран-оверлей награды. </p>
-<p><em>nameOf</em>  — локализованное имя реликвии, <em>localize</em>  — строка по ключу (null/пусто → RU-фолбэк). <em>onCardSelectSound</em>  — хук звука/voice-стингера при выборе карточки (FMOD-ассет позже; план 10 §5). Кнопка «Взять» активна, когда выбрана реликвия и (при полном запасе) выбрано, что сбросить. </p>
+<p><em>nameOf</em>  — локализованное имя мементо, <em>localize</em>  — строка по ключу (null/пусто → RU-фолбэк). <em>onCardSelectSound</em>  — хук звука/voice-стингера при выборе карточки (FMOD-ассет позже; план 10 §5). Кнопка «Взять» активна, когда выбрана мементо и (при полном запасе) выбрано, что сбросить. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1RewardScreenView_aa6cac3561f13f23a15c5da8bc716536d_cgraph.svg" width="452" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1RewardScreenView_adf89d08586cf6e1f9f770acc54b758e1_cgraph.svg" width="452" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -259,7 +259,7 @@ Here is the call graph for this function:</div>
 
 <p>Показать, кто за что проголосовал: кружок мейн-цвета игрока под его вариантом. </p>
 <p><b>Зовётся снаружи и на каждое объявление счёта</b>, а не строится один раз: голоса меняются, пока экран открыт, и передумать можно до самого конца. </p>
-<p><b>Обмен считается голосом за ВЗЯТУЮ реликвию</b> — кружок встаёт под той карточкой, которую человек хочет забрать. Что он при этом предлагает выбросить, видно в секции сброса, и второй кружок там был бы про другой вопрос.</p>
+<p><b>Обмен считается голосом за ВЗЯТУЮ мементо</b> — кружок встаёт под той карточкой, которую человек хочет забрать. Что он при этом предлагает выбросить, видно в секции сброса, и второй кружок там был бы про другой вопрос.</p>
 <p><b>В одиночной игре не рисуем ничего</b> (решение Макса 07.08.2026): одному кружок ничего не сообщает, а решение срабатывает в тот же кадр.</p>
 
 </div>

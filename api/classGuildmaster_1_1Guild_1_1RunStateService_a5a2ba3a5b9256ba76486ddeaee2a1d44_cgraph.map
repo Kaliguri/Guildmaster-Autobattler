@@ -1,5 +1,7 @@
 <map id="Guildmaster.Guild.RunStateService.TryLoad" name="Guildmaster.Guild.RunStateService.TryLoad">
-<area shape="rect" id="Node000001" title="Загрузить забег из автосейва." alt="" coords="5,5,208,45"/>
+<area shape="rect" id="Node000001" title="Загрузить забег из автосейва." alt="" coords="5,37,208,77"/>
 <area shape="rect" id="Node000002" href="$structGuildmaster_1_1Core_1_1Persistence_1_1SaveLoadResult.html#ad6d607b888e06058e0a7d0244793007f" title=" " alt="" coords="256,5,475,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,23,242,23,242,28,208,28"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,42,242,38,243,43,208,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#a2b4da234844ebaf7db179013b439afff" title="Дочитать забег, сохранённый до того, как отряд вырос с четырёх мест до восьми." alt="" coords="264,69,467,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="208,67,251,73,250,78,208,72"/>
 </map>

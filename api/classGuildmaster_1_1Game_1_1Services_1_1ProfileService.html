@@ -178,7 +178,11 @@ Properties</h2></td></tr>
 <tr class="memitem:a73a9b6262d0e8016bf21947f904e6831" id="r_a73a9b6262d0e8016bf21947f904e6831"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a73a9b6262d0e8016bf21947f904e6831">RunKey</a><code> [get]</code></td></tr>
 <tr class="memdesc:a73a9b6262d0e8016bf21947f904e6831"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ключ сейва забега активной гильдии (<code>profiles/{p}/guilds/{g}/run</code>).  <br /></td></tr>
 <tr class="separator:a73a9b6262d0e8016bf21947f904e6831"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a371fa5c97c646f40869f2e0a38de7680" id="r_a371fa5c97c646f40869f2e0a38de7680"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1VesselState.html">Guildmaster.Guild.VesselState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a371fa5c97c646f40869f2e0a38de7680">Roster</a><code> [get]</code></td></tr>
+<tr class="memdesc:a371fa5c97c646f40869f2e0a38de7680"><td class="mdescLeft">&#160;</td><td class="mdescRight">Люди активного дома.  <br /></td></tr>
+<tr class="separator:a371fa5c97c646f40869f2e0a38de7680"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">Guildmaster.Core.Persistence.IProfileService</a></td></tr>
+<tr class="inherit_header properties_interfaceGuildmaster_1_1Guild_1_1IGuildRosterView"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Guild_1_1IGuildRosterView')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Guild_1_1IGuildRosterView.html">Guildmaster.Guild.IGuildRosterView</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
@@ -808,6 +812,33 @@ Here is the caller graph for this function:</div>
 <p>Достигнут ли лимит профилей (<code>GameConfig.MaxProfiles</code>). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html#a983fd9bd6b8444ab556b259164b9e889">Guildmaster.Core.Persistence.IProfileService</a>.</p>
+
+</div>
+</div>
+<a id="a371fa5c97c646f40869f2e0a38de7680" name="a371fa5c97c646f40869f2e0a38de7680"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a371fa5c97c646f40869f2e0a38de7680">&#9670;&#160;</a></span>Roster</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IReadOnlyList&lt;<a class="el" href="classGuildmaster_1_1Guild_1_1VesselState.html">Guildmaster.Guild.VesselState</a>&gt; Guildmaster.Game.Services.ProfileService.Roster</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Люди активного дома. </p>
+<p>Читается с диска на каждый вопрос: ростер спрашивают редко (вход в забег, экран казарм), а держать его копию в памяти значило бы завести второго владельца — и разойтись с файлом на первом же найме. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1IGuildRosterView.html#a982758458144719c030113463bc32aef">Guildmaster.Guild.IGuildRosterView</a>.</p>
 
 </div>
 </div>

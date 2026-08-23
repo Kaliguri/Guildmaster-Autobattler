@@ -1,7 +1,7 @@
 <map id="Guildmaster.Game.Session.Net.RemoteRunCommands" name="Guildmaster.Game.Session.Net.RemoteRunCommands">
-<area shape="rect" id="Node000001" title="Команды забега у гостя: тот же контракт, но вместо применения — отправка интента хосту." alt="" coords="5,392,200,652"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1Commands_1_1ISessionRunCommands.html" title="Команды забега ТЕКУЩЕГО СЕАНСА: то, что регистрирует в своём составе Сессия." alt="" coords="19,279,186,344"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,358,105,392,100,392,100,358"/>
-<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html" title="Глаголы изменения забега — то, что зовёт игра вместо прямых мутаторов RunStateService." alt="" coords="19,5,187,231"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,244,105,278,100,278,100,244"/>
+<area shape="rect" id="Node000001" title="Команды забега у гостя: тот же контракт, но вместо применения — отправка интента хосту." alt="" coords="5,452,200,772"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1Commands_1_1ISessionRunCommands.html" title="Команды забега ТЕКУЩЕГО СЕАНСА: то, что регистрирует в своём составе Сессия." alt="" coords="19,339,186,404"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,418,105,452,100,452,100,418"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html" title="Глаголы изменения забега — то, что зовёт игра вместо прямых мутаторов RunStateService." alt="" coords="19,5,187,291"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,304,105,338,100,338,100,304"/>
 </map>

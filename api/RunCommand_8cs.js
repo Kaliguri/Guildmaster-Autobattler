@@ -10,6 +10,9 @@ var RunCommand_8cs =
       [ "AwardBattleReward", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5a6a9fe08d4fc1b26177ddcee4cf1452b0", null ],
       [ "ChooseNode", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5a976b009c4e0b979a2f6f7b04fcd9f752", null ],
       [ "InflictInjury", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5a52ac064880d6ff7f3eb3fa466bca0f01", null ],
-      [ "HealInjury", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5ad9fb770494599dfa2a8c492d04488d90", null ]
+      [ "HealInjury", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5ad9fb770494599dfa2a8c492d04488d90", null ],
+      [ "SetSlotInBattle", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5ad0502030efcedb393812f00588775ab7", null ],
+      [ "SwapSlots", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5a88a941d4c5928b0160011339e884b936", null ],
+      [ "SetSlotItem", "RunCommand_8cs.html#a23389335a81be52ef0362854f4a8cba5a7e56cb009419de94f45385c53fea9ef2", null ]
     ] ]
 ];

@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Продать реликвию из запаса (освободить место). false = такой в запасе нет.">
+<g id="a_Node000001"><a xlink:title="Продать мементо из запаса (освободить место). false = такой в запасе нет.">
 <polygon fill="#999999" stroke="#666666" points="388,-24.5 185,-24.5 185,-5.5 388,-5.5 388,-24.5"/>
 <text text-anchor="middle" x="286.5" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Guild.IShopController.Sell</text>
 </a>

@@ -108,15 +108,15 @@ Collaboration diagram for Guildmaster.UI.OutcomeScreenView:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac2757357a1b95ee8a709d998769a271d" id="r_ac2757357a1b95ee8a709d998769a271d"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1OutcomeScreenView.html#ac2757357a1b95ee8a709d998769a271d">Build</a> (VisualTreeAsset uxml, bool victory, Func&lt; string, string &gt; localize, Action onToMenu, Action onContinue=null, Action onRestart=null, Action onToGuild=null, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OutcomeSummaryRow.html">Guildmaster.Guild.OutcomeSummaryRow</a> &gt; summary=null, UnityEngine.Texture2D glyph=null)</td></tr>
-<tr class="memdesc:ac2757357a1b95ee8a709d998769a271d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
+<tr class="memitem:a1751b0b3884e39c29a71ac82ef653b1e" id="r_a1751b0b3884e39c29a71ac82ef653b1e"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1OutcomeScreenView.html#a1751b0b3884e39c29a71ac82ef653b1e">Build</a> (VisualTreeAsset uxml, bool victory, Func&lt; string, string &gt; localize, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OutcomeSummaryRow.html">Guildmaster.Guild.OutcomeSummaryRow</a> &gt; summary, UnityEngine.Texture2D glyph, Action onToMenu, Action onContinue=null, Action onRestart=null, Action onToGuild=null)</td></tr>
+<tr class="memdesc:a1751b0b3884e39c29a71ac82ef653b1e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">summary</td><td>Строки итогов забега (вариант III-Б). </td></tr>
   </table>
   </dd>
 </dl>
  <br /></td></tr>
-<tr class="separator:ac2757357a1b95ee8a709d998769a271d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a1751b0b3884e39c29a71ac82ef653b1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85634ccfa02b86bb1e16b79c9a66a89d" id="r_a85634ccfa02b86bb1e16b79c9a66a89d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1OutcomeScreenView.html#a85634ccfa02b86bb1e16b79c9a66a89d">SetSharedCount</a> (VisualElement root, string buttonName, string labelKey, string fallback, Func&lt; string, string &gt; localize, int votedHere, int required, bool pickedByUs)</td></tr>
 <tr class="memdesc:a85634ccfa02b86bb1e16b79c9a66a89d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать на общей кнопке, скольких ещё ждём.  <br /></td></tr>
 <tr class="separator:a85634ccfa02b86bb1e16b79c9a66a89d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,8 +127,8 @@ Static Public Member Functions</h2></td></tr>
 <p><b>Кнопку решает вызывающий.</b> После забега это «заново», «во двор» и «в меню»; на площадке — «продолжить» и «в меню». <code>null</code> вместо действия означает «здесь этого выхода нет», и кнопки не будет вовсе: погашенная обещала бы возможность, которой не существует. </p>
 <p><b>Главной подсвечивается та, что ведёт вперёд</b>, и она на каждом экране своя: на площадке — «продолжить», после забега — «заново», а если и его нет — «в меню».</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac2757357a1b95ee8a709d998769a271d" name="ac2757357a1b95ee8a709d998769a271d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2757357a1b95ee8a709d998769a271d">&#9670;&#160;</a></span>Build()</h2>
+<a id="a1751b0b3884e39c29a71ac82ef653b1e" name="a1751b0b3884e39c29a71ac82ef653b1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1751b0b3884e39c29a71ac82ef653b1e">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,6 +157,18 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OutcomeSummaryRow.html">Guildmaster::Guild::OutcomeSummaryRow</a> &gt;&#160;</td>
+          <td class="paramname"><em>summary</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UnityEngine::Texture2D&#160;</td>
+          <td class="paramname"><em>glyph</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">Action&#160;</td>
           <td class="paramname"><em>onToMenu</em>, </td>
         </tr>
@@ -176,19 +188,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onToGuild</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Guild_1_1OutcomeSummaryRow.html">Guildmaster::Guild::OutcomeSummaryRow</a> &gt;&#160;</td>
-          <td class="paramname"><em>summary</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">UnityEngine::Texture2D&#160;</td>
-          <td class="paramname"><em>glyph</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>onToGuild</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

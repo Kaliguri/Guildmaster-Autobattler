@@ -7,6 +7,9 @@ var interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands =
     [ "InflictInjury", "interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a9349745919db7f77106f86ced67e4a98", null ],
     [ "RemoveRelic", "interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#abb85300712575a7ad8257d7f94524e31", null ],
     [ "RequestSave", "interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ae58102853d843cf68e8dbe8363b92245", null ],
+    [ "SetSlotInBattle", "interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#abbc5ff9c2620857476acfdf6e91a2e4a", null ],
+    [ "SetSlotItem", "interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a3a778b1ad4367931978bb2517fe0a744", null ],
     [ "SetSlotPosition", "interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a61153abe7fff216f35ec5263ebd8d686", null ],
-    [ "SetSlotRelic", "interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a2e099a0160c368d585ec4d12b33c7b75", null ]
+    [ "SetSlotRelic", "interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a2e099a0160c368d585ec4d12b33c7b75", null ],
+    [ "SwapSlots", "interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ad37976e6c03e6cb4c5d9a1739e999b43", null ]
 ];

@@ -103,12 +103,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Session_1_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Session.SessionCommandRouter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter__inherit__graph.svg" width="210" height="544"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Session.SessionCommandRouter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter__coll__graph.svg" width="210" height="544"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -118,13 +118,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6d8814947b3353908e53038d281b509e" id="r_a6d8814947b3353908e53038d281b509e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a6d8814947b3353908e53038d281b509e">SetSlotPosition</a> (int slotIndex, Vector2 position)</td></tr>
 <tr class="separator:a6d8814947b3353908e53038d281b509e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c3eb7f160f59867847a2f246958a060" id="r_a8c3eb7f160f59867847a2f246958a060"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a8c3eb7f160f59867847a2f246958a060">SetSlotRelic</a> (int slotIndex, string relicId)</td></tr>
-<tr class="memdesc:a8c3eb7f160f59867847a2f246958a060"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поставить кит на сосуд напрямую, минуя запас (drag реликвии на юнита в расстановке).  <br /></td></tr>
+<tr class="memdesc:a8c3eb7f160f59867847a2f246958a060"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поставить кит на сосуд напрямую, минуя запас (drag мементо на юнита в расстановке).  <br /></td></tr>
 <tr class="separator:a8c3eb7f160f59867847a2f246958a060"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa843757a354f1f4d105fea459041cb7b" id="r_aa843757a354f1f4d105fea459041cb7b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#aa843757a354f1f4d105fea459041cb7b">SetSlotInBattle</a> (int slotIndex, bool inBattle)</td></tr>
+<tr class="memdesc:aa843757a354f1f4d105fea459041cb7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вывести «Сосуда» на арену или увести в запас.  <br /></td></tr>
+<tr class="separator:aa843757a354f1f4d105fea459041cb7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0efe9754337edfbd405b18bf7740e047" id="r_a0efe9754337edfbd405b18bf7740e047"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a0efe9754337edfbd405b18bf7740e047">SwapSlots</a> (int a, int b)</td></tr>
+<tr class="memdesc:a0efe9754337edfbd405b18bf7740e047"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поменять местами два места отряда (перетаскивание в ленте).  <br /></td></tr>
+<tr class="separator:a0efe9754337edfbd405b18bf7740e047"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57adbec42896e1c42521b3590998f20b" id="r_a57adbec42896e1c42521b3590998f20b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a57adbec42896e1c42521b3590998f20b">SetSlotItem</a> (int slotIndex, int itemSlot, string itemId)</td></tr>
+<tr class="memdesc:a57adbec42896e1c42521b3590998f20b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Положить предмет в слот «Сосуда»; пустой <em>itemId</em>  снимает вещь.  <br /></td></tr>
+<tr class="separator:a57adbec42896e1c42521b3590998f20b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed243c6501b032b5cae288faa1f91c8d" id="r_aed243c6501b032b5cae288faa1f91c8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#aed243c6501b032b5cae288faa1f91c8d">AddGold</a> (int delta)</td></tr>
 <tr class="memdesc:aed243c6501b032b5cae288faa1f91c8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Изменить золото забега (±).  <br /></td></tr>
 <tr class="separator:aed243c6501b032b5cae288faa1f91c8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adffcbf865dc46b30e811b75c6a22c0fc" id="r_adffcbf865dc46b30e811b75c6a22c0fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#adffcbf865dc46b30e811b75c6a22c0fc">RemoveRelic</a> (string relicId)</td></tr>
-<tr class="memdesc:adffcbf865dc46b30e811b75c6a22c0fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Убрать один экземпляр реликвии из запаса.  <br /></td></tr>
+<tr class="memdesc:adffcbf865dc46b30e811b75c6a22c0fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Убрать один экземпляр мементо из запаса.  <br /></td></tr>
 <tr class="separator:adffcbf865dc46b30e811b75c6a22c0fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2acde8523580765390b2e840d5400cdf" id="r_a2acde8523580765390b2e840d5400cdf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a2acde8523580765390b2e840d5400cdf">AwardBattleReward</a> ()</td></tr>
 <tr class="memdesc:a2acde8523580765390b2e840d5400cdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Начислить награду золотом за победу в бою (величина — из конфига).  <br /></td></tr>
@@ -325,7 +334,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Убрать один экземпляр реликвии из запаса. </p>
+<p>Убрать один экземпляр мементо из запаса. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#abb85300712575a7ad8257d7f94524e31">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
 
@@ -350,6 +359,78 @@ Public Member Functions</h2></td></tr>
 <p>Живёт здесь, а не у держателя состояния, потому что просят об этом те же, кто пишет: бой не должен знать ни про сейв, ни про то, чей он. <code>false</code> — «сохранять было некому или нечего»: вне забега, а в коопе — у гостя, за которого пишет хост. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ae58102853d843cf68e8dbe8363b92245">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
+
+</div>
+</div>
+<a id="aa843757a354f1f4d105fea459041cb7b" name="aa843757a354f1f4d105fea459041cb7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa843757a354f1f4d105fea459041cb7b">&#9670;&#160;</a></span>SetSlotInBattle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Game.Session.SessionCommandRouter.SetSlotInBattle </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slotIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>inBattle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Вывести «Сосуда» на арену или увести в запас. </p>
+<p>В отряде мест больше, чем выходит в бой (ГДД <code>preparation-screens</code> §2.1), поэтому «кто дерётся» — отдельное решение игрока. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#abbc5ff9c2620857476acfdf6e91a2e4a">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
+
+</div>
+</div>
+<a id="a57adbec42896e1c42521b3590998f20b" name="a57adbec42896e1c42521b3590998f20b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57adbec42896e1c42521b3590998f20b">&#9670;&#160;</a></span>SetSlotItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Game.Session.SessionCommandRouter.SetSlotItem </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slotIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>itemSlot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>itemId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Положить предмет в слот «Сосуда»; пустой <em>itemId</em>  снимает вещь. </p>
+<p>Снятое уходит в склад забега, надетое уходит оттуда — вещь ни в один момент не висит в воздухе, поэтому «переложить от одного к другому» это снятие плюс надевание. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a3a778b1ad4367931978bb2517fe0a744">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
 
 </div>
 </div>
@@ -407,9 +488,41 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Поставить кит на сосуд напрямую, минуя запас (drag реликвии на юнита в расстановке). </p>
+<p>Поставить кит на сосуд напрямую, минуя запас (drag мементо на юнита в расстановке). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#a2e099a0160c368d585ec4d12b33c7b75">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
+
+</div>
+</div>
+<a id="a0efe9754337edfbd405b18bf7740e047" name="a0efe9754337edfbd405b18bf7740e047"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0efe9754337edfbd405b18bf7740e047">&#9670;&#160;</a></span>SwapSlots()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Game.Session.SessionCommandRouter.SwapSlots </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Поменять местами два места отряда (перетаскивание в ленте). </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html#ad37976e6c03e6cb4c5d9a1739e999b43">Guildmaster.Guild.Commands.IRunCommands</a>.</p>
 
 </div>
 </div>

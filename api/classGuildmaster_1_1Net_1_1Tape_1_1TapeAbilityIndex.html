@@ -112,7 +112,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a32a876bed5ee499cd14cfc78360a641b" id="r_a32a876bed5ee499cd14cfc78360a641b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeAbilityIndex.html#a32a876bed5ee499cd14cfc78360a641b">TapeAbilityIndex</a> (<a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content)</td></tr>
 <tr class="separator:a32a876bed5ee499cd14cfc78360a641b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84603e236eff29919f07826d470f3b31" id="r_a84603e236eff29919f07826d470f3b31"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeAbilityIndex.html#a84603e236eff29919f07826d470f3b31">TryGet</a> (string id, out <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html">AbilityData</a> ability)</td></tr>
-<tr class="memdesc:a84603e236eff29919f07826d470f3b31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Найти способность по id. <code>false</code> = такой нет ни в одной реликвии.  <br /></td></tr>
+<tr class="memdesc:a84603e236eff29919f07826d470f3b31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Найти способность по id. <code>false</code> = такой нет ни в одном мементо.  <br /></td></tr>
 <tr class="separator:a84603e236eff29919f07826d470f3b31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9614b4976cdd3c7d19bf6453419096d3" id="r_a9614b4976cdd3c7d19bf6453419096d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Net_1_1Tape_1_1TapeAbilityIndex.html#a9614b4976cdd3c7d19bf6453419096d3">Invalidate</a> ()</td></tr>
 <tr class="memdesc:a9614b4976cdd3c7d19bf6453419096d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пересобрать индекс (правка контента в редакторе, смена базы).  <br /></td></tr>
@@ -126,7 +126,7 @@ Properties</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Индекс способностей по их id — то, чем приёмник чанка находит AbilityData. </p>
-<p><b>Зачем он вообще нужен.</b> Способность НЕ лежит в реестре контента: это <code>[Serializable]</code>-класс внутри RelicData, а не <code>ScriptableObject</code> со своим ассетом. Свой id у неё есть, а дома в базе — нет, поэтому <code>IContentDatabase.TryGet</code> её не найдёт никогда. Единственный способ адресовать её по сети — собрать словарь из всех реликвий.</p>
+<p><b>Зачем он вообще нужен.</b> Способность НЕ лежит в реестре контента: это <code>[Serializable]</code>-класс внутри RelicData, а не <code>ScriptableObject</code> со своим ассетом. Свой id у неё есть, а дома в базе — нет, поэтому <code>IContentDatabase.TryGet</code> её не найдёт никогда. Единственный способ адресовать её по сети — собрать словарь из всех мементо.</p>
 <p><b>Живёт рядом с единственным потребителем</b> — читателем чанков. Если индекс понадобится кому-то ещё (реплей с диска, Workshop), его место переедет в дата-слой; заводить общий дом под одного пользователя — плодить владельца на пустом месте.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a32a876bed5ee499cd14cfc78360a641b" name="a32a876bed5ee499cd14cfc78360a641b"></a>
@@ -201,7 +201,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Найти способность по id. <code>false</code> = такой нет ни в одной реликвии. </p>
+<p>Найти способность по id. <code>false</code> = такой нет ни в одном мементо. </p>
 
 </div>
 </div>

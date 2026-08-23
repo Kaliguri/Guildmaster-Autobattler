@@ -25,5 +25,6 @@ var searchData=
   ['eventeffectapplier_22',['EventEffectApplier',['../classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html',1,'Guildmaster::Game::Flow']]],
   ['eventresult_23',['EventResult',['../structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html',1,'Guildmaster::Game::Flow']]],
   ['eventscreenview_24',['EventScreenView',['../classGuildmaster_1_1UI_1_1EventScreenView.html',1,'Guildmaster::UI']]],
-  ['everynthattackcomponent_25',['EveryNthAttackComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EveryNthAttackComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
+  ['everynthattackcomponent_25',['EveryNthAttackComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1EveryNthAttackComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
+  ['externallinkservice_26',['ExternalLinkService',['../classGuildmaster_1_1Net_1_1Session_1_1ExternalLinkService.html',1,'Guildmaster::Net::Session']]]
 ];

@@ -1,0 +1,9 @@
+<map id="Guildmaster.UI.LoadoutScreenView.Build" name="Guildmaster.UI.LoadoutScreenView.Build">
+<area shape="rect" id="Node000001" title="Собирает экран и сетку карточек по списку мементо." alt="" coords="5,37,224,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Components_1_1BackButton.html#a4a286619d1a5cd738c168ff2c3e7d2f1" title="Поставить возврат на экран." alt="" coords="272,5,481,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,41,258,37,259,42,224,47"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html#ac337391be38670feb6c8430167575e64" title="Статичный визуал карточки: портрет/спрайт (фолбэк, когда нет анимированного рига)." alt="" coords="272,69,481,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="224,68,259,72,258,78,224,73"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1Components_1_1BackButton.html#a1ca1365e886a510e934c60a224222a6f" title=" " alt="" coords="529,5,739,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="482,23,516,23,516,28,482,28"/>
+</map>

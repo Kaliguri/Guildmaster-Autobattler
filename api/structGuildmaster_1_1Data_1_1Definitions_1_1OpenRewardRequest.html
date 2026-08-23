@@ -115,13 +115,13 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:abe89e38b9f7253f9f19cd0a4b7e2ec00" id="r_abe89e38b9f7253f9f19cd0a4b7e2ec00"><td class="memItemLeft" align="right" valign="top">readonly IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#abe89e38b9f7253f9f19cd0a4b7e2ec00">Choices</a></td></tr>
-<tr class="memdesc:abe89e38b9f7253f9f19cd0a4b7e2ec00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Витрина: 1..N реликов на выбор (обычно 3).  <br /></td></tr>
+<tr class="memdesc:abe89e38b9f7253f9f19cd0a4b7e2ec00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Витрина: 1..N Мементо на выбор (обычно 3).  <br /></td></tr>
 <tr class="separator:abe89e38b9f7253f9f19cd0a4b7e2ec00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69d1401969280f73ed06a592f8c2dce8" id="r_a69d1401969280f73ed06a592f8c2dce8"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#a69d1401969280f73ed06a592f8c2dce8">InventoryFull</a></td></tr>
-<tr class="memdesc:a69d1401969280f73ed06a592f8c2dce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полон ли запас реликов: если да — взять награду можно, только сбросив один существующий.  <br /></td></tr>
+<tr class="memdesc:a69d1401969280f73ed06a592f8c2dce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полон ли запас Мементо: если да — взять награду можно, только сбросив один существующий.  <br /></td></tr>
 <tr class="separator:a69d1401969280f73ed06a592f8c2dce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa72610b75548a3d5be86fa9638c6c1f1" id="r_aa72610b75548a3d5be86fa9638c6c1f1"><td class="memItemLeft" align="right" valign="top">readonly IReadOnlyList&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#aa72610b75548a3d5be86fa9638c6c1f1">CurrentInventory</a></td></tr>
-<tr class="memdesc:aa72610b75548a3d5be86fa9638c6c1f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущий запас реликов (content id) — для выбора, что сбросить при полном инвентаре.  <br /></td></tr>
+<tr class="memdesc:aa72610b75548a3d5be86fa9638c6c1f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущий запас Мементо (content id) — для выбора, что сбросить при полном инвентаре.  <br /></td></tr>
 <tr class="separator:aa72610b75548a3d5be86fa9638c6c1f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22b1f73f219b6756b47d215f96ec5eef" id="r_a22b1f73f219b6756b47d215f96ec5eef"><td class="memItemLeft" align="right" valign="top">readonly Action&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#a22b1f73f219b6756b47d215f96ec5eef">OnVote</a></td></tr>
 <tr class="memdesc:a22b1f73f219b6756b47d215f96ec5eef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отдать свой голос: вариант из RewardOptions.  <br /></td></tr>
@@ -132,7 +132,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Запрос показать экран награды после боя (публикует флоу забега, слушает UI). </p>
-<p>Несёт витрину реликов и OnResolved-колбэк выбора — так Data-слой не зависит от UniTask (флоу оборачивает колбэк в await сам). Тем же приёмом, что OpenLoadoutRequest: пейлоад — только Data-типы. </p>
+<p>Несёт витрину Мементо и OnResolved-колбэк выбора — так Data-слой не зависит от UniTask (флоу оборачивает колбэк в await сам). Тем же приёмом, что OpenLoadoutRequest: пейлоад — только Data-типы. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1c901c9c67ba59477968393852487b07" name="a1c901c9c67ba59477968393852487b07"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c901c9c67ba59477968393852487b07">&#9670;&#160;</a></span>OpenRewardRequest()</h2>
@@ -217,7 +217,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Витрина: 1..N реликов на выбор (обычно 3). </p>
+<p>Витрина: 1..N Мементо на выбор (обычно 3). </p>
 
 </div>
 </div>
@@ -233,7 +233,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Текущий запас реликов (content id) — для выбора, что сбросить при полном инвентаре. </p>
+<p>Текущий запас Мементо (content id) — для выбора, что сбросить при полном инвентаре. </p>
 
 </div>
 </div>
@@ -249,7 +249,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Полон ли запас реликов: если да — взять награду можно, только сбросив один существующий. </p>
+<p>Полон ли запас Мементо: если да — взять награду можно, только сбросив один существующий. </p>
 
 </div>
 </div>
@@ -267,7 +267,7 @@ Public Attributes</h2></td></tr>
 
 <p>Отдать свой голос: вариант из RewardOptions. </p>
 <p>Зовётся столько раз, сколько игрок передумывает.</p>
-<p><b>Не «результат», а голос</b> (07.08.2026). Награда общая, поэтому берут её все вместе: экран закрывается не по клику, а когда сошлись все — признаком срабатывания от общего решения. Пока здесь был колбэк результата, первый нажавший забирал реликвию за группу, а остальные узнавали об этом по исчезнувшему экрану. </p>
+<p><b>Не «результат», а голос</b> (07.08.2026). Награда общая, поэтому берут её все вместе: экран закрывается не по клику, а когда сошлись все — признаком срабатывания от общего решения. Пока здесь был колбэк результата, первый нажавший забирал мементо за группу, а остальные узнавали об этом по исчезнувшему экрану. </p>
 
 </div>
 </div>

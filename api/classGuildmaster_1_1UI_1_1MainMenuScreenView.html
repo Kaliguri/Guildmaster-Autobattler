@@ -108,16 +108,16 @@ Collaboration diagram for Guildmaster.UI.MainMenuScreenView:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af4504fd993b9be954982fb3eb5d6fa8a" id="r_af4504fd993b9be954982fb3eb5d6fa8a"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MainMenuScreenView.html#af4504fd993b9be954982fb3eb5d6fa8a">Build</a> (VisualTreeAsset uxml, Func&lt; string, string &gt; localize, Action onCreate, Action onJoin, Action onSettings, Action onQuit, bool canJoin=true, Action onProfile=null)</td></tr>
-<tr class="separator:af4504fd993b9be954982fb3eb5d6fa8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5f377dfe41d2213c240e01b4626be3d" id="r_aa5f377dfe41d2213c240e01b4626be3d"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MainMenuScreenView.html#aa5f377dfe41d2213c240e01b4626be3d">Build</a> (VisualTreeAsset uxml, Func&lt; string, string &gt; localize, Action onCreate, Action onJoin, Action onSettings, Action onQuit, bool canJoin, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1CommunityConfig.html">Guildmaster.Data.Definitions.CommunityConfig</a> community, Action onProfile=null, Action&lt; string &gt; onLink=null, Action onWishlist=null)</td></tr>
+<tr class="separator:aa5f377dfe41d2213c240e01b4626be3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Сборка главного меню: Создать игру / Присоединиться / Настройки / Выход. </p>
 <p>Общий код для роутера и превью-стенда.</p>
 <p><b>Две кнопки входа, а не список режимов</b> (модель Макса 02.08.2026). Режим, дом и открытость для друзей выбираются следующим шагом — на экране «Создать игру». Прежде здесь стояли «Начать забег», «Продолжить», «Ристалище» и «Сетевая игра», и последняя вела ровно туда же, куда первая: кооп у нас свойство сеанса, а не отдельная игра. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="af4504fd993b9be954982fb3eb5d6fa8a" name="af4504fd993b9be954982fb3eb5d6fa8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4504fd993b9be954982fb3eb5d6fa8a">&#9670;&#160;</a></span>Build()</h2>
+<a id="aa5f377dfe41d2213c240e01b4626be3d" name="aa5f377dfe41d2213c240e01b4626be3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5f377dfe41d2213c240e01b4626be3d">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -165,13 +165,31 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>canJoin</em> = <code>true</code>, </td>
+          <td class="paramname"><em>canJoin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1CommunityConfig.html">Guildmaster::Data::Definitions::CommunityConfig</a>&#160;</td>
+          <td class="paramname"><em>community</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onProfile</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>onProfile</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&lt; string &gt;&#160;</td>
+          <td class="paramname"><em>onLink</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>onWishlist</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -185,6 +203,11 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1MainMenuScreenView_aa5f377dfe41d2213c240e01b4626be3d_cgraph.svg" width="492" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

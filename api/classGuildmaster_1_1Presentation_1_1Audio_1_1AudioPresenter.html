@@ -122,7 +122,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Аудио-презентер (вики impl «09» §П4): POCO-entry-point, подписан НАПРЯМУЮ на C#-события боевой симуляции, системы способностей и системы эффектов (тот же приём, что <code>CombatFeelDirector</code>). </p>
-<p>Резолвит ключ <code>{contentId}.{action}</code> через AudioResolver и отдаёт в IAudioService. Точечные звуки реликвий/эффектов (<code>relic.cryomancer.attack</code>, <code>effect.frozen.apply</code>) подхватываются резолвером автоматически — достаточно выстрелить нужным действием с нужным id.</p>
+<p>Резолвит ключ <code>{contentId}.{action}</code> через AudioResolver и отдаёт в IAudioService. Точечные звуки мементо/эффектов (<code>relic.cryomancer.attack</code>, <code>effect.frozen.apply</code>) подхватываются резолвером автоматически — достаточно выстрелить нужным действием с нужным id.</p>
 <p>Чего тут НЕТ намеренно: feel-слой (килл-стингер, тяжёлый удар, финишер) живёт в <code>CombatFeelDirector</code> — там уже посчитаны пороги и кулдауны, и звук обязан идти под теми же воротами, что slowmo/тряска. Экраны и карта — в <code>RunAudioPresenter</code> (root-скоуп, переживает бой). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aac8d4d98c165a664178a5a5f57024570" name="aac8d4d98c165a664178a5a5f57024570"></a>

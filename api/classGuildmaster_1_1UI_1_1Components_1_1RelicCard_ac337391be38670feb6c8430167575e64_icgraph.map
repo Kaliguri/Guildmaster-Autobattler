@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.Components.RelicCard.SetSprite" name="Guildmaster.UI.Components.RelicCard.SetSprite">
+<area shape="rect" id="Node000001" title="Статичный визуал карточки: портрет/спрайт (фолбэк, когда нет анимированного рига)." alt="" coords="272,5,481,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1LoadoutScreenView.html#a7bac31fbb0eab508e160a7540c26253b" title="Собирает экран и сетку карточек по списку мементо." alt="" coords="5,5,224,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="258,28,224,28,224,23,258,23"/>
+</map>

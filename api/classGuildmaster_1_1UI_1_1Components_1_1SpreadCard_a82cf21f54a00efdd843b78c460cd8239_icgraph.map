@@ -1,0 +1,9 @@
+<map id="Guildmaster.UI.Components.SpreadCard.Label" name="Guildmaster.UI.Components.SpreadCard.Label">
+<area shape="rect" id="Node000001" title=" " alt="" coords="505,37,715,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Components_1_1SpreadCard.html#ad206b614fc746dfec246960fae9fde4e" title=" " alt="" coords="248,5,457,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="491,45,457,41,458,36,492,40"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1UI_1_1Components_1_1SpreadCard.html#adf7d503127c998dc7a6fa5dd0350e2bf" title="Клетка&#45;секция: своя рамка, свой заголовок. Раскладка «Клетки на развороте»." alt="" coords="248,69,457,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="492,75,458,79,457,74,491,69"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1VesselCardView.html#a081709d7cb05e73293d1d68acdd579a3" title=" " alt="" coords="5,5,200,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="235,28,200,28,200,23,235,23"/>
+</map>

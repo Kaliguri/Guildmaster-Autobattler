@@ -1,7 +1,9 @@
 <map id="Guildmaster.Game.Services.ProfileService" name="Guildmaster.Game.Services.ProfileService">
-<area shape="rect" id="Node000001" title="Реализация IProfileService поверх ISaveService." alt="" coords="59,439,258,879"/>
+<area shape="rect" id="Node000001" title="Реализация IProfileService поверх ISaveService." alt="" coords="161,439,359,899"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html" title="Владелец иерархии сохранений: профиль → гильдии → забег (ТЗ [[save&#45;system]] §3)." alt="" coords="5,5,168,391"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,404,127,438,122,439,116,405"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="192,165,269,231"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="226,245,196,439,190,438,221,244"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,402,178,438,173,439,160,404"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Guild_1_1IGuildRosterView.html" title="Чтение людей ДОМА для тех, кто живёт в забеге." alt="" coords="192,158,328,238"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="263,252,263,438,257,438,257,252"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="352,165,429,231"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="382,245,343,391,329,439,324,438,337,390,376,244"/>
 </map>

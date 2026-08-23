@@ -115,15 +115,15 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:acc5c934438d21caa2cb67b2c19a77e9b" id="r_acc5c934438d21caa2cb67b2c19a77e9b"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1GuildSelectScreenView.html#acc5c934438d21caa2cb67b2c19a77e9b">Build</a> (VisualTreeAsset uxml, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html">GuildEntry</a> &gt; guilds, int slotLimit, Func&lt; string, string &gt; localize, Action&lt; string &gt; onPick, Action onBack, Action onCreate=null, Action&lt; string &gt; onDelete=null, Func&lt; string, UnityEngine.Texture2D &gt; emblemOf=null, Func&lt; int, UnityEngine.Color &gt; shadeOf=null)</td></tr>
-<tr class="memdesc:acc5c934438d21caa2cb67b2c19a77e9b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
+<tr class="memitem:acf579466587c01683cdd1917f80ae0af" id="r_acf579466587c01683cdd1917f80ae0af"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1GuildSelectScreenView.html#acf579466587c01683cdd1917f80ae0af">Build</a> (VisualTreeAsset uxml, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html">GuildEntry</a> &gt; guilds, int slotLimit, Func&lt; string, string &gt; localize, Func&lt; string, UnityEngine.Texture2D &gt; emblemOf, Func&lt; int, UnityEngine.Color &gt; shadeOf, Action&lt; string &gt; onPick, Action onBack, Action onCreate=null, Action&lt; string &gt; onDelete=null)</td></tr>
+<tr class="memdesc:acf579466587c01683cdd1917f80ae0af"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">onPick</td><td>Играть в этом доме. </td></tr>
   </table>
   </dd>
 </dl>
  <br /></td></tr>
-<tr class="separator:acc5c934438d21caa2cb67b2c19a77e9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:acf579466587c01683cdd1917f80ae0af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d76027e54de01b808c456c771c789d9" id="r_a0d76027e54de01b808c456c771c789d9"><td class="memItemLeft" align="right" valign="top">static List&lt; <a class="el" href="structGuildmaster_1_1UI_1_1GuildSelectScreenView_1_1GuildEntry.html">GuildEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1GuildSelectScreenView.html#a0d76027e54de01b808c456c771c789d9">ReadGuilds</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a> profiles, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html">ISaveService</a> save)</td></tr>
 <tr class="memdesc:a0d76027e54de01b808c456c771c789d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собрать список домов из профиля: имя, знак и ответ на вопрос «идёт ли там забег».  <br /></td></tr>
 <tr class="separator:a0d76027e54de01b808c456c771c789d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,8 +135,8 @@ Static Public Member Functions</h2></td></tr>
 <p><b>Слоты показываются ВСЕ, включая пустые</b> — игрок видит, сколько домов ему полагается, а не только те, что успел завести. Число слотов приходит из <code>GameConfig.MaxGuildsPerProfile</code>, а не из разметки.</p>
 <p><b>Пары «Начать / Продолжить» здесь нет:</b> гильдия и есть слот сохранения (ТЗ [[save-system]] §3), поэтому игрок выбирает дом, а забег в нём либо уже идёт, либо начнётся.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="acc5c934438d21caa2cb67b2c19a77e9b" name="acc5c934438d21caa2cb67b2c19a77e9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc5c934438d21caa2cb67b2c19a77e9b">&#9670;&#160;</a></span>Build()</h2>
+<a id="acf579466587c01683cdd1917f80ae0af" name="acf579466587c01683cdd1917f80ae0af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf579466587c01683cdd1917f80ae0af">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,6 +171,18 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">Func&lt; string, UnityEngine::Texture2D &gt;&#160;</td>
+          <td class="paramname"><em>emblemOf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Func&lt; int, UnityEngine::Color &gt;&#160;</td>
+          <td class="paramname"><em>shadeOf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">Action&lt; string &gt;&#160;</td>
           <td class="paramname"><em>onPick</em>, </td>
         </tr>
@@ -190,19 +202,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&lt; string &gt;&#160;</td>
-          <td class="paramname"><em>onDelete</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Func&lt; string, UnityEngine::Texture2D &gt;&#160;</td>
-          <td class="paramname"><em>emblemOf</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Func&lt; int, UnityEngine::Color &gt;&#160;</td>
-          <td class="paramname"><em>shadeOf</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>onDelete</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

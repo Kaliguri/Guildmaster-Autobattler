@@ -1,12 +1,12 @@
 <map id="Guildmaster.Data.Definitions.OpenLoadoutRequest" name="Guildmaster.Data.Definitions.OpenLoadoutRequest">
 <area shape="rect" id="Node000001" title="Запрос открыть loadout&#45;экран для юнита (публикует фаза расстановки по дабл&#45;клику, слушает UI)." alt="" coords="91,776,297,856"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — реликвия игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,..." alt="" coords="5,533,225,713"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — мементо игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,..." alt="" coords="5,533,225,713"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,712,162,751,166,760,161,762,157,753,141,714"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html" title="Общий боевой кит всего, что выходит на арену (вики «13» §3.1)." alt="" coords="43,120,228,385"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="130,400,123,533,118,533,125,400"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="141,5,269,71"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="193,85,181,120,176,119,188,83"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Сосуд» — человек, носящий Реликвию." alt="" coords="168,409,375,509"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Сосуд» — человек, носящий Мементо." alt="" coords="168,409,375,509"/>
 <area shape="poly" id="edge5_Node000006_Node000004" title=" " alt="" coords="229,82,242,119,258,198,267,277,274,409,269,409,262,278,252,199,237,121,224,84"/>
 <area shape="poly" id="edge4_Node000001_Node000006" title=" " alt="" coords="281,509,286,561,285,624,277,690,258,753,252,764,247,762,253,751,272,689,280,623,280,562,276,510"/>
 </map>

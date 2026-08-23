@@ -1,0 +1,7 @@
+<map id="Guildmaster.UI.ItemsScreenView.Build" name="Guildmaster.UI.ItemsScreenView.Build">
+<area shape="rect" id="Node000001" title=" " alt="" coords="509,5,713,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1ItemsScreenPresenter.html#ad96affb7e4148b99c13a1ec2cfd02002" title="Перечитать снаряжение и пересобрать экран." alt="" coords="257,5,461,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="496,28,462,28,462,23,496,23"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1ItemsScreenPresenter.html#a1386ad1ffea6c8aa6da4c5409e6f8d80" title=" " alt="" coords="5,5,209,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="244,28,210,28,210,23,244,23"/>
+</map>

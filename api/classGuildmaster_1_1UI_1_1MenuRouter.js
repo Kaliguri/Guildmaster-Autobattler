@@ -1,6 +1,6 @@
 var classGuildmaster_1_1UI_1_1MenuRouter =
 [
-    [ "MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html#a27e339406aff6b9fa9deaeb2721a493e", null ],
+    [ "MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html#a7acf595274bd52cd32314fc5a8f8cd3d", null ],
     [ "CloseDevOverlays", "classGuildmaster_1_1UI_1_1MenuRouter.html#ab91838df5c8feaef36370ecd72f0be98", null ],
     [ "ConfirmAsync", "classGuildmaster_1_1UI_1_1MenuRouter.html#a5215490de9920cc0e64a1ee9236c6680", null ],
     [ "Dispose", "classGuildmaster_1_1UI_1_1MenuRouter.html#acec1b0172c30e27eac1f7992dd3dc04e", null ],
@@ -33,7 +33,6 @@ var classGuildmaster_1_1UI_1_1MenuRouter =
     [ "ToggleSystemMenu", "classGuildmaster_1_1UI_1_1MenuRouter.html#a68ec8319ec4031e0a23243506f9557eb", null ],
     [ "TryLeaveMainMenuForCoopGuest", "classGuildmaster_1_1UI_1_1MenuRouter.html#ae597d6e6da82300e3bb2e6267574feba", null ],
     [ "TryLeaveMainMenuForProvingGrounds", "classGuildmaster_1_1UI_1_1MenuRouter.html#afcfe07fecc055bb3eb09aae32c7240c2", null ],
-    [ "WireSettingsTabs", "classGuildmaster_1_1UI_1_1MenuRouter.html#a8335cc58120d44d5bb616991184c7b28", null ],
     [ "ActiveScreenMode", "classGuildmaster_1_1UI_1_1MenuRouter.html#ad334d1fc87e6e2b6f242f950d92c54ff", null ],
     [ "Changed", "classGuildmaster_1_1UI_1_1MenuRouter.html#ab9290ee01cf6946a1305c33d87dbd0f2", null ],
     [ "HasMapInStack", "classGuildmaster_1_1UI_1_1MenuRouter.html#ab2216381b420fdde89c52aa43677b388", null ],

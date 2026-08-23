@@ -281,6 +281,9 @@ var annotated_dup =
           [ "SaveSchemaAttribute", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute.html", "classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchemaAttribute" ],
           [ "SlotCreationRequest", "structGuildmaster_1_1Core_1_1Persistence_1_1SlotCreationRequest.html", "structGuildmaster_1_1Core_1_1Persistence_1_1SlotCreationRequest" ]
         ] ],
+        [ "Platform", "namespaceGuildmaster_1_1Core_1_1Platform.html", [
+          [ "IExternalLinkService", "interfaceGuildmaster_1_1Core_1_1Platform_1_1IExternalLinkService.html", "interfaceGuildmaster_1_1Core_1_1Platform_1_1IExternalLinkService" ]
+        ] ],
         [ "Players", "namespaceGuildmaster_1_1Core_1_1Players.html", [
           [ "ICursorSkinControl", "interfaceGuildmaster_1_1Core_1_1Players_1_1ICursorSkinControl.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1ICursorSkinControl" ],
           [ "ILocalPlayer", "interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer" ],
@@ -325,6 +328,7 @@ var annotated_dup =
           [ "BattlePresetData", "classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData" ],
           [ "ClassBalanceConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ClassBalanceConfig" ],
           [ "ClipMarkers", "classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers" ],
+          [ "CommunityConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1CommunityConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1CommunityConfig" ],
           [ "ConsequenceData", "classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData" ],
           [ "ContentDatabase", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase" ],
           [ "ContentDefinition", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition" ],
@@ -383,6 +387,7 @@ var annotated_dup =
           [ "UnitData", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData" ],
           [ "UnitTagResolver", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitTagResolver.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitTagResolver" ],
           [ "VesselData", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselData" ],
+          [ "VesselNamePool", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselNamePool.html", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselNamePool" ],
           [ "VfxData", "classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1VfxData" ]
         ] ],
         [ "Descriptions", "namespaceGuildmaster_1_1Data_1_1Descriptions.html", [
@@ -623,6 +628,7 @@ var annotated_dup =
         [ "GameStartRequest", "structGuildmaster_1_1Guild_1_1GameStartRequest.html", "structGuildmaster_1_1Guild_1_1GameStartRequest" ],
         [ "GuildBook", "classGuildmaster_1_1Guild_1_1GuildBook.html", "classGuildmaster_1_1Guild_1_1GuildBook" ],
         [ "GuildState", "classGuildmaster_1_1Guild_1_1GuildState.html", "classGuildmaster_1_1Guild_1_1GuildState" ],
+        [ "IGuildRosterView", "interfaceGuildmaster_1_1Guild_1_1IGuildRosterView.html", "interfaceGuildmaster_1_1Guild_1_1IGuildRosterView" ],
         [ "Injury", "classGuildmaster_1_1Guild_1_1Injury.html", "classGuildmaster_1_1Guild_1_1Injury" ],
         [ "InjuryCascade", "classGuildmaster_1_1Guild_1_1InjuryCascade.html", "classGuildmaster_1_1Guild_1_1InjuryCascade" ],
         [ "InjuryLedger", "classGuildmaster_1_1Guild_1_1InjuryLedger.html", "classGuildmaster_1_1Guild_1_1InjuryLedger" ],
@@ -659,6 +665,7 @@ var annotated_dup =
         [ "ShopInjury", "classGuildmaster_1_1Guild_1_1ShopInjury.html", "classGuildmaster_1_1Guild_1_1ShopInjury" ],
         [ "ShopItem", "classGuildmaster_1_1Guild_1_1ShopItem.html", "classGuildmaster_1_1Guild_1_1ShopItem" ],
         [ "ShopStashItem", "classGuildmaster_1_1Guild_1_1ShopStashItem.html", "classGuildmaster_1_1Guild_1_1ShopStashItem" ],
+        [ "VesselFactory", "classGuildmaster_1_1Guild_1_1VesselFactory.html", "classGuildmaster_1_1Guild_1_1VesselFactory" ],
         [ "VesselState", "classGuildmaster_1_1Guild_1_1VesselState.html", "classGuildmaster_1_1Guild_1_1VesselState" ],
         [ "WorldMapSpaceChangedEvent", "structGuildmaster_1_1Guild_1_1WorldMapSpaceChangedEvent.html", "structGuildmaster_1_1Guild_1_1WorldMapSpaceChangedEvent" ],
         [ "ZoneRule", "structGuildmaster_1_1Guild_1_1ZoneRule.html", "structGuildmaster_1_1Guild_1_1ZoneRule" ]
@@ -673,6 +680,7 @@ var annotated_dup =
         [ "Session", "namespaceGuildmaster_1_1Net_1_1Session.html", [
           [ "CoopHandshake", "classGuildmaster_1_1Net_1_1Session_1_1CoopHandshake.html", "classGuildmaster_1_1Net_1_1Session_1_1CoopHandshake" ],
           [ "CoopSession", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession.html", "classGuildmaster_1_1Net_1_1Session_1_1CoopSession" ],
+          [ "ExternalLinkService", "classGuildmaster_1_1Net_1_1Session_1_1ExternalLinkService.html", "classGuildmaster_1_1Net_1_1Session_1_1ExternalLinkService" ],
           [ "ICoopLobby", "interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby.html", "interfaceGuildmaster_1_1Net_1_1Session_1_1ICoopLobby" ],
           [ "LoopbackLobby", "classGuildmaster_1_1Net_1_1Session_1_1LoopbackLobby.html", "classGuildmaster_1_1Net_1_1Session_1_1LoopbackLobby" ],
           [ "SteamBootstrap", "classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap.html", "classGuildmaster_1_1Net_1_1Session_1_1SteamBootstrap" ],
@@ -835,7 +843,12 @@ var annotated_dup =
           [ "AspectBox", "classGuildmaster_1_1UI_1_1Components_1_1AspectBox.html", "classGuildmaster_1_1UI_1_1Components_1_1AspectBox" ],
           [ "BackButton", "classGuildmaster_1_1UI_1_1Components_1_1BackButton.html", "classGuildmaster_1_1UI_1_1Components_1_1BackButton" ],
           [ "Chip", "classGuildmaster_1_1UI_1_1Components_1_1Chip.html", "classGuildmaster_1_1UI_1_1Components_1_1Chip" ],
+          [ "DragManipulator", "classGuildmaster_1_1UI_1_1Components_1_1DragManipulator.html", "classGuildmaster_1_1UI_1_1Components_1_1DragManipulator" ],
+          [ "DragPayload", "structGuildmaster_1_1UI_1_1Components_1_1DragPayload.html", "structGuildmaster_1_1UI_1_1Components_1_1DragPayload" ],
+          [ "DropZoneManipulator", "classGuildmaster_1_1UI_1_1Components_1_1DropZoneManipulator.html", "classGuildmaster_1_1UI_1_1Components_1_1DropZoneManipulator" ],
           [ "EdgeVeil", "classGuildmaster_1_1UI_1_1Components_1_1EdgeVeil.html", "classGuildmaster_1_1UI_1_1Components_1_1EdgeVeil" ],
+          [ "InspectPanel", "classGuildmaster_1_1UI_1_1Components_1_1InspectPanel.html", "classGuildmaster_1_1UI_1_1Components_1_1InspectPanel" ],
+          [ "InspectSubject", "structGuildmaster_1_1UI_1_1Components_1_1InspectSubject.html", "structGuildmaster_1_1UI_1_1Components_1_1InspectSubject" ],
           [ "PanelFrame", "classGuildmaster_1_1UI_1_1Components_1_1PanelFrame.html", "classGuildmaster_1_1UI_1_1Components_1_1PanelFrame" ],
           [ "PickerButton", "classGuildmaster_1_1UI_1_1Components_1_1PickerButton.html", "classGuildmaster_1_1UI_1_1Components_1_1PickerButton" ],
           [ "PlateButton", "classGuildmaster_1_1UI_1_1Components_1_1PlateButton.html", "classGuildmaster_1_1UI_1_1Components_1_1PlateButton" ],
@@ -846,6 +859,7 @@ var annotated_dup =
           [ "SlantedPanel", "classGuildmaster_1_1UI_1_1Components_1_1SlantedPanel.html", "classGuildmaster_1_1UI_1_1Components_1_1SlantedPanel" ],
           [ "SliderRow", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow" ],
           [ "Slot", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html", "classGuildmaster_1_1UI_1_1Components_1_1Slot" ],
+          [ "SpreadCard", "classGuildmaster_1_1UI_1_1Components_1_1SpreadCard.html", "classGuildmaster_1_1UI_1_1Components_1_1SpreadCard" ],
           [ "TitleReveal", "classGuildmaster_1_1UI_1_1Components_1_1TitleReveal.html", "classGuildmaster_1_1UI_1_1Components_1_1TitleReveal" ],
           [ "ToggleRow", "classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html", "classGuildmaster_1_1UI_1_1Components_1_1ToggleRow" ],
           [ "TooltipCard", "classGuildmaster_1_1UI_1_1Components_1_1TooltipCard.html", "classGuildmaster_1_1UI_1_1Components_1_1TooltipCard" ],
@@ -884,11 +898,17 @@ var annotated_dup =
         [ "BusyOverlayView", "classGuildmaster_1_1UI_1_1BusyOverlayView.html", "classGuildmaster_1_1UI_1_1BusyOverlayView" ],
         [ "CampScreenView", "classGuildmaster_1_1UI_1_1CampScreenView.html", "classGuildmaster_1_1UI_1_1CampScreenView" ],
         [ "ChestScreenView", "classGuildmaster_1_1UI_1_1ChestScreenView.html", "classGuildmaster_1_1UI_1_1ChestScreenView" ],
+        [ "CommunityPanelView", "classGuildmaster_1_1UI_1_1CommunityPanelView.html", "classGuildmaster_1_1UI_1_1CommunityPanelView" ],
         [ "ContentTitle", "classGuildmaster_1_1UI_1_1ContentTitle.html", "classGuildmaster_1_1UI_1_1ContentTitle" ],
         [ "EventScreenView", "classGuildmaster_1_1UI_1_1EventScreenView.html", "classGuildmaster_1_1UI_1_1EventScreenView" ],
         [ "GuildSelectScreenView", "classGuildmaster_1_1UI_1_1GuildSelectScreenView.html", "classGuildmaster_1_1UI_1_1GuildSelectScreenView" ],
         [ "HubScreenView", "classGuildmaster_1_1UI_1_1HubScreenView.html", "classGuildmaster_1_1UI_1_1HubScreenView" ],
+        [ "InspectPanelPresenter", "classGuildmaster_1_1UI_1_1InspectPanelPresenter.html", "classGuildmaster_1_1UI_1_1InspectPanelPresenter" ],
+        [ "ItemsRowView", "structGuildmaster_1_1UI_1_1ItemsRowView.html", "structGuildmaster_1_1UI_1_1ItemsRowView" ],
+        [ "ItemsScreenPresenter", "classGuildmaster_1_1UI_1_1ItemsScreenPresenter.html", "classGuildmaster_1_1UI_1_1ItemsScreenPresenter" ],
+        [ "ItemsScreenView", "classGuildmaster_1_1UI_1_1ItemsScreenView.html", "classGuildmaster_1_1UI_1_1ItemsScreenView" ],
         [ "LoadoutInventoryView", "classGuildmaster_1_1UI_1_1LoadoutInventoryView.html", "classGuildmaster_1_1UI_1_1LoadoutInventoryView" ],
+        [ "LoadoutScreenView", "classGuildmaster_1_1UI_1_1LoadoutScreenView.html", "classGuildmaster_1_1UI_1_1LoadoutScreenView" ],
         [ "LoadoutViewModel", "classGuildmaster_1_1UI_1_1LoadoutViewModel.html", "classGuildmaster_1_1UI_1_1LoadoutViewModel" ],
         [ "MainMenuScreenView", "classGuildmaster_1_1UI_1_1MainMenuScreenView.html", "classGuildmaster_1_1UI_1_1MainMenuScreenView" ],
         [ "MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html", "classGuildmaster_1_1UI_1_1MenuRouter" ],
@@ -896,10 +916,15 @@ var annotated_dup =
         [ "NewGameScreenView", "classGuildmaster_1_1UI_1_1NewGameScreenView.html", "classGuildmaster_1_1UI_1_1NewGameScreenView" ],
         [ "NoticeDialogView", "classGuildmaster_1_1UI_1_1NoticeDialogView.html", "classGuildmaster_1_1UI_1_1NoticeDialogView" ],
         [ "OutcomeScreenView", "classGuildmaster_1_1UI_1_1OutcomeScreenView.html", "classGuildmaster_1_1UI_1_1OutcomeScreenView" ],
+        [ "PartyScreenPresenter", "classGuildmaster_1_1UI_1_1PartyScreenPresenter.html", "classGuildmaster_1_1UI_1_1PartyScreenPresenter" ],
+        [ "PartyScreenView", "classGuildmaster_1_1UI_1_1PartyScreenView.html", "classGuildmaster_1_1UI_1_1PartyScreenView" ],
+        [ "PartySlotView", "structGuildmaster_1_1UI_1_1PartySlotView.html", "structGuildmaster_1_1UI_1_1PartySlotView" ],
+        [ "PauseScreenView", "classGuildmaster_1_1UI_1_1PauseScreenView.html", "classGuildmaster_1_1UI_1_1PauseScreenView" ],
         [ "ProfileHubView", "classGuildmaster_1_1UI_1_1ProfileHubView.html", "classGuildmaster_1_1UI_1_1ProfileHubView" ],
         [ "ProfileScreenView", "classGuildmaster_1_1UI_1_1ProfileScreenView.html", "classGuildmaster_1_1UI_1_1ProfileScreenView" ],
         [ "RewardScreenView", "classGuildmaster_1_1UI_1_1RewardScreenView.html", "classGuildmaster_1_1UI_1_1RewardScreenView" ],
         [ "RunModeBarView", "classGuildmaster_1_1UI_1_1RunModeBarView.html", "classGuildmaster_1_1UI_1_1RunModeBarView" ],
+        [ "SettingsScreenView", "classGuildmaster_1_1UI_1_1SettingsScreenView.html", "classGuildmaster_1_1UI_1_1SettingsScreenView" ],
         [ "SettingsViewModel", "classGuildmaster_1_1UI_1_1SettingsViewModel.html", "classGuildmaster_1_1UI_1_1SettingsViewModel" ],
         [ "ShopScreenView", "classGuildmaster_1_1UI_1_1ShopScreenView.html", "classGuildmaster_1_1UI_1_1ShopScreenView" ],
         [ "SlotCreateView", "classGuildmaster_1_1UI_1_1SlotCreateView.html", "classGuildmaster_1_1UI_1_1SlotCreateView" ],
@@ -909,7 +934,10 @@ var annotated_dup =
         [ "UiRootBootstrap", "classGuildmaster_1_1UI_1_1UiRootBootstrap.html", "classGuildmaster_1_1UI_1_1UiRootBootstrap" ],
         [ "UiScreen", "classGuildmaster_1_1UI_1_1UiScreen.html", "classGuildmaster_1_1UI_1_1UiScreen" ],
         [ "UiScreenContext", "classGuildmaster_1_1UI_1_1UiScreenContext.html", "classGuildmaster_1_1UI_1_1UiScreenContext" ],
-        [ "UiSoundSystem", "classGuildmaster_1_1UI_1_1UiSoundSystem.html", "classGuildmaster_1_1UI_1_1UiSoundSystem" ]
+        [ "UiSoundSystem", "classGuildmaster_1_1UI_1_1UiSoundSystem.html", "classGuildmaster_1_1UI_1_1UiSoundSystem" ],
+        [ "VesselCardPresenter", "classGuildmaster_1_1UI_1_1VesselCardPresenter.html", "classGuildmaster_1_1UI_1_1VesselCardPresenter" ],
+        [ "VesselCardSubject", "structGuildmaster_1_1UI_1_1VesselCardSubject.html", "structGuildmaster_1_1UI_1_1VesselCardSubject" ],
+        [ "VesselCardView", "classGuildmaster_1_1UI_1_1VesselCardView.html", "classGuildmaster_1_1UI_1_1VesselCardView" ]
       ] ]
     ] ]
 ];

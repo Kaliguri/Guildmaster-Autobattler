@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Ma
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Presentation_1_1Map_1_1MenuBackdropView-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Presentation.Map.MenuBackdropView Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -103,18 +104,27 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Ma
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.Map.MenuBackdropView:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Map_1_1MenuBackdropView__inherit__graph.svg" width="194" height="204"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Map_1_1MenuBackdropView__inherit__graph.svg" width="194" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.Map.MenuBackdropView:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Map_1_1MenuBackdropView__coll__graph.svg" width="194" height="204"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1Map_1_1MenuBackdropView__coll__graph.svg" width="194" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6117f0edc9da6d3b85d5b58521ff918b" id="r_a6117f0edc9da6d3b85d5b58521ff918b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Map_1_1MenuBackdropView.html#a6117f0edc9da6d3b85d5b58521ff918b">Construct</a> (ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1ScreenBackdropChangedEvent.html">ScreenBackdropChangedEvent</a> &gt; menuSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Core_1_1Flow_1_1MenuBattleChangedEvent.html">MenuBattleChangedEvent</a> &gt; battleSub, <a class="el" href="classGuildmaster_1_1Presentation_1_1Effects_1_1VisualToggles.html">VisualToggles</a> toggles)</td></tr>
 <tr class="separator:a6117f0edc9da6d3b85d5b58521ff918b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97d152436bd76291c991909e4e39ebaf" id="r_a97d152436bd76291c991909e4e39ebaf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Map_1_1MenuBackdropView.html#a97d152436bd76291c991909e4e39ebaf">SetOpen</a> (bool open, bool overBattle)</td></tr>
+<tr class="memdesc:a97d152436bd76291c991909e4e39ebaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать или убрать задник меты.  <br /></td></tr>
+<tr class="separator:a97d152436bd76291c991909e4e39ebaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a1973ce6e474babacd011145a2f1a79bf" id="r_a1973ce6e474babacd011145a2f1a79bf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1Map_1_1MenuBackdropView.html#a1973ce6e474babacd011145a2f1a79bf">IsOpen</a><code> [get]</code></td></tr>
+<tr class="memdesc:a1973ce6e474babacd011145a2f1a79bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Просят ли задник прямо сейчас.  <br /></td></tr>
+<tr class="separator:a1973ce6e474babacd011145a2f1a79bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Задний фон ЭКРАНОВ МЕТЫ: настройки, пауза, главное меню. </p>
@@ -162,6 +172,78 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a97d152436bd76291c991909e4e39ebaf" name="a97d152436bd76291c991909e4e39ebaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97d152436bd76291c991909e4e39ebaf">&#9670;&#160;</a></span>SetOpen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Presentation.Map.MenuBackdropView.SetOpen </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>open</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>overBattle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Показать или убрать задник меты. </p>
+<p>Обычно зовётся событием ScreenBackdropChangedEvent из UI.</p>
+<p><b>Открыт наружу для прогона кадров экранов</b> (<code>UiScreenSheet</code>): прогон собирает экраны мимо роутера, событие про задник публиковать некому — и снимок показывал интерфейс на чёрном поле вместо стола, который видит игрок (наход. Макса 23.08.2026). Второй способ поднять задник разошёлся бы с этим на первой же готче: видимость считается сразу из четырёх условий (ApplyVisibility), и повторять их снаружи нельзя. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">overBattle</td><td>Просить стол даже поверх живого боя — так делают настройки.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a1973ce6e474babacd011145a2f1a79bf" name="a1973ce6e474babacd011145a2f1a79bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1973ce6e474babacd011145a2f1a79bf">&#9670;&#160;</a></span>IsOpen</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Presentation.Map.MenuBackdropView.IsOpen</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Просят ли задник прямо сейчас. </p>
+<p>Пара к SetOpen: без неё нельзя вернуть экран как было после временного показа. </p>
 
 </div>
 </div>

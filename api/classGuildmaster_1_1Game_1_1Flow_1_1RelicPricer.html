@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Re
 </div><!--header-->
 <div class="contents">
 
-<p>Ценообразование реликвий (план [[act-map-run-loop]] §3.3): база по <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aee083e738438161de13eeb944ce80dea" title="Класс кита реликвии (GDD 5) — БОЕВАЯ характеристика: обычный кит, проклятый (сила ценой платы),...">KitPower</a> (Common/Cursed/Divine из GameConfig) + детерминированный разброс вокруг неё.  
+<p>Ценообразование мементо (план [[act-map-run-loop]] §3.3): база по <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aee083e738438161de13eeb944ce80dea" title="Класс кита мементо (GDD 5) — БОЕВАЯ характеристика: обычный кит, проклятый (сила ценой платы),...">KitPower</a> (Common/Cursed/Divine из GameConfig) + детерминированный разброс вокруг неё.  
  <a href="classGuildmaster_1_1Game_1_1Flow_1_1RelicPricer.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Flow.RelicPricer:</div>
@@ -111,18 +111,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a485eb0d8bbc9ddbed3856a13d0d19077" id="r_a485eb0d8bbc9ddbed3856a13d0d19077"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RelicPricer.html#a485eb0d8bbc9ddbed3856a13d0d19077">RelicPricer</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html">GameConfig</a> config)</td></tr>
 <tr class="separator:a485eb0d8bbc9ddbed3856a13d0d19077"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adaa49873f0630af7b5efbb24f115c729" id="r_adaa49873f0630af7b5efbb24f115c729"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RelicPricer.html#adaa49873f0630af7b5efbb24f115c729">Price</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> relic, int shopSeed)</td></tr>
-<tr class="memdesc:adaa49873f0630af7b5efbb24f115c729"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цена покупки реликвии в витрине с сидом <em>shopSeed</em> .  <br /></td></tr>
+<tr class="memdesc:adaa49873f0630af7b5efbb24f115c729"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цена покупки мементо в витрине с сидом <em>shopSeed</em> .  <br /></td></tr>
 <tr class="separator:adaa49873f0630af7b5efbb24f115c729"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3902292dc3d8e5f55c0d34397fb21617" id="r_a3902292dc3d8e5f55c0d34397fb21617"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RelicPricer.html#a3902292dc3d8e5f55c0d34397fb21617">PriceFor</a> (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aee083e738438161de13eeb944ce80dea">KitPower</a> power, string id, int shopSeed)</td></tr>
 <tr class="memdesc:a3902292dc3d8e5f55c0d34397fb21617"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цена по силе кита и id (тестируемо без конструирования RelicData).  <br /></td></tr>
 <tr class="separator:a3902292dc3d8e5f55c0d34397fb21617"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0b0258f73f74ffd3648eddf3031d1d0" id="r_ad0b0258f73f74ffd3648eddf3031d1d0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RelicPricer.html#ad0b0258f73f74ffd3648eddf3031d1d0">SellValue</a> (int buyPrice)</td></tr>
-<tr class="memdesc:ad0b0258f73f74ffd3648eddf3031d1d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько игрок получит за продажу реликвии с ценой покупки <em>buyPrice</em> .  <br /></td></tr>
+<tr class="memdesc:ad0b0258f73f74ffd3648eddf3031d1d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько игрок получит за продажу мементо с ценой покупки <em>buyPrice</em> .  <br /></td></tr>
 <tr class="separator:ad0b0258f73f74ffd3648eddf3031d1d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Ценообразование реликвий (план [[act-map-run-loop]] §3.3): база по <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aee083e738438161de13eeb944ce80dea" title="Класс кита реликвии (GDD 5) — БОЕВАЯ характеристика: обычный кит, проклятый (сила ценой платы),...">KitPower</a> (Common/Cursed/Divine из GameConfig) + детерминированный разброс вокруг неё. </p>
-<p>Разброс стабилен для пары (id реликвии, seed витрины) — одна витрина всегда даёт ту же цену, но между витринами цена гуляет. У RelicData нет поля Cost — цена вычисляется здесь, ассеты не размечаем. </p>
+<div class="textblock"><p>Ценообразование мементо (план [[act-map-run-loop]] §3.3): база по <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aee083e738438161de13eeb944ce80dea" title="Класс кита мементо (GDD 5) — БОЕВАЯ характеристика: обычный кит, проклятый (сила ценой платы),...">KitPower</a> (Common/Cursed/Divine из GameConfig) + детерминированный разброс вокруг неё. </p>
+<p>Разброс стабилен для пары (id мементо, seed витрины) — одна витрина всегда даёт ту же цену, но между витринами цена гуляет. У RelicData нет поля Cost — цена вычисляется здесь, ассеты не размечаем. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a485eb0d8bbc9ddbed3856a13d0d19077" name="a485eb0d8bbc9ddbed3856a13d0d19077"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a485eb0d8bbc9ddbed3856a13d0d19077">&#9670;&#160;</a></span>RelicPricer()</h2>
@@ -169,7 +169,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Цена покупки реликвии в витрине с сидом <em>shopSeed</em> . </p>
+<p>Цена покупки мементо в витрине с сидом <em>shopSeed</em> . </p>
 
 </div>
 </div>
@@ -238,7 +238,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Сколько игрок получит за продажу реликвии с ценой покупки <em>buyPrice</em> . </p>
+<p>Сколько игрок получит за продажу мементо с ценой покупки <em>buyPrice</em> . </p>
 
 </div>
 </div>

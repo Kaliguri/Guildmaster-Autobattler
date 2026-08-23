@@ -109,7 +109,7 @@ Collaboration diagram for Guildmaster.Data.Definitions.IEffectComponent:</div>
 </div>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Якорь полиморфного поведения эффекта для сериализации. </p>
-<p>EffectData хранит <code>[SerializeReference] IEffectComponent[]</code>, так что реликвии/эффекты ссылаются на поведение, НЕ создавая зависимость <code>Data → Combat</code> вверх (вики «10» §2.2).</p>
+<p>EffectData хранит <code>[SerializeReference] IEffectComponent[]</code>, так что мементо/эффекты ссылаются на поведение, НЕ создавая зависимость <code>Data → Combat</code> вверх (вики «10» §2.2).</p>
 <p>СКЕЛЕТ Фазы 1 — это маркер. Реальные lifecycle-хуки (<code>OnApply/OnTick/OnExpire</code>) оперируют рантайм-состоянием боя (<code>RuntimeUnit</code>, контекст), поэтому объявляются в Фазе 2 производным интерфейсом на стороне Combat (<code>IRuntimeEffectComponent : IEffectComponent</code>). Так контекст-типы остаются в Combat, а сериализационный якорь — внизу, в Data. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->

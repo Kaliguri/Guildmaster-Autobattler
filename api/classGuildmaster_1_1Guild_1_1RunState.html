@@ -120,17 +120,26 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:ac4f715eb4cb11ae69a11d653a9ea7333"><td class="mdescLeft">&#160;</td><td class="mdescRight">Перезапуски боя, оставшиеся В ЭТОМ АКТЕ (реш. №65). Сброс в начале акта, не копится между актами.  <br /></td></tr>
 <tr class="separator:ac4f715eb4cb11ae69a11d653a9ea7333"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add135c8ee1ecfc0ff34a7f648e1158a0" id="r_add135c8ee1ecfc0ff34a7f648e1158a0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#add135c8ee1ecfc0ff34a7f648e1158a0">RelicCapacity</a></td></tr>
-<tr class="memdesc:add135c8ee1ecfc0ff34a7f648e1158a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вместимость коллекции запаса реликов (план 11 §5.4). База/потолок — в GameConfig.  <br /></td></tr>
+<tr class="memdesc:add135c8ee1ecfc0ff34a7f648e1158a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вместимость коллекции запаса Мементо (план 11 §5.4). База/потолок — в GameConfig.  <br /></td></tr>
 <tr class="separator:add135c8ee1ecfc0ff34a7f648e1158a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a134fcacf950fe785b45191c05812732f" id="r_a134fcacf950fe785b45191c05812732f"><td class="memItemLeft" align="right" valign="top">string[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#a134fcacf950fe785b45191c05812732f">RelicInventory</a> = Array.Empty&lt;string&gt;()</td></tr>
-<tr class="memdesc:a134fcacf950fe785b45191c05812732f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собранные, но не надетые релики (запас для свапа между боями). Кап = RelicCapacity.  <br /></td></tr>
+<tr class="memdesc:a134fcacf950fe785b45191c05812732f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Собранные, но не надетые Мементо (запас для свапа между боями). Кап = RelicCapacity.  <br /></td></tr>
 <tr class="separator:a134fcacf950fe785b45191c05812732f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a292bdcf5ab6e76983a785837aea15a39" id="r_a292bdcf5ab6e76983a785837aea15a39"><td class="memItemLeft" align="right" valign="top">string[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#a292bdcf5ab6e76983a785837aea15a39">PartyItemIds</a> = Array.Empty&lt;string&gt;()</td></tr>
 <tr class="memdesc:a292bdcf5ab6e76983a785837aea15a39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Баннеры (Party-скоуп предметы, действуют на всю команду в бою).  <br /></td></tr>
 <tr class="separator:a292bdcf5ab6e76983a785837aea15a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a041f1ade959ee29cbe821169b66f8bab" id="r_a041f1ade959ee29cbe821169b66f8bab"><td class="memItemLeft" align="right" valign="top">string[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#a041f1ade959ee29cbe821169b66f8bab">ItemInventory</a> = Array.Empty&lt;string&gt;()</td></tr>
+<tr class="memdesc:a041f1ade959ee29cbe821169b66f8bab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Склад предметов забега: собранные, но не надетые Vessel-предметы.  <br /></td></tr>
+<tr class="separator:a041f1ade959ee29cbe821169b66f8bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace2bd4a1fcb6f132cff31d32e2123844" id="r_ace2bd4a1fcb6f132cff31d32e2123844"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Guild_1_1RosterSlot.html">RosterSlot</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#ace2bd4a1fcb6f132cff31d32e2123844">Guild</a> = Array.Empty&lt;<a class="el" href="classGuildmaster_1_1Guild_1_1RosterSlot.html">RosterSlot</a>&gt;()</td></tr>
-<tr class="memdesc:ace2bd4a1fcb6f132cff31d32e2123844"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ростер гильдии — 4 сосуда.  <br /></td></tr>
+<tr class="memdesc:ace2bd4a1fcb6f132cff31d32e2123844"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ростер гильдии: до <code>GameConfig.GuildSize</code> мест, из них открыто OpenSlots.  <br /></td></tr>
 <tr class="separator:ace2bd4a1fcb6f132cff31d32e2123844"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9af658d23349dfd2f9694e542214632" id="r_ab9af658d23349dfd2f9694e542214632"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#ab9af658d23349dfd2f9694e542214632">OpenSlots</a></td></tr>
+<tr class="memdesc:ab9af658d23349dfd2f9694e542214632"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько мест отряда сейчас открыто.  <br /></td></tr>
+<tr class="separator:ab9af658d23349dfd2f9694e542214632"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96cea57b3354cbe39d29decbf3b76594" id="r_a96cea57b3354cbe39d29decbf3b76594"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#a96cea57b3354cbe39d29decbf3b76594">OpenItemSlots</a></td></tr>
+<tr class="memdesc:a96cea57b3354cbe39d29decbf3b76594"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько слотов предмета открыто у «Сосудов».  <br /></td></tr>
+<tr class="separator:a96cea57b3354cbe39d29decbf3b76594"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f98c130ef9f2ccee5f5dddc12e52fd4" id="r_a8f98c130ef9f2ccee5f5dddc12e52fd4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html">MapState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#a8f98c130ef9f2ccee5f5dddc12e52fd4">Map</a> = new <a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html">MapState</a>()</td></tr>
 <tr class="memdesc:a8f98c130ef9f2ccee5f5dddc12e52fd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Карта текущего акта.  <br /></td></tr>
 <tr class="separator:a8f98c130ef9f2ccee5f5dddc12e52fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -194,7 +203,26 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Ростер гильдии — 4 сосуда. </p>
+<p>Ростер гильдии: до <code>GameConfig.GuildSize</code> мест, из них открыто OpenSlots. </p>
+<p>В бой выходят те, у кого поднят RosterSlot.InBattle. </p>
+
+</div>
+</div>
+<a id="a041f1ade959ee29cbe821169b66f8bab" name="a041f1ade959ee29cbe821169b66f8bab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a041f1ade959ee29cbe821169b66f8bab">&#9670;&#160;</a></span>ItemInventory</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string [] Guildmaster.Guild.RunState.ItemInventory = Array.Empty&lt;string&gt;()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Склад предметов забега: собранные, но не надетые Vessel-предметы. </p>
+<p>Снятая вещь уходит сюда, надетая уходит отсюда — поэтому «переложить от Кая к Ирме» это снятие плюс надевание, и предмет ни в один момент не висит в воздухе. </p>
+<p>Лимита у склада нет (в отличие от мементо с их RelicCapacity): дефицит у предметов создают три слота на «Сосуде», а не вместимость запаса.</p>
 
 </div>
 </div>
@@ -211,6 +239,42 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Карта текущего акта. </p>
+
+</div>
+</div>
+<a id="a96cea57b3354cbe39d29decbf3b76594" name="a96cea57b3354cbe39d29decbf3b76594"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96cea57b3354cbe39d29decbf3b76594">&#9670;&#160;</a></span>OpenItemSlots</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Guild.RunState.OpenItemSlots</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Сколько слотов предмета открыто у «Сосудов». </p>
+<p>По той же модели, что OpenSlots: четвёртый слот — награда ВНУТРИ забега, поэтому число живёт здесь, а не в конфиге, и сгорает вместе с забегом. </p>
+<p>Открытие общее на отряд, а не на человека: иначе игрок держал бы в голове, у кого сколько мест, и вещь, снятая с одного, могла бы не влезть на другого без видимой причины.</p>
+
+</div>
+</div>
+<a id="ab9af658d23349dfd2f9694e542214632" name="ab9af658d23349dfd2f9694e542214632"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9af658d23349dfd2f9694e542214632">&#9670;&#160;</a></span>OpenSlots</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Guild.RunState.OpenSlots</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Сколько мест отряда сейчас открыто. </p>
+<p>Живёт в состоянии ЗАБЕГА, а не в конфиге, потому что вместимость сверх базовой добывается наградой внутри забега и сгорает вместе с ним (решение Макса 2026-08-22/9). Конфиг держит только базу и потолок. </p>
+<p>Ноль в старом сейве читается как «база из конфига» при нормализации.</p>
 
 </div>
 </div>
@@ -242,7 +306,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Вместимость коллекции запаса реликов (план 11 §5.4). База/потолок — в GameConfig. </p>
+<p>Вместимость коллекции запаса Мементо (план 11 §5.4). База/потолок — в GameConfig. </p>
 
 </div>
 </div>
@@ -258,7 +322,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Собранные, но не надетые релики (запас для свапа между боями). Кап = RelicCapacity. </p>
+<p>Собранные, но не надетые Мементо (запас для свапа между боями). Кап = RelicCapacity. </p>
 
 </div>
 </div>

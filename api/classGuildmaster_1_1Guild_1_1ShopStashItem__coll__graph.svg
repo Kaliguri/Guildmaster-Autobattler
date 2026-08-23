@@ -57,7 +57,7 @@ var sectionId = 'dynsection-0';
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Строка панели продажи: реликвия из запаса игрока + сколько за неё дадут.">
+<g id="a_Node000001"><a xlink:title="Строка панели продажи: мементо из запаса игрока + сколько за неё дадут.">
 <polygon fill="#999999" stroke="transparent" points="175,-49 0,-49 0,0 175,0 175,-49"/>
 <text text-anchor="start" x="5.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Guild.ShopStashItem</text>
 <text text-anchor="start" x="31.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
@@ -73,7 +73,7 @@ var sectionId = 'dynsection-0';
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" target="_top" xlink:title="«Чемпион» — реликвия игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,...">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" target="_top" xlink:title="«Чемпион» — мементо игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,...">
 <polygon fill="white" stroke="transparent" points="170,-231 5,-231 5,-96 170,-96 170,-231"/>
 <text text-anchor="start" x="15.5" y="-218.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="start" x="64" y="-207.5" font-family="Helvetica,sans-Serif" font-size="10.00">RelicData</text>

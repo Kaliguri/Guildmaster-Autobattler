@@ -1,0 +1,9 @@
+<map id="Guildmaster.UI.ItemsScreenPresenter.Refresh" name="Guildmaster.UI.ItemsScreenPresenter.Refresh">
+<area shape="rect" id="Node000001" title="Перечитать снаряжение и пересобрать экран." alt="" coords="5,69,209,109"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1ItemsScreenView.html#abda977ba16cf0cdd9b5e0bfeacf02d51" title=" " alt="" coords="257,5,461,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,67,266,46,268,51,188,72"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1ItemsScreenPresenter.html#a18a04c1a136372a0efa9e629b65c8c6f" title="Строки страницы: только занятые места отряда." alt="" coords="257,69,461,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="209,87,244,87,244,92,209,92"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1UI_1_1ItemsScreenPresenter.html#ac5f965da5e09f27826a89f414ad2fe44" title="Вещи в запасе забега." alt="" coords="257,133,461,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="188,107,268,127,266,133,186,112"/>
+</map>

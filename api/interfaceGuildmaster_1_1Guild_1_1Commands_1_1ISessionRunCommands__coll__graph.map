@@ -1,5 +1,5 @@
 <map id="Guildmaster.Guild.Commands.ISessionRunCommands" name="Guildmaster.Guild.Commands.ISessionRunCommands">
-<area shape="rect" id="Node000001" title="Команды забега ТЕКУЩЕГО СЕАНСА: то, что регистрирует в своём составе Сессия." alt="" coords="5,279,219,359"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html" title="Глаголы изменения забега — то, что зовёт игра вместо прямых мутаторов RunStateService." alt="" coords="28,5,196,231"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,244,115,279,109,279,109,244"/>
+<area shape="rect" id="Node000001" title="Команды забега ТЕКУЩЕГО СЕАНСА: то, что регистрирует в своём составе Сессия." alt="" coords="5,339,219,419"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1Commands_1_1IRunCommands.html" title="Глаголы изменения забега — то, что зовёт игра вместо прямых мутаторов RunStateService." alt="" coords="28,5,196,291"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,305,115,338,109,338,109,305"/>
 </map>

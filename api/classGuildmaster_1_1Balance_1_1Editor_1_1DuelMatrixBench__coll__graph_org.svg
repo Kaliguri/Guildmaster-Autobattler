@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Фаза 2 — round&#45;robin бои всех реликвий + рейтинг Bradley&#45;Terry.">
+<g id="a_Node000001"><a xlink:title="Фаза 2 — round&#45;robin бои всех мементо + рейтинг Bradley&#45;Terry.">
 <polygon fill="#999999" stroke="transparent" points="146,-90 0,-90 0,0 146,0 146,-90"/>
 <text text-anchor="start" x="5" y="-78" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Balance.Editor.</text>
 <text text-anchor="start" x="30.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">DuelMatrixBench</text>

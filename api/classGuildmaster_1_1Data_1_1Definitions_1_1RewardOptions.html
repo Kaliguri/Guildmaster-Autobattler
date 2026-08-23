@@ -110,10 +110,10 @@ Collaboration diagram for Guildmaster.Data.Definitions.RewardOptions:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:abf980244f6c6f5c3727bbedac74f66d4" id="r_abf980244f6c6f5c3727bbedac74f66d4"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RewardOptions.html#abf980244f6c6f5c3727bbedac74f66d4">Take</a> (string relicId)</td></tr>
-<tr class="memdesc:abf980244f6c6f5c3727bbedac74f66d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Взять реликвию — место есть.  <br /></td></tr>
+<tr class="memdesc:abf980244f6c6f5c3727bbedac74f66d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Взять мементо — место есть.  <br /></td></tr>
 <tr class="separator:abf980244f6c6f5c3727bbedac74f66d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad53bff3c554950f1836ecd7a74b420b8" id="r_ad53bff3c554950f1836ecd7a74b420b8"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RewardOptions.html#ad53bff3c554950f1836ecd7a74b420b8">Swap</a> (string relicId, string dropId)</td></tr>
-<tr class="memdesc:ad53bff3c554950f1836ecd7a74b420b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Взять реликвию, выбросив другую: инвентарь полон.  <br /></td></tr>
+<tr class="memdesc:ad53bff3c554950f1836ecd7a74b420b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Взять мементо, выбросив другую: инвентарь полон.  <br /></td></tr>
 <tr class="separator:ad53bff3c554950f1836ecd7a74b420b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60801d23af809802b732a4f51f1c53b6" id="r_a60801d23af809802b732a4f51f1c53b6"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RewardOptions.html#a60801d23af809802b732a4f51f1c53b6">TryParse</a> (string option, out string relicId, out string dropId)</td></tr>
 <tr class="memdesc:a60801d23af809802b732a4f51f1c53b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разобрать вариант.  <br /></td></tr>
@@ -127,7 +127,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Варианты решения о награде: что группа делает с витриной. </p>
-<p><b>Вариант — строка, потому что общее решение сравнивает голоса как строки</b> и ничего не знает ни про реликвии, ни про инвентарь. Обмен поэтому едет ОДНИМ вариантом («взять это, выбросив то»), а не двумя решениями подряд: имущество общее целиком, и согласиться группа должна на обе половины сразу (решение Макса 07.08.2026). Разведи их по двум решениям — и между ними появится состояние «награду взяли, а место ещё не освободили», которого в забеге быть не должно. </p>
+<p><b>Вариант — строка, потому что общее решение сравнивает голоса как строки</b> и ничего не знает ни про мементо, ни про инвентарь. Обмен поэтому едет ОДНИМ вариантом («взять это, выбросив то»), а не двумя решениями подряд: имущество общее целиком, и согласиться группа должна на обе половины сразу (решение Макса 07.08.2026). Разведи их по двум решениям — и между ними появится состояние «награду взяли, а место ещё не освободили», которого в забеге быть не должно. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad53bff3c554950f1836ecd7a74b420b8" name="ad53bff3c554950f1836ecd7a74b420b8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad53bff3c554950f1836ecd7a74b420b8">&#9670;&#160;</a></span>Swap()</h2>
@@ -163,7 +163,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Взять реликвию, выбросив другую: инвентарь полон. </p>
+<p>Взять мементо, выбросив другую: инвентарь полон. </p>
 
 </div>
 </div>
@@ -191,7 +191,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Взять реликвию — место есть. </p>
+<p>Взять мементо — место есть. </p>
 
 </div>
 </div>

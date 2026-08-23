@@ -10,6 +10,7 @@ var dir_850724288b2f6c2c8b66549c5631cfce =
     [ "GameStartRequest.cs", "GameStartRequest_8cs.html", "GameStartRequest_8cs" ],
     [ "GuildBook.cs", "GuildBook_8cs.html", "GuildBook_8cs" ],
     [ "HubMessages.cs", "HubMessages_8cs.html", "HubMessages_8cs" ],
+    [ "IGuildRosterView.cs", "IGuildRosterView_8cs.html", "IGuildRosterView_8cs" ],
     [ "InjuryCascade.cs", "InjuryCascade_8cs.html", "InjuryCascade_8cs" ],
     [ "InjuryLedger.cs", "InjuryLedger_8cs.html", "InjuryLedger_8cs" ],
     [ "IRunStateView.cs", "IRunStateView_8cs.html", "IRunStateView_8cs" ],
@@ -28,5 +29,6 @@ var dir_850724288b2f6c2c8b66549c5631cfce =
     [ "RunStateService.cs", "RunStateService_8cs.html", "RunStateService_8cs" ],
     [ "ShopContracts.cs", "ShopContracts_8cs.html", "ShopContracts_8cs" ],
     [ "TitleCardMessages.cs", "TitleCardMessages_8cs.html", "TitleCardMessages_8cs" ],
+    [ "VesselFactory.cs", "VesselFactory_8cs.html", "VesselFactory_8cs" ],
     [ "VesselState.cs", "VesselState_8cs.html", "VesselState_8cs" ]
 ];

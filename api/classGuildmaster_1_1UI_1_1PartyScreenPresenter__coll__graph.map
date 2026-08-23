@@ -1,0 +1,3 @@
+<map id="Guildmaster.UI.PartyScreenPresenter" name="Guildmaster.UI.PartyScreenPresenter">
+<area shape="rect" id="Node000001" title="Проводка страницы «Отряд»: читает состав из забега, отдаёт его вью плоскими записями и переводит жест..." alt="" coords="5,5,197,145"/>
+</map>

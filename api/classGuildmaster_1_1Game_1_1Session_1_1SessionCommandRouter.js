@@ -8,6 +8,9 @@ var classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter =
     [ "InflictInjury", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a3fee654a59100e9af73fb3cfadefcf86", null ],
     [ "RemoveRelic", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#adffcbf865dc46b30e811b75c6a22c0fc", null ],
     [ "RequestSave", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#ac1913ed03359e7dc05ca2cc3b5d70321", null ],
+    [ "SetSlotInBattle", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#aa843757a354f1f4d105fea459041cb7b", null ],
+    [ "SetSlotItem", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a57adbec42896e1c42521b3590998f20b", null ],
     [ "SetSlotPosition", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a6d8814947b3353908e53038d281b509e", null ],
-    [ "SetSlotRelic", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a8c3eb7f160f59867847a2f246958a060", null ]
+    [ "SetSlotRelic", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a8c3eb7f160f59867847a2f246958a060", null ],
+    [ "SwapSlots", "classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html#a0efe9754337edfbd405b18bf7740e047", null ]
 ];

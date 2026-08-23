@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,69,221,109"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html#a6578cc8bff2c6f410a4739e847dd3d54" title="Собрать ТРАНЗИЕНТНЫЙ пресет боя в рантайме (узел забега): враги — из авторского пресета,..." alt="" coords="269,5,504,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,67,287,46,288,51,200,72"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив." alt="" coords="279,69,495,109"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" title="Гильдия забега → слоты player&#45;ростера." alt="" coords="279,69,495,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="222,87,265,87,265,92,222,92"/>
 <area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#aa69f17b857f358b92bfeeb3a00bcefc3" title="Строковые id предметов → массив ItemData (null, если ничего не разрешилось)." alt="" coords="552,127,768,167"/>
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="201,107,270,119,409,133,538,140,538,146,408,138,269,124,201,112"/>

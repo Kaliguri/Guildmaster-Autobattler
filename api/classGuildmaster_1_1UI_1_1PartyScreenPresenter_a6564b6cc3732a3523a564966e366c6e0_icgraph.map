@@ -1,0 +1,7 @@
+<map id="Guildmaster.UI.PartyScreenPresenter.BuildSlots" name="Guildmaster.UI.PartyScreenPresenter.BuildSlots">
+<area shape="rect" id="Node000001" title="Состав забега глазами экрана. Пустой забег даёт пустой список — это не отказ, а факт." alt="" coords="501,5,701,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1PartyScreenPresenter.html#a9830d4f0463ac0c253f0378df9b9d20b" title="Перечитать состав и пересобрать экран." alt="" coords="253,5,453,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="488,28,454,28,454,23,488,23"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1PartyScreenPresenter.html#a58b0e59c26748150e63447a75b2c9c43" title="Собрать экран в переданный контейнер и держать его в актуальном виде." alt="" coords="5,5,205,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="240,28,206,28,206,23,240,23"/>
+</map>

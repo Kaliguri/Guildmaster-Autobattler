@@ -59,7 +59,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" target="_top" xlink:title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив.">
+<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" target="_top" xlink:title="Гильдия забега → слоты player&#45;ростера.">
 <polygon fill="white" stroke="#666666" points="571.5,-73 409.5,-73 409.5,-43 571.5,-43 571.5,-73"/>
 <text text-anchor="start" x="417.5" y="-61" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.Guild</text>
 <text text-anchor="middle" x="490.5" y="-50" font-family="Helvetica,sans-Serif" font-size="10.00">Roster.Resolve</text>

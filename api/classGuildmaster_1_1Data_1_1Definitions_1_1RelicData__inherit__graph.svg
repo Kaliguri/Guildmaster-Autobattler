@@ -57,7 +57,7 @@ var sectionId = 'dynsection-0';
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="«Чемпион» — реликвия игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,...">
+<g id="a_Node000001"><a xlink:title="«Чемпион» — мементо игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,...">
 <polygon fill="#999999" stroke="transparent" points="165,-135 0,-135 0,0 165,0 165,-135"/>
 <text text-anchor="start" x="10.5" y="-122.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="start" x="59" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">RelicData</text>

@@ -1,0 +1,9 @@
+<map id="Guildmaster.UI.PartyScreenPresenter.Mount" name="Guildmaster.UI.PartyScreenPresenter.Mount">
+<area shape="rect" id="Node000001" title="Собрать экран в переданный контейнер и держать его в актуальном виде." alt="" coords="5,37,205,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1PartyScreenPresenter.html#a9830d4f0463ac0c253f0378df9b9d20b" title="Перечитать состав и пересобрать экран." alt="" coords="253,37,453,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,55,240,55,240,60,205,60"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1PartyScreenView.html#af63844af62e140f783bf95fbfe6bd143" title=" " alt="" coords="501,5,701,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="453,42,487,37,488,43,454,47"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1UI_1_1PartyScreenPresenter.html#a6564b6cc3732a3523a564966e366c6e0" title="Состав забега глазами экрана. Пустой забег даёт пустой список — это не отказ, а факт." alt="" coords="501,69,701,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="454,68,488,72,487,77,453,73"/>
+</map>

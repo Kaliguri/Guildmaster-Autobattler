@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.IGuildRosterView" name="Guildmaster.Guild.IGuildRosterView">
+<area shape="rect" id="Node000001" title="Чтение людей ДОМА для тех, кто живёт в забеге." alt="" coords="18,5,191,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html" title="Реализация IProfileService поверх ISaveService." alt="" coords="5,133,204,593"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,100,107,133,102,133,102,100"/>
+</map>

@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Поставить отряд забега на арену. No&#45;op&#45;безопасно: пустая гильдия → пустая арена (только сброс)." alt="" coords="5,69,229,109"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1EncounterLoader.html#ae7619b915e5c523e583d64db3b2477b5" title="Поставить отряд игрока (team 0) в начале боя." alt="" coords="277,5,503,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,67,291,46,292,51,204,72"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив." alt="" coords="282,69,498,109"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" title="Гильдия забега → слоты player&#45;ростера." alt="" coords="282,69,498,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="230,87,268,87,268,92,230,92"/>
 <area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#aa69f17b857f358b92bfeeb3a00bcefc3" title="Строковые id предметов → массив ItemData (null, если ничего не разрешилось)." alt="" coords="551,127,767,167"/>
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="208,107,278,119,412,132,537,140,537,145,411,138,277,124,207,112"/>

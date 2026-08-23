@@ -1,0 +1,3 @@
+<map id="Guildmaster.UI.PartyScreenView.Actions" name="Guildmaster.UI.PartyScreenView.Actions">
+<area shape="rect" id="Node000001" title="Что игрок сделал с местом отряда. Экран не меняет состояние сам — он только зовёт." alt="" coords="5,5,197,165"/>
+</map>

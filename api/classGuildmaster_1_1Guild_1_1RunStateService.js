@@ -1,6 +1,6 @@
 var classGuildmaster_1_1Guild_1_1RunStateService =
 [
-    [ "RunStateService", "classGuildmaster_1_1Guild_1_1RunStateService.html#a6ed28047544e30cbc74d61f02b523dab", null ],
+    [ "RunStateService", "classGuildmaster_1_1Guild_1_1RunStateService.html#a3bd209eb5fed692cece048cc8caa7f70", null ],
     [ "AddPartyItem", "classGuildmaster_1_1Guild_1_1RunStateService.html#ac2780a291147a3a28e73bcc8514dcaab", null ],
     [ "AdvanceInjuries", "classGuildmaster_1_1Guild_1_1RunStateService.html#a577cbceb2c828c2457793c163bf9f356", null ],
     [ "Autosave", "classGuildmaster_1_1Guild_1_1RunStateService.html#a6b735b72a2c9f42774c7c55876833639", null ],
@@ -11,6 +11,7 @@ var classGuildmaster_1_1Guild_1_1RunStateService =
     [ "IncreaseCapacity", "classGuildmaster_1_1Guild_1_1RunStateService.html#a978046fc3f6dd1453f290bd267e31855", null ],
     [ "NewDefaultRun", "classGuildmaster_1_1Guild_1_1RunStateService.html#aff54a03842a9198c822ef5b44bb800eb", null ],
     [ "NewRun", "classGuildmaster_1_1Guild_1_1RunStateService.html#a42b5f7b8c98688812518b9d22b64c89f", null ],
+    [ "Normalize", "classGuildmaster_1_1Guild_1_1RunStateService.html#a2b4da234844ebaf7db179013b439afff", null ],
     [ "RemovePartyItem", "classGuildmaster_1_1Guild_1_1RunStateService.html#abd14e1fbee026ef4d09876847273b6c2", null ],
     [ "RemoveVesselItem", "classGuildmaster_1_1Guild_1_1RunStateService.html#a54acc723a0eb55c0a41fced00e41c86e", null ],
     [ "TryAddRelic", "classGuildmaster_1_1Guild_1_1RunStateService.html#abef513da7f33d987703f3d13bb236f8b", null ],

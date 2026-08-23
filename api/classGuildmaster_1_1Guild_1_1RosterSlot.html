@@ -98,12 +98,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Guild_1_1RosterSlo
 </div><!--header-->
 <div class="contents">
 
-<p>Слот ростера гильдии (план 11 §3.1): сосуд + надетый релик (весь кит) + пресет AI + предметы + позиция.  
+<p>Слот ростера гильдии (план 11 §3.1): сосуд + надетое Мементо (весь кит) + пресет AI + предметы + позиция.  
  <a href="classGuildmaster_1_1Guild_1_1RosterSlot.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Guild.RosterSlot:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1RosterSlot__coll__graph.svg" width="214" height="324"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1RosterSlot__coll__graph.svg" width="214" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -118,13 +118,16 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ae5cbecb7c127dbd2f0a9f43f096c9cf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8ab46585fff4f1b2b3bc68d1d7dfd75" id="r_ae8ab46585fff4f1b2b3bc68d1d7dfd75"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RosterSlot.html#ae8ab46585fff4f1b2b3bc68d1d7dfd75">SavedPosition</a></td></tr>
 <tr class="separator:ae8ab46585fff4f1b2b3bc68d1d7dfd75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d6231b0568f778e10dbd2ee1dfacd11" id="r_a4d6231b0568f778e10dbd2ee1dfacd11"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RosterSlot.html#a4d6231b0568f778e10dbd2ee1dfacd11">InBattle</a></td></tr>
+<tr class="memdesc:a4d6231b0568f778e10dbd2ee1dfacd11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выходит ли этот «Сосуд» в бой.  <br /></td></tr>
+<tr class="separator:a4d6231b0568f778e10dbd2ee1dfacd11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab70255fc6c8c2ca821c4a36ff8e1581c" id="r_ab70255fc6c8c2ca821c4a36ff8e1581c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Guild_1_1Injury.html">Injury</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RosterSlot.html#ab70255fc6c8c2ca821c4a36ff8e1581c">Injuries</a> = Array.Empty&lt;<a class="el" href="classGuildmaster_1_1Guild_1_1Injury.html">Injury</a>&gt;()</td></tr>
 <tr class="memdesc:ab70255fc6c8c2ca821c4a36ff8e1581c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Последствия боёв на этом «Сосуде» — травмы и закалки, в порядке получения.  <br /></td></tr>
 <tr class="separator:ab70255fc6c8c2ca821c4a36ff8e1581c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Слот ростера гильдии (план 11 §3.1): сосуд + надетый релик (весь кит) + пресет AI + предметы + позиция. </p>
-<p>Всё по строковым content id (relic.*, vessel.*, ai_preset.*, item.*). Слот релика всегда заполнен (relic.base у «пустого» сосуда). Пустые строки = не задано (сосуд опц., aiPreset = дефолт релика). </p>
+<div class="textblock"><p>Слот ростера гильдии (план 11 §3.1): сосуд + надетое Мементо (весь кит) + пресет AI + предметы + позиция. </p>
+<p>Всё по строковым content id (relic.*, vessel.*, ai_preset.*, item.*). Слот Мементо всегда заполнен (relic.base у «пустого» сосуда). Пустые строки = не задано (сосуд опц., aiPreset = дефолт Мементо). </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a4d69d9f78ad46f954d6df3b805c90cbb" name="a4d69d9f78ad46f954d6df3b805c90cbb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d69d9f78ad46f954d6df3b805c90cbb">&#9670;&#160;</a></span>AiPresetId</h2>
@@ -137,6 +140,25 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4d6231b0568f778e10dbd2ee1dfacd11" name="a4d6231b0568f778e10dbd2ee1dfacd11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d6231b0568f778e10dbd2ee1dfacd11">&#9670;&#160;</a></span>InBattle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Guild.RosterSlot.InBattle</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Выходит ли этот «Сосуд» в бой. </p>
+<p>В отряде до восьми мест, на арену идут четверо (ГДД <code>preparation-screens</code> §2.1) — и признак хранится ПОЛЕМ, а не порядком первых четырёх записей. </p>
+<p>Порядок отвергнут осознанно (журнал 2026-08-22 «The Battle Four Gets A Flag»): он дешевле, но делает перетаскивание в ленте двусмысленным — игрок тянет человека, чтобы поменять двоих местами, а получает вывод из боя.</p>
+<p>Старый сейв поля не имел: там боевыми становятся первые четыре занятых места (RunState нормализуется при загрузке).</p>
 
 </div>
 </div>

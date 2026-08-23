@@ -11,6 +11,8 @@ var searchData=
   ['versionof_3c_20t_20_3e_8',['VersionOf&lt; T &gt;',['../classGuildmaster_1_1Core_1_1Persistence_1_1SaveSchema.html#ae1e5efaf6cc658ca08cb8d024a2c2987',1,'Guildmaster::Core::Persistence::SaveSchema']]],
   ['vertexcolor_9',['VertexColor',['../classGuildmaster_1_1UI_1_1Components_1_1PlateButton.html#a52a0de9d2b1c4388a4a580e237ee1602',1,'Guildmaster::UI::Components::PlateButton']]],
   ['vessel_10',['Vessel',['../structGuildmaster_1_1UI_1_1Tooltips_1_1TooltipRequest.html#a90c06160a434a0a4012b2f561d149300',1,'Guildmaster::UI::Tooltips::TooltipRequest']]],
-  ['vesselitems_11',['VesselItems',['../classGuildmaster_1_1Guild_1_1RunStateService.html#ab17de7003e09f7779d188fd7c6f35fc8',1,'Guildmaster::Guild::RunStateService']]],
-  ['visualtempo_12',['VisualTempo',['../classGuildmaster_1_1Presentation_1_1Tempo_1_1VisualTempo.html#a7acacaa1b6c687a6e51263aa6b5f6f6c',1,'Guildmaster::Presentation::Tempo::VisualTempo']]]
+  ['vesselcardpresenter_11',['VesselCardPresenter',['../classGuildmaster_1_1UI_1_1VesselCardPresenter.html#a2e1090e89752d1d3d67ce89911daa67f',1,'Guildmaster::UI::VesselCardPresenter']]],
+  ['vesselcardsubject_12',['VesselCardSubject',['../structGuildmaster_1_1UI_1_1VesselCardSubject.html#ae2567e6de5814da1ba47d1d3c01510d9',1,'Guildmaster::UI::VesselCardSubject']]],
+  ['vesselitems_13',['VesselItems',['../classGuildmaster_1_1Guild_1_1RunStateService.html#ab17de7003e09f7779d188fd7c6f35fc8',1,'Guildmaster::Guild::RunStateService']]],
+  ['visualtempo_14',['VisualTempo',['../classGuildmaster_1_1Presentation_1_1Tempo_1_1VisualTempo.html#a7acacaa1b6c687a6e51263aa6b5f6f6c',1,'Guildmaster::Presentation::Tempo::VisualTempo']]]
 ];

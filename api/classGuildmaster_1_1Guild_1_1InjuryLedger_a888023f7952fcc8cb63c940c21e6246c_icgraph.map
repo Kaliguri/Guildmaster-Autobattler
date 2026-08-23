@@ -1,5 +1,7 @@
 <map id="Guildmaster.Guild.InjuryLedger.SlotsOf" name="Guildmaster.Guild.InjuryLedger.SlotsOf">
-<area shape="rect" id="Node000001" title="Занятые слоты «Сосуда»: ступени берутся у ассетов по id." alt="" coords="233,5,413,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1InjuryLedger.html#a5fcac78473e09b300cae4670c4ef8d09" title="Положить на «Сосуд» последствие ступени requested : ступень уточняет каскад, конкретную рану выбирает..." alt="" coords="5,5,185,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,28,185,28,185,23,219,23"/>
+<area shape="rect" id="Node000001" title="Занятые слоты «Сосуда»: ступени берутся у ассетов по id." alt="" coords="248,37,428,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1VesselCardPresenter.html#a0920585d5f67281563f8c3a917b824e1" title="Содержимое карточки для места отряда. Пустой субъект — показывать некого." alt="" coords="5,5,200,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="234,46,200,41,200,36,235,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Guild_1_1InjuryLedger.html#a5fcac78473e09b300cae4670c4ef8d09" title="Положить на «Сосуд» последствие ступени requested : ступень уточняет каскад, конкретную рану выбирает..." alt="" coords="13,69,193,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="234,74,193,80,193,74,234,69"/>
 </map>

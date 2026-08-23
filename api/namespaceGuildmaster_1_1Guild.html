@@ -130,6 +130,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1GuildState.html">GuildState</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гильдия — дом игрока и <b>одновременно слот сохранения</b> (ТЗ [[save-system]] §3): отдельной сущности «слот» нет, игрок выбирает не «Save 1», а дом.  <a href="classGuildmaster_1_1Guild_1_1GuildState.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1IGuildRosterView.html">IGuildRosterView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Чтение людей ДОМА для тех, кто живёт в забеге.  <a href="interfaceGuildmaster_1_1Guild_1_1IGuildRosterView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1Injury.html">Injury</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Одно последствие на «Сосуде»: что это и сколько узлов оно уже пережило.  <a href="classGuildmaster_1_1Guild_1_1Injury.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -211,7 +214,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Профиль аккаунта — мета ИГРОКА, переживающая забеги и гильдии (ТЗ [[save-system]] §3).  <a href="classGuildmaster_1_1Guild_1_1ProfileState.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RosterSlot.html">RosterSlot</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Слот ростера гильдии (план 11 §3.1): сосуд + надетый релик (весь кит) + пресет AI + предметы + позиция.  <a href="classGuildmaster_1_1Guild_1_1RosterSlot.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Слот ростера гильдии (план 11 §3.1): сосуд + надетое Мементо (весь кит) + пресет AI + предметы + позиция.  <a href="classGuildmaster_1_1Guild_1_1RosterSlot.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunRecord.html">RunRecord</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строка Хроники — один прожитый забег дома: чем он был, чем кончился и кого стоил (реш.  <a href="classGuildmaster_1_1Guild_1_1RunRecord.html#details">More...</a><br /></td></tr>
@@ -223,7 +226,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Durable-состояние забега (план 11 §3.1, вики «7» §4): единственный источник истины забега, всё по строковым content id.  <a href="classGuildmaster_1_1Guild_1_1RunState.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владелец durable-состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости коллекции реликов (план 11 §5.4).  <a href="classGuildmaster_1_1Guild_1_1RunStateService.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владелец durable-состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости коллекции Мементо (план 11 §5.4).  <a href="classGuildmaster_1_1Guild_1_1RunStateService.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1SetWorldMapRequest.html">SetWorldMapRequest</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ИНТЕНТ «показать/скрыть карту в мире» — радио-табы топбара («Карта» / «Бой»/«Инвентарь»).  <a href="structGuildmaster_1_1Guild_1_1SetWorldMapRequest.html#details">More...</a><br /></td></tr>
@@ -232,10 +235,13 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Итог попытки покупки (план [[act-map-run-loop]] §5.4).  <a href="classGuildmaster_1_1Guild_1_1ShopInjury.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1ShopItem.html">ShopItem</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Слот витрины магазина: реликвия + её цена + признак «уже куплено» (слот пуст).  <a href="classGuildmaster_1_1Guild_1_1ShopItem.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Слот витрины магазина: Мементо + его цена + признак «уже куплено» (слот пуст).  <a href="classGuildmaster_1_1Guild_1_1ShopItem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1ShopStashItem.html">ShopStashItem</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строка панели продажи: реликвия из запаса игрока + сколько за неё дадут.  <a href="classGuildmaster_1_1Guild_1_1ShopStashItem.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строка панели продажи: мементо из запаса игрока + сколько за неё дадут.  <a href="classGuildmaster_1_1Guild_1_1ShopStashItem.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1VesselFactory.html">VesselFactory</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Рождение процедурного «Сосуда»: из сида разворачиваются имя и перки, и всё это ложится в VesselState.  <a href="classGuildmaster_1_1Guild_1_1VesselFactory.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1VesselState.html">VesselState</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Человек гильдии — durable-запись «Сосуда», переживающая забеги (ГДД [[gdd/30-run-meta/guild-development|Развитие гильдии]] §Люди дома).  <a href="classGuildmaster_1_1Guild_1_1VesselState.html#details">More...</a><br /></td></tr>

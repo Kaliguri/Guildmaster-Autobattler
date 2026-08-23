@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1EditorTools_
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.EditorTools.UiContactSheetMenu:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1EditorTools_1_1UiContactSheetMenu__coll__graph.svg" width="207" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1EditorTools_1_1UiContactSheetMenu__coll__graph.svg" width="207" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -116,6 +116,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aa7ee53858bd130dba50ddbe37ce2c725" id="r_aa7ee53858bd130dba50ddbe37ce2c725"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1EditorTools_1_1UiContactSheetMenu.html#aa7ee53858bd130dba50ddbe37ce2c725">CaptureLightnessLadder</a> ()</td></tr>
 <tr class="memdesc:aa7ee53858bd130dba50ddbe37ce2c725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Лестница глубины: три светлоты фона, и на каждой — кнопка на фоне против кнопки на своей ступени.  <br /></td></tr>
 <tr class="separator:aa7ee53858bd130dba50ddbe37ce2c725"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a107236b78b3e4b4f1248678a33b4e521" id="r_a107236b78b3e4b4f1248678a33b4e521"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1EditorTools_1_1UiContactSheetMenu.html#a107236b78b3e4b4f1248678a33b4e521">CaptureScreens</a> ()</td></tr>
+<tr class="memdesc:a107236b78b3e4b4f1248678a33b4e521"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кадры экранов: по одному снимку на каждый экран каталога превью.  <br /></td></tr>
+<tr class="separator:a107236b78b3e4b4f1248678a33b4e521"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Пункт меню, снимающий контактный лист состояний интерфейса. </p>
@@ -199,6 +202,34 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Лестница глубины: три светлоты фона, и на каждой — кнопка на фоне против кнопки на своей ступени. </p>
 <p>Отдельным пунктом от лестницы громкости: та крутит НАСЫЩЕННОСТЬ и отвечает «насколько звонко», эта крутит СВЕТЛОТУ и отвечает «различимы ли слои». Вопросы соседние, но ответы у них разные, и мешать их в одном кадре значит не получить ни одного. </p>
+
+</div>
+</div>
+<a id="a107236b78b3e4b4f1248678a33b4e521" name="a107236b78b3e4b4f1248678a33b4e521"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a107236b78b3e4b4f1248678a33b4e521">&#9670;&#160;</a></span>CaptureScreens()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Guildmaster.UI.EditorTools.UiContactSheetMenu.CaptureScreens </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Кадры экранов: по одному снимку на каждый экран каталога превью. </p>
+<p>Отдельным пунктом от контактного листа, потому что вопрос другой. Лист отвечает «как выглядит элемент», этот прогон — «как выглядит экран целиком»: разбор 23.08.2026 показал, что регрессии уровня экрана (пропал задник, разъехалась метрика, не отработан реф) не ловятся ни одним статическим гейтом и видны только на кадре. </p>
 
 </div>
 </div>

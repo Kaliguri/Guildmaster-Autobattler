@@ -19,5 +19,6 @@ var dir_25f72b7e4bd8bccd4e0b9b06eef35bc3 =
     [ "UiPreviewHost.cs", "UiPreviewHost_8cs.html", "UiPreviewHost_8cs" ],
     [ "UiPreviewMenu.cs", "UiPreviewMenu_8cs.html", null ],
     [ "UiSampleFactory.cs", "UiSampleFactory_8cs.html", "UiSampleFactory_8cs" ],
+    [ "UiScreenSheet.cs", "UiScreenSheet_8cs.html", null ],
     [ "VisualFxCommands.cs", "VisualFxCommands_8cs.html", "VisualFxCommands_8cs" ]
 ];

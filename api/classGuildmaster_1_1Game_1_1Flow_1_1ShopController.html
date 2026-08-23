@@ -127,7 +127,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a831775f4225e317a1ad213d829340b23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Перекатить всю витрину за RerollCost. false = не хватило золота.  <br /></td></tr>
 <tr class="separator:a831775f4225e317a1ad213d829340b23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ddaa4d518f9f336ea948e29f9e5615e" id="r_a8ddaa4d518f9f336ea948e29f9e5615e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a8ddaa4d518f9f336ea948e29f9e5615e">Sell</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> relic)</td></tr>
-<tr class="memdesc:a8ddaa4d518f9f336ea948e29f9e5615e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Продать реликвию из запаса (освободить место). false = такой в запасе нет.  <br /></td></tr>
+<tr class="memdesc:a8ddaa4d518f9f336ea948e29f9e5615e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Продать мементо из запаса (освободить место). false = такой в запасе нет.  <br /></td></tr>
 <tr class="separator:a8ddaa4d518f9f336ea948e29f9e5615e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0586bf04c9dd26c7b2074463e39323d7" id="r_a0586bf04c9dd26c7b2074463e39323d7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a0586bf04c9dd26c7b2074463e39323d7">Heal</a> (int slotIndex, string consequenceId)</td></tr>
 <tr class="memdesc:a0586bf04c9dd26c7b2074463e39323d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вылечить одно последствие за золото.  <br /></td></tr>
@@ -143,7 +143,7 @@ Properties</h2></td></tr>
 <tr class="memdesc:a61c9d84e3757b14e654da7c50e6002a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">4 слота витрины (проданные помечены ShopItem.Sold).  <br /></td></tr>
 <tr class="separator:a61c9d84e3757b14e654da7c50e6002a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17841d8d928da5eae3f088de61f47237" id="r_a17841d8d928da5eae3f088de61f47237"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1ShopStashItem.html">ShopStashItem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a17841d8d928da5eae3f088de61f47237">Stash</a><code> [get]</code></td></tr>
-<tr class="memdesc:a17841d8d928da5eae3f088de61f47237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запас игрока для продажи (реликвия + цена продажи 25%).  <br /></td></tr>
+<tr class="memdesc:a17841d8d928da5eae3f088de61f47237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запас игрока для продажи (мементо + цена продажи 25%).  <br /></td></tr>
 <tr class="separator:a17841d8d928da5eae3f088de61f47237"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1748601f98f3efe7e80b15dd89ffc22a" id="r_a1748601f98f3efe7e80b15dd89ffc22a"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Guild_1_1ShopInjury.html">ShopInjury</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html#a1748601f98f3efe7e80b15dd89ffc22a">Injuries</a><code> [get]</code></td></tr>
 <tr class="memdesc:a1748601f98f3efe7e80b15dd89ffc22a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полка лекаря: все последствия отряда с ценой снятия.  <br /></td></tr>
@@ -387,7 +387,7 @@ Events</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Продать реликвию из запаса (освободить место). false = такой в запасе нет. </p>
+<p>Продать мементо из запаса (освободить место). false = такой в запасе нет. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1IShopController.html#ad0a51a41d14da144d4e9c5b477f56588">Guildmaster.Guild.IShopController</a>.</p>
 
@@ -515,7 +515,7 @@ Events</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Запас игрока для продажи (реликвия + цена продажи 25%). </p>
+<p>Запас игрока для продажи (мементо + цена продажи 25%). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Guild_1_1IShopController.html#ab85632f8766e80c8d66e39d8a13c090f">Guildmaster.Guild.IShopController</a>.</p>
 

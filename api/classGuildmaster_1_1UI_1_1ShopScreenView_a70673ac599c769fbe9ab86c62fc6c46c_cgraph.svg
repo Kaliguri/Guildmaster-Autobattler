@@ -87,7 +87,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="interfaceGuildmaster_1_1Guild_1_1IShopController.html#ad0a51a41d14da144d4e9c5b477f56588" target="_top" xlink:title="Продать реликвию из запаса (освободить место). false = такой в запасе нет.">
+<g id="a_Node000005"><a xlink:href="interfaceGuildmaster_1_1Guild_1_1IShopController.html#ad0a51a41d14da144d4e9c5b477f56588" target="_top" xlink:title="Продать мементо из запаса (освободить место). false = такой в запасе нет.">
 <polygon fill="white" stroke="#666666" points="388,-19 185,-19 185,0 388,0 388,-19"/>
 <text text-anchor="middle" x="286.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Guild.IShopController.Sell</text>
 </a>

@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Re
 </div><!--header-->
 <div class="contents">
 
-<p>Генератор витрины наград (план 11 §4 A3, «сердце рогалика»): катит N (обычно 3) РАЗНЫХ реликвий из контент-БД.  
+<p>Генератор витрины наград (план 11 §4 A3, «сердце рогалика»): катит N (обычно 3) РАЗНЫХ мементо из контент-БД.  
  <a href="classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Flow.RewardService:</div>
@@ -113,13 +113,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a44fa199901f9ab491077ed135548d1ec" id="r_a44fa199901f9ab491077ed135548d1ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html#a44fa199901f9ab491077ed135548d1ec">RewardService</a> (<a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html">IRngService</a> rng)</td></tr>
 <tr class="separator:a44fa199901f9ab491077ed135548d1ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e5b0c8041e64b8b95102aa8bb7ebbe4" id="r_a9e5b0c8041e64b8b95102aa8bb7ebbe4"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html#a9e5b0c8041e64b8b95102aa8bb7ebbe4">RollChoices</a> (<a class="el" href="namespaceGuildmaster_1_1Game_1_1Flow.html#a74c941f3354c00f52e95f5a61b2725f1">RewardTier</a> tier, int count=<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html#a0261a9a98784a7315a39b9ff7739544e">DefaultChoiceCount</a>)</td></tr>
-<tr class="memdesc:a9e5b0c8041e64b8b95102aa8bb7ebbe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Скатать витрину: до <em>count</em>  РАЗНЫХ реликвий (без базовой).  <br /></td></tr>
+<tr class="memdesc:a9e5b0c8041e64b8b95102aa8bb7ebbe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Скатать витрину: до <em>count</em>  РАЗНЫХ мементо (без базовой).  <br /></td></tr>
 <tr class="separator:a9e5b0c8041e64b8b95102aa8bb7ebbe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aef13139bc65f260fa1a80329a5990b64" id="r_aef13139bc65f260fa1a80329a5990b64"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html#aef13139bc65f260fa1a80329a5990b64">UniqueChance</a> (<a class="el" href="namespaceGuildmaster_1_1Game_1_1Flow.html#a74c941f3354c00f52e95f5a61b2725f1">RewardTier</a> tier)</td></tr>
-<tr class="memdesc:aef13139bc65f260fa1a80329a5990b64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шанс уникальной реликвии в одном слоте витрины.  <br /></td></tr>
+<tr class="memdesc:aef13139bc65f260fa1a80329a5990b64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шанс уникального мементо в одном слоте витрины.  <br /></td></tr>
 <tr class="separator:aef13139bc65f260fa1a80329a5990b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -128,9 +128,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a0261a9a98784a7315a39b9ff7739544e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Генератор витрины наград (план 11 §4 A3, «сердце рогалика»): катит N (обычно 3) РАЗНЫХ реликвий из контент-БД. </p>
+<div class="textblock"><p>Генератор витрины наград (план 11 §4 A3, «сердце рогалика»): катит N (обычно 3) РАЗНЫХ мементо из контент-БД. </p>
 <p>Детерминирован через IRngService (тот же seed → та же витрина; для реплея/коопа). Взятие/сброс живёт в <a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html" title="Владелец durable-состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости к...">Guildmaster.Guild.RunStateService</a> (единая точка вместимости, §5.4) — сервис только формирует выбор. </p>
-<p>Ramp по RewardTier: шанс уникальной реликвии в слоте витрины — 10% за рядовой бой, 20% за элиту, 100% за босса (экономика, [[meta-progression-economy]]). Наклон катится ПОСЛОТНО, так что у босса вся витрина уникальная, а в рядовом бою уник — редкий гость.</p>
+<p>Ramp по RewardTier: шанс уникального мементо в слоте витрины — 10% за рядовой бой, 20% за элиту, 100% за босса (экономика, [[meta-progression-economy]]). Наклон катится ПОСЛОТНО, так что у босса вся витрина уникальная, а в рядовом бою уник — редкий гость.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a44fa199901f9ab491077ed135548d1ec" name="a44fa199901f9ab491077ed135548d1ec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a44fa199901f9ab491077ed135548d1ec">&#9670;&#160;</a></span>RewardService()</h2>
@@ -203,7 +203,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Скатать витрину: до <em>count</em>  РАЗНЫХ реликвий (без базовой). </p>
+<p>Скатать витрину: до <em>count</em>  РАЗНЫХ мементо (без базовой). </p>
 <p>Меньше пула — вернёт сколько есть. Порядок детерминирован RNG. Дубли с уже собранными допустимы (дубль = прогресс, экономика §5.4). </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
@@ -237,7 +237,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Шанс уникальной реликвии в одном слоте витрины. </p>
+<p>Шанс уникального мементо в одном слоте витрины. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">

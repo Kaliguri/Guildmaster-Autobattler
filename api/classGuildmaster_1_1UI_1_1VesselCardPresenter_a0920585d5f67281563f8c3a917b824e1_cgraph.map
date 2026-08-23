@@ -1,0 +1,7 @@
+<map id="Guildmaster.UI.VesselCardPresenter.BuildSubject" name="Guildmaster.UI.VesselCardPresenter.BuildSubject">
+<area shape="rect" id="Node000001" title="Содержимое карточки для места отряда. Пустой субъект — показывать некого." alt="" coords="5,5,200,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1InjuryLedger.html#a888023f7952fcc8cb63c940c21e6246c" title="Занятые слоты «Сосуда»: ступени берутся у ассетов по id." alt="" coords="248,5,428,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,23,234,23,234,28,200,28"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Guild_1_1InjurySlots.html#ad6b220c8fe6430f6a58188d3086bf852" title="Пересчитать занятость по списку ступеней (закалки в список не попадают)." alt="" coords="476,5,656,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="428,23,462,23,462,28,428,28"/>
+</map>

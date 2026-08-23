@@ -1,0 +1,5 @@
+<map id="Guildmaster.Net.Session.ExternalLinkService" name="Guildmaster.Net.Session.ExternalLinkService">
+<area shape="rect" id="Node000001" title="Открывает ссылки наружу: оверлеем Steam, если он на связи, иначе браузером машины." alt="" coords="5,139,184,259"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Platform_1_1IExternalLinkService.html" title="Дверь наружу: открыть веб&#45;страницу или страницу игры в магазине." alt="" coords="21,5,168,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,105,97,138,92,138,92,105"/>
+</map>

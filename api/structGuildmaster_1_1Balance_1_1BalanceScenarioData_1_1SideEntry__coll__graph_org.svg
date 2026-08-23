@@ -101,7 +101,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" target="_top" xlink:title="«Сосуд» — человек, носящий Реликвию.">
+<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" target="_top" xlink:title="«Сосуд» — человек, носящий Мементо.">
 <polygon fill="white" stroke="transparent" points="328,-249.5 173,-249.5 173,-174.5 328,-174.5 328,-249.5"/>
 <text text-anchor="start" x="178.5" y="-237" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="start" x="223.5" y="-226" font-family="Helvetica,sans-Serif" font-size="10.00">VesselData</text>

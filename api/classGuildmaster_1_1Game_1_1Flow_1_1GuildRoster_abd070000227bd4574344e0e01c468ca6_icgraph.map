@@ -1,6 +1,6 @@
 <map id="Guildmaster.Game.Flow.GuildRoster.ResolveConsequences" name="Guildmaster.Game.Flow.GuildRoster.ResolveConsequences">
 <area shape="rect" id="Node000001" title="Строковые id последствий → массив ConsequenceData (null, если ничего не разрешилось)." alt="" coords="811,69,1027,109"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив." alt="" coords="547,69,763,109"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" title="Гильдия забега → слоты player&#45;ростера." alt="" coords="547,69,763,109"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="797,92,763,92,763,87,797,87"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1RosterDeployer.html#ae49b8acaf11309c8378e5e021ef9fe8e" title="Поставить отряд забега на арену. No&#45;op&#45;безопасно: пустая гильдия → пустая арена (только сброс)." alt="" coords="275,5,499,45"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="556,69,470,48,472,43,558,63"/>

@@ -1,0 +1,11 @@
+<map id="Guildmaster.UI.ItemsScreenPresenter.Mount" name="Guildmaster.UI.ItemsScreenPresenter.Mount">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,69,209,109"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1ItemsScreenPresenter.html#ad96affb7e4148b99c13a1ec2cfd02002" title="Перечитать снаряжение и пересобрать экран." alt="" coords="257,69,461,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,87,244,87,244,92,209,92"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1ItemsScreenView.html#abda977ba16cf0cdd9b5e0bfeacf02d51" title=" " alt="" coords="509,5,713,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="438,67,518,46,520,51,440,72"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1UI_1_1ItemsScreenPresenter.html#a18a04c1a136372a0efa9e629b65c8c6f" title="Строки страницы: только занятые места отряда." alt="" coords="509,69,713,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="461,87,496,87,496,92,461,92"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1UI_1_1ItemsScreenPresenter.html#ac5f965da5e09f27826a89f414ad2fe44" title="Вещи в запасе забега." alt="" coords="509,133,713,173"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="440,107,520,127,518,133,438,112"/>
+</map>

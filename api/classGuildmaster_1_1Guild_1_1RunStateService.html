@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Guild_1_1RunStateS
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="#events">Events</a> &#124;
 <a href="classGuildmaster_1_1Guild_1_1RunStateService-members.html">List of all members</a>  </div>
@@ -100,7 +101,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Guild_1_1RunStateS
 </div><!--header-->
 <div class="contents">
 
-<p>Владелец durable-состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости коллекции реликов (план 11 §5.4).  
+<p>Владелец durable-состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости коллекции Мементо (план 11 §5.4).  
  <a href="classGuildmaster_1_1Guild_1_1RunStateService.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Guild.RunStateService:</div>
@@ -115,10 +116,10 @@ Collaboration diagram for Guildmaster.Guild.RunStateService:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6ed28047544e30cbc74d61f02b523dab" id="r_a6ed28047544e30cbc74d61f02b523dab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a6ed28047544e30cbc74d61f02b523dab">RunStateService</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html">ISaveService</a> save, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html">GameConfig</a> config, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a> profiles, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html">Core.Audio.IAudioService</a> audio=null)</td></tr>
-<tr class="separator:a6ed28047544e30cbc74d61f02b523dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bd209eb5fed692cece048cc8caa7f70" id="r_a3bd209eb5fed692cece048cc8caa7f70"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a3bd209eb5fed692cece048cc8caa7f70">RunStateService</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html">ISaveService</a> save, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html">GameConfig</a> config, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Persistence_1_1IProfileService.html">IProfileService</a> profiles, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html">Core.Audio.IAudioService</a> audio=null, <a class="el" href="interfaceGuildmaster_1_1Guild_1_1IGuildRosterView.html">IGuildRosterView</a> roster=null)</td></tr>
+<tr class="separator:a3bd209eb5fed692cece048cc8caa7f70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42b5f7b8c98688812518b9d22b64c89f" id="r_a42b5f7b8c98688812518b9d22b64c89f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html">RunState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a42b5f7b8c98688812518b9d22b64c89f">NewRun</a> (long seed, <a class="el" href="classGuildmaster_1_1Guild_1_1RosterSlot.html">RosterSlot</a>[] guild)</td></tr>
-<tr class="memdesc:a42b5f7b8c98688812518b9d22b64c89f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Начать новый забег: свежий RunState с базовой вместимостью реликов из конфига.  <br /></td></tr>
+<tr class="memdesc:a42b5f7b8c98688812518b9d22b64c89f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Начать новый забег: свежий RunState с базовой вместимостью Мементо из конфига.  <br /></td></tr>
 <tr class="separator:a42b5f7b8c98688812518b9d22b64c89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff54a03842a9198c822ef5b44bb800eb" id="r_aff54a03842a9198c822ef5b44bb800eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html">RunState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#aff54a03842a9198c822ef5b44bb800eb">NewDefaultRun</a> (long seed)</td></tr>
 <tr class="memdesc:aff54a03842a9198c822ef5b44bb800eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Начать новый забег со СТАНДАРТНОЙ стартовой гильдией (уточн.  <br /></td></tr>
@@ -142,16 +143,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae03f4a2a1736095f55fdf6b8fc053c19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить автосейв (конец/сброс забега).  <br /></td></tr>
 <tr class="separator:ae03f4a2a1736095f55fdf6b8fc053c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abef513da7f33d987703f3d13bb236f8b" id="r_abef513da7f33d987703f3d13bb236f8b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#abef513da7f33d987703f3d13bb236f8b">TryAddRelic</a> (string relicId)</td></tr>
-<tr class="memdesc:abef513da7f33d987703f3d13bb236f8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Добавить релик в запас, если есть место.  <br /></td></tr>
+<tr class="memdesc:abef513da7f33d987703f3d13bb236f8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Добавить Мементо в запас, если есть место.  <br /></td></tr>
 <tr class="separator:abef513da7f33d987703f3d13bb236f8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a978046fc3f6dd1453f290bd267e31855" id="r_a978046fc3f6dd1453f290bd267e31855"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a978046fc3f6dd1453f290bd267e31855">IncreaseCapacity</a> ()</td></tr>
 <tr class="memdesc:a978046fc3f6dd1453f290bd267e31855"><td class="mdescLeft">&#160;</td><td class="mdescRight">Увеличить вместимость на 1 (товар магазина/награда), до потолка.  <br /></td></tr>
 <tr class="separator:a978046fc3f6dd1453f290bd267e31855"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afef9ca09b0484a3893fa3beb23908ec1" id="r_afef9ca09b0484a3893fa3beb23908ec1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#afef9ca09b0484a3893fa3beb23908ec1">EquipRelic</a> (int slotIndex, string relicId)</td></tr>
-<tr class="memdesc:afef9ca09b0484a3893fa3beb23908ec1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Надеть релик из запаса на сосуд слота (лоадаут-хаб): релик снимается с запаса и встаёт на слот, а прежний кит слота (если не базовый) возвращается в запас — это свап, не потеря.  <br /></td></tr>
+<tr class="memdesc:afef9ca09b0484a3893fa3beb23908ec1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Надеть Мементо из запаса на сосуд слота (лоадаут-хаб): Мементо снимается с запаса и встаёт на слот, а прежний кит слота (если не базовый) возвращается в запас — это свап, не потеря.  <br /></td></tr>
 <tr class="separator:afef9ca09b0484a3893fa3beb23908ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a574be55aa19e4794b9041e42e56cbc6b" id="r_a574be55aa19e4794b9041e42e56cbc6b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a574be55aa19e4794b9041e42e56cbc6b">UnequipRelic</a> (int slotIndex)</td></tr>
-<tr class="memdesc:a574be55aa19e4794b9041e42e56cbc6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять релик со слота обратно в запас; слот возвращается к базовому киту.  <br /></td></tr>
+<tr class="memdesc:a574be55aa19e4794b9041e42e56cbc6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять Мементо со слота обратно в запас; слот возвращается к базовому киту.  <br /></td></tr>
 <tr class="separator:a574be55aa19e4794b9041e42e56cbc6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a577cbceb2c828c2457793c163bf9f356" id="r_a577cbceb2c828c2457793c163bf9f356"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a577cbceb2c828c2457793c163bf9f356">AdvanceInjuries</a> ()</td></tr>
 <tr class="memdesc:a577cbceb2c828c2457793c163bf9f356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узел маршрута пройден: состарить раны и снять те, что проходят сами.  <br /></td></tr>
@@ -175,6 +176,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:abd14e1fbee026ef4d09876847273b6c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Убрать предмет отряда.  <br /></td></tr>
 <tr class="separator:abd14e1fbee026ef4d09876847273b6c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a2b4da234844ebaf7db179013b439afff" id="r_a2b4da234844ebaf7db179013b439afff"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a2b4da234844ebaf7db179013b439afff">Normalize</a> (<a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html">RunState</a> run, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html">GameConfig</a> config)</td></tr>
+<tr class="memdesc:a2b4da234844ebaf7db179013b439afff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Дочитать забег, сохранённый до того, как отряд вырос с четырёх мест до восьми.  <br /></td></tr>
+<tr class="separator:a2b4da234844ebaf7db179013b439afff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a6a2355235ec220b94cb7538a3a7ed0ca" id="r_a6a2355235ec220b94cb7538a3a7ed0ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html">RunState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a6a2355235ec220b94cb7538a3a7ed0ca">Current</a><code> [get]</code></td></tr>
@@ -190,7 +197,7 @@ Properties</h2></td></tr>
 <tr class="memdesc:ab4fe0df55abd43cd7ea17b17d1d788a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оставшиеся перезапуски боя в текущем акте.  <br /></td></tr>
 <tr class="separator:ab4fe0df55abd43cd7ea17b17d1d788a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbda4747241d8b216f1a6a22a9ce22e8" id="r_acbda4747241d8b216f1a6a22a9ce22e8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#acbda4747241d8b216f1a6a22a9ce22e8">RelicInventoryFull</a><code> [get]</code></td></tr>
-<tr class="memdesc:acbda4747241d8b216f1a6a22a9ce22e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полон ли запас реликов (нельзя взять награду без сброса).  <br /></td></tr>
+<tr class="memdesc:acbda4747241d8b216f1a6a22a9ce22e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полон ли запас Мементо (нельзя взять награду без сброса).  <br /></td></tr>
 <tr class="separator:acbda4747241d8b216f1a6a22a9ce22e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57dd7a33997b891f5db9f65c6b477f1e" id="r_a57dd7a33997b891f5db9f65c6b477f1e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html#a57dd7a33997b891f5db9f65c6b477f1e">MaxVesselItems</a><code> [get]</code></td></tr>
 <tr class="memdesc:a57dd7a33997b891f5db9f65c6b477f1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько предметов помещается на одного сосуда.  <br /></td></tr>
@@ -207,12 +214,12 @@ Events</h2></td></tr>
 <tr class="separator:abe939efb0d2f08b8e4b0f14f590d5696"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Владелец durable-состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости коллекции реликов (план 11 §5.4). </p>
+<div class="textblock"><p>Владелец durable-состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости коллекции Мементо (план 11 §5.4). </p>
 <p>Три точки автосейва (вики «7» §5) зовут Autosave на переходах флоу.</p>
 <p><b>Живёт в скоупе Сессии и только у владельца сейва.</b> Гость играет в чужом состоянии — этого сервиса у него нет вовсе, поэтому «случайно записать чужой забег» ему нечем (см. <code>SessionInstaller</code>). Тем, кто переживает сеанс, видна только читающая половина — IRunStateView через роутер. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6ed28047544e30cbc74d61f02b523dab" name="a6ed28047544e30cbc74d61f02b523dab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ed28047544e30cbc74d61f02b523dab">&#9670;&#160;</a></span>RunStateService()</h2>
+<a id="a3bd209eb5fed692cece048cc8caa7f70" name="a3bd209eb5fed692cece048cc8caa7f70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bd209eb5fed692cece048cc8caa7f70">&#9670;&#160;</a></span>RunStateService()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -248,7 +255,13 @@ Events</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html">Core::Audio::IAudioService</a>&#160;</td>
-          <td class="paramname"><em>audio</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>audio</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1IGuildRosterView.html">IGuildRosterView</a>&#160;</td>
+          <td class="paramname"><em>roster</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -458,8 +471,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Надеть релик из запаса на сосуд слота (лоадаут-хаб): релик снимается с запаса и встаёт на слот, а прежний кит слота (если не базовый) возвращается в запас — это свап, не потеря. </p>
-<p>Требует, чтобы <em>relicId</em>  лежал в запасе. false = нет забега / слот вне ростера / релика нет в запасе. </p>
+<p>Надеть Мементо из запаса на сосуд слота (лоадаут-хаб): Мементо снимается с запаса и встаёт на слот, а прежний кит слота (если не базовый) возвращается в запас — это свап, не потеря. </p>
+<p>Требует, чтобы <em>relicId</em>  лежал в запасе. false = нет забега / слот вне ростера / Мементо нет в запасе. </p>
 
 </div>
 </div>
@@ -542,7 +555,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Начать новый забег со СТАНДАРТНОЙ стартовой гильдией (уточн. </p>
-<p>Макса 2026-07-17): гильдия — это <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a68b847c118e0a2b943a3d354653330a1">GameConfig.GuildSize</a> одинаковых сосудов, у каждого базовый релик (пустой кит); прогрессия — реликвии, которые игрок навешивает на них в лоадауте. Сосуд-контента пока нет → <code>VesselId</code> пуст. Стартовые позиции — колонка на стороне team 0 (Free-расстановка перед боем позволяет переставить). Незаполненные поля конфига подставляются, но с красной ошибкой: владелец экономики — ассет, и тихая подстановка прятала бы то, что ассет не заполнен. </p>
+<p>Макса 2026-07-17): гильдия — это <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a68b847c118e0a2b943a3d354653330a1" title="Потолок мест в отряде. Открытых может быть меньше — см. RunState.OpenSlots.">GameConfig.GuildSize</a> одинаковых сосудов, у каждого базовое Мементо (пустой кит); прогрессия — мементо, которые игрок навешивает на них в лоадауте. Сосуд-контента пока нет → <code>VesselId</code> пуст. Стартовые позиции — колонка на стороне team 0 (Free-расстановка перед боем позволяет переставить). Незаполненные поля конфига подставляются, но с красной ошибкой: владелец экономики — ассет, и тихая подстановка прятала бы то, что ассет не заполнен. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -590,11 +603,63 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Начать новый забег: свежий RunState с базовой вместимостью реликов из конфига. </p>
+<p>Начать новый забег: свежий RunState с базовой вместимостью Мементо из конфига. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1RunStateService_a42b5f7b8c98688812518b9d22b64c89f_icgraph.svg" width="100%" height="434"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a2b4da234844ebaf7db179013b439afff" name="a2b4da234844ebaf7db179013b439afff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b4da234844ebaf7db179013b439afff">&#9670;&#160;</a></span>Normalize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Guildmaster.Guild.RunStateService.Normalize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html">RunState</a>&#160;</td>
+          <td class="paramname"><em>run</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html">GameConfig</a>&#160;</td>
+          <td class="paramname"><em>config</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Дочитать забег, сохранённый до того, как отряд вырос с четырёх мест до восьми. </p>
+<p>Версия схемы ради этого НЕ поднимается (решение 2026-08-22): и недостающие места, и признак «в бою» выводятся из того, что в файле уже есть, — миграция писала бы то же самое дороже. </p><ul>
+<li>
+мест меньше потолка — массив дописывается пустыми слотами с базовым китом; </li>
+<li>
+никто не помечен «в бою» — боевыми становятся первые <code>BattleSlots</code> занятых мест; </li>
+<li>
+RunState.OpenSlots нулевой — берётся база из конфига. </li>
+</ul>
+<p>Идемпотентна: свежий забег проходит через неё без изменений. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1RunStateService_a2b4da234844ebaf7db179013b439afff_icgraph.svg" width="464" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -689,7 +754,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Добавить релик в запас, если есть место. </p>
+<p>Добавить Мементо в запас, если есть место. </p>
 <p>false = полно (игрок должен сбросить/пропустить). </p>
 <p>Публичный по той же причине, что TrySpendGold: транзакция с синхронным ответом, её переезд в шину — отложенный шаг транзакций.</p>
 
@@ -761,7 +826,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1RunStateService_a5a2ba3a5b9256ba76486ddeaee2a1d44_cgraph.svg" width="480" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Guild_1_1RunStateService_a5a2ba3a5b9256ba76486ddeaee2a1d44_cgraph.svg" width="480" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -854,8 +919,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Снять релик со слота обратно в запас; слот возвращается к базовому киту. </p>
-<p>No-op, если на слоте уже базовый кит. false также при полном запасе (некуда вернуть — релик не теряем). </p>
+<p>Снять Мементо со слота обратно в запас; слот возвращается к базовому киту. </p>
+<p>No-op, если на слоте уже базовый кит. false также при полном запасе (некуда вернуть — Мементо не теряем). </p>
 
 </div>
 </div>
@@ -1031,7 +1096,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Полон ли запас реликов (нельзя взять награду без сброса). </p>
+<p>Полон ли запас Мементо (нельзя взять награду без сброса). </p>
 
 </div>
 </div>

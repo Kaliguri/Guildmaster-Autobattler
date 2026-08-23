@@ -1,5 +1,5 @@
 <map id="Guildmaster.Game.Flow.GuildRoster.Resolve" name="Guildmaster.Game.Flow.GuildRoster.Resolve">
-<area shape="rect" id="Node000001" title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив." alt="" coords="5,37,221,77"/>
+<area shape="rect" id="Node000001" title="Гильдия забега → слоты player&#45;ростера." alt="" coords="5,37,221,77"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#abd070000227bd4574344e0e01c468ca6" title="Строковые id последствий → массив ConsequenceData (null, если ничего не разрешилось)." alt="" coords="269,5,485,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,42,255,37,256,43,222,47"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#aa69f17b857f358b92bfeeb3a00bcefc3" title="Строковые id предметов → массив ItemData (null, если ничего не разрешилось)." alt="" coords="269,69,485,109"/>

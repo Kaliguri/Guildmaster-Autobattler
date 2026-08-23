@@ -45,6 +45,7 @@ var searchData=
   ['displaysettings_2ecs_42',['DisplaySettings.cs',['../DisplaySettings_8cs.html',1,'']]],
   ['dodgecomponent_2ecs_43',['DodgeComponent.cs',['../DodgeComponent_8cs.html',1,'']]],
   ['dpsbench_2ecs_44',['DpsBench.cs',['../DpsBench_8cs.html',1,'']]],
-  ['dueldamagebonuscomponent_2ecs_45',['DuelDamageBonusComponent.cs',['../DuelDamageBonusComponent_8cs.html',1,'']]],
-  ['duelmatrixbench_2ecs_46',['DuelMatrixBench.cs',['../DuelMatrixBench_8cs.html',1,'']]]
+  ['dragmanipulator_2ecs_45',['DragManipulator.cs',['../DragManipulator_8cs.html',1,'']]],
+  ['dueldamagebonuscomponent_2ecs_46',['DuelDamageBonusComponent.cs',['../DuelDamageBonusComponent_8cs.html',1,'']]],
+  ['duelmatrixbench_2ecs_47',['DuelMatrixBench.cs',['../DuelMatrixBench_8cs.html',1,'']]]
 ];

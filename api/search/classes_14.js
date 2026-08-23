@@ -2,13 +2,18 @@ var searchData=
 [
   ['validationissue_0',['ValidationIssue',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ValidationIssue.html',1,'Guildmaster::ContentHub::Editor']]],
   ['vector2jsonconverter_1',['Vector2JsonConverter',['../classGuildmaster_1_1Game_1_1Services_1_1Vector2JsonConverter.html',1,'Guildmaster::Game::Services']]],
-  ['vesseldata_2',['VesselData',['../classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html',1,'Guildmaster::Data::Definitions']]],
-  ['vesselstate_3',['VesselState',['../classGuildmaster_1_1Guild_1_1VesselState.html',1,'Guildmaster::Guild']]],
-  ['vfxdata_4',['VfxData',['../classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html',1,'Guildmaster::Data::Definitions']]],
-  ['visualdefects_5',['VisualDefects',['../classGuildmaster_1_1Presentation_1_1VisualDefects.html',1,'Guildmaster::Presentation']]],
-  ['visualfxcommands_6',['VisualFxCommands',['../classGuildmaster_1_1DevTools_1_1VisualFxCommands.html',1,'Guildmaster::DevTools']]],
-  ['visualtempo_7',['VisualTempo',['../classGuildmaster_1_1Presentation_1_1Tempo_1_1VisualTempo.html',1,'Guildmaster::Presentation::Tempo']]],
-  ['visualtoggles_8',['VisualToggles',['../classGuildmaster_1_1Presentation_1_1Effects_1_1VisualToggles.html',1,'Guildmaster::Presentation::Effects']]],
-  ['volumevisualtoggle_9',['VolumeVisualToggle',['../classGuildmaster_1_1Presentation_1_1Effects_1_1VolumeVisualToggle.html',1,'Guildmaster::Presentation::Effects']]],
-  ['vortexentrycomponent_10',['VortexEntryComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
+  ['vesselcardpresenter_2',['VesselCardPresenter',['../classGuildmaster_1_1UI_1_1VesselCardPresenter.html',1,'Guildmaster::UI']]],
+  ['vesselcardsubject_3',['VesselCardSubject',['../structGuildmaster_1_1UI_1_1VesselCardSubject.html',1,'Guildmaster::UI']]],
+  ['vesselcardview_4',['VesselCardView',['../classGuildmaster_1_1UI_1_1VesselCardView.html',1,'Guildmaster::UI']]],
+  ['vesseldata_5',['VesselData',['../classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html',1,'Guildmaster::Data::Definitions']]],
+  ['vesselfactory_6',['VesselFactory',['../classGuildmaster_1_1Guild_1_1VesselFactory.html',1,'Guildmaster::Guild']]],
+  ['vesselnamepool_7',['VesselNamePool',['../classGuildmaster_1_1Data_1_1Definitions_1_1VesselNamePool.html',1,'Guildmaster::Data::Definitions']]],
+  ['vesselstate_8',['VesselState',['../classGuildmaster_1_1Guild_1_1VesselState.html',1,'Guildmaster::Guild']]],
+  ['vfxdata_9',['VfxData',['../classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html',1,'Guildmaster::Data::Definitions']]],
+  ['visualdefects_10',['VisualDefects',['../classGuildmaster_1_1Presentation_1_1VisualDefects.html',1,'Guildmaster::Presentation']]],
+  ['visualfxcommands_11',['VisualFxCommands',['../classGuildmaster_1_1DevTools_1_1VisualFxCommands.html',1,'Guildmaster::DevTools']]],
+  ['visualtempo_12',['VisualTempo',['../classGuildmaster_1_1Presentation_1_1Tempo_1_1VisualTempo.html',1,'Guildmaster::Presentation::Tempo']]],
+  ['visualtoggles_13',['VisualToggles',['../classGuildmaster_1_1Presentation_1_1Effects_1_1VisualToggles.html',1,'Guildmaster::Presentation::Effects']]],
+  ['volumevisualtoggle_14',['VolumeVisualToggle',['../classGuildmaster_1_1Presentation_1_1Effects_1_1VolumeVisualToggle.html',1,'Guildmaster::Presentation::Effects']]],
+  ['vortexentrycomponent_15',['VortexEntryComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
 ];

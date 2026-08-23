@@ -19,6 +19,7 @@ var classGuildmaster_1_1Game_1_1Services_1_1ProfileService =
     [ "Identity", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a37fd106ba3d4b752c1b72ee0862b4929", null ],
     [ "Profiles", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a842d09f69a582ec95e0c613d409ab4fe", null ],
     [ "ProfilesFull", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a2c36e737761cb43b3c6fe61f2de26855", null ],
+    [ "Roster", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a371fa5c97c646f40869f2e0a38de7680", null ],
     [ "RunKey", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a73a9b6262d0e8016bf21947f904e6831", null ],
     [ "Changed", "classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html#a3d91118d914d15d752a68a80958b945a", null ]
 ];

@@ -1,5 +1,5 @@
 <map id="Guildmaster.Data.Definitions.VesselData" name="Guildmaster.Data.Definitions.VesselData">
-<area shape="rect" id="Node000001" title="«Сосуд» — человек, носящий Реликвию." alt="" coords="5,232,212,332"/>
+<area shape="rect" id="Node000001" title="«Сосуд» — человек, носящий Мементо." alt="" coords="5,232,212,332"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="45,119,173,184"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,198,111,232,106,232,106,198"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="48,5,169,71"/>

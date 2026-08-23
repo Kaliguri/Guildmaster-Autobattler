@@ -1,5 +1,5 @@
 <map id="Guildmaster.Core.Persistence.IProfileService" name="Guildmaster.Core.Persistence.IProfileService">
 <area shape="rect" id="Node000001" title="Владелец иерархии сохранений: профиль → гильдии → забег (ТЗ [[save&#45;system]] §3)." alt="" coords="5,5,216,405"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html" title="Реализация IProfileService поверх ISaveService." alt="" coords="11,453,210,893"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Services_1_1ProfileService.html" title="Реализация IProfileService поверх ISaveService." alt="" coords="11,453,210,913"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,419,113,453,108,453,108,419"/>
 </map>

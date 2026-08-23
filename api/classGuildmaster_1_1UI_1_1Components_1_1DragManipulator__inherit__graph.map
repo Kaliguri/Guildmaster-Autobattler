@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.Components.DragManipulator" name="Guildmaster.UI.Components.DragManipulator">
+<area shape="rect" id="Node000001" title="Перетаскивание как ОБЩИЙ контрол: источник объявляет, что несёт, цель — что принимает." alt="" coords="5,119,248,319"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="57,5,196,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,84,129,119,124,119,124,84"/>
+</map>

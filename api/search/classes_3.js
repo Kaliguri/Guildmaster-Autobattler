@@ -54,6 +54,9 @@ var searchData=
   ['displaysettings_51',['DisplaySettings',['../classGuildmaster_1_1Core_1_1Settings_1_1DisplaySettings.html',1,'Guildmaster::Core::Settings']]],
   ['dodgecomponent_52',['DodgeComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
   ['dpsbench_53',['DpsBench',['../classGuildmaster_1_1Balance_1_1Editor_1_1DpsBench.html',1,'Guildmaster::Balance::Editor']]],
-  ['dueldamagebonuscomponent_54',['DuelDamageBonusComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DuelDamageBonusComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
-  ['duelmatrixbench_55',['DuelMatrixBench',['../classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html',1,'Guildmaster::Balance::Editor']]]
+  ['dragmanipulator_54',['DragManipulator',['../classGuildmaster_1_1UI_1_1Components_1_1DragManipulator.html',1,'Guildmaster::UI::Components']]],
+  ['dragpayload_55',['DragPayload',['../structGuildmaster_1_1UI_1_1Components_1_1DragPayload.html',1,'Guildmaster::UI::Components']]],
+  ['dropzonemanipulator_56',['DropZoneManipulator',['../classGuildmaster_1_1UI_1_1Components_1_1DropZoneManipulator.html',1,'Guildmaster::UI::Components']]],
+  ['dueldamagebonuscomponent_57',['DuelDamageBonusComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DuelDamageBonusComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
+  ['duelmatrixbench_58',['DuelMatrixBench',['../classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html',1,'Guildmaster::Balance::Editor']]]
 ];

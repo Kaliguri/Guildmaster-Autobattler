@@ -10,6 +10,6 @@
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="155,139,261,183,282,190,280,195,259,188,153,144"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Guild_1_1MapGenerator.html#a054078ab44d9a06131a10ac5b5135ead" title="Строит карту акта из rng &#160;по параметрам config ." alt="" coords="511,69,749,109"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="463,87,497,87,497,92,463,92"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#a42b5f7b8c98688812518b9d22b64c89f" title="Начать новый забег: свежий RunState с базовой вместимостью реликов из конфига." alt="" coords="529,197,731,237"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#a42b5f7b8c98688812518b9d22b64c89f" title="Начать новый забег: свежий RunState с базовой вместимостью Мементо из конфига." alt="" coords="529,197,731,237"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="463,215,515,215,515,220,463,220"/>
 </map>

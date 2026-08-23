@@ -1,5 +1,5 @@
 <map id="Guildmaster.UI.Tooltips.ITooltipContentFactory" name="Guildmaster.UI.Tooltips.ITooltipContentFactory">
 <area shape="rect" id="Node000001" title="Сборка содержимого тултипа по запросу (план §II.10.5 п.3)." alt="" coords="11,5,180,105"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipContentFactory.html" title="Штатная сборка содержимого: реликвия, тег, сосуд, готовый текст." alt="" coords="5,153,185,273"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipContentFactory.html" title="Штатная сборка содержимого: мементо, тег, сосуд, готовый текст." alt="" coords="5,153,185,273"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,119,98,153,93,153,93,119"/>
 </map>

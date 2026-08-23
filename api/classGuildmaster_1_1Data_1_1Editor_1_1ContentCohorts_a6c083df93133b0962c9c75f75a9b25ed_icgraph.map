@@ -1,5 +1,5 @@
 <map id="Guildmaster.Data.Editor.ContentCohorts.Relics" name="Guildmaster.Data.Editor.ContentCohorts.Relics">
-<area shape="rect" id="Node000001" title="Реликвии игрока." alt="" coords="235,5,416,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCohorts.html#a95a8dd129918d42de8bf5809a7b47f91" title="ВСЕ боевые юниты — реликвии и враги вместе." alt="" coords="5,5,187,45"/>
+<area shape="rect" id="Node000001" title="Мементо игрока." alt="" coords="235,5,416,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCohorts.html#a95a8dd129918d42de8bf5809a7b47f91" title="ВСЕ боевые юниты — мементо и враги вместе." alt="" coords="5,5,187,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,28,187,28,187,23,221,23"/>
 </map>

@@ -31,7 +31,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1UI_1_1EventScreenView.html#a01ee3334cd2e1bea7a31087b82b2caed" target="_top" xlink:title="Построить экран&#45;оверлей ивента.">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1UI_1_1EventScreenView.html#a56569ca6b87cf7626e86244cc8b376a6" target="_top" xlink:title="Построить экран&#45;оверлей ивента.">
 <polygon fill="white" stroke="#666666" points="153,-30 0,-30 0,0 153,0 153,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.UI.EventScreen</text>
 <text text-anchor="middle" x="76.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">View.Build</text>

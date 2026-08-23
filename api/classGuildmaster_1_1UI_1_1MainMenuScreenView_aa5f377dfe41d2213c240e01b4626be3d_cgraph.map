@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.MainMenuScreenView.Build" name="Guildmaster.UI.MainMenuScreenView.Build">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,240,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1CommunityPanelView.html#acecd4e27836d8997836e0135314c3da4" title=" " alt="" coords="288,5,487,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="240,23,274,23,274,28,240,28"/>
+</map>

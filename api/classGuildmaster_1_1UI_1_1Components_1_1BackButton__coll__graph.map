@@ -1,7 +1,7 @@
 <map id="Guildmaster.UI.Components.BackButton" name="Guildmaster.UI.Components.BackButton">
-<area shape="rect" id="Node000001" title="Кнопка «Вернуться» — единственная дверь наружу, одинаковая на всех экранах." alt="" coords="5,272,207,412"/>
+<area shape="rect" id="Node000001" title="Кнопка «Вернуться» — единственная дверь наружу, одинаковая на всех экранах." alt="" coords="5,272,207,432"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Components_1_1PlateButton.html" title="Кнопка&#45;ПЛАСТИНА со срезанными углами." alt="" coords="49,119,163,224"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,238,109,271,103,271,103,238"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,238,109,272,103,272,103,238"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="77,5,135,71"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="109,85,109,118,103,118,103,85"/>
 </map>

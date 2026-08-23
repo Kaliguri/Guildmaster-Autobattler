@@ -17,7 +17,7 @@
 <area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="752,401,746,584,735,685,718,785,716,793,711,792,713,783,730,685,740,584,747,400"/>
 <area shape="rect" id="Node000010" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="913,5,1041,71"/>
 <area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="916,80,862,122,851,133,847,129,859,118,913,76"/>
-<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Сосуд» — человек, носящий Реликвию." alt="" coords="873,210,1080,310"/>
+<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Сосуд» — человек, носящий Мементо." alt="" coords="873,210,1080,310"/>
 <area shape="poly" id="edge11_Node000012_Node000010" title=" " alt="" coords="979,84,979,210,974,210,974,84"/>
 <area shape="rect" id="Node000013" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html" title="Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги,..." alt="" coords="981,424,1188,784"/>
 <area shape="poly" id="edge13_Node000013_Node000010" title=" " alt="" coords="1054,74,1077,94,1095,119,1111,155,1123,192,1136,270,1137,349,1130,424,1125,423,1132,349,1130,271,1118,193,1106,157,1090,121,1073,98,1050,78"/>

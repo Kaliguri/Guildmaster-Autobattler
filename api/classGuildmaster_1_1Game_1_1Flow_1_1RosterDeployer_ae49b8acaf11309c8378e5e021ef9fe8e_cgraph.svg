@@ -86,7 +86,7 @@ var sectionId = 'dynsection-1';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" target="_top" xlink:title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив.">
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6" target="_top" xlink:title="Гильдия забега → слоты player&#45;ростера.">
 <polygon fill="white" stroke="#666666" points="369.5,-73 207.5,-73 207.5,-43 369.5,-43 369.5,-73"/>
 <text text-anchor="start" x="215.5" y="-61" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.Guild</text>
 <text text-anchor="middle" x="288.5" y="-50" font-family="Helvetica,sans-Serif" font-size="10.00">Roster.Resolve</text>

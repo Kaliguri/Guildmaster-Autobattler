@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Guild_1_1InjurySlots.html" target="_top" xlink:title="Занятые слоты травм одного «Сосуда»: сколько ушибов, ран и увечий на нём висит.">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Guild_1_1InjuryCascade.html" target="_top" xlink:title="Каскад травм: куда ляжет очередная рана и что будет, когда класть уже некуда.">
 <polygon fill="white" stroke="#666666" points="135,-30 0,-30 0,0 135,0 135,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Guild.Injury</text>
-<text text-anchor="middle" x="67.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Slots</text>
+<text text-anchor="middle" x="67.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Cascade</text>
 </a>
 </g>
 </g>

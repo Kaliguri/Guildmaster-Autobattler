@@ -1,6 +1,6 @@
 <map id="Guildmaster.UI.Tooltips.TooltipRequest.Relic" name="Guildmaster.UI.Tooltips.TooltipRequest.Relic">
 <area shape="rect" id="Node000001" title=" " alt="" coords="269,37,447,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1RewardScreenView.html#aa6cac3561f13f23a15c5da8bc716536d" title="Построить экран&#45;оверлей награды." alt="" coords="5,5,221,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1RewardScreenView.html#adf89d08586cf6e1f9f770acc54b758e1" title="Построить экран&#45;оверлей награды." alt="" coords="5,5,221,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="255,47,221,42,222,37,256,41"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1ShopScreenView.html#a70673ac599c769fbe9ab86c62fc6c46c" title=" " alt="" coords="14,69,213,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="256,73,213,79,213,74,256,68"/>

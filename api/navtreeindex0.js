@@ -117,7 +117,7 @@ var NAVTREEINDEX0 =
 "AudioParameters_8cs.html":[2,0,0,0,0,2,1,0],
 "AudioPresenter_8cs.html":[2,0,0,0,0,9,1,2],
 "AudioResolver_8cs.html":[2,0,0,0,0,9,1,3],
-"AudioVolumeSettings_8cs.html":[2,0,0,0,0,2,11,0],
+"AudioVolumeSettings_8cs.html":[2,0,0,0,0,2,12,0],
 "AutoAttackSystem_8cs.html":[2,0,0,0,0,1,7,1],
 "BackButton_8cs.html":[2,0,0,0,0,10,0,1],
 "BalanceAgentTools_8cs.html":[2,0,0,0,0,0,0,0,0],

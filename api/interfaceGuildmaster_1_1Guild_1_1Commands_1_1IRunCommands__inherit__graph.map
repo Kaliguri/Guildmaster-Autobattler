@@ -1,11 +1,11 @@
 <map id="Guildmaster.Guild.Commands.IRunCommands" name="Guildmaster.Guild.Commands.IRunCommands">
-<area shape="rect" id="Node000001" title="Глаголы изменения забега — то, что зовёт игра вместо прямых мутаторов RunStateService." alt="" coords="113,5,326,245"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html" title="Единственная дорога к записи в забег для всех, кто пишет: расстановка, награды, магазин,..." alt="" coords="5,293,204,553"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,259,157,294,152,292,166,257"/>
-<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Guild_1_1Commands_1_1ISessionRunCommands.html" title="Команды забега ТЕКУЩЕГО СЕАНСА: то, что регистрирует в своём составе Сессия." alt="" coords="229,383,442,463"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="273,257,323,382,318,384,269,259"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html" title="Команды забега у гостя: тот же контракт, но вместо применения — отправка интента хосту." alt="" coords="123,621,318,881"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="319,478,269,622,264,620,314,476"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html" title="Локальная шина команд забега: нумерует, штампует временем, применяет и дописывает в лог." alt="" coords="342,601,555,901"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="356,476,399,600,394,602,351,478"/>
+<area shape="rect" id="Node000001" title="Глаголы изменения забега — то, что зовёт игра вместо прямых мутаторов RunStateService." alt="" coords="113,5,326,305"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Session_1_1SessionCommandRouter.html" title="Единственная дорога к записи в забег для всех, кто пишет: расстановка, награды, магазин,..." alt="" coords="5,353,204,673"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="170,319,159,354,153,352,165,318"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Guild_1_1Commands_1_1ISessionRunCommands.html" title="Команды забега ТЕКУЩЕГО СЕАНСА: то, что регистрирует в своём составе Сессия." alt="" coords="229,473,442,553"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="275,318,325,472,320,474,270,320"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Session_1_1Net_1_1RemoteRunCommands.html" title="Команды забега у гостя: тот же контракт, но вместо применения — отправка интента хосту." alt="" coords="123,741,318,1061"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="322,567,270,742,265,740,317,566"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Guild_1_1Commands_1_1RunCommandBus.html" title="Локальная шина команд забега: нумерует, штампует временем, применяет и дописывает в лог." alt="" coords="342,721,555,1081"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="353,565,399,720,393,722,348,567"/>
 </map>

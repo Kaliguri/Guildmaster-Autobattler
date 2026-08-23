@@ -1,6 +1,6 @@
 <map id="Guildmaster.Data.Definitions.GuildmasterPalette.TryGet" name="Guildmaster.Data.Definitions.GuildmasterPalette.TryGet">
 <area shape="rect" id="Node000001" title="Цвет по имени токена (–gm&#45;color&#45;map&#45;node&#45;rim)." alt="" coords="261,37,476,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1ProfileScreenView.html#ac6b6795bbee0ee234d30e9ed33637fb5" title=" " alt="" coords="5,5,213,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1ProfileScreenView.html#a47dd501585308965df4db94b0b6553c3" title=" " alt="" coords="5,5,213,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,45,213,41,214,36,248,40"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1SlotCreateView.html#a55b3f54334de50e4309abbfffe49315d" title=" " alt="" coords="14,69,205,109"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="248,75,205,80,205,75,247,70"/>

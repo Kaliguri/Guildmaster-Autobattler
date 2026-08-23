@@ -1,6 +1,7 @@
 var classGuildmaster_1_1Guild_1_1RosterSlot =
 [
     [ "AiPresetId", "classGuildmaster_1_1Guild_1_1RosterSlot.html#a4d69d9f78ad46f954d6df3b805c90cbb", null ],
+    [ "InBattle", "classGuildmaster_1_1Guild_1_1RosterSlot.html#a4d6231b0568f778e10dbd2ee1dfacd11", null ],
     [ "Injuries", "classGuildmaster_1_1Guild_1_1RosterSlot.html#ab70255fc6c8c2ca821c4a36ff8e1581c", null ],
     [ "RelicId", "classGuildmaster_1_1Guild_1_1RosterSlot.html#aa6951a69eb6ac6008641c03f69512609", null ],
     [ "SavedPosition", "classGuildmaster_1_1Guild_1_1RosterSlot.html#ae8ab46585fff4f1b2b3bc68d1d7dfd75", null ],

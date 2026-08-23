@@ -32,7 +32,7 @@
 <area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="2186,160,2452,169,2775,186,2929,197,3062,210,3164,226,3200,235,3223,244,3248,263,3270,285,3304,335,3299,338,3266,288,3245,267,3221,249,3198,240,3163,231,3062,215,2928,202,2774,191,2452,175,2186,166"/>
 <area shape="rect" id="Node000018" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html" title="Общий боевой кит всего, что выходит на арену (вики «13» §3.1)." alt="" coords="3465,287,3672,567"/>
 <area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="2186,159,2501,165,2897,179,3087,190,3254,205,3381,222,3425,233,3454,244,3479,262,3500,285,3497,288,3475,267,3451,249,3423,238,3380,228,3253,210,3087,196,2897,185,2501,170,2186,164"/>
-<area shape="rect" id="Node000021" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Сосуд» — человек, носящий Реликвию." alt="" coords="3696,377,3903,477"/>
+<area shape="rect" id="Node000021" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Сосуд» — человек, носящий Мементо." alt="" coords="3696,377,3903,477"/>
 <area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="2186,158,2550,161,3018,173,3246,184,3445,199,3597,219,3650,231,3685,244,3719,271,3747,305,3769,341,3785,375,3780,378,3764,344,3742,308,3715,275,3682,249,3648,236,3596,224,3444,205,3245,190,3018,179,2550,167,2186,163"/>
 <area shape="rect" id="Node000022" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VfxData.html" title="Иммутабельное определение боевого VFX: id vfx." alt="" coords="3927,347,4133,507"/>
 <area shape="poly" id="edge21_Node000001_Node000022" title=" " alt="" coords="2186,157,2597,158,3138,168,3403,178,3635,194,3813,216,3875,229,3915,244,3943,264,3966,289,4001,345,3997,348,3962,293,3939,268,3913,249,3873,234,3812,221,3635,199,3403,184,3138,173,2597,163,2186,162"/>
@@ -40,6 +40,6 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2071,85,2071,118,2066,118,2066,85"/>
 <area shape="rect" id="Node000019" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData.html" title="Вражеский юнит: боевой кит (UnitData) + мета врага (очки опасности, награда)." alt="" coords="3347,675,3553,815"/>
 <area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="3514,580,3478,675,3473,674,3509,579"/>
-<area shape="rect" id="Node000020" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — реликвия игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,..." alt="" coords="3577,655,3797,835"/>
+<area shape="rect" id="Node000020" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — мементо игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,..." alt="" coords="3577,655,3797,835"/>
 <area shape="poly" id="edge19_Node000018_Node000020" title=" " alt="" coords="3628,578,3656,653,3651,655,3623,580"/>
 </map>

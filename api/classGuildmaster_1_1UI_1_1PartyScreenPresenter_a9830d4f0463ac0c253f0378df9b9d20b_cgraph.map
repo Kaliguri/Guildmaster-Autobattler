@@ -1,0 +1,7 @@
+<map id="Guildmaster.UI.PartyScreenPresenter.Refresh" name="Guildmaster.UI.PartyScreenPresenter.Refresh">
+<area shape="rect" id="Node000001" title="Перечитать состав и пересобрать экран." alt="" coords="5,37,205,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1PartyScreenView.html#af63844af62e140f783bf95fbfe6bd143" title=" " alt="" coords="253,5,453,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,42,239,37,240,43,206,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1PartyScreenPresenter.html#a6564b6cc3732a3523a564966e366c6e0" title="Состав забега глазами экрана. Пустой забег даёт пустой список — это не отказ, а факт." alt="" coords="253,69,453,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="206,68,240,72,239,77,205,73"/>
+</map>

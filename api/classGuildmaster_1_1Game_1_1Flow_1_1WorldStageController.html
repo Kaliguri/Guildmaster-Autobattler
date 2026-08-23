@@ -125,7 +125,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Persist-мир: ставит отряд игрока (team 0) на арену ВНЕ боя. </p>
-<p>Слушает RunPartyReadyEvent (публикует <code>GameFlow</code> после <code>BeginAct</code>), резолвит гильдию забега (<code><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#ace2bd4a1fcb6f132cff31d32e2123844" title="Ростер гильдии — 4 сосуда.">RunState.Guild</a></code>) в ростер через GuildRoster.Resolve и кладёт тела в WorldBodyStage.</p>
+<p>Слушает RunPartyReadyEvent (публикует <code>GameFlow</code> после <code>BeginAct</code>), резолвит гильдию забега (<code><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#ace2bd4a1fcb6f132cff31d32e2123844" title="Ростер гильдии: до GameConfig.GuildSize мест, из них открыто OpenSlots.">RunState.Guild</a></code>) в ростер через GuildRoster.Resolve и кладёт тела в WorldBodyStage.</p>
 <p><b>Врагов не ставит и не должен:</b> вне боя их нет вовсе — их приносит вход в бой вместе с боевым скоупом. </p>
 <p><b>Раньше отряд ставился спавном в боевую симуляцию</b>, которую тут же морозили паузой: вечная симуляция была единственным, что умело держать тела. Из-за этого у боя не было границы в жизненном цикле — её объявляли вручную сбросами. Теперь тела держит мир, и пауза здесь ни при чём: стоящему телу нечего тикать (решение 02.08.2026, журнал «The Simulation Belongs To The Battle»).</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>

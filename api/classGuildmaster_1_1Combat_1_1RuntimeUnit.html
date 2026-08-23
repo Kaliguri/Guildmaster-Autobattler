@@ -333,7 +333,7 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a4535a281dcec5e830ae47b664400347e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Помечен DeathSystem — исключается из всех систем с текущего тика.  <br /></td></tr>
 <tr class="separator:a4535a281dcec5e830ae47b664400347e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5396847e5a6b2b2f9c1e60dccba9c0f1" id="r_a5396847e5a6b2b2f9c1e60dccba9c0f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a5396847e5a6b2b2f9c1e60dccba9c0f1">Unit</a></td></tr>
-<tr class="memdesc:a5396847e5a6b2b2f9c1e60dccba9c0f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Боевой кит юнита (реликвия/враг): тип атаки, стат-блок, эффекты, AI (вики «13» §3.1).  <br /></td></tr>
+<tr class="memdesc:a5396847e5a6b2b2f9c1e60dccba9c0f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Боевой кит юнита (мементо/враг): тип атаки, стат-блок, эффекты, AI (вики «13» §3.1).  <br /></td></tr>
 <tr class="separator:a5396847e5a6b2b2f9c1e60dccba9c0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4624ae11d8aa89f5c844b732ea4443a" id="r_af4624ae11d8aa89f5c844b732ea4443a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af4624ae11d8aa89f5c844b732ea4443a">Vessel</a></td></tr>
 <tr class="memdesc:af4624ae11d8aa89f5c844b732ea4443a"><td class="mdescLeft">&#160;</td><td class="mdescRight">SO «Пилот»: идентичность, перки (Фаза 2/4).  <br /></td></tr>
@@ -369,7 +369,7 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a009e12a717052dcb3403c43bfb2b6ab2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Замаскированного заметили: враг подошёл ближе радиуса его ступени.  <br /></td></tr>
 <tr class="separator:a009e12a717052dcb3403c43bfb2b6ab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f4b8c7b5d4000ea833d8cb33d61d55b" id="r_a7f4b8c7b5d4000ea833d8cb33d61d55b"><td class="memItemLeft" align="right" valign="top">readonly List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html">AbilityRuntime</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a7f4b8c7b5d4000ea833d8cb33d61d55b">Abilities</a> = new List&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html">AbilityRuntime</a>&gt;()</td></tr>
-<tr class="memdesc:a7f4b8c7b5d4000ea833d8cb33d61d55b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Активные способности (кулдаун/ресурс). Заполняет RuntimeUnitFactory из реликвии.  <br /></td></tr>
+<tr class="memdesc:a7f4b8c7b5d4000ea833d8cb33d61d55b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Активные способности (кулдаун/ресурс). Заполняет RuntimeUnitFactory из мементо.  <br /></td></tr>
 <tr class="separator:a7f4b8c7b5d4000ea833d8cb33d61d55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c42e23dcadf05b9cb96fe4f2e92410f" id="r_a1c42e23dcadf05b9cb96fe4f2e92410f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a1c42e23dcadf05b9cb96fe4f2e92410f">CanAct</a> = true</td></tr>
 <tr class="memdesc:a1c42e23dcadf05b9cb96fe4f2e92410f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Может действовать (атаковать/кастовать). false = оглушение/сон.  <br /></td></tr>
@@ -600,7 +600,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Активные способности (кулдаун/ресурс). Заполняет RuntimeUnitFactory из реликвии. </p>
+<p>Активные способности (кулдаун/ресурс). Заполняет RuntimeUnitFactory из мементо. </p>
 
 </div>
 </div>
@@ -1549,7 +1549,7 @@ Here is the caller graph for this function:</div>
 
 <p>Множитель длины замаха СЛЕДУЮЩЕЙ авто-атаки: 0 = обычный замах. </p>
 <p>Взводит комбо, которому нужен удар «вне очереди» ускоренной анимацией («Вихревой заход» монаха, §10.6); тратит вход в замах, как и EmpowerDamageMult. </p>
-<p>Отдельно от Data.Definitions.UnitData.ChargeAttackWindupMult потому, что тот принадлежит КИТУ (удар с разбега — свойство реликвии), а этот — конкретному взведённому комбо.</p>
+<p>Отдельно от Data.Definitions.UnitData.ChargeAttackWindupMult потому, что тот принадлежит КИТУ (удар с разбега — свойство мементо), а этот — конкретному взведённому комбо.</p>
 
 </div>
 </div>
@@ -1951,7 +1951,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Боевой кит юнита (реликвия/враг): тип атаки, стат-блок, эффекты, AI (вики «13» §3.1). </p>
+<p>Боевой кит юнита (мементо/враг): тип атаки, стат-блок, эффекты, AI (вики «13» §3.1). </p>
 
 </div>
 </div>

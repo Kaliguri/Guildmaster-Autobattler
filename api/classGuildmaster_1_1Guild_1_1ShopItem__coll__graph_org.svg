@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Слот витрины магазина: реликвия + её цена + признак «уже куплено» (слот пуст).">
+<g id="a_Node000001"><a xlink:title="Слот витрины магазина: Мементо + его цена + признак «уже куплено» (слот пуст).">
 <polygon fill="#999999" stroke="transparent" points="156.5,-64 8.5,-64 8.5,0 156.5,0 156.5,-64"/>
 <text text-anchor="start" x="13.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Guild.ShopItem</text>
 <text text-anchor="start" x="38" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
@@ -29,7 +29,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" target="_top" xlink:title="«Чемпион» — реликвия игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,...">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" target="_top" xlink:title="«Чемпион» — мементо игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,...">
 <polygon fill="white" stroke="transparent" points="165,-246 0,-246 0,-111 165,-111 165,-246"/>
 <text text-anchor="start" x="10.5" y="-233.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="start" x="59" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">RelicData</text>

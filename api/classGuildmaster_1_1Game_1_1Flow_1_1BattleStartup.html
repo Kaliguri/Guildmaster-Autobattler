@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Ba
 </div><!--header-->
 <div class="contents">
 
-<p>Собирает бой, ради которого родился его скоуп: ставит отряд из <code><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#ace2bd4a1fcb6f132cff31d32e2123844" title="Ростер гильдии — 4 сосуда.">RunState.Guild</a></code>, доспавнивает врагов пресета и уводит в фазу расстановки.  
+<p>Собирает бой, ради которого родился его скоуп: ставит отряд из <code><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#ace2bd4a1fcb6f132cff31d32e2123844" title="Ростер гильдии: до GameConfig.GuildSize мест, из них открыто OpenSlots.">RunState.Guild</a></code>, доспавнивает врагов пресета и уводит в фазу расстановки.  
  <a href="classGuildmaster_1_1Game_1_1Flow_1_1BattleStartup.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Flow.BattleStartup:</div>
@@ -121,7 +121,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afde8f0993973216e8219a5c1544ac3c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Собирает бой, ради которого родился его скоуп: ставит отряд из <code><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#ace2bd4a1fcb6f132cff31d32e2123844" title="Ростер гильдии — 4 сосуда.">RunState.Guild</a></code>, доспавнивает врагов пресета и уводит в фазу расстановки. </p>
+<div class="textblock"><p>Собирает бой, ради которого родился его скоуп: ставит отряд из <code><a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html#ace2bd4a1fcb6f132cff31d32e2123844" title="Ростер гильдии: до GameConfig.GuildSize мест, из них открыто OpenSlots.">RunState.Guild</a></code>, доспавнивает врагов пресета и уводит в фазу расстановки. </p>
 <p>Он же репортит исход во флоу.</p>
 <p><b>Границы боя здесь больше нет</b> — «когда бой начинается и кончается» знает BattleHost в мире, а этот энтрипоинт знает только «как бой собрать». Пока обе роли жили в одном классе (<code>BattleBootstrap</code>), скоуп был вечным, и каждый переход приходилось доводить руками: чистить арену сбросом, пересевать генератор, пере-ставить отряд. Теперь переход — это рождение и смерть скоупа, а всё перечисленное случается само. </p>
 <p><b>Бой стартует на паузе</b>: сначала расстановка (враги видны, отряд двигается), и только «Начать» из панели снимает паузу. Пресет с <code>DeploymentMode.Fixed</code> проходит ту же дорогу — за него кнопку нажмёт <code>DeploymentController</code>.</p>

@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1UI_1_1RewardScreenView.html#aa6cac3561f13f23a15c5da8bc716536d" target="_top" xlink:title="Построить экран&#45;оверлей награды.">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1UI_1_1RewardScreenView.html#adf89d08586cf6e1f9f770acc54b758e1" target="_top" xlink:title="Построить экран&#45;оверлей награды.">
 <polygon fill="white" stroke="#666666" points="162,-78 0,-78 0,-48 162,-48 162,-78"/>
 <text text-anchor="start" x="8" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.UI.RewardScreen</text>
 <text text-anchor="middle" x="81" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">View.Build</text>

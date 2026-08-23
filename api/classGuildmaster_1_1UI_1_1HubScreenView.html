@@ -108,15 +108,15 @@ Collaboration diagram for Guildmaster.UI.HubScreenView:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ab76559abfb8514791dd11129bcf1b789" id="r_ab76559abfb8514791dd11129bcf1b789"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1HubScreenView.html#ab76559abfb8514791dd11129bcf1b789">Build</a> (VisualTreeAsset uxml, string guildName, Func&lt; string, string &gt; localize, Action onStartRun, bool canStartRun=true,(int Act, int Level, string TitleKey) stage=default, Action onLeave=null)</td></tr>
-<tr class="memdesc:ab76559abfb8514791dd11129bcf1b789"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
+<tr class="memitem:ab7178e5fa620bf8a65722e36d094447d" id="r_ab7178e5fa620bf8a65722e36d094447d"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1HubScreenView.html#ab7178e5fa620bf8a65722e36d094447d">Build</a> (VisualTreeAsset uxml, string guildName, Func&lt; string, string &gt; localize, Action onStartRun, bool canStartRun,(int Act, int Level, string TitleKey) stage, Action onLeave)</td></tr>
+<tr class="memdesc:ab7178e5fa620bf8a65722e36d094447d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">canStartRun</td><td>Есть ли чем голосовать за выход в забег. </td></tr>
   </table>
   </dd>
 </dl>
  <br /></td></tr>
-<tr class="separator:ab76559abfb8514791dd11129bcf1b789"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ab7178e5fa620bf8a65722e36d094447d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fd605ea7847298e39b8d2ae0043ee3f" id="r_a8fd605ea7847298e39b8d2ae0043ee3f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1HubScreenView.html#a8fd605ea7847298e39b8d2ae0043ee3f">SetStartCount</a> (VisualElement root, Func&lt; string, string &gt; localize, int ready, int required, bool locallyReady)</td></tr>
 <tr class="memdesc:a8fd605ea7847298e39b8d2ae0043ee3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать на кнопке, скольких ещё ждём.  <br /></td></tr>
 <tr class="separator:a8fd605ea7847298e39b8d2ae0043ee3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,8 +126,8 @@ Static Public Member Functions</h2></td></tr>
 <p>Пока заглушка: имя дома, честная метка «в работе» и единственная дверь наружу.</p>
 <p><b>Заглушка объявляет себя вслух</b> и не притворяется готовым экраном: пустой двор с одной кнопкой без метки читался бы как поломка, а не как «сюда ещё не завезли». Содержимое — ростер, найм, лавка, занятия — придёт по ГДД [[guild-hub-courtyard]]. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab76559abfb8514791dd11129bcf1b789" name="ab76559abfb8514791dd11129bcf1b789"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab76559abfb8514791dd11129bcf1b789">&#9670;&#160;</a></span>Build()</h2>
+<a id="ab7178e5fa620bf8a65722e36d094447d" name="ab7178e5fa620bf8a65722e36d094447d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7178e5fa620bf8a65722e36d094447d">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -163,19 +163,19 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>canStartRun</em> = <code>true</code>, </td>
+          <td class="paramname"><em>canStartRun</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">(int Act, int Level, string TitleKey)&#160;</td>
-          <td class="paramname"><em>stage</em> = <code>default</code>, </td>
+          <td class="paramname"><em>stage</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onLeave</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>onLeave</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -201,7 +201,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">stage</td><td>Где стоит забег: номер акта, ступень маршрута и ключ имени акта.</td></tr>
-    <tr><td class="paramname">onLeave</td><td>Уйти со двора. <code>null</code> — уходить некуда, и двери не будет.</td></tr>
+    <tr><td class="paramname">onLeave</td><td>Уйти со двора. <code>null</code> — уходить некуда, и двери не будет. <b>Без умолчания намеренно:</b> когда оно было, стенд собирал двор без двери и кадр показывал экран, которого в игре нет — Макс прочитал это как «всё ещё нет кнопки вернуться в меню» (23.08.2026). Умолчание у параметра-данных даёт вызывающему право промолчать, а молчит всегда стенд. </td></tr>
   </table>
   </dd>
 </dl>

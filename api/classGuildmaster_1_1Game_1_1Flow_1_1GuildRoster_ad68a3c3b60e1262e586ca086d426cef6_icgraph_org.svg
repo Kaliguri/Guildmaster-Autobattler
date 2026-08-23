@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив.">
+<g id="a_Node000001"><a xlink:title="Гильдия забега → слоты player&#45;ростера.">
 <polygon fill="#999999" stroke="#666666" points="568,-78 406,-78 406,-48 568,-48 568,-78"/>
 <text text-anchor="start" x="414" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.Guild</text>
 <text text-anchor="middle" x="487" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Roster.Resolve</text>

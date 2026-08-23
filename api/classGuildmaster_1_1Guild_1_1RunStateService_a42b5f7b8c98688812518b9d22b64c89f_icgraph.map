@@ -1,5 +1,5 @@
 <map id="Guildmaster.Guild.RunStateService.NewRun" name="Guildmaster.Guild.RunStateService.NewRun">
-<area shape="rect" id="Node000001" title="Начать новый забег: свежий RunState с базовой вместимостью реликов из конфига." alt="" coords="543,69,745,109"/>
+<area shape="rect" id="Node000001" title="Начать новый забег: свежий RunState с базовой вместимостью Мементо из конфига." alt="" coords="543,69,745,109"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#aff54a03842a9198c822ef5b44bb800eb" title="Начать новый забег со СТАНДАРТНОЙ стартовой гильдией (уточн." alt="" coords="292,69,495,109"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="529,92,495,92,495,87,529,87"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#a346a83cc8047395a2a3e8551da9c1c9b" title="A2&#45;разрез забега: сгенерировать карту акта (если нет) и прогнать петлю обхода через ActRunner (делеги..." alt="" coords="21,5,228,45"/>

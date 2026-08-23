@@ -1,5 +1,5 @@
 <map id="Guildmaster.Game.Flow.GuildRoster.Resolve" name="Guildmaster.Game.Flow.GuildRoster.Resolve">
-<area shape="rect" id="Node000001" title="Гильдия забега → слоты player&#45;ростера. Пустая/отсутствующая гильдия → пустой массив." alt="" coords="547,69,763,109"/>
+<area shape="rect" id="Node000001" title="Гильдия забега → слоты player&#45;ростера." alt="" coords="547,69,763,109"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1RosterDeployer.html#ae49b8acaf11309c8378e5e021ef9fe8e" title="Поставить отряд забега на арену. No&#45;op&#45;безопасно: пустая гильдия → пустая арена (только сброс)." alt="" coords="275,5,499,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="556,69,470,48,472,43,558,63"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Flow_1_1WorldStageController.html#a03f38e64c99e0eaae3074e89d1e2583f" title="Поставить отряд забега на арену заново — из durable&#45;состояния гильдии (полный HP, сохранённое построе..." alt="" coords="277,69,496,109"/>

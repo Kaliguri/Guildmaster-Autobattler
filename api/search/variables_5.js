@@ -1,7 +1,7 @@
 var searchData=
 [
   ['factor_0',['Factor',['../structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment.html#a88689d01ca5d7a881ab534d2d26bbcab',1,'Guildmaster::Game::Services::CinematicSegment']]],
-  ['fallback_1',['Fallback',['../structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html#aa33c14313158a56f4820074be41efe90',1,'Guildmaster::Core::Flow::NoticeOption']]],
+  ['fallback_1',['fallback',['../structGuildmaster_1_1Core_1_1Flow_1_1NoticeOption.html#aa33c14313158a56f4820074be41efe90',1,'Guildmaster.Core.Flow.NoticeOption.Fallback'],['../structGuildmaster_1_1Data_1_1Definitions_1_1CommunityConfig_1_1Paragraph.html#a0caff3ac26015da39b699655c0c20503',1,'Guildmaster.Data.Definitions.CommunityConfig.Paragraph.Fallback']]],
   ['fallbackdist_2',['FallbackDist',['../structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html#ad15e4dbadf555f733ea11b1e8c8a43f9',1,'Guildmaster::Data::Definitions::Kite']]],
   ['fallen_3',['Fallen',['../classGuildmaster_1_1Guild_1_1GuildBook.html#a55832d37f002c30b59dd8e4bd3d382a6',1,'Guildmaster::Guild::GuildBook']]],
   ['fallenvesselids_4',['FallenVesselIds',['../classGuildmaster_1_1Guild_1_1RunRecord.html#ab1616382065b7ed357b910af64bad0e6',1,'Guildmaster::Guild::RunRecord']]],

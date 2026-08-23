@@ -24,7 +24,7 @@
 <area shape="poly" id="edge10_Node000005_Node000009" title=" " alt="" coords="1060,505,1049,517,905,647,718,806,714,802,902,643,1045,513,1057,501"/>
 <area shape="rect" id="Node000010" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="983,120,1111,185"/>
 <area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="1072,196,1092,233,1087,236,1068,199"/>
-<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Сосуд» — человек, носящий Реликвию." alt="" coords="828,325,1035,425"/>
+<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Сосуд» — человек, носящий Мементо." alt="" coords="828,325,1035,425"/>
 <area shape="poly" id="edge13_Node000012_Node000010" title=" " alt="" coords="1027,199,959,326,955,323,1022,196"/>
 <area shape="poly" id="edge18_Node000001_Node000012" title=" " alt="" coords="963,424,1014,525,1038,587,1055,650,1072,766,1082,916,1083,993,1079,1065,1070,1128,1055,1177,1026,1233,989,1285,948,1333,904,1378,809,1456,719,1518,716,1513,806,1452,900,1374,944,1330,985,1281,1021,1230,1050,1175,1065,1127,1074,1065,1077,993,1077,916,1067,766,1050,651,1033,589,1009,528,958,426"/>
 <area shape="poly" id="edge12_Node000005_Node000012" title=" " alt="" coords="908,426,855,521,791,628,715,741,711,738,786,625,851,518,903,424"/>

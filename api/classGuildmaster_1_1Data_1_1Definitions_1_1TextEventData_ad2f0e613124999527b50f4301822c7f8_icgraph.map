@@ -1,5 +1,5 @@
 <map id="Guildmaster.Data.Definitions.TextEventData.ChoiceResultKey" name="Guildmaster.Data.Definitions.TextEventData.ChoiceResultKey">
 <area shape="rect" id="Node000001" title="Ключ текста&#45;результата варианта index &#160;(может быть пустым в таблице)." alt="" coords="257,5,488,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1EventScreenView.html#a01ee3334cd2e1bea7a31087b82b2caed" title="Построить экран&#45;оверлей ивента." alt="" coords="5,5,209,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1EventScreenView.html#a56569ca6b87cf7626e86244cc8b376a6" title="Построить экран&#45;оверлей ивента." alt="" coords="5,5,209,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="244,28,209,28,209,23,244,23"/>
 </map>

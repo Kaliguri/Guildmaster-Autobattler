@@ -17,6 +17,7 @@ var dir_a273d6f87b7944d96df82aad1465245a =
     [ "ClassBalanceConfig.cs", "ClassBalanceConfig_8cs.html", "ClassBalanceConfig_8cs" ],
     [ "ClipMarkers.cs", "ClipMarkers_8cs.html", "ClipMarkers_8cs" ],
     [ "CombatCategories.cs", "CombatCategories_8cs.html", "CombatCategories_8cs" ],
+    [ "CommunityConfig.cs", "CommunityConfig_8cs.html", "CommunityConfig_8cs" ],
     [ "ConcealmentTier.cs", "ConcealmentTier_8cs.html", "ConcealmentTier_8cs" ],
     [ "ConsequenceData.cs", "ConsequenceData_8cs.html", "ConsequenceData_8cs" ],
     [ "ContentDatabase.cs", "ContentDatabase_8cs.html", "ContentDatabase_8cs" ],
@@ -67,5 +68,6 @@ var dir_a273d6f87b7944d96df82aad1465245a =
     [ "UnitData.cs", "UnitData_8cs.html", "UnitData_8cs" ],
     [ "UnitTagResolver.cs", "UnitTagResolver_8cs.html", "UnitTagResolver_8cs" ],
     [ "VesselData.cs", "VesselData_8cs.html", "VesselData_8cs" ],
+    [ "VesselNamePool.cs", "VesselNamePool_8cs.html", "VesselNamePool_8cs" ],
     [ "VfxData.cs", "VfxData_8cs.html", "VfxData_8cs" ]
 ];

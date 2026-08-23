@@ -115,7 +115,7 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Применение классовой стат-базы (2-й уровень каскада) к Stats — ЕДИНСТВЕННОЕ место, откуда классовая база попадает в сборку. </p>
 <p>И бой (<code>RuntimeUnitFactory</code>), и Content Hub (<code>StatMath</code>) зовут это, чтобы значения совпадали по построению («таблица не врёт»).</p>
-<p>Класс-база добавляется ПЕРВОЙ группой — ДО стат-блока персоны. Правило «последний Override побеждает» тогда даёт каскад Класс → Персона → Vessel бесплатно: если персона (реликвия) авторит HP через <code>Override</code>, она перекроет классовую базу (обратная совместимость со старым авторингом); если персона кладёт только <code>Flat</code>/<code>Percent</code> — они лягут дельтой поверх классовой базы. Source группы — сам <em>config</em> . </p>
+<p>Класс-база добавляется ПЕРВОЙ группой — ДО стат-блока персоны. Правило «последний Override побеждает» тогда даёт каскад Класс → Персона → Vessel бесплатно: если персона (мементо) авторит HP через <code>Override</code>, она перекроет классовую базу (обратная совместимость со старым авторингом); если персона кладёт только <code>Flat</code>/<code>Percent</code> — они лягут дельтой поверх классовой базы. Source группы — сам <em>config</em> . </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2ba3c16ae54f9d5e47dd9f062361e852" name="a2ba3c16ae54f9d5e47dd9f062361e852"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2ba3c16ae54f9d5e47dd9f062361e852">&#9670;&#160;</a></span>Apply()</h2>

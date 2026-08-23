@@ -109,7 +109,7 @@ Collaboration diagram for Guildmaster.Game.Flow.GuildRoster:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ad68a3c3b60e1262e586ca086d426cef6" id="r_ad68a3c3b60e1262e586ca086d426cef6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html">PlayerSlot</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#ad68a3c3b60e1262e586ca086d426cef6">Resolve</a> (<a class="el" href="classGuildmaster_1_1Guild_1_1RunState.html">RunState</a> run, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content)</td></tr>
-<tr class="memdesc:ad68a3c3b60e1262e586ca086d426cef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гильдия забега → слоты player-ростера. Пустая/отсутствующая гильдия → пустой массив.  <br /></td></tr>
+<tr class="memdesc:ad68a3c3b60e1262e586ca086d426cef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гильдия забега → слоты player-ростера.  <br /></td></tr>
 <tr class="separator:ad68a3c3b60e1262e586ca086d426cef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa69f17b857f358b92bfeeb3a00bcefc3" id="r_aa69f17b857f358b92bfeeb3a00bcefc3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html#aa69f17b857f358b92bfeeb3a00bcefc3">ResolveItems</a> (IReadOnlyList&lt; string &gt; ids, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content)</td></tr>
 <tr class="memdesc:aa69f17b857f358b92bfeeb3a00bcefc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строковые id предметов → массив ItemData (null, если ничего не разрешилось).  <br /></td></tr>
@@ -120,7 +120,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Мост durable-гильдии игрока (RunState, строковые id) → player-ростер боя (Data-ссылки). </p>
-<p>Каждый слот = сосуд + надетый релик (весь кит) + предметы + стартовая позиция. Пустой/непроставленный релик → <code>relic.base</code> (дамми-кит), чтобы сосуд всегда был боеспособен. Чистая функция (без DI и мутаций) — берётся IContentDatabase для резолва id; легко тестируется на фейке БД. </p>
+<p>Каждый слот = сосуд + надетое Мементо (весь кит) + предметы + стартовая позиция. Пустой/непроставленный Мементо → <code>relic.base</code> (дамми-кит), чтобы сосуд всегда был боеспособен. Чистая функция (без DI и мутаций) — берётся IContentDatabase для резолва id; легко тестируется на фейке БД. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad68a3c3b60e1262e586ca086d426cef6" name="ad68a3c3b60e1262e586ca086d426cef6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad68a3c3b60e1262e586ca086d426cef6">&#9670;&#160;</a></span>Resolve()</h2>
@@ -156,7 +156,9 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Гильдия забега → слоты player-ростера. Пустая/отсутствующая гильдия → пустой массив. </p>
+<p>Гильдия забега → слоты player-ростера. </p>
+<p>Берутся ТОЛЬКО помеченные <a class="el" href="classGuildmaster_1_1Guild_1_1RosterSlot.html#a4d6231b0568f778e10dbd2ee1dfacd11" title="Выходит ли этот «Сосуд» в бой.">RosterSlot.InBattle</a>: в отряде до восьми мест, на арену выходят четверо (ГДД <code>preparation-screens</code> §2.1). Пустая/отсутствующая гильдия → пустой массив. </p>
+<p>Из-за этого длина результата больше НЕ совпадает с гильдией, и место каждого слота едет в <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html#a121a19a4179be4533a074f72d56aea5f" title="Место в RunState.Guild, из которого собран слот.">PlayerSlot.GuildIndex</a> — по нему расстановка пишет позицию обратно.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

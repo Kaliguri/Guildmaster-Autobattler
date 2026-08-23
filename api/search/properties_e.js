@@ -11,5 +11,6 @@ var searchData=
   ['outfit_8',['Outfit',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a876dadeebd9256f865b1209390669764',1,'Guildmaster::Data::Definitions::UnitData']]],
   ['outlinefromtarget_9',['OutlineFromTarget',['../classGuildmaster_1_1Presentation_1_1Arena_1_1ArenaDigitalOverlay.html#ae3ae9e9d31f490ecc1b68a9e45642478',1,'Guildmaster::Presentation::Arena::ArenaDigitalOverlay']]],
   ['over_10',['Over',['../classGuildmaster_1_1UI_1_1Components_1_1Wordmark.html#a2b720b2e19088f47a4ee194dbd6646d7',1,'Guildmaster::UI::Components::Wordmark']]],
-  ['overhang_11',['Overhang',['../classGuildmaster_1_1UI_1_1Components_1_1PanelFrame.html#a3c4dc9bc4544e26702b3e4862eed12e8',1,'Guildmaster::UI::Components::PanelFrame']]]
+  ['overhang_11',['Overhang',['../classGuildmaster_1_1UI_1_1Components_1_1PanelFrame.html#a3c4dc9bc4544e26702b3e4862eed12e8',1,'Guildmaster::UI::Components::PanelFrame']]],
+  ['overlayavailable_12',['overlayavailable',['../interfaceGuildmaster_1_1Core_1_1Platform_1_1IExternalLinkService.html#a1796bc3830a244386823a9b02706aea1',1,'Guildmaster.Core.Platform.IExternalLinkService.OverlayAvailable'],['../classGuildmaster_1_1Net_1_1Session_1_1ExternalLinkService.html#aa18537c26e833669c48a1193a9ef10c8',1,'Guildmaster.Net.Session.ExternalLinkService.OverlayAvailable']]]
 ];

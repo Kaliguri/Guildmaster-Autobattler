@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,45,105,70"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1UI_1_1Components_1_1DropZoneManipulator.html" title="Зона, которая принимает перетаскиваемое." alt="" coords="153,5,363,45"/>
+<area shape="poly" id="edge444_Node000000_Node000001" title=" " alt="" coords="119,45,153,39,153,45,119,50"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Tooltips_1_1TooltipManipulator.html" title="Декларативное «у этого элемента есть тултип» (план §II.10.5 п.2)." alt="" coords="169,69,347,109"/>
+<area shape="poly" id="edge445_Node000000_Node000002" title=" " alt="" coords="120,65,170,73,169,78,119,70"/>
+</map>

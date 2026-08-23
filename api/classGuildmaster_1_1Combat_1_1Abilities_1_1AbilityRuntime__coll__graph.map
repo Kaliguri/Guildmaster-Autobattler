@@ -1,5 +1,5 @@
 <map id="Guildmaster.Combat.Abilities.AbilityRuntime" name="Guildmaster.Combat.Abilities.AbilityRuntime">
 <area shape="rect" id="Node000001" title="Рантайм&#45;состояние одной активной способности на юните (POCO, один бой): таймер кулдауна." alt="" coords="5,448,215,588"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html" title="Определение активной способности реликвии: эффекты при касте, кулдаун, стоимость ресурса,..." alt="" coords="6,5,214,385"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html" title="Определение активной способности мементо: эффекты при касте, кулдаун, стоимость ресурса,..." alt="" coords="6,5,214,385"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,386,113,431,107,431,107,386"/>
 </map>

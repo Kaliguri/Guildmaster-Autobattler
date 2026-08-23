@@ -130,7 +130,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Единственная точка сборки RuntimeUnit из SO-данных. </p>
-<p>Шаги сборки (вики «10» §5.2, «6» §3): дефолты из StatsConfig → классовая база (ClassBalanceConfig) → видовые скейлы врага (SpeciesData) → моды реликвии → перки сосуда → предметы → последствия боёв (ConsequenceData) → пассивки (RelicData.GrantedEffects с постоянной длительностью) → активки (AbilityRuntime) → ресурс (StatType.StartResource) → <code>CurrentHP = EffectiveStats.StartingHp(...)</code>.</p>
+<p>Шаги сборки (вики «10» §5.2, «6» §3): дефолты из StatsConfig → классовая база (ClassBalanceConfig) → видовые скейлы врага (SpeciesData) → моды мементо → перки сосуда → предметы → последствия боёв (ConsequenceData) → пассивки (RelicData.GrantedEffects с постоянной длительностью) → активки (AbilityRuntime) → ресурс (StatType.StartResource) → <code>CurrentHP = EffectiveStats.StartingHp(...)</code>.</p>
 <p>Пассивки применяются <b>до</b> инициализации <code>CurrentHP</code>: пассив на +MaxHP должен поднять и стартовое здоровье. Поэтому фабрике нужны EffectSystem и боевой контекст — наложение пассивки зовёт <code>OnApply</code> компонентов (вики «12» §6, шаг 9). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa1cab31ae75230b58adb9270cc5d057d" name="aa1cab31ae75230b58adb9270cc5d057d"></a>
@@ -270,7 +270,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Создать RuntimeUnit из SO-данных. </p>
-<p>Принимает базовый UnitData — реликвию или врага; сборке всё равно, кто перед ней (вики «13» §3.1).</p>
+<p>Принимает базовый UnitData — мементо или врага; сборке всё равно, кто перед ней (вики «13» §3.1).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>Боевой кит («Чемпион»/враг). null — юнит получит только дефолты StatsConfig.</td></tr>

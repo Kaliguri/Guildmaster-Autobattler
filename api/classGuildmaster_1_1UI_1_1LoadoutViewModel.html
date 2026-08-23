@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1LoadoutViewM
 </div><!--header-->
 <div class="contents">
 
-<p>ViewModel loadout-экрана (план шаг 5): держит цель (юнит + текущий/выбранный релик), отдаёт грид доступных реликов и применяет выбор через EquipRelicRequest (слушает фаза расстановки).  
+<p>ViewModel loadout-экрана (план шаг 5): держит цель (юнит + текущий/выбранное Мементо), отдаёт грид доступных Мементо и применяет выбор через EquipRelicRequest (слушает фаза расстановки).  
  <a href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.LoadoutViewModel:</div>
@@ -112,10 +112,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abcc9a5b4db90c04083fa521bed527620" id="r_abcc9a5b4db90c04083fa521bed527620"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#abcc9a5b4db90c04083fa521bed527620">LoadoutViewModel</a> (<a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> content, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html">ILocalizationService</a> loc, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html">IAudioService</a> audio, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html">EquipRelicRequest</a> &gt; equipPub, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Stats_1_1IUnitStatPreview.html">IUnitStatPreview</a> statPreview, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Descriptions_1_1IDescriptionService.html">IDescriptionService</a> descriptions)</td></tr>
 <tr class="separator:abcc9a5b4db90c04083fa521bed527620"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe7a2c453bdcfdfc2458ec74c3769bf6" id="r_afe7a2c453bdcfdfc2458ec74c3769bf6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#afe7a2c453bdcfdfc2458ec74c3769bf6">Open</a> (<a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenLoadoutRequest.html">OpenLoadoutRequest</a> req)</td></tr>
-<tr class="memdesc:afe7a2c453bdcfdfc2458ec74c3769bf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть loadout для цели: запомнить юнита/сосуд/текущий релик, предвыбрать текущий.  <br /></td></tr>
+<tr class="memdesc:afe7a2c453bdcfdfc2458ec74c3769bf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть loadout для цели: запомнить юнита/сосуд/текущее Мементо, предвыбрать текущий.  <br /></td></tr>
 <tr class="separator:afe7a2c453bdcfdfc2458ec74c3769bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4df3072523facb96360468a1e7fc01e" id="r_aa4df3072523facb96360468a1e7fc01e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#aa4df3072523facb96360468a1e7fc01e">Select</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> relic)</td></tr>
-<tr class="memdesc:aa4df3072523facb96360468a1e7fc01e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выбрать релик (клик по карточке): предпросмотр + звук-стингер релика.  <br /></td></tr>
+<tr class="memdesc:aa4df3072523facb96360468a1e7fc01e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выбрать Мементо (клик по карточке): предпросмотр + звук-стингер Мементо.  <br /></td></tr>
 <tr class="separator:aa4df3072523facb96360468a1e7fc01e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a435e5b7925ccf8190343ee33f1ad9a6d" id="r_a435e5b7925ccf8190343ee33f1ad9a6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#a435e5b7925ccf8190343ee33f1ad9a6d">Apply</a> ()</td></tr>
 <tr class="memdesc:a435e5b7925ccf8190343ee33f1ad9a6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применить выбор: публикуем экип (фаза расстановки пересоберёт превью).  <br /></td></tr>
@@ -127,19 +127,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a30d29a17a6931c40357a638085d9710d" id="r_a30d29a17a6931c40357a638085d9710d"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#a30d29a17a6931c40357a638085d9710d">Name</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> r)</td></tr>
 <tr class="separator:a30d29a17a6931c40357a638085d9710d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79f7ed55532020ee1c5553da3f6cef47" id="r_a79f7ed55532020ee1c5553da3f6cef47"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#a79f7ed55532020ee1c5553da3f6cef47">Desc</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> r)</td></tr>
-<tr class="memdesc:a79f7ed55532020ee1c5553da3f6cef47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Описание релика через слой описаний, а не напрямую из таблицы: только он разворачивает разметку ключевых слов и подставляет числа (§II.10.1) — иначе игрок увидит сырой <code>[kw:…]</code>.  <br /></td></tr>
+<tr class="memdesc:a79f7ed55532020ee1c5553da3f6cef47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Описание Мементо через слой описаний, а не напрямую из таблицы: только он разворачивает разметку ключевых слов и подставляет числа (§II.10.1) — иначе игрок увидит сырой <code>[kw:…]</code>.  <br /></td></tr>
 <tr class="separator:a79f7ed55532020ee1c5553da3f6cef47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0c58ebdb49de21f10ef762e862772d1" id="r_ab0c58ebdb49de21f10ef762e862772d1"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1TagData.html">TagData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#ab0c58ebdb49de21f10ef762e862772d1">ResolveTags</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> r)</td></tr>
-<tr class="memdesc:ab0c58ebdb49de21f10ef762e862772d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Теги «быстрого чтения» релика для карточки в порядке осей (Role→DamageType→Playstyle→Mechanic): авто Role/DamageType из данных + ручные InfoTags.  <br /></td></tr>
+<tr class="memdesc:ab0c58ebdb49de21f10ef762e862772d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Теги «быстрого чтения» Мементо для карточки в порядке осей (Role→DamageType→Playstyle→Mechanic): авто Role/DamageType из данных + ручные InfoTags.  <br /></td></tr>
 <tr class="separator:ab0c58ebdb49de21f10ef762e862772d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a265b0f0192d812c9e1b15b746202b1d1" id="r_a265b0f0192d812c9e1b15b746202b1d1"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Data_1_1Stats_1_1UnitStatLine.html">UnitStatLine</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#a265b0f0192d812c9e1b15b746202b1d1">ResolveStats</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> r)</td></tr>
-<tr class="memdesc:a265b0f0192d812c9e1b15b746202b1d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Базовые статы релика для панели деталей — реальный каскад из боевой сборки через шов IUnitStatPreview (UI боевую сборку по asmdef не видит).  <br /></td></tr>
+<tr class="memdesc:a265b0f0192d812c9e1b15b746202b1d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Базовые статы Мементо для панели деталей — реальный каскад из боевой сборки через шов IUnitStatPreview (UI боевую сборку по asmdef не видит).  <br /></td></tr>
 <tr class="separator:a265b0f0192d812c9e1b15b746202b1d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7eedecafbc0ff0d19a5f322fc470357a" id="r_a7eedecafbc0ff0d19a5f322fc470357a"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#a7eedecafbc0ff0d19a5f322fc470357a">Tags</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> r)</td></tr>
-<tr class="memdesc:a7eedecafbc0ff0d19a5f322fc470357a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строка тегов релика (локализованные имена <code>InfoTags</code>) — легаси-путь старого LoadoutScreen.  <br /></td></tr>
+<tr class="memdesc:a7eedecafbc0ff0d19a5f322fc470357a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строка тегов Мементо (локализованные имена <code>InfoTags</code>) — легаси-путь старого LoadoutScreen.  <br /></td></tr>
 <tr class="separator:a7eedecafbc0ff0d19a5f322fc470357a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fe16dd909c66ebfd2bf5d84843a9644" id="r_a4fe16dd909c66ebfd2bf5d84843a9644"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#a4fe16dd909c66ebfd2bf5d84843a9644">StatsSummary</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> r)</td></tr>
-<tr class="memdesc:a4fe16dd909c66ebfd2bf5d84843a9644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Короткая сводка ключевых статов из стат-блока релика (Override-значения кита).  <br /></td></tr>
+<tr class="memdesc:a4fe16dd909c66ebfd2bf5d84843a9644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Короткая сводка ключевых статов из стат-блока Мементо (Override-значения кита).  <br /></td></tr>
 <tr class="separator:a4fe16dd909c66ebfd2bf5d84843a9644"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
@@ -149,12 +149,12 @@ Properties</h2></td></tr>
 <tr class="memitem:ac74c65ebdfbb18fb93b44de4d586acb0" id="r_ac74c65ebdfbb18fb93b44de4d586acb0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#ac74c65ebdfbb18fb93b44de4d586acb0">Selected</a><code> [get]</code></td></tr>
 <tr class="separator:ac74c65ebdfbb18fb93b44de4d586acb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac21fd8a797a4d6ed1d8737bf57e7d510" id="r_ac21fd8a797a4d6ed1d8737bf57e7d510"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#ac21fd8a797a4d6ed1d8737bf57e7d510">Relics</a><code> [get]</code></td></tr>
-<tr class="memdesc:ac21fd8a797a4d6ed1d8737bf57e7d510"><td class="mdescLeft">&#160;</td><td class="mdescRight">Все доступные релики для грида (пока — весь контент; фильтр по владению — Фаза 5).  <br /></td></tr>
+<tr class="memdesc:ac21fd8a797a4d6ed1d8737bf57e7d510"><td class="mdescLeft">&#160;</td><td class="mdescRight">Все доступные Мементо для грида (пока — весь контент; фильтр по владению — Фаза 5).  <br /></td></tr>
 <tr class="separator:ac21fd8a797a4d6ed1d8737bf57e7d510"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>ViewModel loadout-экрана (план шаг 5): держит цель (юнит + текущий/выбранный релик), отдаёт грид доступных реликов и применяет выбор через EquipRelicRequest (слушает фаза расстановки). </p>
-<p>POCO по образцу <code>SettingsViewModel</code>: сервисы Core/Data, никакой ссылки на боевой слой. Релик = весь боевой кит (вики «13» §3.1); при выборе играет звук-стингер релика (хук FMOD). </p>
+<div class="textblock"><p>ViewModel loadout-экрана (план шаг 5): держит цель (юнит + текущий/выбранное Мементо), отдаёт грид доступных Мементо и применяет выбор через EquipRelicRequest (слушает фаза расстановки). </p>
+<p>POCO по образцу <code>SettingsViewModel</code>: сервисы Core/Data, никакой ссылки на боевой слой. Мементо = весь боевой кит (вики «13» §3.1); при выборе играет звук-стингер Мементо (хук FMOD). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abcc9a5b4db90c04083fa521bed527620" name="abcc9a5b4db90c04083fa521bed527620"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abcc9a5b4db90c04083fa521bed527620">&#9670;&#160;</a></span>LoadoutViewModel()</h2>
@@ -260,7 +260,7 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Описание релика через слой описаний, а не напрямую из таблицы: только он разворачивает разметку ключевых слов и подставляет числа (§II.10.1) — иначе игрок увидит сырой <code>[kw:…]</code>. </p>
+<p>Описание Мементо через слой описаний, а не напрямую из таблицы: только он разворачивает разметку ключевых слов и подставляет числа (§II.10.1) — иначе игрок увидит сырой <code>[kw:…]</code>. </p>
 
 </div>
 </div>
@@ -342,7 +342,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Открыть loadout для цели: запомнить юнита/сосуд/текущий релик, предвыбрать текущий. </p>
+<p>Открыть loadout для цели: запомнить юнита/сосуд/текущее Мементо, предвыбрать текущий. </p>
 
 </div>
 </div>
@@ -362,7 +362,7 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Базовые статы релика для панели деталей — реальный каскад из боевой сборки через шов IUnitStatPreview (UI боевую сборку по asmdef не видит). </p>
+<p>Базовые статы Мементо для панели деталей — реальный каскад из боевой сборки через шов IUnitStatPreview (UI боевую сборку по asmdef не видит). </p>
 
 </div>
 </div>
@@ -382,7 +382,7 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Теги «быстрого чтения» релика для карточки в порядке осей (Role→DamageType→Playstyle→Mechanic): авто Role/DamageType из данных + ручные InfoTags. </p>
+<p>Теги «быстрого чтения» Мементо для карточки в порядке осей (Role→DamageType→Playstyle→Mechanic): авто Role/DamageType из данных + ручные InfoTags. </p>
 <p>Резолв — UnitTagResolver. </p>
 
 </div>
@@ -411,7 +411,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Выбрать релик (клик по карточке): предпросмотр + звук-стингер релика. </p>
+<p>Выбрать Мементо (клик по карточке): предпросмотр + звук-стингер Мементо. </p>
 
 </div>
 </div>
@@ -439,7 +439,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Короткая сводка ключевых статов из стат-блока релика (Override-значения кита). </p>
+<p>Короткая сводка ключевых статов из стат-блока Мементо (Override-значения кита). </p>
 
 </div>
 </div>
@@ -467,7 +467,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Строка тегов релика (локализованные имена <code>InfoTags</code>) — легаси-путь старого LoadoutScreen. </p>
+<p>Строка тегов Мементо (локализованные имена <code>InfoTags</code>) — легаси-путь старого LoadoutScreen. </p>
 
 </div>
 </div>
@@ -514,7 +514,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Все доступные релики для грида (пока — весь контент; фильтр по владению — Фаза 5). </p>
+<p>Все доступные Мементо для грида (пока — весь контент; фильтр по владению — Фаза 5). </p>
 
 </div>
 </div>

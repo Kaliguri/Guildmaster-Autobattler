@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Core_1_1Players_1_1SessionPlayer.html" target="_top" xlink:title="Участник сеанса: кто он, за какую сторону играет и каким цветом подписан.">
+<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Core_1_1Players_1_1RemoteCursor.html" target="_top" xlink:title="Чужой курсор в том виде, в каком его рисуют.">
 <polygon fill="white" stroke="#666666" points="143,-30 0,-30 0,0 143,0 143,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Core.Players.</text>
-<text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">SessionPlayer</text>
+<text text-anchor="middle" x="71.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">RemoteCursor</text>
 </a>
 </g>
 </g>
