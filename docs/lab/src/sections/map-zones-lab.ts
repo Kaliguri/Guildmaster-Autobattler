@@ -442,7 +442,7 @@ const EDGES: StandDef[] = [
     draw: partitionStand({ warp: 0, reach: 96, edge: 2 }, "none")
   },
   {
-    id: "edge-soft",
+    id: "mz-edge-soft",
     status: "waiting",
     title: "Умеренная рваность",
     tag: "warp 28",

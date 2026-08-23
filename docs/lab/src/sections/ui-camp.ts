@@ -292,7 +292,7 @@ const section: SectionDef = {
           draw: drawRoster
         },
         {
-          id: "cards",
+          id: "camp-cards",
           status: "rejected",
           title: "В · Ряд карточек-действий",
           tag: "как экран награды",

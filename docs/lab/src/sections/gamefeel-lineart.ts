@@ -738,7 +738,7 @@ const section: SectionDef = {
       kind: "split",
       items: [
         {
-          id: "edge-soft", status: "note", tag: "как сейчас", title: "Свет градиентом", size: [560, 360],
+          id: "line-edge-soft", status: "note", tag: "как сейчас", title: "Свет градиентом", size: [560, 360],
           note: "Три аддитивные полосы, ядро белым пересветом. Так рисует движок сегодня, и это осознанный выбор: свет живёт в измерении яркости и с формой арта не спорит.",
           draw: drawFill(false)
         },

@@ -195,7 +195,7 @@ const section: SectionDef = {
       kind: "stands",
       items: [
         {
-          id: "full",
+          id: "hud-full",
           status: "waiting",
           title: "А · Полная периферия",
           tag: "реф Guildrun",
@@ -233,7 +233,7 @@ const section: SectionDef = {
           draw: drawMinimal
         },
         {
-          id: "bottom",
+          id: "hud-bottom",
           status: "waiting",
           title: "В · Лента отряда снизу",
           tag: "своё",

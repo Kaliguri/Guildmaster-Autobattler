@@ -608,7 +608,7 @@ const FORMS: StandDef[] = [
     draw: shape({ cols: [1, 3, 3, 1], edges: woven([1, 3, 3, 1], 23) }, "1", "1")
   },
   {
-    id: "trail",
+    id: "shape-trail",
     status: "accepted",
     title: "Тропа",
     tag: "база",

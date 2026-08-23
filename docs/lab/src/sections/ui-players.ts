@@ -133,7 +133,7 @@ export const section: SectionDef = {
       kind: "stands",
       items: [
         {
-          id: "rows",
+          id: "players-rows",
           status: "accepted",
           title: "А · Строка с числом",
           decision: "2026-08-20",
@@ -154,7 +154,7 @@ export const section: SectionDef = {
           draw: drawRows
         },
         {
-          id: "cards",
+          id: "players-cards",
           status: "rejected",
           title: "Б · Карточки с портретом",
           note: "Каждый игрок — карточка с портретом своего Сосуда и двумя строками под ним.",

@@ -251,7 +251,7 @@ const section: SectionDef = {
           draw: drawSideBySide
         },
         {
-          id: "tabs",
+          id: "lobby-tabs",
           status: "waiting",
           title: "Б · Два таба, лобби свёрнуто в угол",
           tag: "реф RoR Returns",

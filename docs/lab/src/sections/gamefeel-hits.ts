@@ -930,7 +930,7 @@ const section: SectionDef = {
       kind: "stands",
       items: [
         {
-          id: "trail", status: "rejected", title: "Трейл клинка", size: WIDE,
+          id: "hit-trail", status: "rejected", title: "Трейл клинка", size: WIDE,
           note: "Непрерывный след за кончиком оружия. Живёт весь взмах — от начала замаха до конца возврата, тает по хвосту.",
           facts: [["владелец", "оружие, каждый кадр"], ["живёт", "кадры 6–26"], ["ширина", "0.03 H"], ["инструмент", "Trail / полилиния"]],
           verdict: "Читается как <b>движение</b>. Показывает, где клинок был, но не выделяет момент удара — трейл на замахе и на возврате выглядит одинаково.",
@@ -974,7 +974,7 @@ const section: SectionDef = {
           draw: drawSwing("final")
         },
         {
-          id: "timeline", status: "note", tag: "разметка клипа", title: "Тридцать кадров, три маркера",
+          id: "hit-timeline", status: "note", tag: "разметка клипа", title: "Тридцать кадров, три маркера",
           size: [1080, 230],
           note: "StrikeStart, Hit, StrikeEnd. Эффект вешается на маркер, а не на «примерно тогда»: клип может ускоряться, маркеры едут вместе с ним.",
           draw: drawTimeline
@@ -1083,7 +1083,7 @@ const section: SectionDef = {
           draw: drawHybrid("across")
         },
         {
-          id: "layers", status: "waiting", tag: "отложен, не отвергнут", title: "Слоями", size: [480, 330],
+          id: "hit-layers", status: "waiting", tag: "отложен, не отвергнут", title: "Слоями", size: [480, 330],
           note: "Внешний слой первого цвета, средний второго, ядро всегда белое. Форма остаётся одна, но расслоена.",
           facts: [["плюс", "работает и на трёх стихиях"], ["минус", "ближе к «полосатому», чем к смеси"]],
           draw: drawHybrid("layers")

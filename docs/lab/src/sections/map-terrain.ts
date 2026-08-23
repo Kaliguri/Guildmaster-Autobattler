@@ -372,7 +372,7 @@ const STANDS: StandDef[] = [
     draw: terrain({ warp: 26, reach: 34, halo: false, shadow: false, shade: false, political: false }, "warp 26", false)
   },
   {
-    id: "full",
+    id: "land-full",
     status: "waiting",
     title: "Берег, ореол, тень, отмывка",
     tag: "картографический набор",

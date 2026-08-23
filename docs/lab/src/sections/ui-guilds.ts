@@ -272,7 +272,7 @@ const section: SectionDef = {
       kind: "stands",
       items: [
         {
-          id: "row",
+          id: "guilds-row",
           status: "rejected",
           title: "А · Ряд карточек",
           tag: "как экран профиля",

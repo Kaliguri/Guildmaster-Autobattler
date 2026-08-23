@@ -328,7 +328,7 @@ const section: SectionDef = {
           draw: drawSlab
         },
         {
-          id: "center",
+          id: "mainmenu-center",
           status: "rejected",
           title: "В · Список по центру",
           tag: "рефы Eldest Souls, RoR Returns",
@@ -366,7 +366,7 @@ const section: SectionDef = {
           draw: drawHalf
         },
         {
-          id: "bottom",
+          id: "mainmenu-bottom",
           status: "rejected",
           title: "Д · Меню внизу слева, вывеска в углу",
           tag: "рефы Mewgenics, Brotato",

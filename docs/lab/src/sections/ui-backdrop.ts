@@ -302,7 +302,7 @@ const section: SectionDef = {
       kind: "split",
       items: [
         {
-          id: "ref-rebuild",
+          id: "backdrop-ref-rebuild",
           status: "note",
           title: "Реф, собранный из замеров",
           tag: "эталон",
@@ -351,7 +351,7 @@ const section: SectionDef = {
       kind: "stands",
       items: [
         {
-          id: "var-a",
+          id: "backdrop-var-a",
           status: "waiting",
           title: "A · Три градиента",
           tag: "минимум",
@@ -366,7 +366,7 @@ const section: SectionDef = {
           draw: withScreen(drawA)
         },
         {
-          id: "var-b",
+          id: "backdrop-var-b",
           status: "waiting",
           title: "B · Дюны",
           tag: "геометрия",
@@ -383,7 +383,7 @@ const section: SectionDef = {
           draw: withScreen(drawB)
         },
         {
-          id: "var-c",
+          id: "backdrop-var-c",
           status: "waiting",
           title: "C · Лучи",
           tag: "штриховка",
@@ -400,7 +400,7 @@ const section: SectionDef = {
           draw: withScreen(drawC)
         },
         {
-          id: "var-d",
+          id: "backdrop-var-d",
           status: "waiting",
           title: "D · Зерно",
           tag: "фактура",

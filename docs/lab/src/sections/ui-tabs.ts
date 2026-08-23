@@ -323,7 +323,7 @@ const section: SectionDef = {
       kind: "split",
       items: [
         {
-          id: "ref-rebuild",
+          id: "tabs-ref-rebuild",
           status: "note",
           title: "Реф, собранный из замеров",
           tag: "эталон",
@@ -367,7 +367,7 @@ const section: SectionDef = {
       kind: "stands",
       items: [
         {
-          id: "var-a",
+          id: "tabs-var-a",
           status: "waiting",
           title: "A · Вкладка на рельсе",
           tag: "перенос рефа",
@@ -382,7 +382,7 @@ const section: SectionDef = {
           draw: drawA
         },
         {
-          id: "var-b",
+          id: "tabs-var-b",
           status: "waiting",
           title: "B · Подчёркивание",
           tag: "скромный",
@@ -397,7 +397,7 @@ const section: SectionDef = {
           draw: drawB
         },
         {
-          id: "var-c",
+          id: "tabs-var-c",
           status: "waiting",
           title: "C · Плашки без рельсы",
           tag: "минимальная правка",
@@ -414,7 +414,7 @@ const section: SectionDef = {
           draw: drawC
         },
         {
-          id: "var-d",
+          id: "tabs-var-d",
           status: "waiting",
           title: "D · Вырез в рельсе",
           tag: "ярлык папки",

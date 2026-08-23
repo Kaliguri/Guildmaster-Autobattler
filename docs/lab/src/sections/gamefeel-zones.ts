@@ -249,7 +249,7 @@ const section: SectionDef = {
       kind: "stands",
       items: [
         {
-          id: "self", status: "accepted", tag: "форма · вокруг себя", title: "Круг вокруг себя",
+          id: "zone-self", status: "accepted", tag: "форма · вокруг себя", title: "Круг вокруг себя",
           note: "«Стальной вихрь» Копейщика, радиус 2.5. Подводка заполняется, срабатывание бьёт по контуру и внутрь, след гаснет.",
           draw: drawZone("self")
         },
@@ -273,7 +273,7 @@ const section: SectionDef = {
           draw: drawZone("standing")
         },
         {
-          id: "overlap", status: "note", tag: "проверка", title: "Три зоны разом",
+          id: "zone-overlap", status: "note", tag: "проверка", title: "Три зоны разом",
           note: "Проверка на кашу: контуры переживают пересечение, заливки бы слиплись. Ровно поэтому заливка почти нулевая.",
           draw: drawZone("overlap")
         },

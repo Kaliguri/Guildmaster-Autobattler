@@ -206,7 +206,7 @@ const section: SectionDef = {
       kind: "stands",
       items: [
         {
-          id: "overlap",
+          id: "event-overlap",
           status: "accepted",
           decision: "2026-08-05",
           title: "А · Панель справа, арт заходит под неё",
@@ -245,7 +245,7 @@ const section: SectionDef = {
           draw: drawNoPanel
         },
         {
-          id: "center",
+          id: "event-center",
           status: "rejected",
           title: "В · Панель по центру, арт сверху",
           tag: "то, что в игре",

@@ -253,7 +253,7 @@ const section: SectionDef = {
       kind: "stands",
       items: [
         {
-          id: "row",
+          id: "profile-row",
           status: "rejected",
           title: "А · Ряд карточек на кадре",
           tag: "реф Slay the Spire",
@@ -272,7 +272,7 @@ const section: SectionDef = {
           draw: drawRow
         },
         {
-          id: "sheet",
+          id: "profile-sheet",
           status: "rejected",
           title: "Б · Ряд на подложке-листе",
           tag: "реф Hades II",

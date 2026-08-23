@@ -262,7 +262,7 @@ const section: SectionDef = {
       kind: "stands",
       items: [
         {
-          id: "tabs",
+          id: "loadout-tabs",
           status: "waiting",
           title: "А · Вкладки, сетка и деталь",
           tag: "то, что в игре",

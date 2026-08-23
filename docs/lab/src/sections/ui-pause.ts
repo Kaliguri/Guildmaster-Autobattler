@@ -156,7 +156,7 @@ const section: SectionDef = {
       kind: "stands",
       items: [
         {
-          id: "center",
+          id: "pause-center",
           status: "waiting",
           title: "А · Колонка по центру",
           tag: "то, что в игре",

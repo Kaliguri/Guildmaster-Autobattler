@@ -240,7 +240,7 @@ const section: SectionDef = {
           draw: drawRowWithBanners
         },
         {
-          id: "rows",
+          id: "reward-rows",
           status: "accepted",
           decision: "2026-08-05",
           title: "Б · Колонка лежачих строк",
@@ -260,7 +260,7 @@ const section: SectionDef = {
           draw: drawRows
         },
         {
-          id: "self",
+          id: "reward-self",
           status: "rejected",
           title: "В · Ряд карточек, описание внутри",
           tag: "рефы STS2, Guildrun Update",

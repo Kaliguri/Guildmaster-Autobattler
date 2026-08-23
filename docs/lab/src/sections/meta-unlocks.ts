@@ -575,7 +575,7 @@ const section: SectionDef = {
       kind: "split",
       items: [
         {
-          id: "trail",
+          id: "meta-trail",
           status: "waiting",
           title: "Поход — всё, что берётся вехами",
           note:
@@ -663,7 +663,7 @@ const section: SectionDef = {
       kind: "split",
       items: [
         {
-          id: "timeline",
+          id: "meta-timeline",
           status: "waiting",
           title: "Что падает и когда",
           note:
