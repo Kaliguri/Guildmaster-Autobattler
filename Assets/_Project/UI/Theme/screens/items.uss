@@ -3,24 +3,8 @@
    Слоты стоят одной вертикалью, поэтому «у кого пусто» читается сверху вниз одним взглядом —
    это и есть главный вопрос страницы. Квадратные: круглое у нас человек, квадратное вещь. */
 
-.gm-items {
-    flex-grow: 1;
-    justify-content: space-between;
-}
-
-.gm-items__head {
-    flex-direction: row;
-    align-items: center;
-    padding: var(--gm-space-4) var(--gm-space-5);
-}
-
 .gm-items__title {
     margin-right: var(--gm-space-5);
-}
-
-.gm-items__tabs {
-    flex-direction: row;
-    flex-grow: 1;
 }
 
 /* --- Строка носителя --- */
@@ -134,19 +118,6 @@
 
 /* --- Склад --- */
 
-.gm-items__stash-block {
-    padding: var(--gm-space-3) var(--gm-space-5);
-    background-color: var(--gm-color-surface-sunken);
-    border-top-width: var(--gm-outline-width);
-    border-color: var(--gm-outline-color);
-}
-
-.gm-items__stash-head {
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: var(--gm-space-2);
-}
-
 .gm-items__stash {
     max-height: 180px;
 }
@@ -177,8 +148,3 @@
     color: var(--gm-color-text-muted);
 }
 
-.gm-items__actions {
-    flex-direction: row;
-    justify-content: flex-end;
-    padding: var(--gm-space-3) var(--gm-space-5) var(--gm-space-4);
-}

@@ -213,6 +213,7 @@ namespace Guildmaster.DevTools
                 uxml, slots, localize: RuValue, battleSlots: 4, actions: null);
             MountSampleInspect(screen);
             root.Add(screen);
+            AddRunBar(root, Guildmaster.UI.UiScreen.InventoryModeTag);
         }
 
         /// <summary>
@@ -232,6 +233,31 @@ namespace Guildmaster.DevTools
                 "держит строй", "relic.bulwark");
 
             host.Add(Guildmaster.UI.Components.InspectPanel.Build(subject, localize: RuValue));
+        }
+
+        /// <summary>
+        /// Глобальная панель забега поверх экрана — статичная, для кадра.
+        /// </summary>
+        /// <remarks>
+        /// Экраны забега в игре живут ПОД ней всегда, и без неё кадр показывает не тот экран: у
+        /// Инвентаря топбар на снимке был, у страниц подготовки — нет, и Макс справедливо спросил,
+        /// почему у них «не снимается верхний таб, через который его можно открыть» (23.08.2026).
+        /// </remarks>
+        private static void AddRunBar(VisualElement root, string activeMode)
+        {
+            var barUxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/RunModeBar.uxml");
+            if (barUxml == null) return;
+
+            var bar = new Guildmaster.UI.RunModeBarView(
+                barUxml, RuValue,
+                () => { }, () => { }, () => { }, () => { }, () => { });
+            bar.SetGold(100);
+            bar.SetAct(4);
+            bar.SetFloor(3, 12);
+            bar.SetRestarts(2, 2);
+            bar.SetActiveMode(activeMode);
+            bar.HideBattleCenter();
+            root.Add(bar.Root);
         }
 
         /// <summary>Страница «Предметы» на выдуманном составе — по той же причине, что и «Отряд».</summary>
@@ -278,6 +304,7 @@ namespace Guildmaster.DevTools
                 uxml, rows, stash, localize: RuValue, iconOf: IconOf, nameOf: RuName, actions: null);
             MountSampleInspect(screen);
             root.Add(screen);
+            AddRunBar(root, Guildmaster.UI.UiScreen.InventoryModeTag);
         }
 
         /// <summary>Расширенная карточка «Сосуда»: разворот с табами, оба таба переключаются на стенде.</summary>
@@ -342,21 +369,7 @@ namespace Guildmaster.DevTools
                 palette: LoadFirst<Guildmaster.Data.Definitions.GuildmasterPalette>());
             root.Add(screen);
 
-            // Глобальная панель забега (app-shell): статичная для стенда, режим «Инвентарь» активен.
-            var barUxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/RunModeBar.uxml");
-            if (barUxml != null)
-            {
-                var bar = new Guildmaster.UI.RunModeBarView(
-                    barUxml, RuValue,
-                    () => { }, () => { }, () => { }, () => { }, () => { });
-                bar.SetGold(100);
-                bar.SetAct(4);
-                bar.SetFloor(3, 12);
-                bar.SetRestarts(2, 2);
-                bar.SetActiveMode(Guildmaster.UI.UiScreen.InventoryModeTag);
-                bar.HideBattleCenter();
-                root.Add(bar.Root);
-            }
+            AddRunBar(root, Guildmaster.UI.UiScreen.InventoryModeTag);
         }
 
         // «flame_swordsman» → «Flame Swordsman» (англ. титул таро-карты из id, когда loc RU не нужен).

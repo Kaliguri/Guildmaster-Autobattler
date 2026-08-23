@@ -1,14 +1,14 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components">
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components">
     <!-- Страница «Отряд» (ГДД preparation-screens §2.1, раскладка «Витрина»).
 
          Корень и зона мира намеренно picking-mode="Ignore": отряд стоит ТЕЛАМИ на живой арене
          (её держит WorldStageController), и клик по телу обязан доходить до мира, а не гаснуть о
          прозрачный слой интерфейса. Тот же приём, что у LoadoutInventoryScreen. -->
-    <ui:VisualElement name="party-root" class="gm-party" picking-mode="Ignore">
+    <ui:VisualElement name="party-root" class="gm-prep" picking-mode="Ignore">
 
-        <ui:VisualElement class="gm-party__head" picking-mode="Ignore">
+        <ui:VisualElement class="gm-prep__head" picking-mode="Ignore">
             <ui:Label name="title" text="ПОДГОТОВКА" class="gm-text-title gm-party__title" />
-            <ui:VisualElement name="tabs" class="gm-tabbar gm-party__tabs">
+            <ui:VisualElement name="tabs" class="gm-tabbar gm-prep__tabs">
                 <gm:PlateButton name="tab-party" text="Отряд" class="gm-tab gm-tab--active" />
                 <gm:PlateButton name="tab-items" text="Предметы" class="gm-tab" />
             </ui:VisualElement>
@@ -25,15 +25,15 @@
             <ui:VisualElement name="inspect-host" class="gm-party__inspect" />
         </ui:VisualElement>
 
-        <ui:VisualElement name="bench-block" class="gm-party__bench-block">
-            <ui:VisualElement class="gm-party__bench-head" picking-mode="Ignore">
+        <ui:VisualElement name="bench-block" class="gm-prep__foot">
+            <ui:VisualElement class="gm-prep__foot-head" picking-mode="Ignore">
                 <ui:Label name="bench-title" text="ОТРЯД ГИЛЬДИИ" class="gm-text-name gm-text--accent" />
                 <ui:Label name="bench-note" text="" class="gm-text-caption gm-text--muted" />
             </ui:VisualElement>
             <ui:VisualElement name="bench" class="gm-party__bench" />
         </ui:VisualElement>
 
-        <ui:VisualElement class="gm-party__actions">
+        <ui:VisualElement class="gm-prep__actions">
             <gm:PlateButton name="btn-battle" text="В БОЙ" class="gm-button gm-button--primary" />
         </ui:VisualElement>
     </ui:VisualElement>

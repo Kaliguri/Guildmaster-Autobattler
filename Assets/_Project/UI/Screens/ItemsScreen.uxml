@@ -1,14 +1,14 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components">
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components">
     <!-- Страница «Предметы» (ГДД preparation-screens §2.2, раскладка «Строки»).
 
          Тот же каркас, что у страницы «Отряд»: шапка с лентой страниц, тело, действия внизу.
          Слоты выстроены в одну вертикаль — «у кого пусто» читается одним взглядом сверху вниз,
          и это главный вопрос страницы. -->
-    <ui:VisualElement name="items-root" class="gm-items">
+    <ui:VisualElement name="items-root" class="gm-prep">
 
-        <ui:VisualElement class="gm-items__head">
+        <ui:VisualElement class="gm-prep__head">
             <ui:Label name="title" text="ПОДГОТОВКА" class="gm-text-title gm-items__title" />
-            <ui:VisualElement name="tabs" class="gm-tabbar gm-items__tabs">
+            <ui:VisualElement name="tabs" class="gm-tabbar gm-prep__tabs">
                 <gm:PlateButton name="tab-party" text="Отряд" class="gm-tab" />
                 <gm:PlateButton name="tab-items" text="Предметы" class="gm-tab gm-tab--active" />
             </ui:VisualElement>
@@ -20,15 +20,15 @@
             <ui:VisualElement name="inspect-host" class="gm-items__inspect" />
         </ui:VisualElement>
 
-        <ui:VisualElement class="gm-items__stash-block">
-            <ui:VisualElement class="gm-items__stash-head">
+        <ui:VisualElement class="gm-prep__foot">
+            <ui:VisualElement class="gm-prep__foot-head">
                 <ui:Label name="stash-title" text="ПРЕДМЕТЫ В ЗАПАСЕ" class="gm-text-name gm-text--accent" />
                 <ui:Label name="stash-note" text="" class="gm-text-caption gm-text--muted" />
             </ui:VisualElement>
             <ui:ScrollView name="stash" class="gm-items__stash" />
         </ui:VisualElement>
 
-        <ui:VisualElement class="gm-items__actions">
+        <ui:VisualElement class="gm-prep__actions">
             <gm:PlateButton name="btn-battle" text="В БОЙ" class="gm-button gm-button--primary" />
         </ui:VisualElement>
     </ui:VisualElement>
