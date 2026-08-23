@@ -22,7 +22,6 @@ namespace Guildmaster.DevTools
 
         private static readonly Dictionary<string, Action<VisualElement>> Builders = new()
         {
-            ["dev-picker"]   = BuildDevPicker,
             ["reward"]       = BuildReward,
             ["event"]        = BuildEvent,
             ["loadout-inventory"] = BuildLoadoutInventory,
@@ -46,10 +45,36 @@ namespace Guildmaster.DevTools
             ["hub"]          = BuildHub,
             ["titlecard"]    = BuildTitleCard,
             ["devconsole"]   = BuildDevConsole,
+            ["dev-log"]      = BuildDevLog,
+            ["dev-battles"]  = BuildDevBattles,
         };
 
-        /// <summary>Все известные цели (для меню/подсказок).</summary>
-        public static IEnumerable<string> Ids => Builders.Keys;
+        /// <summary>
+        /// Порядок показа: по ПУТИ ИГРОКА, а не по тому, что раньше дописали.
+        /// </summary>
+        /// <remarks>
+        /// <b>Свой список, а не ключи словаря.</b> Заказ Макса 23.08.2026: «Надо видеть сначала главные,
+        /// основные экраны, а лишь потом менее важные, а не как сейчас». До этого порядок кадров задавал
+        /// порядок вставки в словарь — и витрина открывалась мёртвым дев-выбором боя. Порядок словаря
+        /// вдобавок ничем не гарантирован: одно удаление ключа, и он перестроится молча.
+        /// <para>Гейт <c>UiScreenCatalogGateTests</c> следит, чтобы список и словарь не разошлись.</para>
+        /// </remarks>
+        private static readonly string[] Order =
+        {
+            // Вход в игру: с этого начинается любая сессия.
+            "mainmenu", "newgame", "profile", "slotcreate", "guilds",
+            // Дом гильдии и подготовка отряда.
+            "hub", "party", "items", "loadout", "loadout-inventory", "vessel-card",
+            // Забег: узлы и их исход.
+            "titlecard", "shop", "chest", "event", "camp", "reward", "outcome",
+            // Служебное: видно игроку, но не по ходу игры.
+            "settings", "pause",
+            // Дев-полки: F1 команды, F2 лог движка, F3 витрина боёв.
+            "devconsole", "dev-log", "dev-battles",
+        };
+
+        /// <summary>Все известные цели в порядке показа (для меню, прогона кадров и подсказок).</summary>
+        public static IEnumerable<string> Ids => Order;
 
         /// <summary>Собрать экран <paramref name="id"/> в <paramref name="root"/>. Неизвестный id → подпись-заглушка.</summary>
         public static void Build(string id, VisualElement root)
@@ -68,23 +93,33 @@ namespace Guildmaster.DevTools
 
         // ── Записи каталога ──────────────────────────────────────────────────
 
-        private static void BuildDevPicker(VisualElement root)
+        /// <summary>
+        /// Полка F2 — лог движка. Строки те же, что у консоли: полка отвечает за ХВОСТ сообщений, и
+        /// правдоподобие кадра держится на смеси видов записи, а не на их количестве.
+        /// </summary>
+        private static void BuildDevLog(VisualElement root)
         {
-            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Dev/DevBattlePicker.uxml");
-            if (uxml == null) { AddError(root, "DevBattlePicker.uxml не найден"); return; }
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/DevLogScreen.uxml");
+            if (uxml == null) { AddError(root, "DevLogScreen.uxml не найден"); return; }
 
-            uxml.CloneTree(root);
+            var screen = new Guildmaster.UI.DevConsole.DevLogScreen(uxml, SampleLog());
+            screen.Build(new Guildmaster.UI.UiScreenContext(root, RuValue));
+            root.Add(screen.Root);
+        }
 
-            // При ручном CloneTree <Style src> из UXML не всегда применяется — подключаем USS явно.
-            var uss = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/_Project/UI/Dev/DevBattlePicker.uss");
-            if (uss != null && !root.styleSheets.Contains(uss)) root.styleSheets.Add(uss);
+        /// <summary>
+        /// Полка F3 — витрина боёв: то, чем на самом деле запускают бой из игры. Прежде на её месте в
+        /// каталоге стоял <c>DevBattlePicker</c> — экран, который из игры не открывается ниоткуда, и
+        /// кадр выходил пустым (наход. Макса 23.08.2026).
+        /// </summary>
+        private static void BuildDevBattles(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/DevBattleBrowser.uxml");
+            if (uxml == null) { AddError(root, "DevBattleBrowser.uxml не найден"); return; }
 
-            var scroll = root.Q<ScrollView>("gm-dev-scroll");
-            if (scroll == null) { AddError(root, "в UXML нет #gm-dev-scroll"); return; }
-
-            // Реальный контент без DI: тот же приём, что в RootLifetimeScope.
-            IContentDatabase content = LoadContent();
-            DevBattlePickerView.Populate(scroll.contentContainer, content, _ => { }, _ => { });
+            var screen = new DevBattleBrowserScreen(uxml, SampleRegistry(), LoadContent());
+            screen.Build(new Guildmaster.UI.UiScreenContext(root, RuValue));
+            root.Add(screen.Root);
         }
 
         private static void BuildReward(VisualElement root)
@@ -566,6 +601,18 @@ namespace Guildmaster.DevTools
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/DevConsoleScreen.uxml");
             if (uxml == null) { AddError(root, "DevConsoleScreen.uxml не найден"); return; }
 
+            var screen = new Guildmaster.UI.DevConsole.DevConsoleScreen(uxml, SampleRegistry(), SampleLog());
+            screen.Build(new Guildmaster.UI.UiScreenContext(root, RuValue));
+            root.Add(screen.Root);
+
+            // Набранный префикс: палитра раскрывается, ghost дорисовывает общее продолжение.
+            var field = screen.Root.Q<TextField>("console-field");
+            if (field != null) field.value = "gm_sep";
+        }
+
+        /// <summary>Стендовый реестр команд: общий на все три дев-полки — они читают ОДИН реестр и в игре.</summary>
+        private static Guildmaster.Core.DevConsole.DevCommandRegistry SampleRegistry()
+        {
             var registry = new Guildmaster.Core.DevConsole.DevCommandRegistry();
             registry.Register("gm_sep_radius", "Радиус тела на единицу Size (live)", a => "0.45",
                 new Guildmaster.Core.DevConsole.DevParam("value", Guildmaster.Core.DevConsole.DevParamType.Float));
@@ -579,7 +626,12 @@ namespace Guildmaster.DevTools
                 new Guildmaster.Core.DevConsole.DevParam("skinId", Guildmaster.Core.DevConsole.DevParamType.String));
             registry.Register("gm_spawn_battle", "Запустить тест-бой N юнитов за каждую сторону", a => null,
                 new Guildmaster.Core.DevConsole.DevParam("count", Guildmaster.Core.DevConsole.DevParamType.Int, true));
+            return registry;
+        }
 
+        /// <summary>Стендовый лог: по строке на каждый вид записи — иначе кадр не показывает их цвета.</summary>
+        private static Guildmaster.Core.DevConsole.DevConsoleLog SampleLog()
+        {
             var log = new Guildmaster.Core.DevConsole.DevConsoleLog();
             log.Append(Guildmaster.Core.DevConsole.DevLogKind.Info, "[BattleStartup] - арена собрана: 4 против 3");
             log.Append(Guildmaster.Core.DevConsole.DevLogKind.Echo, "> gm_arena_swap stone");
@@ -588,17 +640,8 @@ namespace Guildmaster.DevTools
             log.Append(Guildmaster.Core.DevConsole.DevLogKind.Error, "мало аргументов. Форма: gm_sep_radius <value>");
             log.Append(Guildmaster.Core.DevConsole.DevLogKind.Warn, "[AudioService] - банк 'sfx_combat' уже загружен");
             log.Append(Guildmaster.Core.DevConsole.DevLogKind.Info, "[BattleTape] - лента: 1214 событий, показ на тике 342");
-
-            var screen = new Guildmaster.UI.DevConsole.DevConsoleScreen(uxml, registry, log);
-            screen.Build(new Guildmaster.UI.UiScreenContext(root, RuValue));
-            root.Add(screen.Root);
-
-            // Набранный префикс: палитра раскрывается, ghost дорисовывает общее продолжение.
-            var field = screen.Root.Q<TextField>("console-field");
-            if (field != null) field.value = "gm_sep";
+            return log;
         }
-
-
 
         // ── Стендовые данные ─────────────────────────────────────────────────
 

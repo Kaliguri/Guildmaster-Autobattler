@@ -1,8 +1,9 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Cysharp.Threading.Tasks;
+using Guildmaster.Presentation.Map;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -28,6 +29,13 @@ namespace Guildmaster.DevTools
     /// больше нет — задник экранов рисует презентация материалом стола, и снимок с изолированного
     /// стенда показал бы экран на пустоте. Игровой интерфейс на время прогона прячется, задник
     /// остаётся.</para>
+    ///
+    /// <para><b>Задник прогон поднимает САМ.</b> Он приходит не из UI, а от
+    /// <see cref="MenuBackdropView"/> по событию <c>ScreenBackdropChangedEvent</c>, которое публикует
+    /// роутер при открытии экрана. Прогон собирает экраны мимо роутера — событие публиковать некому,
+    /// стол остаётся выключенным, и кадр показывает интерфейс на чёрном поле. Так и вышло с первым
+    /// прогоном 23.08.2026: Макс справедливо прочитал чёрные настройки как поломку экрана, хотя
+    /// сломан был снимок.</para>
     ///
     /// <para><b>Достоверность кадра.</b> Правило Макса 23.08.2026: стенд и игра собирают экран одним
     /// кодом, иначе кадра нет. Часть записей каталога этому пока не отвечает — они пересобирают
@@ -78,6 +86,14 @@ namespace Guildmaster.DevTools
             Directory.CreateDirectory(OutputDir);
             Directory.CreateDirectory(Path.GetDirectoryName(ManifestPath));
 
+            // Стол за экранами: поднимаем на время прогона и возвращаем как было. Ищем в сцене, а не
+            // просим инъекцией — прогон дев-инструмент и живёт вне графа зависимостей.
+            var backdrop = Object.FindAnyObjectByType<MenuBackdropView>();
+            bool backdropWasOpen = backdrop != null && backdrop.IsOpen;
+            if (backdrop == null)
+                Debug.LogWarning("[ScreenSheet] В сцене нет MenuBackdropView — кадры выйдут на чёрном " +
+                                 "поле вместо стола. Это про снимок, а не про экраны.");
+
             VisualElement root = document.rootVisualElement;
             var hidden = new List<VisualElement>();
 
@@ -104,6 +120,10 @@ namespace Guildmaster.DevTools
                 foreach (VisualElement child in hidden) child.style.display = DisplayStyle.None;
                 root.Add(holder);
 
+                // overBattle: true — тот же запрос, что делают настройки. Иначе живой бой за кадром
+                // отменил бы стол, и половина прогона снялась бы на арене, а половина на столе.
+                backdrop?.SetOpen(true, overBattle: true);
+
                 foreach (string id in UiPreviewCatalog.Ids)
                 {
                     UiPreviewCatalog.Build(id, holder);
@@ -127,6 +147,7 @@ namespace Guildmaster.DevTools
             {
                 holder.RemoveFromHierarchy();
                 foreach (VisualElement child in hidden) child.style.display = StyleKeyword.Null;
+                backdrop?.SetOpen(backdropWasOpen, overBattle: false);
             }
 
             Debug.Log($"[ScreenSheet] Снято экранов: {saved.Count} → {Path.GetFullPath(OutputDir)}");

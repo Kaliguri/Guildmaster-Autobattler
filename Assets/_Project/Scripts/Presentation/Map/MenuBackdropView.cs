@@ -93,7 +93,23 @@ namespace Guildmaster.Presentation.Map
             _toggles?.Unregister("menu.table");
         }
 
-        private void SetOpen(bool open, bool overBattle)
+        /// <summary>Просят ли задник прямо сейчас. Пара к <see cref="SetOpen"/>: без неё нельзя вернуть
+        /// экран как было после временного показа.</summary>
+        public bool IsOpen => _menuOpen;
+
+        /// <summary>
+        /// Показать или убрать задник меты. Обычно зовётся событием
+        /// <see cref="ScreenBackdropChangedEvent"/> из UI.
+        /// </summary>
+        /// <remarks>
+        /// <b>Открыт наружу для прогона кадров экранов</b> (<c>UiScreenSheet</c>): прогон собирает
+        /// экраны мимо роутера, событие про задник публиковать некому — и снимок показывал интерфейс
+        /// на чёрном поле вместо стола, который видит игрок (наход. Макса 23.08.2026). Второй способ
+        /// поднять задник разошёлся бы с этим на первой же готче: видимость считается сразу из четырёх
+        /// условий (<see cref="ApplyVisibility"/>), и повторять их снаружи нельзя.
+        /// </remarks>
+        /// <param name="overBattle">Просить стол даже поверх живого боя — так делают настройки.</param>
+        public void SetOpen(bool open, bool overBattle)
         {
             _menuOpen = open;
             _overBattle = overBattle;
