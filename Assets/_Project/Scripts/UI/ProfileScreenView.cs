@@ -119,7 +119,7 @@ namespace Guildmaster.UI
             if (title != null)
                 title.text = customize
                     ? L("ui.profile.hub.customize.title", "Настроить профиль")
-                    : L("ui.profile.hub.select.title", "Сменить профиль");
+                    : L("ui.profile.hub.select.title", "Выбор профиля");
             if (slotsCap != null)  slotsCap.text  = L("ui.profile.slots", "Слоты");
             if (identCap != null)  identCap.text  = L("ui.profile.identity", "Как меня видят");
             // «ПРЕДПОЧТИТЕЛЬНЫЙ», а не просто «Цвет» (слово Макса 22.08.2026): в одной сессии оттенки

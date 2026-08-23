@@ -1,7 +1,7 @@
 ﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel" style="min-width: 560px; max-width: 600px;">
-            <ui:Label name="loadout-title" text="Расстановка" class="gm-text-title gm-panel__title" />
+            <ui:Label name="loadout-title" text="Снаряжение" class="gm-text-title gm-panel__title" />
 
             <ui:VisualElement class="gm-tabbar">
                 <gm:PlateButton name="tab-relic" text="Реликвия" class="gm-tab gm-tab--active" />
