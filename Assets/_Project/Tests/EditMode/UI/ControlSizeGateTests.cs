@@ -34,6 +34,38 @@ namespace Guildmaster.Tests.EditMode.UI
         /// <summary>Селектор — всё до открывающей скобки правила.</summary>
         private static readonly Regex RuleHead = new(@"([^{}]+)\{([^{}]*)\}", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Слова, по которым селектор опознаётся как контрол со своей шкалой.
+        /// </summary>
+        /// <remarks>
+        /// <b>Не только кнопка</b> (правка 23.08.2026). Разбор Макса: «Размеры всех кнопок (иконок)
+        /// на которые можно навестись (и иногда нажать) — одинаковое. Я про то, что оно должно быть
+        /// из единого источника для кнопки способности, Youtube, выбора цвета или мышки».
+        /// <para>Гейт смотрел только на слово <c>button</c> — и КЛЕТКИ (слот, портрет, образец
+        /// цвета) оставались вне всякой шкалы: замер нашёл восемь разных чисел на одну сущность.
+        /// Согласие с поправкой неполное и записано в лестнице: источник один, но ступени разные —
+        /// размер кликабельного это его вес во внимании, и уравнять кнопку способности со ссылкой
+        /// на канал значило бы соврать глазу.</para>
+        /// </remarks>
+        private static readonly string[] SizedParts =
+            { "button", "slot", "portrait", "sample", "swatch", "cell" };
+
+        /// <summary>Берёт ли правило размер из шкалы (кнопочной или клеточной).</summary>
+        private static readonly Regex FromScale =
+            new(@"var\(\s*--gm-(control-[whi]|cell-)", RegexOptions.Compiled);
+
+        /// <summary>Сырое число в свойстве размера — то, ради чего гейт и заведён.</summary>
+        private static readonly Regex RawSize =
+            new(@"(^|\s)(width|height|min-width|min-height|max-width|max-height)\s*:\s*[0-9.]+(px|%)",
+                RegexOptions.Compiled | RegexOptions.Multiline);
+
+        private static bool IsSized(string selector)
+        {
+            foreach (string part in SizedParts)
+                if (selector.Contains(part)) return true;
+            return false;
+        }
+
         /// <summary>Свойства, которыми задают размер.</summary>
         private static readonly Regex Sizing =
             new(@"(^|\s)(width|height|min-width|min-height|max-width|max-height)\s*:",
@@ -58,6 +90,10 @@ namespace Guildmaster.Tests.EditMode.UI
             [".gm-panel--menu .gm-panel__body .gm-button, .gm-panel--menu > .gm-button"] =
                 "ширина колонки диалога, а не размер кнопки: у неё свой токен-владелец " +
                 "--gm-menu-column-width, общий на меню, паузу и профиль",
+            [".gm-party-slot"] =
+                "плитка человека, а не клетка: у неё мера и рост РАЗНЫЕ (116x132), потому что внутри " +
+                "четыре строки содержимого — лицо, имя, Реликвия, метка. Клеточная лестница задаёт " +
+                "квадрат и здесь не подходит; своя мера у плитки та же, что у карточки контента",
         };
 
         [Test]
@@ -77,9 +113,12 @@ namespace Guildmaster.Tests.EditMode.UI
                     string selector = Collapse(rule.Groups[1].Value);
                     string body = rule.Groups[2].Value;
 
-                    if (selector.Length == 0 || !selector.Contains("button")) continue;
+                    if (selector.Length == 0 || !IsSized(selector)) continue;
                     if (!Sizing.IsMatch(body)) continue;
                     if (ExemptSelectors.ContainsKey(selector)) continue;
+                    // Размер, взятый ИЗ ШКАЛЫ, и есть то, чего гейт добивается: правило с токеном
+                    // ступени не жалоба, а образец. Сырое число рядом с ним всё равно поймается.
+                    if (FromScale.IsMatch(body) && !RawSize.IsMatch(body)) continue;
 
                     complaints.Add($"  {name}: {selector}");
                 }

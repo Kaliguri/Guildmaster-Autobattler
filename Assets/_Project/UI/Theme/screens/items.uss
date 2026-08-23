@@ -40,8 +40,8 @@
 
 /* Лицо носителя: круг — человек, квадрат — вещь (ГДД preparation-screens §2.2). */
 .gm-items-row__portrait {
-    width: 44px;
-    height: 44px;
+    width: var(--gm-cell-sm);
+    height: var(--gm-cell-sm);
     border-radius: 22px;
     background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-outline-width);
@@ -75,8 +75,8 @@
 /* --- Слот вещи: квадрат --- */
 
 .gm-item-slot {
-    width: 56px;
-    height: 56px;
+    width: var(--gm-cell-md);
+    height: var(--gm-cell-md);
     margin-right: var(--gm-space-2);
     align-items: center;
     justify-content: center;
@@ -128,8 +128,8 @@
 }
 
 .gm-stash-item {
-    width: 56px;
-    height: 56px;
+    width: var(--gm-cell-md);
+    height: var(--gm-cell-md);
     margin: 0 var(--gm-space-2) var(--gm-space-2) 0;
     align-items: center;
     justify-content: center;

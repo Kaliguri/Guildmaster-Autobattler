@@ -94,9 +94,9 @@
 /* Лицо человека. Круг против квадрата — не украшение: круглое это человек, квадратное вещь, и на
    любом расстоянии эти два рода объектов не путаются (ГДД preparation-screens §2.1). */
 .gm-party-slot__portrait {
-    width: 56px;
-    height: 56px;
-    border-radius: 28px;
+    width: var(--gm-cell-md);
+    height: var(--gm-cell-md);
+    border-radius: 30px;
     margin-bottom: var(--gm-space-1);
     background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-outline-width);

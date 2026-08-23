@@ -52,8 +52,8 @@
 }
 
 .gm-vcard__gear-slot {
-    width: 48px;
-    height: 48px;
+    width: var(--gm-cell-sm);
+    height: var(--gm-cell-sm);
     margin-right: var(--gm-space-2);
     background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-outline-width);
