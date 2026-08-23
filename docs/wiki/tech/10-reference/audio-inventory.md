@@ -114,7 +114,7 @@ updated: 2026-07-26
 | `feel.heavy_hit.hit` | `event:/SFX/Feel/heavy_hit` | impact | 5 |
 | `feel.kill.stinger` | `event:/SFX/Feel/kill` | stinger | 5 |
 
-### Реликвии (герои) (`relic.*`)
+### Мементо (герои) (`relic.*`)
 
 Кто дёргает: по contentId юнита из боевых событий.
 

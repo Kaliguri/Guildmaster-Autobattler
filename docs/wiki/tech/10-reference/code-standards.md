@@ -71,7 +71,7 @@ updated: 2026-08-02
 ```csharp
 /// <summary>Применяет урон с учётом брони и активных эффектов.</summary>
 /// <param name="damage">Базовый урон до модификаторов.</param>
-/// <param name="source">Источник урона — для триггеров реликвий.</param>
+/// <param name="source">Источник урона — для триггеров мементо.</param>
 /// <returns>Фактически нанесённый урон.</returns>
 public int TakeDamage(int damage, IUnit source) { ... }
 

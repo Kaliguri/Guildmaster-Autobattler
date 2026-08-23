@@ -46,7 +46,7 @@ rg 'MenuItem\("' Assets/_Project --type cs
 | `Alebardium/Content Hub` | 0 | Окно работы с контентом | `EditorTools/ContentHub/ContentHubWindow.cs` |
 | `Alebardium/Palette Remapper` | 1 | Перекраска растрового арта в нашу палитру | `EditorTools/PaletteRemap/PaletteRemapWindow.cs` |
 | `Alebardium/Balance/0. Audit Content` | 100 | Аудит контента | `Balance/Editor/BalanceMenu.cs` |
-| `Alebardium/Balance/1. DPS Bench` | 120 | Прогон урона по всем реликвиям | там же |
+| `Alebardium/Balance/1. DPS Bench` | 120 | Прогон урона по всем мементо | там же |
 | `Alebardium/Balance/1. Survivability Bench` | 121 | Прогон выживаемости | там же |
 | `Alebardium/Balance/2. Duel Matrix + Rating` | 140 | Матрица дуэлей и рейтинг | там же |
 | `Alebardium/Balance/Run Selected Scenario` | 160 | Прогнать выбранный сценарий | там же |

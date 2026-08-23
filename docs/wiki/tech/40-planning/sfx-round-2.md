@@ -214,8 +214,8 @@ Essentials `rpg`, Sonniss GDC `son`).
 | `ui.deploy_place.ui` | поставил (событие есть, вызова нет) | P0 | `rpg 070_Equip` |
 | `ui.deploy_reject.ui` | невалидная клетка (ветки нет в коде) | P0 | `ki` error_00X |
 | `ui.deploy_valid.ui` | призрак вошёл в валидную зону (edge) | P2 | `ki` tick_00X, тихо |
-| `ui.relic_equip.ui` | реликвия надета на юнита | P0 | `rpg 070_Equip_10` |
-| `ui.relic_unequip.ui` | реликвия снята | P1 | `rpg 071_Unequip_01` |
+| `ui.relic_equip.ui` | мементо надето на юнита | P0 | `rpg 070_Equip_10` |
+| `ui.relic_unequip.ui` | мементо снято | P1 | `rpg 071_Unequip_01` |
 | `ui.deploy_ready.stinger` | нажали «Начать» | P0 | `ki` confirmation |
 
 ### 4.4. Карта акта (сейчас немая целиком)
@@ -241,7 +241,7 @@ Essentials `rpg`, Sonniss GDC `son`).
 | `screen.modal_open.ui` | модалка поверх | P1 | `ki` maximize |
 | `reward.open.stinger` | открылся экран награды | P0 | `rpg 013_Confirm` + `son` fanfare |
 | `reward.card_select.ui` | клик по карточке награды (хук мёртв) | P0 | `ki` select |
-| `reward.take.stinger` | реликвия взята | P0 | `rpg 079_Buy_sell` / `son` Magic |
+| `reward.take.stinger` | мементо взято | P0 | `rpg 079_Buy_sell` / `son` Magic |
 | `reward.skip.ui` | награда пропущена | P1 | `ki` back |
 | `run.gold_gain.ui` | начислено золото | P0 | `ki` coin / `rpg 079_Buy_sell` |
 | `shop.buy.ui` / `shop.sell.ui` / `shop.reroll.ui` | покупка / продажа / реролл | P1 | `rpg 079_Buy_sell`, `ki` switch |
@@ -394,7 +394,7 @@ audio_map.py
 | Килл-стингер (под кулдауном слоумо), тяжёлый удар, финишер | `CombatFeelDirector` |
 | Разлёт на осколки | `UnitView.StartShatter` |
 | Узлы карты: наведение/выбор/недоступен/поездка | `WorldMapView` |
-| Расстановка: взял/поставил/отказ, реликвия надета | `DeploymentController` |
+| Расстановка: взял/поставил/отказ, мементо надето | `DeploymentController` |
 | Пауза, скорость | `BattleInputController` |
 | Лавка, привал, сундук, ивент, награда, золото | `ShopController`, `CampScreenView`, `MenuRouter`, `RunStateService` |
 | Петли (музыка/амбиент) | `FmodAudioService` держит `EventInstance`; `Stop`/`StopAll` |

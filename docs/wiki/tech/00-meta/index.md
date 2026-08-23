@@ -51,7 +51,7 @@ SORT updated ASC, file.name ASC
 - [[tech/40-planning/stat-system|Stat System]] — канонические 30 статов, операции, пайплайн урона.
 - [[tech/40-planning/tick-resolution|Tick Resolution]] — тик как один момент: двухфазность, закон видимости, коммит урона и хила.
 - [[tech/40-planning/phase-2-effects|Phase 2: Effects & Abilities]] — модель эффектов, способности, диспел.
-- [[tech/40-planning/phase-3-ai-relics|Phase 3: AI & Relics]] — AI-пресеты, каденс 10 Гц, движковые расширения, реликвии.
+- [[tech/40-planning/phase-3-ai-relics|Phase 3: AI & Relics]] — AI-пресеты, каденс 10 Гц, движковые расширения, мементо.
 - [[tech/40-planning/attack-timing|Attack Timing]] — тайминг авто-атаки: windup + кадр удара.
 - [[tech/40-planning/barriers|Barriers]] — инженерная часть Стены и Купола: швы, порядок, тесты.
 - [[tech/40-planning/phase-4-content|Phase 4: Content Framework]] — контент-каркас: SO, id, реестр, конфиги.
