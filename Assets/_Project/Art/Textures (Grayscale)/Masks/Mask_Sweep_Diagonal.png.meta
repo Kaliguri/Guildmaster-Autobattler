@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 6d63d9171d77a924fb289bc982edb479
+guid: 61a2928a0d4d63a418a86a57ba051cd4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2052067800451387599
-    second: MenuBackdrop_Light_0
+      213: 1343207342311973004
+    second: "ChatGPT Image 23 \u0430\u0432\u0433. 2026 \u0433., 13_19_00 (5)_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
-    sRGBTexture: 0
+    sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -55,9 +55,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MenuBackdrop_Light_0
+      name: "ChatGPT Image 23 \u0430\u0432\u0433. 2026 \u0433., 13_19_00 (5)_0"
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1920
-        height: 1080
+        width: 1672
+        height: 941
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 13fe31335379583e0800000000000000
-      internalID: -2052067800451387599
+      spriteID: c80a33216f704a210800000000000000
+      internalID: 1343207342311973004
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      MenuBackdrop_Light_0: -2052067800451387599
+      "ChatGPT Image 23 \u0430\u0432\u0433. 2026 \u0433., 13_19_00 (5)_0": 1343207342311973004
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
