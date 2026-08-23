@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.UI.Components;
 using UnityEngine.UIElements;
 
@@ -43,7 +43,6 @@ namespace Guildmaster.UI
         public SelectRow RefreshRate { get; private set; }
 
         /// <summary>Кнопки экрана.</summary>
-        public BackButton Leave { get; private set; }
         public Button Save { get; private set; }
         public Button Defaults { get; private set; }
 
@@ -54,7 +53,9 @@ namespace Guildmaster.UI
         /// </summary>
         /// <param name="uxml">Разметка экрана.</param>
         /// <param name="localize">Ключ → строка; пустой ответ означает «нет перевода», берётся RU-запас.</param>
-        public static SettingsScreenView Build(VisualTreeAsset uxml, Func<string, string> localize)
+        /// <param name="onLeave">Уйти с настроек. Действие приезжает сюда, а не подписывается снаружи:
+        /// место возврату задаёт <see cref="BackButton.PlaceOn"/>, и ставить его может только вид.</param>
+        public static SettingsScreenView Build(VisualTreeAsset uxml, Func<string, string> localize, Action onLeave)
         {
             string L(string key, string ru)
             {
@@ -81,7 +82,6 @@ namespace Guildmaster.UI
                 WindowMode     = tree.Q<SelectRow>("row-window-mode"),
                 Resolution     = tree.Q<SelectRow>("row-resolution"),
                 RefreshRate    = tree.Q<SelectRow>("row-refresh-rate"),
-                Leave          = tree.Q<BackButton>("btn-cancel"),
                 Save           = tree.Q<Button>("btn-save"),
                 Defaults       = tree.Q<Button>("btn-defaults"),
                 _videoHint     = tree.Q<Label>("video-hint"),
@@ -103,7 +103,7 @@ namespace Guildmaster.UI
             if (view.Resolution  != null) view.Resolution.LabelText  = L("ui.settings.resolution", "Разрешение");
             if (view.RefreshRate != null) view.RefreshRate.LabelText = L("ui.settings.refresh_rate", "Частота обновления");
 
-            view.Leave?.Localize(localize);
+            BackButton.PlaceOn(tree, onLeave, localize);
 
             WireTabs(tree);
             return view;

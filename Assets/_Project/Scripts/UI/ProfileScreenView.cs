@@ -111,7 +111,6 @@ namespace Guildmaster.UI
             var cursorCap  = root.Q<Label>("cursor-caption");
             var cursorPick = root.Q<Components.PickerButton>("cursor-picker");
             var save       = root.Q<Button>("btn-save");
-            var back       = root.Q<Components.BackButton>("btn-back");
 
             // Показывается РОВНО ОДНО лицо: экран один, вопросов два, и смешивать их нельзя.
             if (sideSelect != null) sideSelect.style.display = customize ? DisplayStyle.None : DisplayStyle.Flex;
@@ -129,7 +128,6 @@ namespace Guildmaster.UI
             if (colorCap != null)  colorCap.text  = L("ui.profile.color", "Предпочтительный цвет");
             if (cursorCap != null) cursorCap.text = L("ui.profile.cursor", "Курсор");
             if (save != null)      save.text      = L("ui.profile.save", "Сохранить");
-            back?.Localize(localize);   // слово и ключ у возврата одни на всю игру — они в самом контроле
             if (steamToggle != null)
                 steamToggle.LabelText = L("ui.profile.name.steam", "Брать имя из Steam");
 
@@ -294,11 +292,9 @@ namespace Guildmaster.UI
 
             // Без профиля уходить некуда — тогда «Назад» не показываем вовсе, а не гасим: погашенная
             // кнопка читается как «сломалось», отсутствующая — как «сначала выбери слот».
-            if (back != null)
-            {
-                if (canLeave) back.clicked += () => onBack?.Invoke();
-                else          back.style.display = DisplayStyle.None;
-            }
+            // Уходить некуда (первый запуск, профиля ещё нет) — двери нет вовсе: слово и место у
+            // возврата одни на всю игру, и живут они в самом контроле.
+            Components.BackButton.PlaceOn(root, canLeave ? onBack : null, localize);
 
             return screen;
         }

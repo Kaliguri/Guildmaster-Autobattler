@@ -99,7 +99,8 @@ namespace Guildmaster.Tests.EditMode.UI
             rootVisualElement.Add(Guildmaster.UI.HubScreenView.Build(
                 Uxml("Assets/_Project/UI/Screens/HubScreen.uxml"),
                 guildName: "Гильдия с очень длинным именем, какое игрок вправе себе завести",
-                localize: null, onStartRun: null, canStartRun: true));
+                localize: null, onStartRun: null, canStartRun: true,
+                stage: (1, 8, "act.1.title"), onLeave: () => { }));
             AssertNoOverlap("HubScreen");
         }
 

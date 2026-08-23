@@ -30,7 +30,6 @@
             <ui:VisualElement class="gm-button-row">
                 <gm:PlateButton name="btn-accept" text="Принять" class="gm-button" />
                 <gm:PlateButton name="btn-save" text="Сохранить" class="gm-button" />
-                <gm:BackButton name="btn-close" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

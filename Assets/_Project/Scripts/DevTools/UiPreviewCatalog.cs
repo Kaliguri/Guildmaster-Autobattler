@@ -327,7 +327,10 @@ namespace Guildmaster.DevTools
 
             // Тот же Build, что зовёт игра: стенд собирает экран НЕ своим кодом, иначе кадр показывал бы
             // стенд, а не игру (правило Макса 23.08.2026).
-            Guildmaster.UI.SettingsScreenView view = Guildmaster.UI.SettingsScreenView.Build(uxml, RuValue);
+            // Возврат стенду нужен НЕ ради нажатия, а ради места: без действия вид его не поставит,
+            // и кадр не покажет кнопку, которая в игре есть.
+            Guildmaster.UI.SettingsScreenView view = Guildmaster.UI.SettingsScreenView.Build(
+                uxml, RuValue, onLeave: () => { });
 
             // Значения статичны: стенд не поднимает ни VM, ни IDisplayService — он показывает вид, а не
             // поведение. Списки берутся у настоящего монитора, чтобы видеть честную длину.
@@ -372,7 +375,7 @@ namespace Guildmaster.DevTools
             // готовые строки в детали и отмечает первую карточку выбранной, чтобы на кадре было видно
             // и обычную карточку, и выделенную.
             Guildmaster.UI.LoadoutScreenView view = Guildmaster.UI.LoadoutScreenView.Build(
-                uxml, relics, r => Coalesce(RuValue(r.Id + ".name"), r.Id), RuValue);
+                uxml, relics, r => Coalesce(RuValue(r.Id + ".name"), r.Id), RuValue, onClose: () => { });
 
             RelicData first = view.FirstRelic;
             view.SyncCards(r => r == first, r => r == first);
@@ -582,7 +585,8 @@ namespace Guildmaster.DevTools
             if (uxml == null) { AddError(root, "HubScreen.uxml не найден"); return; }
 
             root.Add(Guildmaster.UI.HubScreenView.Build(
-                uxml, "Гильдия 1", RuValue, () => { }, canStartRun: true));
+                uxml, "Гильдия 1", RuValue, () => { }, canStartRun: true,
+                stage: (1, 8, "act.1.title"), onLeave: () => { }));
         }
 
         private static void BuildTitleCard(VisualElement root)

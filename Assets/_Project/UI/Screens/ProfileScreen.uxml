@@ -69,7 +69,6 @@
                  ДВОЙНОЙ ДЕФИС В КОММЕНТАРИИ XML ЗАПРЕЩЁН: имя класса с ним написано словами
                  намеренно — иначе UXML перестаёт разбираться целиком и экран приходит пустым. -->
             <ui:VisualElement class="gm-profile__actions">
-                <gm:BackButton name="btn-back" />
                 <gm:PlateButton name="btn-save" text="Сохранить" class="gm-button gm-button--primary" />
             </ui:VisualElement>
         </ui:VisualElement>

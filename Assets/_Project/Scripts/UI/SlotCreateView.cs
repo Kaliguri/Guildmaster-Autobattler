@@ -70,7 +70,6 @@ namespace Guildmaster.UI
             var shadeCap    = root.Q<Label>("emblem-color-caption");
             var shadePick   = root.Q<Components.PickerButton>("emblem-color-picker");
             var create      = root.Q<Button>("btn-create");
-            var back        = root.Q<Components.BackButton>("btn-back");
 
             bool profile = kind == SlotKind.Profile;
 
@@ -171,8 +170,7 @@ namespace Guildmaster.UI
 
             SyncCreate();
 
-            back?.Localize(localize);
-            if (back != null) back.clicked += () => onBack?.Invoke();
+            Components.BackButton.PlaceOn(root, onBack, localize);
 
             return screen;
         }

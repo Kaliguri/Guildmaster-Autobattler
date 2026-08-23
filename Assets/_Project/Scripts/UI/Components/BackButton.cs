@@ -47,5 +47,34 @@ namespace Guildmaster.UI.Components
             text = string.IsNullOrEmpty(translated) ? RuFallback : translated;
             return this;
         }
+
+        /// <summary>
+        /// Поставить возврат на экран. ЕДИНСТВЕННЫЙ способ завести кнопку «Вернуться»: место она берёт
+        /// у кромки кадра, и кадром для неё может быть только корень экрана.
+        /// </summary>
+        /// <remarks>
+        /// <b>Почему метод, а не элемент в разметке.</b> Место кнопке задаёт <c>gm-button--back</c>
+        /// — <c>position: absolute</c> у левого нижнего края. В UI Toolkit всякий элемент по умолчанию
+        /// <c>relative</c>, поэтому абсолют считается от НЕПОСРЕДСТВЕННОГО родителя, а не от кадра:
+        /// положили кнопку в колонку панели — она встала у кромки колонки, положили в ряд по центру —
+        /// встала посреди экрана поверх карточки. Именно это Макс видел 23.08.2026 на кадрах выбора
+        /// режима, выбора гильдии и настроек: «вернуться находится не у левого края экрана, как мы
+        /// обсуждали. Почему?»
+        /// <para>Разметка выбор родителя не ограничивает никак, а метод — ограничивает: он кладёт
+        /// кнопку в корень экрана и никуда больше. Гейт <c>BackButtonPlacementTests</c> следит, что
+        /// второго пути не завелось.</para>
+        /// </remarks>
+        /// <param name="screenRoot">Корень экрана — тот элемент, что занимает весь кадр.</param>
+        /// <param name="onBack">Куда ведёт возврат. <c>null</c> — двери нет, и кнопки тоже.</param>
+        /// <returns>Поставленная кнопка или <c>null</c>, если возвращаться некуда.</returns>
+        public static BackButton PlaceOn(VisualElement screenRoot, Action onBack, Func<string, string> localize)
+        {
+            if (screenRoot == null || onBack == null) return null;
+
+            var button = new BackButton(onBack);
+            button.Localize(localize);
+            screenRoot.Add(button);
+            return button;
+        }
     }
 }

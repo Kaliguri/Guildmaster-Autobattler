@@ -100,13 +100,14 @@ namespace Guildmaster.UI
                 footer.Add(footerExtra);
             }
 
-            // Возврат стоит ПЕРВЫМ в футере и уходит в его левый край сам — местом владеет класс
-            // gm-button--back, а не раскладка этого экрана.
-            var back = new Components.BackButton(onBack).Localize(localize);
-            footer.Insert(0, back);
             body.Add(footer);
 
             screen.Add(body);
+
+            // Возврат кладётся в КОРЕНЬ экрана, а не в футер: место ему задаёт абсолют у кромки кадра,
+            // а абсолют в UI Toolkit считается от непосредственного родителя. В футере он и вставал
+            // посреди кадра — ровно поверх средней карточки (наход. Макса 23.08.2026).
+            Components.BackButton.PlaceOn(screen, onBack, localize);
             return screen;
         }
 

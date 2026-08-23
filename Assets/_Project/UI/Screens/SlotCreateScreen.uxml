@@ -1,4 +1,4 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <gm:PanelFrame name="slot-create-frame" class="gm-panel__frame" />
@@ -30,7 +30,6 @@
 
             <ui:VisualElement class="gm-divider" />
             <ui:VisualElement class="gm-profile__actions">
-                <gm:BackButton name="btn-back" />
                 <gm:PlateButton name="btn-create" text="Создать" class="gm-button gm-button--primary" />
             </ui:VisualElement>
         </ui:VisualElement>

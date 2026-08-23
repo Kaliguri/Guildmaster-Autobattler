@@ -1317,7 +1317,8 @@ namespace Guildmaster.UI
 
         private VisualElement BuildSettingsScreen()
         {
-            SettingsScreenView view = SettingsScreenView.Build(_settingsUxml, key => _loc?.GetString(key));
+            SettingsScreenView view = SettingsScreenView.Build(
+                _settingsUxml, key => _loc?.GetString(key), onLeave: () => LeaveSettingsAsync().Forget());
 
             string L(string key, string ru) { string v = _loc?.GetString(key); return string.IsNullOrEmpty(v) ? ru : v; }
 
@@ -1405,11 +1406,10 @@ namespace Guildmaster.UI
 
             view.Save.clicked += () => { _settingsVm.Save(); Pop(); };
 
-            // Уход с несохранёнными правками и сброс к начальным — оба необратимы для того, что игрок
-            // только что крутил, и оба спрашивают (правило Макса 22.08.2026). Уход БЕЗ правок не
-            // спрашивает ничего: вопрос без последствий приучает жать «да» не читая.
-            if (view.Leave != null) view.Leave.clicked += () => LeaveSettingsAsync().Forget();
-
+            // Сброс к начальным необратим для того, что игрок только что крутил, и потому спрашивает
+            // (правило Макса 22.08.2026). Уход спрашивает по тому же правилу — но только при
+            // несохранённых правках: вопрос без последствий приучает жать «да» не читая. Сам уход
+            // подписан выше, при сборке вида: место возврату задаёт BackButton.PlaceOn.
             view.Defaults.clicked += () => ResetSettingsAsync().Forget();
 
             return view.Root;
@@ -1419,7 +1419,8 @@ namespace Guildmaster.UI
         private VisualElement BuildLoadoutScreen()
         {
             LoadoutScreenView view = LoadoutScreenView.Build(
-                _loadoutUxml, _loadoutVm.Relics, r => _loadoutVm.Name(r), key => _loc?.GetString(key));
+                _loadoutUxml, _loadoutVm.Relics, r => _loadoutVm.Name(r), key => _loc?.GetString(key),
+                onClose: Pop);
 
             void ShowDetail(RelicData r) =>
                 view.ShowDetail(_loadoutVm.Name(r), _loadoutVm.Desc(r), _loadoutVm.Tags(r), _loadoutVm.StatsSummary(r));
@@ -1435,7 +1436,6 @@ namespace Guildmaster.UI
             // Принять = применить + закрыть; Сохранить = применить, не закрывая; Закрыть = отмена.
             view.Accept.clicked += () => { _loadoutVm.Apply(); Pop(); };
             view.Save.clicked   += () => { _loadoutVm.Apply(); RefreshCards(); };
-            if (view.Close != null) view.Close.clicked += Pop;
 
             return view.Root;
         }

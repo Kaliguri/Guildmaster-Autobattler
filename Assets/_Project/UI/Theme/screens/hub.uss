@@ -20,8 +20,3 @@
     -unity-text-align: middle-center;
     margin-bottom: var(--gm-space-3);
 }
-
-/* Футер двора: дверь наружу на своём общем месте (левый край, см. button.uss). */
-.gm-hub__actions {
-    flex-direction: row;
-}

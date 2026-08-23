@@ -80,15 +80,10 @@ namespace Guildmaster.UI
             var stats      = root.Q<VisualElement>("stat-list");
             var pick       = root.Q<Button>("btn-pick");
             var drop       = root.Q<Button>("btn-delete");
-            var back       = root.Q<Components.BackButton>("btn-back");
 
             if (title != null)   title.text   = L("ui.guilds.title", "Гильдия");
             if (caption != null) caption.text = L("ui.guilds.caption", "Дома");
-            if (back != null)
-            {
-                back.Localize(localize);
-                back.clicked += () => onBack?.Invoke();
-            }
+            Components.BackButton.PlaceOn(root, onBack, localize);
 
             // ПОДСВЕТКА И ВХОД РАЗВЕДЕНЫ — тем же приёмом, что на экране профиля: клик по строке
             // показывает дом справа, играть в нём начинает «Играть».

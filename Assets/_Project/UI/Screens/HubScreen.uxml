@@ -17,9 +17,6 @@
             </ui:VisualElement>
 
             <ui:VisualElement class="gm-divider" />
-            <ui:VisualElement class="gm-hub__actions">
-                <gm:BackButton name="btn-leave" />
-            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

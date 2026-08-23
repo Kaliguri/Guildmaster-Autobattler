@@ -27,7 +27,6 @@ namespace Guildmaster.UI
         /// <summary>Кнопки экрана: принять, сохранить, закрыть.</summary>
         public Button Accept { get; private set; }
         public Button Save { get; private set; }
-        public BackButton Close { get; private set; }
 
         /// <summary>Наведение на карточку — повод показать её детали.</summary>
         public event Action<RelicData> Hovered;
@@ -48,8 +47,11 @@ namespace Guildmaster.UI
         /// <param name="relics">Что показать в сетке, в порядке показа.</param>
         /// <param name="nameOf">Подпись карточки: имя реликвии в языке игрока.</param>
         /// <param name="localize">Ключ → строка, для кнопки возврата.</param>
+        /// <param name="onClose">Закрыть экран. Действие приезжает сюда, а не подписывается снаружи:
+        /// место возврату задаёт <see cref="BackButton.PlaceOn"/>, и ставить его может только вид.</param>
         public static LoadoutScreenView Build(VisualTreeAsset uxml, IReadOnlyList<RelicData> relics,
-                                              Func<RelicData, string> nameOf, Func<string, string> localize)
+                                              Func<RelicData, string> nameOf, Func<string, string> localize,
+                                              Action onClose)
         {
             VisualElement tree = uxml.CloneTree();
             tree.style.position = Position.Absolute;
@@ -63,7 +65,6 @@ namespace Guildmaster.UI
                 Root         = tree,
                 Accept       = tree.Q<Button>("btn-accept"),
                 Save         = tree.Q<Button>("btn-save"),
-                Close        = tree.Q<BackButton>("btn-close"),
                 _detailName  = tree.Q<Label>("detail-name"),
                 _detailDesc  = tree.Q<Label>("detail-desc"),
                 _detailTags  = tree.Q<Label>("detail-tags"),
@@ -107,7 +108,7 @@ namespace Guildmaster.UI
 
             // Дверь наружу — тот же контрол, что и на прочих экранах: слово, место и вид у возврата
             // одни на всю игру (правило Макса 22.08.2026).
-            view.Close?.Localize(localize);
+            BackButton.PlaceOn(tree, onClose, localize);
             return view;
         }
 

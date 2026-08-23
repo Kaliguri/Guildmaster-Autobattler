@@ -21,15 +21,21 @@ namespace Guildmaster.UI
         /// как «экран не догрузился», погашенная — как «сейчас нельзя».
         /// </param>
         /// <param name="stage">Где стоит забег: номер акта, ступень маршрута и ключ имени акта.</param>
-        /// <param name="onLeave">Уйти со двора. <c>null</c> — уходить некуда, и двери не будет.</param>
+        /// <param name="onLeave">
+        /// Уйти со двора. <c>null</c> — уходить некуда, и двери не будет.
+        /// <b>Без умолчания намеренно:</b> когда оно было, стенд собирал двор без двери и кадр
+        /// показывал экран, которого в игре нет — Макс прочитал это как «всё ещё нет кнопки вернуться
+        /// в меню» (23.08.2026). Умолчание у параметра-данных даёт вызывающему право промолчать, а
+        /// молчит всегда стенд.
+        /// </param>
         public static VisualElement Build(
             VisualTreeAsset uxml,
             string guildName,
             Func<string, string> localize,
             Action onStartRun,
             bool canStartRun,
-            (int Act, int Level, string TitleKey) stage = default,
-            Action onLeave = null)
+            (int Act, int Level, string TitleKey) stage,
+            Action onLeave)
         {
             string L(string key, string fallback)
             {
@@ -44,7 +50,6 @@ namespace Guildmaster.UI
             var title = root.Q<Label>("hub-title");
             var stub  = root.Q<Label>("hub-stub");
             var where = root.Q<Label>("hub-stage");
-            var leave = root.Q<Components.BackButton>("btn-leave");
             var start = root.Q<Button>("btn-start-run");
 
             // Титул — имя дома, а не слово «Двор»: игрок вернулся к СВОЕЙ гильдии, и первым делом
@@ -60,12 +65,7 @@ namespace Guildmaster.UI
             // ключом, и переводит его каждый у себя (иначе гость с другим языком читал бы чужую локаль).
             if (where != null) where.text = StageLine(stage, localize, L);
 
-            if (leave != null)
-            {
-                leave.Localize(localize);
-                if (onLeave != null) leave.clicked += () => onLeave.Invoke();
-                else                 leave.style.display = DisplayStyle.None;
-            }
+            Components.BackButton.PlaceOn(root, onLeave, localize);
 
             if (start != null)
             {
