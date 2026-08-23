@@ -463,7 +463,10 @@ namespace Guildmaster.UI
             VisualElement screen = LoadoutInventoryView.Build(
                 _loadoutInventoryUxml, _arcanaCardUxml,
                 _loadoutVm.Relics, gold,
-                titleOf: r => ContentTitle.Arcana(r != null ? r.Id : null),
+                // Имя реликвии в интерфейсе ОДНО на все экраны — из локализации (реш. Макса 23.08.2026).
+                // До этого инвентарь звал её титулом арканы («The Antimage»), а расстановка русским
+                // именем, и одна вещь выглядела двумя разными.
+                titleOf: r => _loadoutVm.Name(r),
                 narrativeOf: r => _loadoutVm.Desc(r),
                 localize: key => _loc?.GetString(key),
                 lockedSlots: 0,

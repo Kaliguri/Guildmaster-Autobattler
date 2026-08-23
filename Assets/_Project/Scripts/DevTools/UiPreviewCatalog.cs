@@ -254,7 +254,7 @@ namespace Guildmaster.DevTools
             // Владеемые релики слева + 3 заблокированных (задел под фильтр по владению, Фаза 5).
             VisualElement screen = Guildmaster.UI.LoadoutInventoryView.Build(
                 screenUxml, cardUxml, relics, gold: 100,
-                titleOf: r => Guildmaster.UI.ContentTitle.Arcana(r?.Id),
+                titleOf: r => RuName(r?.Id),
                 narrativeOf: r => Coalesce(RuValue((r?.Id) + ".desc"), "«Древний завет, что тлеет в глубине веков…»"),
                 localize: RuValue,
                 lockedSlots: 3,
