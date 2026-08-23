@@ -20,6 +20,7 @@
 import { tick } from "../clock.js";
 import { COL, jag } from "../draw.js";
 import type { DrawFn, SectionDef, StandDef } from "../types.js";
+import { fbm, hash2, vnoise } from "../lib/noise.js";
 
 /* ---------- палитра зон ---------- */
 
@@ -97,38 +98,6 @@ function scene(w: number, h: number): { dots: Dot[]; pairs: Array<[number, numbe
 }
 
 /* ---------- шум ---------- */
-
-function hash2(x: number, y: number, salt: number): number {
-  return jag(x * 374761 + y * 668265, salt);
-}
-
-function vnoise(x: number, y: number, salt: number): number {
-  const xi = Math.floor(x);
-  const yi = Math.floor(y);
-  const xf = x - xi;
-  const yf = y - yi;
-  const u = xf * xf * (3 - 2 * xf);
-  const v = yf * yf * (3 - 2 * yf);
-  const a = hash2(xi, yi, salt);
-  const b = hash2(xi + 1, yi, salt);
-  const c = hash2(xi, yi + 1, salt);
-  const d = hash2(xi + 1, yi + 1, salt);
-  return (
-    (a + (b - a) * u) + ((c + (d - c) * u) - (a + (b - a) * u)) * v
-  );
-}
-
-function fbm(x: number, y: number, salt: number): number {
-  let sum = 0;
-  let amp = 0.5;
-  let freq = 1;
-  for (let o = 0; o < 3; o++) {
-    sum += (vnoise(x * freq, y * freq, salt + o * 17) - 0.5) * amp;
-    amp *= 0.5;
-    freq *= 2.1;
-  }
-  return sum;
-}
 
 /* ---------- раздел плоскости на зоны ---------- */
 

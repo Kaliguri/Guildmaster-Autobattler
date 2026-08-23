@@ -18,48 +18,14 @@
    Тяжёлые вычисления считаются ОДИН раз в offscreen-canvas и кэшируются: стенд статичный, а поле с
    тремя октавами шума на каждый пиксель в реальном времени не нужно никому. */
 
-import { COL, jag } from "../draw.js";
+import { COL } from "../draw.js";
 import type { DrawFn, SectionDef, StandDef } from "../types.js";
+import { fbm, hash2, lerp, vnoise } from "../lib/noise.js";
 
 const GOBLIN: [number, number, number] = [132, 214, 92];
 const BANDIT: [number, number, number] = [255, 96, 80];
 
 /* ---------- шум ---------- */
-
-function hash2(x: number, y: number, salt: number): number {
-  return jag(x * 374761 + y * 668265, salt);
-}
-
-function lerp(a: number, b: number, t: number): number {
-  return a + (b - a) * t;
-}
-
-/** Значение-шум с плавной интерполяцией: основа fbm и доменного искажения. */
-function vnoise(x: number, y: number, salt: number): number {
-  const xi = Math.floor(x);
-  const yi = Math.floor(y);
-  const xf = x - xi;
-  const yf = y - yi;
-  const u = xf * xf * (3 - 2 * xf);
-  const v = yf * yf * (3 - 2 * yf);
-  const a = hash2(xi, yi, salt);
-  const b = hash2(xi + 1, yi, salt);
-  const c = hash2(xi, yi + 1, salt);
-  const d = hash2(xi + 1, yi + 1, salt);
-  return lerp(lerp(a, b, u), lerp(c, d, u), v);
-}
-
-function fbm(x: number, y: number, salt: number): number {
-  let sum = 0;
-  let amp = 0.5;
-  let freq = 1;
-  for (let o = 0; o < 3; o++) {
-    sum += (vnoise(x * freq, y * freq, salt + o * 17) - 0.5) * amp;
-    amp *= 0.5;
-    freq *= 2.1;
-  }
-  return sum;
-}
 
 /* ---------- геометрия области ---------- */
 

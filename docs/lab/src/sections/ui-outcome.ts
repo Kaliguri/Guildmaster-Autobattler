@@ -16,7 +16,7 @@
 
    Что в игре сейчас: `OutcomeScreen.uxml`. */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 const FIGHTERS = ["Ирма", "Кай", "Дан", "Лея"];

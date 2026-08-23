@@ -8,7 +8,7 @@
    к игроку. Признак уже лежит в модели `NoticeRequest`: список ответов. Пустой — говорить не о чем,
    значит лента; непустой — игра ждёт решения, значит модалка со scrim. */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 /** Карта углов кадра: кто где живёт, чтобы четыре ленты не подрались за один угол. */
@@ -139,7 +139,7 @@ export const section: SectionDef = {
       kind: "stands",
       items: [
         {
-          id: "corners",
+          id: "corners-map",
           status: "accepted",
           title: "Карта углов",
           decision: "2026-08-20",

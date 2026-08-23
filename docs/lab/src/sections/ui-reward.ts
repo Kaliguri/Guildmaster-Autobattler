@@ -13,7 +13,7 @@
 
    Что в игре сейчас: `RewardScreen.uxml` — панель с рядом вариантов, секция дропа и «Пропустить». */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 /** Карточка варианта: рамка, окно арта, имя, описание. Пропорции — из рефов, см. подписи. */

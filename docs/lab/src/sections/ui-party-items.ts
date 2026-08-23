@@ -22,7 +22,7 @@
 
    Чертёж серый и в долях кадра 1920x1080 — по правилам ui-wire. */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 const NAMES = ["Ирма", "Кай", "Дан", "Сув", "Лех"];

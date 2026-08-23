@@ -13,7 +13,7 @@
    открытость для друзей. Лобби как отдельной панели у нас нет; вход в кооп идёт рукопожатием
    через Steam. */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 const OPTIONS: Array<[string, string]> = [

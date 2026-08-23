@@ -8,8 +8,8 @@ import type { SectionDef } from "../types.js";
 import {
   balance, deviation, displayName, fmt, fmtValue, isNum, meta, modeTitle, modesOf, noDataMessage, outOfBand,
   rich, runA, runB, setting, state, UNIT_COLUMNS, unitsOf, type Mode, type Run
-} from "./balance-data.js";
-import { balanceControls } from "./balance-ui.js";
+} from "../lib/balance-data.js";
+import { balanceControls } from "../lib/balance-ui.js";
 
 const view = { mode: "", sort: null as { key: string; desc: boolean } | null };
 

@@ -11,8 +11,8 @@ import {
   issuesFor, meta,
   modeTitle, modesOf, noDataMessage, normsOf, rich, ROLE_NAMES, runA, runB, setting, statusOf, TARGET_NAMES,
   UNIT_COLUMNS, unitsOf, valueOf, type Ability, type Flag
-} from "./balance-data.js";
-import { balanceControls } from "./balance-ui.js";
+} from "../lib/balance-data.js";
+import { balanceControls } from "../lib/balance-ui.js";
 
 const view = { kit: "" };
 

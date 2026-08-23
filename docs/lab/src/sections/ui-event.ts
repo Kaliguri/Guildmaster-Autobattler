@@ -12,7 +12,7 @@
 
    Что в игре сейчас: `EventScreen.uxml` — панель по центру, иллюстрация сверху, тело, плашки. */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 /** Плашка варианта: заголовок и строка последствий. */

@@ -8,7 +8,7 @@
 
 import { el, html } from "../dom.js";
 import type { SectionDef } from "../types.js";
-import { balance, noDataMessage, rich, statusOf, type Issue } from "./balance-data.js";
+import { balance, noDataMessage, rich, statusOf, type Issue } from "../lib/balance-data.js";
 
 /** Статус пишется свободным текстом с уточнением после точки — класс берём по первому слову. */
 const STATUS_CLASS: Record<string, string> = {

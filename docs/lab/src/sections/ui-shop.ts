@@ -11,7 +11,7 @@
    Что в игре сейчас: `ShopScreen.uxml` — полка товаров, строка золота и «Обновить» сверху, ниже
    секция продажи реликвий. */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 /** Товар: рамка, иконка, имя, строки статов, цена пилюлей у нижней кромки. */

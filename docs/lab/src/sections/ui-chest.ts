@@ -11,7 +11,7 @@
 
    Что в игре сейчас: `ChestScreen.uxml` — крышка с глифом и подсказкой «Нажми, чтобы открыть». */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 /* ---------- А: жест открытия, затем ряд карточек ---------- */

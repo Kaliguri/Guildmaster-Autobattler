@@ -30,6 +30,7 @@
 
 import { jag, still } from "../draw.js";
 import type { DrawFn, SectionDef, StandDef } from "../types.js";
+import { hash2, lerp, vnoise } from "../lib/noise.js";
 
 /* ---------- настоящая геометрия ---------- */
 
@@ -71,23 +72,6 @@ const shade = (c: RGB, k: number): RGB => [c[0] * (1 - k), c[1] * (1 - k * 0.92)
 const mix = (a: RGB, b: RGB, t: number): RGB => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
 
 /* ---------- шум ---------- */
-
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-const hash2 = (x: number, y: number, s: number) => jag(x * 374761 + y * 668265, s);
-
-function vnoise(x: number, y: number, salt: number): number {
-  const xi = Math.floor(x);
-  const yi = Math.floor(y);
-  const fx = x - xi;
-  const fy = y - yi;
-  const u = fx * fx * (3 - 2 * fx);
-  const v = fy * fy * (3 - 2 * fy);
-  return lerp(
-    lerp(hash2(xi, yi, salt), hash2(xi + 1, yi, salt), u),
-    lerp(hash2(xi, yi + 1, salt), hash2(xi + 1, yi + 1, salt), u),
-    v
-  );
-}
 
 /* ---------- облачное поле ----------
    Второй способ построить облако, и он же способ, которым это делают в шейдерах: не «нарисовать

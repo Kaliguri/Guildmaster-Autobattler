@@ -12,7 +12,7 @@
    Что в игре сейчас: `LoadoutScreen.uxml` — вкладки (реликвии, предметы, улучшения, AI), сетка
    слева, панель детали справа, кнопки принятия внизу. */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 /** Слот отряда: тело, имя, метка Реликвии. */

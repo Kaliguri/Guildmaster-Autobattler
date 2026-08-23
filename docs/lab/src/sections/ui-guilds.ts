@@ -11,7 +11,7 @@
    Числа раскладок — из `Art_Dev/UI Refs/_teardowns/06-entry-service-coop.md`: §1 про ряды карточек,
    §2.1 про приём «список слева, подробности сфокусированной строки справа» (Risk of Rain 2). */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 /** Строки, которыми дом описывает себя. Держим здесь одним списком, чтобы во всех трёх чертежах

@@ -6,8 +6,8 @@
 
 import { el } from "../dom.js";
 import type { SectionDef } from "../types.js";
-import { balance, displayName, noDataMessage, runA, type Matrix } from "./balance-data.js";
-import { balanceControls } from "./balance-ui.js";
+import { balance, displayName, noDataMessage, runA, type Matrix } from "../lib/balance-data.js";
+import { balanceControls } from "../lib/balance-ui.js";
 
 const view = { matrix: "" };
 

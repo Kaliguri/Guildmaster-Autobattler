@@ -12,7 +12,7 @@
 
    Что в игре сейчас: `HubScreen.uxml` — черновой. */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 /** Человек во дворе: фигура и подпись под ней. */

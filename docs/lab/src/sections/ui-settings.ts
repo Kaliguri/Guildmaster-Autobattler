@@ -11,7 +11,7 @@
 
    Что в игре сейчас: `SettingsScreen.uxml` — одна панель со строками подряд, без табов. */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 /** Строка опции: подпись слева, виджет справа. Виджет рисуется силуэтом — какой именно контрол там

@@ -11,8 +11,8 @@ import type { SectionDef } from "../types.js";
 import {
   balance, deviation, displayName, fmt, fmtValue, isControlRow, isNum, isReference, meta,
   modesOf, noDataMessage, NORM_KEYS, outOfBand, runA, runB, state, statusOf, unitsOf, valueOf
-} from "./balance-data.js";
-import { balanceControls } from "./balance-ui.js";
+} from "../lib/balance-data.js";
+import { balanceControls } from "../lib/balance-ui.js";
 
 function tile(label: string, value: string | number, note: string, cls = ""): HTMLElement {
   const box = el("div", `tile ${cls}`);

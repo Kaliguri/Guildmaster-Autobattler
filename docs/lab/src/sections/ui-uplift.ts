@@ -14,7 +14,7 @@
 
    Числа и полный разбор — `Art_Dev/UI Refs/_teardowns/08-gap-vs-refs.md`. */
 
-import * as w from "./ui-wire.js";
+import * as w from "../lib/ui-wire.js";
 import type { SectionDef } from "../types.js";
 
 /** Кадры сравнения: слева реф, справа наш экран того же назначения. */
