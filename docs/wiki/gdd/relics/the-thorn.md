@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Thorn (Treant)"
+title: "Memento - Common - The Thorn (Treant)"
 order: 80
 kind: character
 status: draft
@@ -43,7 +43,7 @@ impl_note: "шипы без роста радиуса — расхождение
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** древень, наказывающий тех, кто его бьёт.
 2. **Роль:** танк-брузер первой линии. Ответный урон шипами растёт от брони, а активка постепенно
@@ -105,6 +105,6 @@ impl_note: "шипы без роста радиуса — расхождение
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

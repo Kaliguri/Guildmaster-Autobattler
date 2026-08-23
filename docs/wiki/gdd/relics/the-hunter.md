@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Hunter (Ranger)"
+title: "Memento - Common - The Hunter (Ranger)"
 order: 40
 kind: character
 status: draft
@@ -44,11 +44,11 @@ asset: [relic.ranger]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **"Фантазия":** мобильный охотник, который постоянно держит цель под давлением
 2. **Роль:** рейндж-дпс с фокусом по приоритетной цели
-3. **Отличие от других обычных реликвий:** умеет стрелять в движении и усиливает урон команды по отмеченной цели
+3. **Отличие от других обычных мементо:** умеет стрелять в движении и усиливает урон команды по отмеченной цели
 
 ---
 
@@ -92,6 +92,6 @@ asset: [relic.ranger]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

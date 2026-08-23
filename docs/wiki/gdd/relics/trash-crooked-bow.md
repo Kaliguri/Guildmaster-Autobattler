@@ -1,5 +1,5 @@
 ---
-title: "Relic - Trash - Crooked Bow (Ranged)"
+title: "Memento - Trash - Crooked Bow (Ranged)"
 order: 113
 kind: character
 status: living
@@ -40,7 +40,7 @@ asset: [relic.trash_archer]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** охотник с чужим луком: бьёт из-за спин, потому что вблизи не выживет.
 2. **Роль:** урон из тыла, ближайшая к своей норме болванка по DPS.
@@ -85,6 +85,6 @@ asset: [relic.trash_archer]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

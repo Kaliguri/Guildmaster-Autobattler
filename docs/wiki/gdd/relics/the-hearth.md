@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Hearth (Emberkeeper)"
+title: "Memento - Common - The Hearth (Emberkeeper)"
 order: 140
 kind: character
 status: needs_review
@@ -44,7 +44,7 @@ asset: [relic.emberkeeper]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** хранитель очага, который делится огнём вместо того, чтобы им жечь.
 2. **Роль:** саппорт-утилита — снятие эффектов и сопротивление эффектам, с собственным уроном огнём.
@@ -119,6 +119,6 @@ asset: [relic.emberkeeper]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

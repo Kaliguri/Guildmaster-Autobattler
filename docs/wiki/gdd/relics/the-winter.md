@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Winter (Cryomancer)"
+title: "Memento - Common - The Winter (Cryomancer)"
 order: 100
 kind: character
 status: draft
@@ -46,7 +46,7 @@ asset: [relic.cryomancer]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** ледяной маг, который готовит контроль и ловит врагов в окно уязвимости.
 2. **Роль:** **РДД с контролем**, а не чистый контроллер: он единственный промораживает площадь, и его
@@ -107,6 +107,6 @@ asset: [relic.cryomancer]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

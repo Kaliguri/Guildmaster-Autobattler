@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Lull (Dreameater)"
+title: "Memento - Common - The Lull (Dreameater)"
 order: 160
 kind: character
 status: needs_review
@@ -44,7 +44,7 @@ asset: [relic.dreameater]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** маленький демон снов. Не убивает — усыпляет, и во сне человеку становится страшно.
 2. **Роль:** контроллер-ДД тьмой: убирает одну цель из боя и превращает её отсутствие в урон. Её
@@ -116,6 +116,6 @@ asset: [relic.dreameater]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

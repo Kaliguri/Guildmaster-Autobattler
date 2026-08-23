@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Pyre (Swordsman)"
+title: "Memento - Common - The Pyre (Swordsman)"
 order: 50
 kind: character
 status: draft
@@ -47,7 +47,7 @@ impl_note: "воспламенение без стаков, поджог пло�
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** огненный мечник, который платит собой за разгон.
 2. **Роль:** хрупкий дуэлянт-антитанк. Режущие автоатаки копят стаки **«Угли»** на цели, а затем
@@ -132,6 +132,6 @@ impl_note: "воспламенение без стаков, поджог пло�
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

@@ -1,5 +1,5 @@
 ---
-title: "Relic - Trash - Bundle of Herbs (Healer)"
+title: "Memento - Trash - Bundle of Herbs (Healer)"
 order: 116
 kind: character
 status: living
@@ -41,7 +41,7 @@ asset: [relic.trash_herbalist]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** травник при отряде: не боец вовсе, но раненых на ногах держит.
 2. **Роль:** держать своих. Самая хрупкая болванка в игре и единственная, чья работа не измеряется
@@ -92,6 +92,6 @@ asset: [relic.trash_herbalist]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

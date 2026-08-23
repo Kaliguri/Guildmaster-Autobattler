@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Gale (Monk)"
+title: "Memento - Common - The Gale (Monk)"
 order: 30
 kind: character
 status: draft
@@ -45,7 +45,7 @@ asset: [relic.whirl_monk]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** мастер боя, чей приём — толчок и добивание в спину.
 2. **Роль:** мобильный контроллер-дуэлянт.
@@ -125,6 +125,6 @@ asset: [relic.whirl_monk]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

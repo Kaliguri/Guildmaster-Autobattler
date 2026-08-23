@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Verdict (Assassin)"
+title: "Memento - Common - The Verdict (Assassin)"
 order: 90
 kind: character
 status: draft
@@ -43,7 +43,7 @@ asset: [relic.assassin]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** быстрый убийца, который вырезает слабую цель и уходит из фокуса.
 2. **Роль:** ассасин-добиватель.
@@ -108,6 +108,6 @@ asset: [relic.assassin]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

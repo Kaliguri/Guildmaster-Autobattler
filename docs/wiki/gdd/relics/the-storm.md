@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Storm (Stormcaller)"
+title: "Memento - Common - The Storm (Stormcaller)"
 order: 590
 kind: character
 status: draft
@@ -43,7 +43,7 @@ impl: paper
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** повелитель грозы, чья молния идёт сквозь строй.
 2. **Роль:** РДД второй линии с массовым уроном. Базовая атака перескакивает между целями, а активка,
@@ -93,6 +93,6 @@ impl: paper
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

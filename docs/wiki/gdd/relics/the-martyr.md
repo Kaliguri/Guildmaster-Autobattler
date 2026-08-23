@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Martyr"
+title: "Memento - Common - The Martyr"
 order: 550
 kind: character
 status: needs_review
@@ -36,6 +36,6 @@ impl: paper
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

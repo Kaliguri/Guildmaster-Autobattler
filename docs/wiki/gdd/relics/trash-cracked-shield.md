@@ -1,5 +1,5 @@
 ---
-title: "Relic - Trash - Cracked Shield (Tank)"
+title: "Memento - Trash - Cracked Shield (Tank)"
 order: 110
 kind: character
 status: living
@@ -40,7 +40,7 @@ asset: [relic.trash_shieldbearer]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** человек, которому дали чужой щит и поставили впереди.
 2. **Роль:** закрыть слот фронта, когда танка нет. Держит удар, но не разменивает его.
@@ -84,6 +84,6 @@ asset: [relic.trash_shieldbearer]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

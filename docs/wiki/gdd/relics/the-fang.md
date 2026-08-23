@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Fang (Nightblade)"
+title: "Memento - Common - The Fang (Nightblade)"
 order: 120
 kind: character
 status: needs_review
@@ -46,7 +46,7 @@ asset: [relic.nightblade]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** тень с кунаями. Не рубит — жалит, и каждая рана гниёт.
 2. **Роль:** убийца-дебаффер: сам наносит средний урон, но снимает с цели броню обеих школ. Удар в
@@ -114,6 +114,6 @@ asset: [relic.nightblade]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

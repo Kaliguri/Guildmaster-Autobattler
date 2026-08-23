@@ -1,5 +1,5 @@
 ---
-title: "Relic - Trash - Worn Knife (Assassin)"
+title: "Memento - Trash - Worn Knife (Assassin)"
 order: 112
 kind: character
 status: living
@@ -40,7 +40,7 @@ asset: [relic.trash_cutthroat]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** тот, кто дерётся ножом, потому что другого оружия ему не досталось.
 2. **Роль:** самый высокий урон среди болванок ценой самой хрупкой шкуры среди ближних.
@@ -84,6 +84,6 @@ asset: [relic.trash_cutthroat]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

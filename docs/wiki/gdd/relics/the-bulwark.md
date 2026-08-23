@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Bulwark (Guardian)"
+title: "Memento - Common - The Bulwark (Guardian)"
 order: 20
 kind: character
 status: draft
@@ -41,7 +41,7 @@ asset: [relic.defender]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** стойкий фронтовик, который держит линию и закрывает союзников.
 2. **Роль:** танк-контроллер первой линии — меньше про урон, больше про стабильную выживаемость и
@@ -97,6 +97,6 @@ asset: [relic.defender]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

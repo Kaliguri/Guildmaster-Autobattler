@@ -9,7 +9,7 @@ updated: 2026-07-16
 
 ## Правило источника истины
 
-Данные персонажа живут в YAML-блоке его [карточки реликвии](../relics/) (папка `relics/`). Файлы этой папки — только читают и агрегируют эти поля. Ничего здесь не заполняется вручную.
+Данные персонажа живут в YAML-блоке его [карточки мементо](../relics/) (папка `relics/`). Файлы этой папки — только читают и агрегируют эти поля. Ничего здесь не заполняется вручную.
 
 ## Файлы
 
@@ -20,7 +20,7 @@ updated: 2026-07-16
 | [[gdd/roster/roster-balance\|Roster - Balance]] | Dataview-срезы: классы, профили, позиции, школы/сродства урона, тематика, пол, «требует уточнения» |
 | [[gdd/roster/tag-reference\|Roster - Tag Reference]] | **Нормативный** словарь YAML-полей и допустимых значений (rarity/position/`combat_class`/школы/affinity/creature_type/playstyle/mechanics/…) |
 | [[gdd/roster/unit-tag-glossary\|Roster - Unit Tag Glossary]] | Глоссарий доп-тегов: 4 оси `Role → DamageType → Playstyle → Mechanic`, EN-канон имён |
-| [[gdd/roster/relic-tag-assignments\|Roster - Relic Tag Assignments]] | Раскладка тегов по реликвиям ростера |
+| [[gdd/roster/relic-tag-assignments\|Roster - Memento Tag Assignments]] | Раскладка тегов по мементо ростера |
 | [[gdd/roster/roster-gaps\|Roster - Gaps]] | **Заявка на вердикт:** кого не хватает ростеру и сколько (только «кто», без механик) |
 
-> «Справочник тегов» — источник допустимых значений для всех карточек (реликвий и врагов); карточки врагов ссылаются на него из [[gdd/enemies/index|Enemies - Catalog]].
+> «Справочник тегов» — источник допустимых значений для всех карточек (мементо и врагов); карточки врагов ссылаются на него из [[gdd/enemies/index|Enemies - Catalog]].

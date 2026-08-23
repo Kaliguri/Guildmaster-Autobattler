@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Aegis (Antimage)"
+title: "Memento - Common - The Aegis (Antimage)"
 order: 150
 kind: character
 status: needs_review
@@ -44,7 +44,7 @@ asset: [relic.antimage]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** воин, обучённый гасить чужую магию. Каждое чужое заклинание оставляет на нём
    налёт силы, который он потом швыряет обратно.
@@ -113,6 +113,6 @@ asset: [relic.antimage]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

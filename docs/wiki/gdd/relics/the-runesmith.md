@@ -1,5 +1,5 @@
 ---
-title: "Relic - Unique - The Runesmith (Smith)"
+title: "Memento - Unique - The Runesmith (Smith)"
 order: 580
 kind: character
 status: draft
@@ -42,7 +42,7 @@ impl: paper
 4. Ближний/дальний/смешанный: ближний (двуручный молот)
 
 ---
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** кузнец, перековывающий сорванную с врагов броню в руны для союзников.
 2. **Роль:** шредер-энейблер и крафтер бафов — единственная связка «дебаффер брони ↔ баффер команды»
@@ -98,6 +98,6 @@ impl: paper
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

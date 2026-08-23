@@ -1,5 +1,5 @@
 ---
-title: "Relic - Common - The Shepherd (Priest)"
+title: "Memento - Common - The Shepherd (Priest)"
 order: 60
 kind: character
 status: draft
@@ -44,7 +44,7 @@ asset: [relic.light_shepherd]
 
 ---
 
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** боевой лекарь, который удерживает команду на грани выживания.
 2. **Роль:** саппорт-хилер второй линии, эталонный носитель **Света**.
@@ -94,7 +94,7 @@ asset: [relic.light_shepherd]
 
 ## Шаг 7. AI настройки
 
-> Словарь блоков — [[gdd/relics/ai-settings-model|Модель AI-настроек реликвий]]. Фокус автоатаки —
+> Словарь блоков — [[gdd/relics/ai-settings-model|Модель AI-настроек мементо]]. Фокус автоатаки —
 > **вражеская** цель, союзник выбирается уже эффектом хила, а не прицелом атаки.
 
 | Блок | Настройка |
@@ -108,6 +108,6 @@ asset: [relic.light_shepherd]
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

@@ -47,8 +47,8 @@ SORT file.name ASC
 | Сокращение | Полное название |
 |---|---|
 | **ГД** | Геймдизайн (ГД-решение, ГД-документация). **Роль игрока пишется словом — «Гильдмастер»**, сокращение за ней не закреплено |
-| **«Сосуд»** | Участник гильдии, носитель Реликвий (Vessel). Термин всегда в кавычках «». |
-| **Реликвия** | Реликвия героя — памятная вещь, хранящая силу героя |
+| **«Сосуд»** | Участник гильдии, носитель Мементо (Vessel). Термин всегда в кавычках «». |
+| **Мементо** | Мементо героя — памятная вещь, хранящая силу героя |
 
 ## 00 · Служебные (`00-meta/`)
 
@@ -69,7 +69,7 @@ SORT file.name ASC
 - [[pitch|Vision - Pitch]] — **сводный срез концепции 2026-07-19**; при расхождении с vision/concept главнее он.
 - [[pillars|Vision - Pillars]] — **5 столпов** как фильтр всех решений.
 - [[concept|Vision - Concept]] — жанр, ключевая идея, игровой цикл.
-- [[guildmaster|Vision - Guildmaster & Captain]] — две разведённые сущности: **Гильдмастер** — роль игрока (руководит гильдией, в бою не участвует); **Капитан** — боевая сущность забега (стартовый набор Реликвий, гильдие-широкие бонусы, стиль).
+- [[guildmaster|Vision - Guildmaster & Captain]] — две разведённые сущности: **Гильдмастер** — роль игрока (руководит гильдией, в бою не участвует); **Капитан** — боевая сущность забега (стартовый набор Мементо, гильдие-широкие бонусы, стиль).
 - [[difficulty-skill|Vision - Difficulty & Skill]] — три оси, модель рандома, правила честности.
 - [[visual-direction|Vision - Visual Direction]] — визуальный опыт и дорожная карта: стиль, пост-процесс, атмосфера, свет, переходы, gamefeel.
 - [[ui-visual-language|Vision - UI Visual Language]] — **чем интерфейс себя объявляет**: минимализм и стекло, поверхность вместо материала, идентичность за границей панели, полный набор состояний у всего кликабельного.
@@ -91,18 +91,18 @@ SORT file.name ASC
 
 - [[injuries-mettle|Run - Injuries & Mettle]] — ось истощения «Сосуда».
 - [[procedural-lore|Run - Procedural Lore]] — сид-генерируемая личность.
-- [[meta-progression|Run - Meta Progression]] — экономика забега, реворд-ramp, левел реликвий.
+- [[meta-progression|Run - Meta Progression]] — экономика забега, реворд-ramp, левел мементо.
 - [[vessel-progression|Run - Vessel Progression]] — уровни «Сосуда» в забеге: статы, Судьбы-квесты, Обеты.
 - [[events-minigames|Run - Events & Minigames]] — карта, события, мини-игры.
 - [[guild-development|Run - Guild Development]] — Слой 3: дом, ветераны, смертность, книга гильдии.
 
 ## 40 · Контент (`40-content/`)
 
-- [[relics-overview|Content - Relics]] — редкость, типы, боевой класс; Судьбы и перки. Карточки — [[relics/index|Relic - Catalog]].
+- [[relics-overview|Content - Mementos]] — редкость, типы, боевой класс; Судьбы и перки. Карточки — [[relics/index|Memento - Catalog]].
 - [[items-banners|Content - Items]] — предмет «Сосуда» (Vessel, 3 слота) и предмет отряда (Party, копится без лимита): авто-триггеры, редкость.
   Карточки — [[gdd/40-content/items/fey-cloak|Fey Cloak]] · [[gdd/40-content/items/common-items|Common Items]]. Знамёна сняты 2026-08-21 — [[banners|надгробие]], дизайн в [[gdd/00-meta/legacy|Legacy]].
 - **Методички авторинга** — [[gdd/40-content/authoring/index|Content - Authoring]]: как заводить
-  [[gdd/40-content/authoring/unit|юнита]], [[gdd/40-content/authoring/unit-relic|реликвию]],
+  [[gdd/40-content/authoring/unit|юнита]], [[gdd/40-content/authoring/unit-relic|мементо]],
   [[gdd/40-content/authoring/unit-enemy|врага]], [[gdd/40-content/authoring/effect|эффект]],
   [[gdd/40-content/authoring/item|предмет]], [[gdd/40-content/authoring/relic-upgrades|улучшения]].
 - Ростер — [[roster/index|Roster - Overview]] · [[gdd/roster/tag-reference|Справочник тегов]] ·
@@ -114,7 +114,7 @@ SORT file.name ASC
 Дизайн-карточка и работающая сущность — разные вещи. Состояние живёт в поле `impl` шапки карточки
 (`engine` · `partial` · `paper`), сводки — по типу контента:
 
-[[gdd/relics/implementation-status|Реликвии]] · [[gdd/enemies/implementation-status|Противники и виды]] ·
+[[gdd/relics/implementation-status|Мементо]] · [[gdd/enemies/implementation-status|Противники и виды]] ·
 [[gdd/40-content/items/implementation-status|Предметы и Знамёна]] ·
 [[gdd/20-combat/effects/implementation-status|Эффекты]].
 
@@ -151,7 +151,7 @@ SORT file.name ASC
 Заведён 2026-07-29: **как** мы рассказываем историю и сама история. Карта кластера —
 [[gdd/60-narrative/index|Narrative - Index]].
 
-- [[gdd/60-narrative/lore|Narrative - Lore]] — сеттинг, путь к чемпионату, Реликвии в мире
+- [[gdd/60-narrative/lore|Narrative - Lore]] — сеттинг, путь к чемпионату, Мементо в мире
   *(переехал из `10-vision/`)*.
 - [[gdd/60-narrative/meta-narrative|Narrative - Meta]] — «игра, которая знает, что она игра»: тональный
   разворот, ключ «хаос против порядка» *(собран из трёх прежних владельцев)*.

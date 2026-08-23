@@ -12,8 +12,8 @@ updated: 2026-07-29
 
 ## Как читать статус
 
-Владелец факта — поле `impl` в шапке карточки; здесь сводка. Значения — те же три, что у реликвий
-(см. [[gdd/relics/implementation-status|Relic - Implementation Status]] §Как читать статус).
+Владелец факта — поле `impl` в шапке карточки; здесь сводка. Значения — те же три, что у мементо
+(см. [[gdd/relics/implementation-status|Memento - Implementation Status]] §Как читать статус).
 Поле `asset` — id ассета (`enemy.goblin_grunt`).
 
 **Мерка сверки:** наличие ассета в `Assets/_Project/ScriptableObjects/Enemies/` (виды —

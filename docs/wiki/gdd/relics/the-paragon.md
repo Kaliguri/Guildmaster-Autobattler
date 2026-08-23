@@ -1,5 +1,5 @@
 ---
-title: "Relic - Unique - The Paragon (Juggernaut)"
+title: "Memento - Unique - The Paragon (Juggernaut)"
 order: 570
 kind: character
 status: draft
@@ -40,7 +40,7 @@ impl: paper
 4. Ближний/дальний/смешанный: ближний
 
 ---
-## Шаг 2. Зачем эта реликвия вообще нужна
+## Шаг 2. Зачем это Мементо вообще нужно
 
 1. **«Фантазия»:** представитель уникальной расы — эталон, «идеал». Настолько совершенен, что урон
    всех стихий его почти не берёт.
@@ -81,7 +81,7 @@ impl: paper
 ---
 ## Шаг 6. Улучшения
 
-**Не заданы** — по модели уникальных реликвий и общей прокачке ([[meta-progression]]).
+**Не заданы** — по модели уникальных мементо и общей прокачке ([[meta-progression]]).
 
 ---
 ## Шаг 7. AI настройки
@@ -96,6 +96,6 @@ impl: paper
 
 ---
 
-> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
+> Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Memento - Implementation Status]].
 > Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].

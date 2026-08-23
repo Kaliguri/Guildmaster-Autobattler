@@ -1,11 +1,11 @@
 ---
-title: "Roster - Relic Tag Assignments"
+title: "Roster - Memento Tag Assignments"
 order: 6
 status: needs_review
 updated: 2026-07-24
 ---
 
-# Предложенное распределение тегов по реликвиям
+# Предложенное распределение тегов по мементо
 
 > **ЧЕРНОВИК на проверку Макса.** Теги по [[unit-tag-glossary|глоссарию]], сверено с **дизайн-
 > карточками** (`relics/*`, их `mechanics`/`roles`) И фактическим kit кода (активки inline).
@@ -15,7 +15,7 @@ updated: 2026-07-24
 > **поисточниково** из данных: автоатака + наносящие урон способности. Колонка отражает то, что
 > реально отдаёт `UnitTagResolver`. Playstyle/Mechanic проставлены в `_infoTags` всех 10 героев.
 
-| Реликвия (карточка) | Role | DamageType (авто) | Playstyle | Mechanic |
+| Мементо (карточка) | Role | DamageType (авто) | Playstyle | Mechanic |
 |---|---|---|---|---|
 | **Assassin** (The Verdict) | Assassin | Physical · *Pierce* | Escape · Duelist | Stealth · Evasion · Execute · Burst |
 | **Cryomancer** (The Winter) | Ranged | Magical · *Ice* | Debuffer · Peel | Control · AOE |

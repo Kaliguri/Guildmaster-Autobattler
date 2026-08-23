@@ -16,7 +16,7 @@ updated: 2026-07-29
 > `proposed`-числа в карточку не пишутся. Дома: [[gdd/00-meta/journal-adr|журнал решений]],
 > [[gdd/enemies/implementation-status|Enemies - Implementation Status]],
 > [[gdd/00-meta/open-forks|Meta - Open Forks]], `docs/balance-issues.md`. Правило и таблица-маршрутизатор
-> — [[gdd/relics/template-relic-card|шаблон карточки реликвии]] §HARD.
+> — [[gdd/relics/template-relic-card|шаблон карточки мементо]] §HARD.
 
 ## Шаг 1. Общая информация
 
