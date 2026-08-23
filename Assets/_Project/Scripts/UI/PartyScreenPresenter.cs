@@ -4,6 +4,7 @@ using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
 using Guildmaster.Guild.Commands;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI
@@ -102,7 +103,8 @@ namespace Guildmaster.UI
                     name: NameOf(slot),
                     relic: RelicNameOf(slot),
                     inBattle: slot != null && slot.InBattle,
-                    open: i < open));
+                    open: i < open,
+                    portrait: PortraitOf(slot)));
             }
             return slots;
         }
@@ -134,6 +136,25 @@ namespace Guildmaster.UI
             string name = _loc?.GetString(id + ".name");
             if (!string.IsNullOrEmpty(name)) return name;
             return _content != null && _content.TryGet(id, out RelicData relic) && relic != null ? relic.Id : id;
+        }
+
+        /// <summary>
+        /// Лицо места. Своих портретов у людей ещё нет, поэтому лицом служит портрет архетипа
+        /// Реликвии — тот же, что показывают награда и витрина Реликвий.
+        /// </summary>
+        /// <remarks>
+        /// Заведено 23.08.2026 по разбору Макса: «У отряда не видно самих спрайтов хотя бы просто
+        /// текущие префабы как заготовки поставить. А то очень непонятно». Пустой круг на плитке
+        /// читался как незагрузившийся экран, хотя показывать было и правда нечего.
+        /// <para>Базовая Реликвия лица не даёт намеренно: она означает «человек ещё ничем не занят»,
+        /// и её портрет одинаков у всех — четыре одинаковых лица врут сильнее, чем четыре пустых круга.</para>
+        /// </remarks>
+        private Sprite PortraitOf(RosterSlot slot)
+        {
+            string id = slot?.RelicId;
+            if (string.IsNullOrEmpty(id) || id == ContentIds.BaseRelic) return null;
+            if (_content == null || !_content.TryGet(id, out RelicData relic) || relic == null) return null;
+            return relic.Archetype != null && relic.Archetype.Portrait != null ? relic.Archetype.Portrait : relic.Icon;
         }
 
         /// <summary>Выполнить команду и перечитать состав: экран показывает исход, а не намерение.</summary>

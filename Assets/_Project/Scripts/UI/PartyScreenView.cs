@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Guildmaster.UI.Components;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI
@@ -27,13 +28,25 @@ namespace Guildmaster.UI
         /// <summary>Открыто ли место. Закрытые показываются замком и ничего не принимают.</summary>
         public readonly bool Open;
 
-        public PartySlotView(int index, string name, string relic, bool inBattle, bool open)
+        /// <summary>
+        /// Лицо человека. Пока люди — это их Реликвии, берётся портрет архетипа; <c>null</c> —
+        /// портрета нет, и плитка честно показывает пустой круг.
+        /// </summary>
+        /// <remarks>
+        /// Спрайт, а не путь к нему: экран не должен уметь ходить в базу контента, иначе кадр
+        /// потребует живого забега. Кто это лицо — знает презентер, вью только показывает.
+        /// </remarks>
+        public readonly Sprite Portrait;
+
+        public PartySlotView(int index, string name, string relic, bool inBattle, bool open,
+                             Sprite portrait = null)
         {
             Index    = index;
             Name     = name;
             Relic    = relic;
             InBattle = inBattle;
             Open     = open;
+            Portrait = portrait;
         }
 
         /// <summary>Место открыто, но пусто.</summary>
@@ -162,6 +175,10 @@ namespace Guildmaster.UI
 
             var portrait = new VisualElement();
             portrait.AddToClassList("gm-party-slot__portrait");
+            // Лица нет — круг остаётся пустым и говорит об этом видом, а не подписью: подпись под
+            // портретом заняли бы имя и Реликвия, а третья строка сделала бы плитку таблицей.
+            portrait.EnableInClassList("gm-party-slot__portrait--blank", slot.Portrait == null);
+            if (slot.Portrait != null) portrait.style.backgroundImage = new StyleBackground(slot.Portrait);
             cell.Add(portrait);
 
             var name = new Label(slot.Name);

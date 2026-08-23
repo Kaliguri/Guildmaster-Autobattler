@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Guildmaster.UI.Components;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI
@@ -23,12 +24,17 @@ namespace Guildmaster.UI
         /// </summary>
         public readonly IReadOnlyList<string> Items;
 
-        public ItemsRowView(int slotIndex, string name, string relic, IReadOnlyList<string> items)
+        /// <summary>Лицо носителя — портрет архетипа его Реликвии; <c>null</c> — лица ещё нет.</summary>
+        public readonly Sprite Portrait;
+
+        public ItemsRowView(int slotIndex, string name, string relic, IReadOnlyList<string> items,
+                            Sprite portrait = null)
         {
             SlotIndex = slotIndex;
             Name      = name;
             Relic     = relic;
             Items     = items;
+            Portrait  = portrait;
         }
 
         public bool IsEmpty => string.IsNullOrEmpty(Name);
@@ -73,11 +79,19 @@ namespace Guildmaster.UI
 
         /// <param name="rows">Носители по порядку мест отряда — только те, кто занимает место.</param>
         /// <param name="stash">Вещи в запасе.</param>
+        /// <param name="iconOf">Значок вещи по её id. Нет значка — в слоте останется имя.</param>
+        /// <param name="nameOf">
+        /// Человеческое имя вещи по её id. Без него в слотах стояли бы сырые ключи вроде
+        /// <c>item.boots</c>, которые вдобавок не влезают в квадрат и лезут за его край
+        /// (наход. Макса 23.08.2026).
+        /// </param>
         public static VisualElement Build(
             VisualTreeAsset screenUxml,
             IReadOnlyList<ItemsRowView> rows,
             IReadOnlyList<string> stash,
             Func<string, string> localize,
+            Func<string, Sprite> iconOf,
+            Func<string, string> nameOf,
             Actions actions = null)
         {
             if (screenUxml == null) throw new ArgumentNullException(nameof(screenUxml));
@@ -113,11 +127,11 @@ namespace Guildmaster.UI
 
             VisualElement host = root.Q<VisualElement>("rows");
             host?.Clear();
-            foreach (ItemsRowView row in rows) host?.Add(BuildRow(row, actions, L));
+            foreach (ItemsRowView row in rows) host?.Add(BuildRow(row, actions, L, iconOf, nameOf));
 
             var stashHost = root.Q<ScrollView>("stash");
             stashHost?.Clear();
-            for (int i = 0; i < stash.Count; i++) stashHost?.Add(BuildStashItem(stash[i]));
+            for (int i = 0; i < stash.Count; i++) stashHost?.Add(BuildStashItem(stash[i], iconOf, nameOf));
 
             var battle = root.Q<PlateButton>("btn-battle");
             if (battle != null)
@@ -129,13 +143,16 @@ namespace Guildmaster.UI
             return root;
         }
 
-        private static VisualElement BuildRow(ItemsRowView row, Actions actions, Func<string, string, string> L)
+        private static VisualElement BuildRow(ItemsRowView row, Actions actions, Func<string, string, string> L,
+                                              Func<string, Sprite> iconOf, Func<string, string> nameOf)
         {
             var line = new VisualElement();
             line.AddToClassList(RowClass);
 
             var portrait = new VisualElement();
             portrait.AddToClassList("gm-items-row__portrait");
+            portrait.EnableInClassList("gm-items-row__portrait--blank", row.Portrait == null);
+            if (row.Portrait != null) portrait.style.backgroundImage = new StyleBackground(row.Portrait);
             line.Add(portrait);
 
             var who = new VisualElement();
@@ -147,7 +164,7 @@ namespace Guildmaster.UI
             var slots = new VisualElement();
             slots.AddToClassList("gm-items-row__slots");
             IReadOnlyList<string> items = row.Items ?? Array.Empty<string>();
-            for (int i = 0; i < items.Count; i++) slots.Add(BuildSlot(row, i, items[i], actions, L));
+            for (int i = 0; i < items.Count; i++) slots.Add(BuildSlot(row, i, items[i], actions, L, iconOf, nameOf));
             line.Add(slots);
 
             if (!row.IsEmpty)
@@ -166,7 +183,8 @@ namespace Guildmaster.UI
         }
 
         private static VisualElement BuildSlot(ItemsRowView row, int itemSlot, string itemId,
-                                               Actions actions, Func<string, string, string> L)
+                                               Actions actions, Func<string, string, string> L,
+                                               Func<string, Sprite> iconOf, Func<string, string> nameOf)
         {
             var cell = new VisualElement();
             cell.AddToClassList(SlotClass);
@@ -184,7 +202,7 @@ namespace Guildmaster.UI
 
             if (filled)
             {
-                cell.Add(MakeLabel(itemId, "gm-item-slot__id"));
+                cell.Add(MakeItemFace(itemId, iconOf, nameOf));
                 // Тащить можно только надетое: пустой слот нести нечем.
                 cell.AddManipulator(new DragManipulator(
                     () => new DragPayload("item", row.SlotIndex, itemSlot, itemId)));
@@ -204,14 +222,44 @@ namespace Guildmaster.UI
             return cell;
         }
 
-        private static VisualElement BuildStashItem(string itemId)
+        private static VisualElement BuildStashItem(string itemId, Func<string, Sprite> iconOf,
+                                                    Func<string, string> nameOf)
         {
             var cell = new VisualElement();
             cell.AddToClassList(StashItemClass);
-            cell.Add(MakeLabel(itemId ?? string.Empty, "gm-stash-item__id"));
+            cell.Add(MakeItemFace(itemId, iconOf, nameOf));
             // Место в отряде у складской вещи отсутствует: −1 и означает «лежит в запасе».
             cell.AddManipulator(new DragManipulator(() => new DragPayload("item", -1, -1, itemId)));
             return cell;
+        }
+
+        /// <summary>
+        /// Лицо вещи в квадрате: значок, если он есть, иначе имя. Один вид на слот носителя и на склад
+        /// — вещь узнаётся по одному и тому же признаку, где бы она ни лежала.
+        /// </summary>
+        /// <remarks>
+        /// Имя, а не id: сырой ключ вроде <c>item.boots</c> ничего не говорит и вдобавок не влезает в
+        /// квадрат — на кадре 23.08.2026 он лез за границу слота и налезал на соседний. Обрезка имени
+        /// живёт в USS (<c>text-overflow</c>), потому что это про показ, а не про данные.
+        /// </remarks>
+        private static VisualElement MakeItemFace(string itemId, Func<string, Sprite> iconOf,
+                                                  Func<string, string> nameOf)
+        {
+            Sprite icon = iconOf?.Invoke(itemId);
+            if (icon != null)
+            {
+                var face = new VisualElement();
+                face.AddToClassList("gm-item-slot__icon");
+                face.style.backgroundImage = new StyleBackground(icon);
+                face.tooltip = nameOf?.Invoke(itemId) ?? itemId;
+                return face;
+            }
+
+            string title = nameOf?.Invoke(itemId);
+            Label label = MakeLabel(string.IsNullOrEmpty(title) ? itemId ?? string.Empty : title,
+                                    "gm-item-slot__name");
+            label.tooltip = label.text;
+            return label;
         }
 
         private static Label MakeLabel(string text, string className)

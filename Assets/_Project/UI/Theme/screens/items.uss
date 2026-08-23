@@ -1,4 +1,4 @@
-/* Страница «Предметы» (ГДД preparation-screens §2.2, раскладка «Строки»).
+﻿/* Страница «Предметы» (ГДД preparation-screens §2.2, раскладка «Строки»).
 
    Слоты стоят одной вертикалью, поэтому «у кого пусто» читается сверху вниз одним взглядом —
    это и есть главный вопрос страницы. Квадратные: круглое у нас человек, квадратное вещь. */
@@ -54,6 +54,7 @@
     border-color: var(--gm-outline-color-hover);
 }
 
+/* Лицо носителя: круг — человек, квадрат — вещь (ГДД preparation-screens §2.2). */
 .gm-items-row__portrait {
     width: 44px;
     height: 44px;
@@ -61,6 +62,13 @@
     background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-outline-width);
     border-color: var(--gm-outline-color);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+/* Лица нет — круг гаснет: «сюда ещё не поставили», а не «портрет не загрузился». */
+.gm-items-row__portrait--blank {
+    background-color: var(--gm-color-surface-sunken);
+    border-color: var(--gm-outline-color-subtle);
 }
 
 .gm-items-row__who {
@@ -106,9 +114,22 @@
     border-color: var(--gm-outline-color-hover);
 }
 
-.gm-item-slot__id,
+/* Значок вещи занимает квадрат целиком, с полями: рисунок мелкий, и без полей он касается рамки. */
+.gm-item-slot__icon {
+    flex-grow: 1;
+    margin: var(--gm-space-1);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+/* Значка нет — в слоте имя. ОБРЕЗАЕТСЯ, а не переносится: квадрат мал, и длинное имя лезло за его
+   край на соседний слот (наход. Макса 23.08.2026). Полное имя отдаёт подсказка. */
+.gm-item-slot__name,
 .gm-item-slot__note {
     color: var(--gm-color-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -unity-text-align: middle-center;
 }
 
 /* --- Склад --- */
@@ -150,7 +171,9 @@
     border-color: var(--gm-outline-color-hover);
 }
 
-.gm-stash-item__id {
+/* Склад показывает вещь тем же лицом, что и слот носителя: узнаётся по одному признаку везде. */
+.gm-stash-item .gm-item-slot__icon,
+.gm-stash-item .gm-item-slot__name {
     color: var(--gm-color-text-muted);
 }
 

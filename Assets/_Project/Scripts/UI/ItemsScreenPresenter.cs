@@ -4,6 +4,7 @@ using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
 using Guildmaster.Guild.Commands;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI
@@ -23,6 +24,7 @@ namespace Guildmaster.UI
         private readonly IRunCommands _commands;
         private readonly ILocalizationService _loc;
         private readonly GameConfig _config;
+        private readonly IContentDatabase _content;
 
         private VisualTreeAsset _uxml;
         private VisualElement _host;
@@ -31,12 +33,14 @@ namespace Guildmaster.UI
         private Action _onBattle;
 
         public ItemsScreenPresenter(IRunStateView runStates, IRunCommands commands,
-                                    ILocalizationService loc, GameConfig config)
+                                    ILocalizationService loc, GameConfig config,
+                                    IContentDatabase content = null)
         {
             _runStates = runStates;
             _commands  = commands;
             _loc       = loc;
             _config    = config;
+            _content   = content;
         }
 
         public void Mount(VisualElement host, VisualTreeAsset uxml,
@@ -61,6 +65,8 @@ namespace Guildmaster.UI
                 BuildRows(),
                 BuildStash(),
                 key => _loc?.GetString(key),
+                iconOf: IconOf,
+                nameOf: ItemNameOf,
                 actions: new ItemsScreenView.Actions
                 {
                     Equip    = (slot, itemSlot, id) => Run(() => _commands?.SetSlotItem(slot, itemSlot, id)),
@@ -106,7 +112,7 @@ namespace Guildmaster.UI
                     items[k] = worn ?? string.Empty;
                 }
 
-                rows.Add(new ItemsRowView(i, name, RelicNameOf(slot), items));
+                rows.Add(new ItemsRowView(i, name, RelicNameOf(slot), items, PortraitOf(slot)));
             }
             return rows;
         }
@@ -134,6 +140,33 @@ namespace Guildmaster.UI
                 return string.IsNullOrEmpty(name) ? slot.VesselId : name;
             }
             return RelicNameOf(slot);
+        }
+
+        /// <summary>Значок вещи. Нет вещи или нет значка — <c>null</c>, и в слоте останется имя.</summary>
+        private Sprite IconOf(string itemId)
+        {
+            if (string.IsNullOrEmpty(itemId)) return null;
+            return _content != null && _content.TryGet(itemId, out ItemData item) && item != null ? item.Icon : null;
+        }
+
+        /// <summary>
+        /// Человеческое имя вещи. Без перевода берётся короткий id без домена — он всё же читается,
+        /// в отличие от <c>item.boots</c>.
+        /// </summary>
+        private string ItemNameOf(string itemId)
+        {
+            if (string.IsNullOrEmpty(itemId)) return null;
+            string name = _loc?.GetString(itemId + ".name");
+            return string.IsNullOrEmpty(name) ? ContentTitle.WithoutDomain(itemId) : name;
+        }
+
+        /// <summary>Лицо носителя — портрет архетипа его Реликвии; базовая Реликвия лица не даёт.</summary>
+        private Sprite PortraitOf(RosterSlot slot)
+        {
+            string id = slot?.RelicId;
+            if (string.IsNullOrEmpty(id) || id == ContentIds.BaseRelic) return null;
+            if (_content == null || !_content.TryGet(id, out RelicData relic) || relic == null) return null;
+            return relic.Archetype != null && relic.Archetype.Portrait != null ? relic.Archetype.Portrait : relic.Icon;
         }
 
         private string RelicNameOf(RosterSlot slot)

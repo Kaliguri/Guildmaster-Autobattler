@@ -5,6 +5,7 @@ using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Flow;
 using Guildmaster.UI.Tooltips;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.DevTools
@@ -181,16 +182,31 @@ namespace Guildmaster.DevTools
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/PartyScreen.uxml");
             if (uxml == null) { AddError(root, "PartyScreen.uxml не найден"); return; }
 
+            // Реликвии настоящие: лицо человека — портрет её архетипа, и на выдуманном имени его нет.
+            IReadOnlyList<RelicData> allRelics = LoadContent()?.All<RelicData>() ?? Array.Empty<RelicData>();
+            RelicData Relic(int i)
+            {
+                int seen = 0;
+                for (int k = 0; k < allRelics.Count; k++)
+                {
+                    if (allRelics[k] == null || allRelics[k].Id == ContentIds.BaseRelic) continue;
+                    if (seen++ == i) return allRelics[k];
+                }
+                return null;
+            }
+            Sprite FaceOf(RelicData r) =>
+                r == null ? null : (r.Archetype != null && r.Archetype.Portrait != null ? r.Archetype.Portrait : r.Icon);
+
             var slots = new List<Guildmaster.UI.PartySlotView>
             {
-                new(0, "Ирма", "Клинок", inBattle: true,  open: true),
-                new(1, "Кай",  "Щит",    inBattle: true,  open: true),
-                new(2, "Дан",  "Посох",  inBattle: true,  open: true),
-                new(3, "Сув",  "Ветер",  inBattle: true,  open: true),
-                new(4, "Лех",  "Клинок", inBattle: false, open: true),
-                new(5, null,   null,     inBattle: false, open: true),
-                new(6, null,   null,     inBattle: false, open: false),
-                new(7, null,   null,     inBattle: false, open: false),
+                new(0, "Ирма", RuName(Relic(0)?.Id), inBattle: true,  open: true,  portrait: FaceOf(Relic(0))),
+                new(1, "Кай",  RuName(Relic(1)?.Id), inBattle: true,  open: true,  portrait: FaceOf(Relic(1))),
+                new(2, "Дан",  RuName(Relic(2)?.Id), inBattle: true,  open: true,  portrait: FaceOf(Relic(2))),
+                new(3, "Сув",  RuName(Relic(3)?.Id), inBattle: true,  open: true,  portrait: FaceOf(Relic(3))),
+                new(4, "Лех",  RuName(Relic(4)?.Id), inBattle: false, open: true,  portrait: FaceOf(Relic(4))),
+                new(5, null,   null,                 inBattle: false, open: true),
+                new(6, null,   null,                 inBattle: false, open: false),
+                new(7, null,   null,                 inBattle: false, open: false),
             };
 
             VisualElement screen = Guildmaster.UI.PartyScreenView.Build(
@@ -224,16 +240,42 @@ namespace Guildmaster.DevTools
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/ItemsScreen.uxml");
             if (uxml == null) { AddError(root, "ItemsScreen.uxml не найден"); return; }
 
+            // Вещи и лица берутся из НАСТОЯЩЕЙ базы: выдуманные id не имеют ни значка, ни имени, и
+            // кадр показывал сырые ключи в слотах вместо предметов (наход. Макса 23.08.2026).
+            IContentDatabase content = LoadContent();
+            IReadOnlyList<ItemData> allItems = content?.All<ItemData>() ?? Array.Empty<ItemData>();
+            IReadOnlyList<RelicData> allRelics = content?.All<RelicData>() ?? Array.Empty<RelicData>();
+
+            string Item(int i) => i < allItems.Count && allItems[i] != null ? allItems[i].Id : string.Empty;
+            RelicData Relic(int i)
+            {
+                int seen = 0;
+                for (int k = 0; k < allRelics.Count; k++)
+                {
+                    if (allRelics[k] == null || allRelics[k].Id == ContentIds.BaseRelic) continue;
+                    if (seen++ == i) return allRelics[k];
+                }
+                return null;
+            }
+
+            Sprite FaceOf(RelicData r) =>
+                r == null ? null : (r.Archetype != null && r.Archetype.Portrait != null ? r.Archetype.Portrait : r.Icon);
+
             var rows = new List<Guildmaster.UI.ItemsRowView>
             {
-                new(0, "Ирма", "Клинок", new[] { "item.boots", string.Empty, string.Empty, null }),
-                new(1, "Кай",  "Щит",    new[] { "item.amulet", "item.rune_flame", string.Empty, null }),
-                new(2, "Дан",  "Посох",  new[] { string.Empty, string.Empty, string.Empty, null }),
-                new(3, "Сув",  "Ветер",  new[] { "item.bracelet", string.Empty, string.Empty, null }),
+                new(0, "Ирма", RuName(Relic(0)?.Id), new[] { Item(0), string.Empty, string.Empty, null }, FaceOf(Relic(0))),
+                new(1, "Кай",  RuName(Relic(1)?.Id), new[] { Item(1), Item(2), string.Empty, null },      FaceOf(Relic(1))),
+                new(2, "Дан",  RuName(Relic(2)?.Id), new[] { string.Empty, string.Empty, string.Empty, null }, FaceOf(Relic(2))),
+                new(3, "Сув",  RuName(Relic(3)?.Id), new[] { Item(3), string.Empty, string.Empty, null }, FaceOf(Relic(3))),
             };
-            var stash = new List<string> { "item.rune_frost", "item.potion_health", "item.cloak" };
+            var stash = new List<string> { Item(4), Item(5), Item(6) };
 
-            VisualElement screen = Guildmaster.UI.ItemsScreenView.Build(uxml, rows, stash, actions: null, localize: RuValue);
+            Sprite IconOf(string id) =>
+                !string.IsNullOrEmpty(id) && content != null && content.TryGet(id, out ItemData it) && it != null
+                    ? it.Icon : null;
+
+            VisualElement screen = Guildmaster.UI.ItemsScreenView.Build(
+                uxml, rows, stash, localize: RuValue, iconOf: IconOf, nameOf: RuName, actions: null);
             MountSampleInspect(screen);
             root.Add(screen);
         }

@@ -1,4 +1,4 @@
-/* Страница «Отряд» (ГДД preparation-screens §2.1, раскладка «Витрина»).
+﻿/* Страница «Отряд» (ГДД preparation-screens §2.1, раскладка «Витрина»).
 
    Состав стоит ТЕЛАМИ на живой арене, поэтому экран не кладёт под себя сплошную поверхность:
    зона сцены остаётся прозрачной, а интерфейс живёт по краям кадра. Отсюда и отсутствие
@@ -120,6 +120,8 @@
     border-color: var(--gm-outline-color-hover);
 }
 
+/* Лицо человека. Круг против квадрата — не украшение: круглое это человек, квадратное вещь, и на
+   любом расстоянии эти два рода объектов не путаются (ГДД preparation-screens §2.1). */
 .gm-party-slot__portrait {
     width: 56px;
     height: 56px;
@@ -128,6 +130,14 @@
     background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-outline-width);
     border-color: var(--gm-outline-color);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+/* Лица нет — круг гаснет и читается как «сюда ещё не поставили», а не как незагрузившийся портрет.
+   Заливка остаётся: без неё на месте лица зияла бы дырка в панель. */
+.gm-party-slot__portrait--blank {
+    background-color: var(--gm-color-surface-sunken);
+    border-color: var(--gm-outline-color-subtle);
 }
 
 .gm-party-slot__name {
