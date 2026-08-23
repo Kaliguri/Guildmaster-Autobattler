@@ -44,7 +44,12 @@
 .gm-tooltip__header {
     flex-direction: row;
     justify-content: space-between;
-    align-items: baseline;
+    /* flex-end, А НЕ baseline. UI Toolkit знает только flex-start | flex-end | center | stretch |
+       auto, и стоявший здесь baseline отбрасывался МОЛЧА — строка выравнивалась как придётся
+       (stretch по умолчанию). Замысел «шапка и мета сидят на одной линии» ближе всего к нижней
+       грани: у меньшего кегля коробка ниже, поэтому мета встаёт чуть выше базовой линии
+       заголовка, но не разъезжается по вертикали, как при stretch. */
+    align-items: flex-end;
 }
 
 .gm-tooltip__divider {
