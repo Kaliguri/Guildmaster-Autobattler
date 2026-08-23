@@ -152,6 +152,14 @@ export const PAGES: PageDef[] = [
     load: () => import("./sections/gamefeel-floor.js")
   },
   {
+    id: "sky",
+    shelf: "scene",
+    area: "gamefeel",
+    title: "Небо и вода",
+    blurb: "Из чего построено облако, нужен ли ему контур, свет по времени суток и вода референса.",
+    load: () => import("./sections/gamefeel-sky.js")
+  },
+  {
     id: "legacy",
     area: "gamefeel",
     title: "Отклонённое",
