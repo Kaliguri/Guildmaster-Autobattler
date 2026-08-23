@@ -24,7 +24,14 @@ updated: 2026-08-23
 | Пачек | 5 |
 | Вес на диске | 60.1 МБ |
 
-## Backdrops
+| Прогнано конвейером | 47 из 47 |
+
+## Исходники
+
+Как пришли от генератора. В UI напрямую не годятся — колонки ниже показывают, чем.
+Обработку делает `scripts/prep_ui_textures.py`, результат — раздел «Рабочая пачка».
+
+### Backdrops
 
 Роль: задник экранов меты — кадр целиком, растягивается по экрану.
 
@@ -38,7 +45,7 @@ updated: 2026-08-23
 | `Backdrop_Rays_Sharp` | 1672x941 | **нет** | без поля | max 3, сред. 0.7 | 1562 КБ |
 | `Backdrop_Ridges` | 1672x941 | **нет** | без поля | max 19, сред. 8.0 | 1859 КБ |
 
-## Banners
+### Banners
 
 Роль: вертикальное полотнище под колонку выбора (приём Slay the Spire).
 
@@ -51,7 +58,7 @@ updated: 2026-08-23
 | `Banner_Pillar` | 972x1619 | **нет** | на чёрном | max 3, сред. 0.4 | 1797 КБ |
 | `Banner_Plain` | 972x1619 | **нет** | на чёрном | max 2, сред. 0.3 | 2135 КБ |
 
-## Frames
+### Frames
 
 Роль: рамка панели, орнамент в углах — годится под 9-slice.
 
@@ -68,7 +75,7 @@ updated: 2026-08-23
 | `Frame_Talon` | 1254x1254 | **нет** | на белом | max 6, сред. 0.5 | 1220 КБ |
 | `Frame_Wisp` | 1254x1254 | **нет** | на белом | max 7, сред. 0.7 | 926 КБ |
 
-## Masks
+### Masks
 
 Роль: маска затемнения и свечения, играет яркостью, а не рисунком.
 
@@ -89,7 +96,7 @@ updated: 2026-08-23
 | `Mask_Sweep_Diagonal` | 1672x941 | **нет** | без поля | max 2, сред. 0.5 | 1505 КБ |
 | `Mask_Sweep_Vertical` | 1672x941 | **нет** | без поля | max 2, сред. 0.4 | 973 КБ |
 
-## Plates
+### Plates
 
 Роль: лента-пластина с орнаментальными концами — 9-slice по горизонтали.
 
@@ -105,6 +112,62 @@ updated: 2026-08-23
 | `Plate_Scroll` | 2035x773 | **нет** | на белом | max 3, сред. 0.4 | 906 КБ |
 | `Plate_Stitch` | 1921x819 | **нет** | на белом | max 3, сред. 0.4 | 1151 КБ |
 | `Plate_Volute` | 1983x793 | **нет** | на белом | max 3, сред. 0.4 | 917 КБ |
+
+## Рабочая пачка
+
+`Assets/_Project/Art/UI Textures` — то, что кладётся в UI: поле вырезано в
+альфу, картинка обесцвечена, размер приведён к кратному четырём. Пересобрать —
+`py scripts/prep_ui_textures.py --force`; редактировать эти файлы руками бессмысленно.
+
+| Файл | Размер | Альфа | Вес |
+|---|---|---|---|
+| `Backdrops/Backdrop_Bloom` | 1672x940 | нет (кадр целиком) | 882 КБ |
+| `Backdrops/Backdrop_Facets` | 1672x940 | нет (кадр целиком) | 1019 КБ |
+| `Backdrops/Backdrop_Flare` | 1672x940 | нет (кадр целиком) | 874 КБ |
+| `Backdrops/Backdrop_Marble` | 1672x940 | нет (кадр целиком) | 740 КБ |
+| `Backdrops/Backdrop_Rays_Dim` | 1672x940 | нет (кадр целиком) | 496 КБ |
+| `Backdrops/Backdrop_Rays_Sharp` | 1672x940 | нет (кадр целиком) | 764 КБ |
+| `Backdrops/Backdrop_Ridges` | 1672x940 | нет (кадр целиком) | 891 КБ |
+| `Banners/Banner_Arch` | 612x1024 | нет (кадр целиком) | 366 КБ |
+| `Banners/Banner_Barb` | 612x1024 | нет (кадр целиком) | 336 КБ |
+| `Banners/Banner_Fold` | 612x1024 | нет (кадр целиком) | 477 КБ |
+| `Banners/Banner_Pennant` | 616x1024 | нет (кадр целиком) | 305 КБ |
+| `Banners/Banner_Pillar` | 612x1024 | нет (кадр целиком) | 369 КБ |
+| `Banners/Banner_Plain` | 612x1024 | нет (кадр целиком) | 395 КБ |
+| `Frames/Frame_Barb` | 1024x1024 | есть | 338 КБ |
+| `Frames/Frame_Feather` | 1024x1024 | есть | 410 КБ |
+| `Frames/Frame_Filigree` | 1024x1024 | есть | 345 КБ |
+| `Frames/Frame_Rivet` | 1024x1024 | есть | 354 КБ |
+| `Frames/Frame_Rosette` | 1024x1024 | есть | 362 КБ |
+| `Frames/Frame_Scroll` | 1024x1024 | есть | 332 КБ |
+| `Frames/Frame_Stepped` | 1024x1024 | есть | 514 КБ |
+| `Frames/Frame_Stitch` | 1024x1024 | есть | 618 КБ |
+| `Frames/Frame_Talon` | 1024x1024 | есть | 426 КБ |
+| `Frames/Frame_Wisp` | 1024x1024 | есть | 334 КБ |
+| `Masks/Mask_Edge_Blob` | 1024x576 | есть | 71 КБ |
+| `Masks/Mask_Edge_Fade` | 1024x576 | есть | 49 КБ |
+| `Masks/Mask_Edge_Soft` | 1024x576 | есть | 217 КБ |
+| `Masks/Mask_Fog_Billow` | 1024x576 | есть | 225 КБ |
+| `Masks/Mask_Fog_Cloud` | 1024x576 | есть | 213 КБ |
+| `Masks/Mask_Fog_Tongue` | 1024x576 | есть | 223 КБ |
+| `Masks/Mask_Fog_Top` | 1024x576 | есть | 232 КБ |
+| `Masks/Mask_Fog_Wisp` | 1024x576 | есть | 66 КБ |
+| `Masks/Mask_Glow_Faint` | 1024x576 | есть | 56 КБ |
+| `Masks/Mask_Glow_Oval` | 1024x576 | есть | 230 КБ |
+| `Masks/Mask_Glow_Soft` | 1024x576 | есть | 200 КБ |
+| `Masks/Mask_Glow_Wide` | 1024x576 | есть | 230 КБ |
+| `Masks/Mask_Sweep_Diagonal` | 1024x576 | есть | 232 КБ |
+| `Masks/Mask_Sweep_Vertical` | 1024x576 | есть | 27 КБ |
+| `Plates/Plate_Bracket` | 1024x408 | есть | 162 КБ |
+| `Plates/Plate_Curl` | 1024x436 | есть | 185 КБ |
+| `Plates/Plate_Feather` | 1024x408 | есть | 177 КБ |
+| `Plates/Plate_Leaf` | 1024x424 | есть | 178 КБ |
+| `Plates/Plate_Octagon` | 1024x372 | есть | 145 КБ |
+| `Plates/Plate_Plain` | 1024x456 | есть | 187 КБ |
+| `Plates/Plate_Quill` | 1024x408 | есть | 178 КБ |
+| `Plates/Plate_Scroll` | 1024x388 | есть | 161 КБ |
+| `Plates/Plate_Stitch` | 1024x436 | есть | 232 КБ |
+| `Plates/Plate_Volute` | 1024x408 | есть | 160 КБ |
 
 ## Как читать колонки
 

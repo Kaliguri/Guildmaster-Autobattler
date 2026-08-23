@@ -17,6 +17,7 @@ from PIL import Image, ImageChops, ImageStat
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "Assets/_Project/Art/Textures (Grayscale)"
+WORK = ROOT / "Assets/_Project/Art/UI Textures"
 OUT = ROOT / "docs/wiki/tech/10-reference/ui-texture-inventory.md"
 
 # Роль папки -> зачем эта пачка нужна. Держится здесь, потому что из имён файлов не выводится.
@@ -92,11 +93,20 @@ def main() -> None:
     lines.append(f"| Вес на диске | {weight / 1024 / 1024:.1f} МБ |")
     lines.append("")
 
+    work_files = sorted(WORK.rglob("*.png")) if WORK.is_dir() else []
+    lines.append(f"| Прогнано конвейером | {len(work_files)} из {total} |")
+    lines.append("")
+    lines.append("## Исходники")
+    lines.append("")
+    lines.append("Как пришли от генератора. В UI напрямую не годятся — колонки ниже показывают, чем.")
+    lines.append("Обработку делает `scripts/prep_ui_textures.py`, результат — раздел «Рабочая пачка».")
+    lines.append("")
+
     for folder in folders:
         files = sorted(folder.glob("*.png"))
         if not files:
             continue
-        lines.append(f"## {folder.name}")
+        lines.append(f"### {folder.name}")
         lines.append("")
         role = FOLDER_ROLE.get(folder.name)
         if role:
@@ -111,6 +121,24 @@ def main() -> None:
             lines.append(
                 f"| `{f.stem}` | {im.size[0]}x{im.size[1]} | {alpha} | {polarity(im)} "
                 f"| max {mx}, сред. {mean:.1f} | {f.stat().st_size // 1024} КБ |"
+            )
+        lines.append("")
+
+    if work_files:
+        lines.append("## Рабочая пачка")
+        lines.append("")
+        lines.append(f"`{WORK.relative_to(ROOT).as_posix()}` — то, что кладётся в UI: поле вырезано в")
+        lines.append("альфу, картинка обесцвечена, размер приведён к кратному четырём. Пересобрать —")
+        lines.append("`py scripts/prep_ui_textures.py --force`; редактировать эти файлы руками бессмысленно.")
+        lines.append("")
+        lines.append("| Файл | Размер | Альфа | Вес |")
+        lines.append("|---|---|---|---|")
+        for f in work_files:
+            im = Image.open(f)
+            alpha = "есть" if im.mode in ("RGBA", "LA") else "нет (кадр целиком)"
+            lines.append(
+                f"| `{f.parent.name}/{f.stem}` | {im.size[0]}x{im.size[1]} | {alpha} "
+                f"| {f.stat().st_size // 1024} КБ |"
             )
         lines.append("")
 
