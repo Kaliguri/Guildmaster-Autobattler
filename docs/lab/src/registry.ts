@@ -341,6 +341,15 @@ export const PAGES: PageDef[] = [
     icon: "★"
   },
   {
+    id: "ui-prep-frame",
+    shelf: "prep",
+    area: "ui",
+    title: "Отряд: единый каркас",
+    blurb: "Один экран вместо трёх: четыре героя в полный рост стоят намертво, вкладка меняет только полку внизу. Слотов нет — Мементо читается обликом.",
+    load: () => import("./sections/ui-prep-frame.js"),
+    icon: "◆"
+  },
+  {
     id: "ui-party-items",
     shelf: "prep",
     area: "ui",

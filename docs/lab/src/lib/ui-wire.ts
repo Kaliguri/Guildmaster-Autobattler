@@ -307,3 +307,31 @@ export function lock(ctx: CanvasRenderingContext2D, r: Rect, w: number, h: numbe
   ctx.strokeRect(cx - s * 0.9, cy - s * 0.35, s * 1.8, s * 1.3);
   ctx.restore();
 }
+
+/** Площадка под ногами: эллипс в ракурсе арены. Отдельный примитив, а не сплющенный disc, потому
+ *  что круг у нас уже занят смыслом «это человек», а здесь земля — то, НА чём человек стоит и на
+ *  что кладут вещи. Сплющенность фиксирована (0.28 от ширины): ракурс арены один на всю игру, и
+ *  разъехавшийся между стендами угол сделал бы чертежи несравнимыми. */
+export function ground(
+  ctx: CanvasRenderingContext2D,
+  at: { x: number; y: number; w: number },
+  w: number,
+  h: number,
+  opts: { lit?: boolean; dashed?: boolean } = {}
+): void {
+  const cx = at.x * w;
+  const cy = at.y * h;
+  const rx = (at.w * w) / 2;
+  const ry = rx * 0.28;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+  ctx.fillStyle = opts.lit ? WIRE.fillLit : WIRE.fill;
+  ctx.fill();
+  if (opts.dashed) ctx.setLineDash([4, 3]);
+  ctx.strokeStyle = opts.lit ? WIRE.lineLit : WIRE.line;
+  ctx.lineWidth = opts.lit ? 1.6 : 1;
+  ctx.stroke();
+  ctx.restore();
+}
