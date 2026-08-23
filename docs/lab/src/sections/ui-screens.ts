@@ -45,7 +45,7 @@ const TITLE: Record<string, string> = {
   profile: "Выбор профиля",
   slotcreate: "Создание гильдии",
   guilds: "Выбор гильдии",
-  hub: "Двор гильдии",
+  "guild-hub": "Двор гильдии",
   party: "Подготовка · Отряд",
   items: "Подготовка · Предметы",
   loadout: "Снаряжение Сосуда",
@@ -68,7 +68,7 @@ const TITLE: Record<string, string> = {
 /** Группы в порядке пути игрока: первый id группы открывает её заголовком. */
 const GROUPS: { at: string; title: string }[] = [
   { at: "mainmenu",   title: "Вход в игру" },
-  { at: "hub",        title: "Гильдия и подготовка" },
+  { at: "guild-hub",  title: "Гильдия и подготовка" },
   { at: "titlecard",  title: "Забег: узлы и исход" },
   { at: "settings",   title: "Служебное" },
   { at: "devconsole", title: "Дев-полки" }
@@ -77,7 +77,7 @@ const GROUPS: { at: string; title: string }[] = [
 /** Что на экране собрано заглушкой, а не настоящим содержимым: иначе кадр читается как поломка. */
 const STUB: Record<string, string> = {
   chest: "экран-заглушка: содержимое сундука ещё не сделано",
-  hub: "экран-заглушка: двор ещё обустраивают"
+  "guild-hub": "экран-заглушка: двор ещё обустраивают"
 };
 
 const manifest = feed<Manifest>("data/ui-screens.json");

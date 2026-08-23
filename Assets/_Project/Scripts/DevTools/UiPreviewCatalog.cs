@@ -43,7 +43,7 @@ namespace Guildmaster.DevTools
             ["mainmenu"]     = BuildMainMenu,
             ["newgame"]      = BuildNewGame,
             ["guilds"]       = BuildGuildSelect,
-            ["hub"]          = BuildHub,
+            ["guild-hub"]    = BuildHub,
             ["titlecard"]    = BuildTitleCard,
             ["devconsole"]   = BuildDevConsole,
             ["dev-log"]      = BuildDevLog,
@@ -65,7 +65,7 @@ namespace Guildmaster.DevTools
             // Вход в игру: с этого начинается любая сессия.
             "mainmenu", "newgame", "profile", "slotcreate", "guilds",
             // Дом гильдии и подготовка отряда.
-            "hub", "party", "items", "loadout", "loadout-inventory", "vessel-card",
+            "guild-hub", "party", "items", "loadout", "loadout-inventory", "vessel-card",
             // Забег: узлы и их исход.
             "titlecard", "shop", "chest", "event", "camp", "reward", "outcome",
             // Служебное: видно игроку, но не по ходу игры.
@@ -294,7 +294,11 @@ namespace Guildmaster.DevTools
                 new(2, "Дан",  RuName(Relic(2)?.Id), new[] { string.Empty, string.Empty, string.Empty, null }, FaceOf(Relic(2))),
                 new(3, "Сув",  RuName(Relic(3)?.Id), new[] { Item(3), string.Empty, string.Empty, null }, FaceOf(Relic(3))),
             };
-            var stash = new List<string> { Item(4), Item(5), Item(6) };
+            // Склад показывает то, что в базе ЕСТЬ: предметов там пока три, и просить седьмой значит
+            // положить на полку пустые квадраты — кадр читался бы как «склад сломан».
+            var stash = new List<string>();
+            for (int i = 0; i < allItems.Count && stash.Count < 6; i++)
+                if (allItems[i] != null) stash.Add(allItems[i].Id);
 
             Sprite IconOf(string id) =>
                 !string.IsNullOrEmpty(id) && content != null && content.TryGet(id, out ItemData it) && it != null
