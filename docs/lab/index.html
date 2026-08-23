@@ -9,8 +9,15 @@
 </head>
 <body>
 
-  <div class="wrap">
-    <main id="lab-view"></main>
+  <!-- Три колонки: навигация — содержимое — оглавление страницы. Колонки объявлены разметкой, а
+       не собираются в JS, чтобы сетка стояла до первой отрисовки и страница не прыгала. Наполняет
+       их каркас: #lab-side и #lab-toc пусты ровно до boot(). -->
+  <div class="lab-shell" id="lab-shell" data-toc="false">
+    <aside class="lab-side" id="lab-side" aria-label="Разделы лаборатории"></aside>
+    <div class="lab-main">
+      <main id="lab-view"></main>
+    </div>
+    <aside class="lab-toc" id="lab-toc" aria-label="На этой странице"></aside>
   </div>
 
   <!-- Единственный тег скрипта на весь сайт: остальное каркас импортирует сам, а раздел

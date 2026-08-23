@@ -73,7 +73,13 @@ export function renderHome(
     const body = el("div", "card-text");
     body.appendChild(el("h3", null, area.title));
     body.appendChild(el("p", "dim", area.blurb));
-    body.appendChild(el("p", "tag", inside.map((p) => p.title).join(" · ")));
+    // Полки, а не разделы: у «Интерфейса» их двадцать шесть, и списком имён карточка превращалась
+    // в простыню микрокапса на десять строк — прочитать её нельзя, а высоту сетки она ломала.
+    const shelves = area.shelves ?? [];
+    const names = shelves.length > 0
+      ? shelves.filter((sh) => inside.some((p) => p.shelf === sh.id)).map((sh) => sh.title)
+      : inside.map((p) => p.title);
+    body.appendChild(el("p", "tag", names.join(" · ")));
     card.appendChild(body);
     grid.appendChild(card);
   }
@@ -223,12 +229,13 @@ export function addLightboxItems(extra: lightbox.Item[]): void {
   lightbox.setItems(scenes);
 }
 
-export function renderSection(view: HTMLElement, def: SectionDef): void {
+/** Раздел. Оглавление уходит в СВОЮ колонку (tocHost), а не в поток страницы: чипами над текстом
+ *  оно уезжало вверх при первой же прокрутке, а разделы бывают на двенадцать блоков. */
+export function renderSection(view: HTMLElement, def: SectionDef, tocHost: HTMLElement | null): void {
   beginScenes();
   view.appendChild(hero(def.title, def.lede, def.eyebrow));
 
-  const toc = el("nav", "page-toc");
-  toc.setAttribute("aria-label", "На этой странице");
+  const tocLinks: HTMLAnchorElement[] = [];
   let tocCount = 0;
 
   const body = el("div", "page-body");
@@ -242,7 +249,7 @@ export function renderSection(view: HTMLElement, def: SectionDef): void {
         body.appendChild(h);
         const link = el("a", null, block.title);
         link.href = routeHref(def.id, block.id);
-        toc.appendChild(link);
+        tocLinks.push(link);
         tocCount++;
         if (block.lede) body.appendChild(html("p", block.lede, "lede"));
         break;
@@ -276,9 +283,57 @@ export function renderSection(view: HTMLElement, def: SectionDef): void {
     }
   }
 
-  if (tocCount > 1) view.appendChild(toc);
   view.appendChild(body);
+  // Оглавление на один пункт не оглавление, а повтор заголовка.
+  if (tocCount > 1 && tocHost) {
+    tocHost.appendChild(el("p", "lab-toc-title", "На этой странице"));
+    for (const link of tocLinks) tocHost.appendChild(link);
+    spyHeadings(body, tocLinks);
+  }
   commitScenes();
+}
+
+/* Подсветка текущего места в оглавлении.
+
+   Наблюдатель, а не расчёт по scrollY: у нас страница с сотней канвасов, и считать положение
+   заголовков на каждый кадр прокрутки — та же цена, что и рисовать сцену. Верхняя граница окна
+   поднята на 45% высоты, чтобы активным становился заголовок, ДОШЕДШИЙ до верха экрана, а не тот,
+   что едва показался снизу. */
+let spy: IntersectionObserver | null = null;
+
+function spyHeadings(body: HTMLElement, links: HTMLAnchorElement[]): void {
+  spy?.disconnect();
+  const heads = Array.from(body.querySelectorAll("h2[id]"));
+  if (heads.length === 0) return;
+
+  const byId = new Map<string, HTMLAnchorElement>();
+  for (const link of links) {
+    const id = decodeURIComponent(link.href.split("/").pop() ?? "");
+    if (id) byId.set(id, link);
+  }
+
+  const seen = new Set<string>();
+  const mark = (): void => {
+    // Активен последний из уже пройденных заголовков: между двумя видимыми глаз читает верхний.
+    let current: string | null = null;
+    for (const head of heads) if (seen.has(head.id)) current = head.id;
+    for (const [id, link] of byId) {
+      if (id === current) link.dataset["active"] = "true";
+      else link.removeAttribute("data-active");
+    }
+  };
+
+  spy = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) seen.add(entry.target.id);
+        else seen.delete(entry.target.id);
+      }
+      mark();
+    },
+    { rootMargin: "-45% 0px -50% 0px" }
+  );
+  for (const head of heads) spy.observe(head);
 }
 
 function toggleRow(block: Extract<Block, { kind: "toggle" }>): HTMLElement {

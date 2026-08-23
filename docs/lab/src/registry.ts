@@ -16,7 +16,12 @@ export const AREAS: AreaDef[] = [
   {
     id: "gamefeel",
     title: "Джус",
-    blurb: "Как выглядит бой: удар, статусы, эффекты, барьер, зоны. Всё живое и покадровое."
+    blurb: "Как выглядит бой: удар, статусы, эффекты, барьер, зоны. Всё живое и покадровое.",
+    shelves: [
+      { id: "strike", title: "Удар" },
+      { id: "layers", title: "Слои боя" },
+      { id: "scene", title: "Сцена" }
+    ]
   },
   {
     id: "map",
@@ -39,7 +44,17 @@ export const AREAS: AreaDef[] = [
     id: "ui",
     title: "Интерфейс",
     blurb: "Чертежи экранов: что на них лежит, какого размера и почему именно так у рефов.",
-    icon: "▣"
+    icon: "▣",
+    // Полки по пути игрока, а не по алфавиту: экран ищут по тому, ГДЕ он встречается в игре
+    // («что там было на подготовке»), и никогда по первой букве названия.
+    shelves: [
+      { id: "entry", title: "Вход и лобби" },
+      { id: "guild", title: "Гильдия" },
+      { id: "prep", title: "Подготовка забега" },
+      { id: "nodes", title: "Узлы карты" },
+      { id: "combat", title: "Бой" },
+      { id: "language", title: "Язык интерфейса" }
+    ]
   },
   {
     id: "balance",
@@ -58,6 +73,7 @@ export const AREAS: AreaDef[] = [
 export const PAGES: PageDef[] = [
   {
     id: "hits",
+    shelf: "strike",
     area: "gamefeel",
     title: "Удар",
     blurb: "Взмах, три архетипа формы, слои попадания, гибриды двух стихий и дальний бой.",
@@ -65,6 +81,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "geometry",
+    shelf: "strike",
     area: "gamefeel",
     title: "Геометрия удара",
     blurb: "Замер живых ассетов: якоря вида, путь клинка из клипа, длина и толщина всех четырёх форм.",
@@ -72,6 +89,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "lineart",
+    shelf: "strike",
     area: "gamefeel",
     title: "Лайн у эффектов",
     blurb: "Нужна ли форме удара тёмная кайма: четыре способа обвести серп, свалка из восьми и цена приёма.",
@@ -79,6 +97,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "barrier",
+    shelf: "layers",
     area: "gamefeel",
     title: "Барьер",
     blurb: "Форма купола, узор трещин, стопка оболочек по типам, два финала и блок как режим.",
@@ -86,6 +105,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "status",
+    shelf: "layers",
     area: "gamefeel",
     title: "Статусы",
     blurb: "Постоянный слой на теле: четыре канала, ступени стака и пасхалка на сломе шкалы.",
@@ -93,6 +113,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "effects",
+    shelf: "layers",
     area: "gamefeel",
     title: "Эффекты",
     blurb: "Словарь общих эффектов по каналам, кровь по DPS, жизнь эффекта от наложения до снятия.",
@@ -100,6 +121,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ghosts",
+    shelf: "layers",
     area: "gamefeel",
     title: "Призрачные копии",
     blurb: "Шлейф за рывком и удар по иллюзии на уклонении: пять вариаций хвоста и пять способов разрушить копию.",
@@ -107,6 +129,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "zones",
+    shelf: "layers",
     area: "gamefeel",
     title: "Зоны",
     blurb: "Телеграф площади: подводка, срабатывание, след. Круг, линия и то, что стоит на арене.",
@@ -114,6 +137,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "bloom",
+    shelf: "scene",
     area: "gamefeel",
     title: "Витрина блума",
     blurb: "Все светящиеся эффекты боя в одном кадре, по кадру на вариацию настроек свечения.",
@@ -121,6 +145,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "floor",
+    shelf: "scene",
     area: "gamefeel",
     title: "Пол арены",
     blurb: "Плита в пустоте: поверхность биома, борт сбоку, ничего под ней. Два вопроса под вердикт.",
@@ -237,6 +262,7 @@ export const PAGES: PageDef[] = [
 
   {
     id: "ui-mainmenu",
+    shelf: "entry",
     area: "ui",
     title: "Главное меню",
     blurb: "Шесть раскладок по четырнадцати рефам: колонка у кромки, плита, центр, обложка, низ, два списка.",
@@ -245,6 +271,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-settings",
+    shelf: "entry",
     area: "ui",
     title: "Настройки",
     blurb: "Три схемы раскладки категорий: горизонтальные табы, вертикальные, две колонки без табов.",
@@ -253,6 +280,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-screens",
+    shelf: "language",
     area: "ui",
     title: "Экраны игры",
     blurb: "По кадру на каждый экран, снято из живой игры поверх настоящего задника. Экран целиком: метрика, пропажи, сходство с рефом.",
@@ -261,6 +289,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-states",
+    shelf: "language",
     area: "ui",
     title: "Элементы интерфейса",
     blurb: "Каждый элемент во всех состояниях: покой, наведение, нажатие, фокус, выключено, отмечено. Снято из живой игры контактным листом.",
@@ -269,6 +298,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-tabs",
+    shelf: "language",
     area: "ui",
     title: "Лента разделов",
     blurb: "Чем помечен активный таб: реф промерен, пять вариантов пометки. Вердикт общий для настроек, отряда и реликвий.",
@@ -277,6 +307,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-backdrop",
+    shelf: "language",
     area: "ui",
     title: "Фон экранов меты",
     blurb: "Из чего сделана плоскость под настройками и меню: реф промерен пипеткой, четыре варианта в патине.",
@@ -285,6 +316,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-loadout",
+    shelf: "prep",
     area: "ui",
     title: "Сбор отряда",
     blurb: "Единственный экран забега с решениями и единственный без рефов: вкладки, отряд сверху, боец слева.",
@@ -293,6 +325,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-prep-final",
+    shelf: "prep",
     area: "ui",
     title: "Подготовка: итог",
     blurb: "Семь принятых экранов в порядке пути игрока: отряд телами, предметы строками, панель по ЛКМ, разворот по ПКМ двумя табами и та же книга у Реликвии.",
@@ -301,6 +334,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-party-items",
+    shelf: "prep",
     area: "ui",
     title: "Отряд и предметы",
     blurb: "Две страницы одного экрана подготовки: состав из четырёх на каждой, восемь мест отряда, три слота предмета и четвёртый закрытый. По четыре раскладки на страницу.",
@@ -309,6 +343,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-inspect-cards",
+    shelf: "prep",
     area: "ui",
     title: "Осмотр и карточки",
     blurb: "Что открывается по ЛКМ и по ПКМ: панель осмотра тремя местами, расширенные карточки «Сосуда» и Реликвии по три устройства. Единственный дом травм.",
@@ -317,6 +352,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-lobby",
+    shelf: "entry",
     area: "ui",
     title: "Создать игру и лобби",
     blurb: "Настройки сессии и список игроков: панели рядом, два таба, развилка карточками.",
@@ -325,6 +361,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-outcome",
+    shelf: "combat",
     area: "ui",
     title: "Итоги боя",
     blurb: "Исход крупнее чисел, полосы на бойца, разбор по наведению: две панели, одна, лента.",
@@ -333,6 +370,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-pause",
+    shelf: "combat",
     area: "ui",
     title: "Пауза",
     blurb: "Пять строк и вопрос, сколько кадра закрыть: центр, колонка слева, полоса поперёк.",
@@ -341,6 +379,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-reward",
+    shelf: "nodes",
     area: "ui",
     title: "Награда",
     blurb: "Выбор из трёх: карточки с плашкой последствия, лежачие строки Hades, самодостаточные карточки.",
@@ -349,6 +388,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-shop",
+    shelf: "nodes",
     area: "ui",
     title: "Лавка",
     blurb: "Товары, кошелёк, реролл и продажа: ряд с панелью статов, плотная сетка, наша полка.",
@@ -357,6 +397,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-chest",
+    shelf: "nodes",
     area: "ui",
     title: "Сундук",
     blurb: "Рефов класса нет: два такта, раскрытие на месте или отказ от отдельного экрана.",
@@ -365,6 +406,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-event",
+    shelf: "nodes",
     area: "ui",
     title: "Событие",
     blurb: "Панель с заходящим артом, текст без панели вовсе, модалка по центру. И что обещает плашка.",
@@ -373,6 +415,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-camp",
+    shelf: "nodes",
     area: "ui",
     title: "Привал",
     blurb: "Бюджет действий и адресат: список как у события, отряд телами, карточки как у награды.",
@@ -381,6 +424,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-hud",
+    shelf: "combat",
     area: "ui",
     title: "Боевой HUD",
     blurb: "Единственный экран, который меряется долей кадра: полная периферия, минимум, лента снизу.",
@@ -389,6 +433,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-courtyard",
+    shelf: "guild",
     area: "ui",
     title: "Двор гильдии",
     blurb: "Заготовка под разговор: сцена с телами, сцена с панелью, витрина разделов без места.",
@@ -397,6 +442,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-profile",
+    shelf: "entry",
     area: "ui",
     title: "Выбор профиля",
     blurb: "Три раскладки экрана «кто я»: ряд карточек, ряд на подложке, слоты рядом с идентичностью.",
@@ -405,6 +451,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-guilds",
+    shelf: "entry",
     area: "ui",
     title: "Выбор гильдии",
     blurb: "Дом как слот сохранения: ряд карточек, список с панелью дома, один раскрытый при свёрнутых.",
@@ -413,6 +460,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-uplift",
+    shelf: "language",
     area: "ui",
     title: "Догнать рефы",
     blurb: "План работ по UI: семь пунктов приём за приёмом плюс раскладки пяти экранов — кадры рефов рядом с нашими.",
@@ -421,6 +469,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-notice",
+    shelf: "language",
     area: "ui",
     title: "Сообщения игроку",
     blurb: "Одна модель, два облика: лента для того, что не спрашивает, модалка для того, что ждёт ответа.",
@@ -429,6 +478,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-log",
+    shelf: "language",
     area: "ui",
     title: "Журнал событий",
     blurb: "Кто кого убил и кто куда ушёл: угол HUD с угасанием, окно по клавише, оба режима сразу.",
@@ -437,6 +487,7 @@ export const PAGES: PageDef[] = [
   },
   {
     id: "ui-players",
+    shelf: "entry",
     area: "ui",
     title: "Список игроков",
     blurb: "Строка человека: цвет, ник, хозяин, пинг числом, где он сейчас. Плюс две отклонённые раскладки.",

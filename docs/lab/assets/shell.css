@@ -25,7 +25,9 @@
 
   --gap: 1.5rem;
   --radius: 2px;
-  --bar-h: 3.25rem;
+  --bar-h: 0rem;
+  --side-w: 15.5rem;
+  --toc-w: 13.5rem;
 }
 
 * { box-sizing: border-box; }
@@ -40,29 +42,46 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* --- шапка: два ряда --------------------------------------------------------
-   Верхний отвечает «в какой части сайта я», нижний «в каком разделе». Один плоский ряд перестал
-   отвечать ни на то, ни на другое, когда разделов стало больше десятка. */
-.lab-bar {
+/* --- оболочка: три колонки --------------------------------------------------
+   Навигация | содержимое | оглавление страницы.
+
+   Колонкой, а не шапкой, потому что разделов пятьдесят семь. Двухрядная шапка держалась, пока их
+   было девять, и сломалась на области «Интерфейс»: двадцать шесть пунктов расползались в три ряда
+   мелкого капса и переставали отвечать на «где я» — это читалось как облако тегов. Колонка со
+   своей прокруткой показывает дерево целиком и переживёт ещё столько же разделов.
+
+   Колонки объявлены в index.html, а не собираются в JS: сетка обязана стоять до первой
+   отрисовки, иначе страница прыгает на каждом переходе. */
+.lab-shell {
+  display: grid;
+  grid-template-columns: var(--side-w) minmax(0, 1fr) var(--toc-w);
+  align-items: start;
+  min-height: 100vh;
+}
+/* Оглавление есть не у всякой страницы: у витрины и у раздела с одним заголовком его нет,
+   и колонка обязана схлопнуться, а не висеть пустой полосой. */
+.lab-shell[data-toc="false"] { grid-template-columns: var(--side-w) minmax(0, 1fr); }
+
+/* --- боковая колонка --- */
+.lab-side {
   position: sticky;
   top: 0;
-  z-index: 20;
+  height: 100vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
-  background: rgba(18, 16, 13, .94);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--edge-soft);
+  gap: 1.1rem;
+  padding: 1.1rem .9rem 2rem;
+  background: rgba(26, 19, 12, .42);
+  border-right: 1px solid var(--edge-soft);
+  scrollbar-width: thin;
+  scrollbar-color: var(--edge) transparent;
 }
+.lab-side::-webkit-scrollbar { width: 7px; }
+.lab-side::-webkit-scrollbar-thumb { background: var(--edge); border-radius: 4px; }
 
-.lab-row {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  padding: 0 clamp(1rem, 4vw, 2.5rem);
-}
-.lab-row-top { height: var(--bar-h); }
-
-.lab-brand { display: flex; flex-direction: column; text-decoration: none; line-height: 1.15; }
+.lab-brand { display: flex; flex-direction: column; text-decoration: none; line-height: 1.15; padding: .2rem .45rem; }
 .lab-brand b { color: var(--text); font-size: .95rem; font-weight: 600; letter-spacing: -.01em; }
 .lab-brand span {
   font-family: var(--mono);
@@ -72,49 +91,7 @@ body {
   color: var(--muted);
 }
 
-/* Области: крупнее и заметнее разделов — это верхний уровень выбора. */
-.lab-areas { display: flex; flex-wrap: wrap; gap: .3rem; margin-left: auto; }
-.lab-areas a {
-  font-size: .84rem;
-  font-weight: 500;
-  color: var(--text-dim);
-  text-decoration: none;
-  padding: .4rem .8rem;
-  border: 1px solid transparent;
-  border-radius: var(--radius);
-  white-space: nowrap;
-}
-.lab-areas a:hover { color: var(--text); background: var(--panel-lift); }
-.lab-areas a[aria-current="page"] { color: var(--brass-lift); border-color: var(--brass); }
-
-/* Разделы: тише, моноширинно — это уточнение внутри уже выбранной области. */
-.lab-sections {
-  gap: .25rem;
-  flex-wrap: wrap;
-  padding-top: .35rem;
-  padding-bottom: .45rem;
-  border-top: 1px solid var(--edge-soft);
-  background: rgba(26, 19, 12, .5);
-}
-.lab-sections[hidden] { display: none; }
-.lab-sections a {
-  font-family: var(--mono);
-  font-size: .68rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  text-decoration: none;
-  padding: .3rem .55rem;
-  border: 1px solid transparent;
-  border-radius: var(--radius);
-  white-space: nowrap;
-}
-.lab-sections a:hover { color: var(--brass-lift); border-color: var(--edge); }
-.lab-sections a[aria-current="page"] { color: var(--brass-lift); border-color: var(--brass); }
-.lab-overview { color: var(--text-dim) !important; margin-right: .5rem; }
-.lab-overview::after { content: " ·"; color: var(--edge); }
-
-.lab-find { display: flex; align-items: center; gap: .45rem; }
+.lab-find { display: flex; align-items: center; justify-content: space-between; gap: .45rem; width: 100%; }
 .lab-find kbd {
   font-family: var(--mono);
   font-size: .62rem;
@@ -124,20 +101,152 @@ body {
   color: var(--muted);
 }
 
+/* --- дерево навигации ---
+   Раскрыта ровно одна область — текущая. Раскрыть все значило бы вернуть ту же простыню,
+   от которой ушли, только вертикальную. */
+.lab-nav { display: flex; flex-direction: column; gap: .1rem; }
+
+.nav-area {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .92rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: .38rem .5rem;
+  border-radius: var(--radius);
+  border-left: 2px solid transparent;
+}
+.nav-area:hover { color: var(--text); background: var(--panel-lift); }
+.nav-area[data-open="true"] { color: var(--text); }
+.nav-area[aria-current="page"] { color: var(--brass-lift); border-left-color: var(--brass); background: var(--panel); }
+/* Значок раскрытия: положение области в дереве читается до чтения самих букв. */
+.nav-area i {
+  font-style: normal;
+  font-size: .62rem;
+  color: var(--muted);
+  width: .7rem;
+  transition: transform 140ms ease;
+}
+.nav-area[data-open="true"] i { color: var(--brass); transform: rotate(90deg); }
+
+.nav-inner { display: flex; flex-direction: column; gap: .05rem; margin: .15rem 0 .55rem; }
+
+.nav-shelf {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--edge);
+  margin: .6rem 0 .15rem .95rem;
+}
+.nav-inner > .nav-shelf:first-child { margin-top: .2rem; }
+
+.nav-page {
+  font-size: .82rem;
+  color: var(--muted);
+  text-decoration: none;
+  padding: .25rem .5rem .25rem .95rem;
+  border-left: 1px solid var(--edge-soft);
+  margin-left: .5rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.nav-page:hover { color: var(--text-dim); background: var(--panel-lift); border-left-color: var(--edge); }
+.nav-page[aria-current="page"] { color: var(--brass-lift); border-left-color: var(--brass); background: var(--panel); }
+
+/* Сквозные страницы — не часть ни одной области, поэтому стоят отдельно и внизу. */
+.nav-cross { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--edge-soft); display: flex; flex-direction: column; gap: .1rem; }
+.nav-cross a {
+  font-family: var(--mono);
+  font-size: .66rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  padding: .32rem .5rem;
+  border-radius: var(--radius);
+  border-left: 2px solid transparent;
+}
+.nav-cross a:hover { color: var(--text-dim); background: var(--panel-lift); }
+.nav-cross a[aria-current="page"] { color: var(--brass-lift); border-left-color: var(--brass); background: var(--panel); }
+
+/* --- оглавление страницы: своя колонка, а не чипы в потоке ---
+   Чипами оно уезжало вверх при первой же прокрутке, а разделы бывают на двенадцать блоков. */
+.lab-toc {
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: clamp(1.6rem, 4vw, 3rem) 1rem 3rem .4rem;
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--edge) transparent;
+}
+.lab-shell[data-toc="false"] .lab-toc { display: none; }
+.lab-toc-title {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--edge);
+  margin: 0 0 .3rem .7rem;
+}
+.lab-toc a {
+  font-size: .78rem;
+  line-height: 1.35;
+  color: var(--muted);
+  text-decoration: none;
+  padding: .3rem .5rem .3rem .7rem;
+  border-left: 2px solid var(--edge-soft);
+}
+.lab-toc a:hover { color: var(--text-dim); border-left-color: var(--edge); }
+/* Подсветка ведётся наблюдателем по заголовкам: без неё в длинном разделе оглавление
+   показывает, ЧТО есть, но не показывает, ГДЕ ты. */
+.lab-toc a[data-active="true"] { color: var(--brass-lift); border-left-color: var(--brass); }
+
+/* --- кнопка меню: только на узком экране --- */
+.lab-burger { position: fixed; top: .7rem; left: .7rem; z-index: 40; display: none; }
+
+@media (max-width: 1240px) {
+  .lab-shell, .lab-shell[data-toc="false"] { grid-template-columns: var(--side-w) minmax(0, 1fr); }
+  .lab-toc { display: none; }
+}
+
 @media (max-width: 900px) {
-  .lab-row-top { height: auto; flex-wrap: wrap; padding-top: .6rem; padding-bottom: .6rem; }
-  .lab-areas { margin-left: 0; width: 100%; order: 3; }
+  .lab-shell, .lab-shell[data-toc="false"] { grid-template-columns: minmax(0, 1fr); }
+  .lab-burger { display: block; }
+  .lab-side {
+    position: fixed;
+    z-index: 35;
+    width: min(19rem, 84vw);
+    transform: translateX(-102%);
+    transition: transform 180ms ease;
+    background: var(--ground);
+    box-shadow: 0 0 40px rgba(0, 0, 0, .6);
+  }
+  body[data-menu="open"] .lab-side { transform: none; }
+  .lab-main { padding-top: 3.8rem; }
 }
 
 /* --- страница --- */
-.wrap {
+.lab-main {
+  min-width: 0;
   max-width: 1180px;
-  margin: 0 auto;
+  width: 100%;
   padding: clamp(1.6rem, 4vw, 3rem) clamp(1rem, 4vw, 2.5rem) 6rem;
   display: flex;
   flex-direction: column;
   gap: clamp(2.2rem, 4vw, 3.4rem);
 }
+
+/* Режим съёмки: голая страница из одних канвасов. Колонки в кадр попадать не должны. */
+body[data-shot] .lab-side,
+body[data-shot] .lab-toc,
+body[data-shot] .lab-burger { display: none; }
+body[data-shot] .lab-shell { grid-template-columns: minmax(0, 1fr); }
 
 .eyebrow {
   font-family: var(--mono);
@@ -266,21 +375,6 @@ th { font-family: var(--mono); font-size: .68rem; letter-spacing: .16em; text-tr
 td code, p code { font-family: var(--mono); font-size: .84em; color: var(--brass-lift); }
 
 .note { font-size: .88rem; color: var(--muted); border-top: 1px solid var(--edge-soft); padding-top: 1rem; }
-
-/* --- оглавление страницы: собирается shell.js из h2 --- */
-.page-toc { display: flex; flex-wrap: wrap; gap: .45rem .6rem; }
-.page-toc a {
-  font-family: var(--mono);
-  font-size: .7rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  padding: .35rem .7rem;
-  border: 1px solid var(--brass);
-  border-radius: var(--radius);
-  color: var(--brass-lift);
-  text-decoration: none;
-}
-.page-toc a:hover { background: rgba(184, 134, 59, .12); }
 
 /* --- наверх --- */
 .to-top {
@@ -830,10 +924,11 @@ body.lb-open { overflow: hidden; }
    поэтому снимает окно с запасом и срезает всё, что этого цвета. Заведомо чужой цвет вместо
    «обрезать по тёмному»: тёмный у нас — фон самой сцены, и кроп по нему съел бы небо. */
 body[data-shot] { background: #FF00FF; }
-body[data-shot] .wrap {
+body[data-shot] .lab-main {
   max-width: none; margin: 0; padding: 12px; gap: 12px;
   width: fit-content; background: var(--ink, #0C0B09);
 }
+body[data-shot] .lab-shell { min-height: 0; }
 .shot-item { margin: 0; display: flex; flex-direction: column; gap: 6px; }
 .shot-item canvas { display: block; background: #0C0B09; }
 .shot-item figcaption {

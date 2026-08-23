@@ -89,81 +89,111 @@ function loadAll(): Promise<Array<SectionDef | null>> {
   return Promise.all(PAGES.map((p) => loadPage(p.id)));
 }
 
-/* ---------- шапка ---------- */
+/* ---------- боковая колонка ----------
+   Была шапка в два ряда: верхний — области, нижний — разделы. На двадцати шести разделах области
+   «Интерфейс» нижний ряд расползался в три строки капса и переставал отвечать «где я». Колонка
+   со своей прокруткой показывает дерево целиком: области, внутри текущей — полки и разделы. */
 
-function buildBar(): void {
-  const bar = el("header", "lab-bar");
+/** Сквозные страницы: собираются по ВСЕМ разделам, поэтому не принадлежат ни одной области.
+ *  В дереве области они прячутся — иначе «Отклонённое» висело бы в «Джусе», где оно объявлено
+ *  по историческим причинам, и выглядело бы его частью. */
+const CROSS: Array<{ id: string; title: string }> = [{ id: "legacy", title: "Отклонённое" }];
+const CROSS_IDS = new Set(CROSS.map((c) => c.id));
 
-  const top = el("div", "lab-row lab-row-top");
+function buildSide(): void {
+  const side = document.getElementById("lab-side");
+  if (!side) return;
+
   const brand = el("a", "lab-brand");
   brand.href = "#/";
   brand.innerHTML = "<b>Guildmaster &middot; Лаборатория</b><span>как мы это видим</span>";
-  top.appendChild(brand);
-
-  // Верхний ряд: области. Он отвечает на вопрос «в какой части сайта я нахожусь».
-  const areas = el("nav", "lab-areas");
-  areas.setAttribute("aria-label", "Области");
-  areas.id = "lab-areas";
-  top.appendChild(areas);
 
   const find = el("button", "lab-find");
   find.type = "button";
   find.innerHTML = "поиск <kbd>K</kbd>";
   find.addEventListener("click", () => void openSearch());
-  top.appendChild(find);
 
-  // Нижний ряд: разделы текущей области. Пустеет на главной — там выбирать ещё нечего.
-  const sections = el("nav", "lab-row lab-sections");
-  sections.setAttribute("aria-label", "Разделы");
-  sections.id = "lab-sections";
+  const nav = el("nav", "lab-nav");
+  nav.id = "lab-nav";
+  nav.setAttribute("aria-label", "Области и разделы");
 
-  bar.append(top, sections);
-  document.body.insertBefore(bar, document.body.firstChild);
+  const cross = el("nav", "nav-cross");
+  cross.id = "lab-cross";
+  cross.setAttribute("aria-label", "Сквозные страницы");
+
+  side.append(brand, find, nav, cross);
+
+  // Кнопка меню нужна только там, где колонка уезжает за край экрана.
+  const burger = el("button", "lab-burger", "меню");
+  burger.type = "button";
+  burger.addEventListener("click", () => {
+    if (document.body.dataset["menu"] === "open") delete document.body.dataset["menu"];
+    else document.body.dataset["menu"] = "open";
+  });
+  document.body.appendChild(burger);
+}
+
+function navPage(page: PageDef, routeId: string): HTMLElement {
+  const link = el("a", "nav-page", page.title);
+  link.href = page.href ?? routeHref(page.id);
+  if (page.href) link.target = "_blank";
+  if (page.id === routeId) link.setAttribute("aria-current", "page");
+  return link;
+}
+
+/** Разделы области по полкам. Полка без разделов не рисуется: пустой заголовок обещает
+ *  содержимое, которого нет. */
+function areaBranch(area: AreaDef, routeId: string): HTMLElement {
+  const box = el("div", "nav-inner");
+  const pages = pagesOf(area.id).filter((p) => !CROSS_IDS.has(p.id));
+  const shelves = area.shelves ?? [];
+
+  for (const page of pages.filter((p) => !p.shelf)) box.appendChild(navPage(page, routeId));
+
+  for (const shelf of shelves) {
+    const items = pages.filter((p) => p.shelf === shelf.id);
+    if (items.length === 0) continue;
+    box.appendChild(el("p", "nav-shelf", shelf.title));
+    for (const page of items) box.appendChild(navPage(page, routeId));
+  }
+
+  // Полка, которой нет в объявлении области: без этой ветки раздел пропал бы из навигации МОЛЧА,
+  // а опечатка в id полки — ровно та ошибка, которую глазами не видно.
+  const orphans = pages.filter((p) => p.shelf && !shelves.some((sh) => sh.id === p.shelf));
+  if (orphans.length > 0) {
+    box.appendChild(el("p", "nav-shelf", "полка не объявлена"));
+    for (const page of orphans) box.appendChild(navPage(page, routeId));
+  }
+  return box;
 }
 
 function syncNav(routeId: string): void {
-  const area = areaOf(routeId);
-  const areasHost = document.getElementById("lab-areas");
-  const sectionsHost = document.getElementById("lab-sections");
-  if (!areasHost || !sectionsHost) return;
+  const nav = document.getElementById("lab-nav");
+  const cross = document.getElementById("lab-cross");
+  if (!nav || !cross) return;
 
-  clear(areasHost);
-  for (const a of AREAS) {
-    const link = el("a", null, a.title);
-    link.href = `#/${a.id}`;
-    if (a.id === area?.id) link.setAttribute("aria-current", "page");
-    areasHost.appendChild(link);
+  // Раскрыта ровно одна область — та, в которой ты стоишь. Раскрыть все значило бы вернуть
+  // простыню, от которой ушли, только вертикальную.
+  const openId = areaOf(routeId)?.id ?? (AREAS.some((a) => a.id === routeId) ? routeId : null);
+
+  clear(nav);
+  for (const area of AREAS) {
+    const link = el("a", "nav-area");
+    link.href = `#/${area.id}`;
+    link.appendChild(el("i", null, "\u25B8"));
+    link.appendChild(el("span", null, area.title));
+    if (area.id === openId) link.dataset["open"] = "true";
+    if (area.id === routeId) link.setAttribute("aria-current", "page");
+    nav.appendChild(link);
+    if (area.id === openId) nav.appendChild(areaBranch(area, routeId));
   }
 
-  clear(sectionsHost);
-  if (!area) {
-    sectionsHost.hidden = true;
-    return;
-  }
-  sectionsHost.hidden = false;
-
-  const overview = el("a", "lab-overview", area.title);
-  overview.href = `#/${area.id}`;
-  if (routeId === area.id) overview.setAttribute("aria-current", "page");
-  sectionsHost.appendChild(overview);
-
-  const pages = pagesOf(area.id);
-  for (const page of pages) {
-    const link = el("a", null, page.title);
-    link.href = page.href ?? routeHref(page.id);
-    if (page.href) link.target = "_blank";
-    if (page.id === routeId) link.setAttribute("aria-current", "page");
-    sectionsHost.appendChild(link);
-  }
-
-  // Музей общесайтовый: он собирает проигравшие варианты со ВСЕХ разделов, а объявлен внутри одной
-  // области. Без этой ссылки отклонённое из молодых областей выглядит потерянным — что и случилось
-  // с картой: мост и архипелаг лежали в музее, но дойти до него из «Карты» было нечем.
-  if (!pages.some((p) => p.id === "legacy")) {
-    const link = el("a", null, "Отклонённое");
-    link.href = routeHref("legacy");
-    if (routeId === "legacy") link.setAttribute("aria-current", "page");
-    sectionsHost.appendChild(link);
+  clear(cross);
+  for (const item of CROSS) {
+    const link = el("a", null, item.title);
+    link.href = routeHref(item.id);
+    if (item.id === routeId) link.setAttribute("aria-current", "page");
+    cross.appendChild(link);
   }
 }
 
@@ -380,9 +410,15 @@ async function renderRoute(): Promise<void> {
   const route = parseRoute();
   const view = document.getElementById("lab-view");
   if (!view) return;
+  const toc = document.getElementById("lab-toc");
+  const shell = document.getElementById("lab-shell");
 
   reset();
   clear(view);
+  if (toc) clear(toc);
+  // Переход по ссылке из выехавшего меню обязан его закрыть: иначе оно накрывает то,
+  // ради чего по ссылке и шли.
+  delete document.body.dataset["menu"];
   syncNav(route.page);
 
   const area = AREAS.find((a) => a.id === route.page);
@@ -396,6 +432,7 @@ async function renderRoute(): Promise<void> {
 
   reset();
   clear(view);
+  if (toc) clear(toc);
 
   if (route.page === "index") {
     renderHome(view, AREAS, PAGES, loaded);
@@ -414,10 +451,17 @@ async function renderRoute(): Promise<void> {
         )
       );
     } else {
-      if (def.transport !== false) view.appendChild(buildTransport());
-      renderSection(view, def);
+      renderSection(view, def, toc);
+      // Транспорт ПОСЛЕ заголовка, а не перед ним: панель управления впереди названия страницы
+      // читается как часть каркаса сайта, хотя управляет она этим разделом. Липкость от места
+      // в потоке не страдает — при прокрутке он всё равно уходит к верхней кромке.
+      if (def.transport !== false) view.insertBefore(buildTransport(), view.children[1] ?? null);
     }
   }
+
+  // Колонка оглавления схлопывается, когда оглавления нет: пустая полоса справа читается как
+  // сломанная вёрстка, а не как «у этой страницы нечего оглавлять».
+  shell?.setAttribute("data-toc", String(toc !== null && toc.childElementCount > 0));
 
   paint();
   scrollToAnchor(route.anchor);
@@ -468,7 +512,7 @@ function boot(): void {
     return;
   }
 
-  buildBar();
+  buildSide();
   buildToTop();
 
   window.addEventListener("hashchange", () => void renderRoute());
